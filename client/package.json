@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "check-types": "tsc",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "cd .. && husky install client/.husky"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.10.1",
