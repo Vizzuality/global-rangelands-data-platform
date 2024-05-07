@@ -43,7 +43,6 @@ when running the container.
 
 | Variable name                                 | Description                    | Default value           |
 |-----------------------------------------------|--------------------------------|------------------------:|
-| NEXT_PUBLIC_ENVIRONMENT                       | `'develop', 'staging', 'production'`. There are many times where you want to do things on specific environments. Load a third party library only in production, enable search engines only in production...                                                                    |                 develop |
 | NEXT_PUBLIC_URL                               | Canonical URL                  | http://localhost:$PORT  |
 | NEXT_PUBLIC_API_URL                           | URL of the CMS API.            | http://0.0.0.0:1337/cms |
 | NEXT_PUBLIC_MAPBOX_TOKEN                      | Mapbox token used for maps     | ''                      |

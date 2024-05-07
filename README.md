@@ -21,7 +21,7 @@ This repository contains all the code and documentation necessary to set up and 
 
 | Subdirectory name | Description                                                 | Documentation                                                                                            |
 |-------------------|-------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| frontend          | The Next.js client application                            | [frontend/README.md](frontend/README.md)             |
+| frontend          | The Next.js client application                            | [client/README.md](client/README.md)             |
 | cms               | The Strapi CMS / API                                        | [cms/README.md](cms/README.md)             |
 | titiler   | Titler Server                                                      | [titiler/README.md](cloud_functions/analysis/README.md)               |
 | infrastructure    | The Terraform project & GH Actions workflow (provisioning & deployment to Google Cloud Platform) | [infrastructure/README.md](infrastructure/README.md) |
