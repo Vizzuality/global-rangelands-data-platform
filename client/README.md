@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Global Rangelands Data Platform client application
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This platform is built using Node.js and [Next.js](https://nextjs.org/), a React framework, with TypeScript and [Tailwind](https://tailwindcss.com/).
+
+## Dependencies
+
+- Node.js v20.12
+- Yarn v4.2.1
+
+## Install & run
+
+### Native execution
+
+Be sure to set the required environment variables before running the application - see
+the [Configuration](#configuration) section below for more details.
+
+To run the application in development mode, use:
 
 ```bash
-npm run dev
-# or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To run the application in production mode, use:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn build
+yarn start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Docker
 
-## Learn More
+This project includes 2 docker configuration files:
 
-To learn more about Next.js, take a look at the following resources:
+- `Dockerfile` aimed at development environments (may require tuning to work on different environments)
+- `Dockerfile.prod` aimed at production environments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You can use either file to build a docker image for this application. Be sure to set the required environment variables
+when running the container.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Configuration
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+| Variable name                                 | Description                    | Default value           |
+|-----------------------------------------------|--------------------------------|------------------------:|
+| NEXT_PUBLIC_ENVIRONMENT                       | `'develop', 'staging', 'production'`. There are many times where you want to do things on specific environments. Load a third party library only in production, enable search engines only in production...                                                                    |                 develop |
+| NEXT_PUBLIC_URL                               | Canonical URL                  | http://localhost:$PORT  |
+| NEXT_PUBLIC_API_URL                           | URL of the CMS API.            | http://0.0.0.0:1337/cms |
+| NEXT_PUBLIC_MAPBOX_TOKEN                      | Mapbox token used for maps     | ''                      |
