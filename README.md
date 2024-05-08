@@ -4,7 +4,7 @@ The Global Rangelands Data Platform (a.k.a. GRDP) is a small geospatial data lay
 This README is an early WIP, and will be edited as needed, as the project moves along.
 
 ## Key Components
-- *Client*:
+- *Client*: The front-end application is implemented using Next.js, TypeScript, and Tailwind CSS. It provides an interface for the map visualization and data exploration.
 
 - *Strapi Headless CMS*: The back-end application is implemented using Strapi, which provides a flexible content management system and exposes APIs for dynamic data retrieval.
 
@@ -21,7 +21,7 @@ This repository contains all the code and documentation necessary to set up and 
 
 | Subdirectory name | Description                                                 | Documentation                                                                                            |
 |-------------------|-------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| frontend          | The Next.js client application                            | [frontend/README.md](frontend/README.md)             |
+| frontend          | The Next.js client application                            | [client/README.md](client/README.md)             |
 | cms               | The Strapi CMS / API                                        | [cms/README.md](cms/README.md)             |
 | titiler   | Titler Server                                                      | [titiler/README.md](cloud_functions/analysis/README.md)               |
 | infrastructure    | The Terraform project & GH Actions workflow (provisioning & deployment to Google Cloud Platform) | [infrastructure/README.md](infrastructure/README.md) |
