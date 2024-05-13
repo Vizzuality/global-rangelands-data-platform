@@ -129,7 +129,7 @@ You will need the following information from the Google Cloud console:
 You will also need to ensure that the user has IAP-secured Tunnel User role.
 
 Steps:
-- (one time per user) Run `gcloud compute ssh <bastion instance name>` to SSH into the bastion host
+- (one time per user) Run `gcloud compute ssh <bastion instance name> --zone=<zone where bastion is located>` to SSH into the bastion host
 - (one time per bastion host) Inside the bastion host, follow the [steps to download and install
   the Cloud SQL Auth proxy](https://cloud.google.com/sql/docs/postgres/sql-proxy#install)
 - (when connecting) Run `gcloud compute start-iap-tunnel <bastion instance name> 22 --local-host-port=localhost:4226` locally. This will start a tunnel, which you must keep open for the duration of your access to the SQL database

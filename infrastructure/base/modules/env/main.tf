@@ -2,6 +2,11 @@ locals {
   domain = var.subdomain == "" ? var.domain : "${var.subdomain}.${var.domain}"
 }
 
+resource "google_project_service" "iam_service" {
+  project = var.gcp_project_id
+  service = "iam.googleapis.com"
+}
+
 module "network" {
   source     = "../network"
   project_id = var.gcp_project_id
@@ -73,13 +78,13 @@ module "database" {
   depends_on = [module.network.vpc_access_connector_name]
 }
 
-# if you need access to the DB from your local machine, uncomment this
-# module "bastion" {
-#   source          = "../bastion"
-#   name            = var.project_name
-#   project_id      = var.gcp_project_id
-#   subnetwork_name = module.network.subnetwork_name
-# }
+
+module "bastion" {
+  source          = "../bastion"
+  name            = var.project_name
+  project_id      = var.gcp_project_id
+  subnetwork_name = module.network.subnetwork_name
+}
 
 module "client_uptime_check" {
   source     = "../uptime-check"
@@ -97,12 +102,14 @@ module "cms_uptime_check" {
   project_id = var.gcp_project_id
 }
 
-module "error_reporting" {
+module "backend_error_reporting" {
   source                        = "../error-reporting"
   project_id                    = var.gcp_project_id
   backend_service_account_email = module.backend_cloudrun.service_account_email
 }
 
+//////////////////
+// Secrets and tokens
 resource "random_password" "api_token_salt" {
   length           = 32
   special          = true
@@ -133,6 +140,8 @@ resource "random_password" "app_key" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
+///////////////////////////
+// Service Account
 resource "google_service_account" "deploy_service_account" {
   account_id   = "${var.project_name}-deploy-sa"
   display_name = "${var.project_name} Deploy Service Account"
@@ -164,10 +173,7 @@ variable "roles" {
   ]
 }
 
-resource "google_project_service" "iam_service" {
-  project = var.gcp_project_id
-  service = "iam.googleapis.com"
-}
+
 
 module "load_balancer" {
   source                  = "../load-balancer"

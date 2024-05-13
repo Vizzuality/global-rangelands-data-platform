@@ -1,3 +1,3 @@
-gcp_region     = "us-east1" //TBD
-gcp_project_id = "project_id" //TBD
+gcp_region     = "us-central1"
+gcp_project_id = "gmvad-grass"
 bucket_name    = "rangelands-tf-state"

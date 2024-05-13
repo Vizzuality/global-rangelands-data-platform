@@ -13,15 +13,16 @@ output "staging_api_url" {
 output "dns_name_servers" {
   value = module.dns.dns_name_servers
 }
+/*
+output "production_site_url" {
+  value = module.production.site_url
+}
 
-# output "production_site_url" {
-#   value = module.production.site_url
-# }
+output "production_cms_url" {
+  value = module.production.cms_url
+}
 
-# output "production_cms_url" {
-#   value = module.production.cms_url
-# }
-
-# output "production_api_url" {
-#   value = module.production.api_url
-# }
+output "production_api_url" {
+  value = module.production.api_url
+}
+*/
