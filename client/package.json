@@ -12,12 +12,17 @@
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.10.1",
+    "express": "^4.19.2",
     "next": "14.2.3",
+    "pino": "^9.1.0",
+    "pino-http": "^10.1.0",
+    "pino-pretty": "^11.0.0",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.23.6"
   },
   "devDependencies": {
+    "@types/express": "^4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

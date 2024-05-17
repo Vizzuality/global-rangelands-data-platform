@@ -14,18 +14,17 @@ COPY .yarn ./.yarn
 COPY public ./public
 COPY src ./src
 
-COPY .browserlistrc \
+COPY .browserslistrc \
      .env.local \
      .yarnrc.yml \
-     components.json \
      entrypoint.sh \
      index.js \
-     logger.js \
+     logger.ts \
      next.config.mjs \
      package.json \
-     postcss.config.js \
+     postcss.config.mjs \
      README.md \
-     tailwind.config.js \
+     tailwind.config.ts \
      tsconfig.json \
      yarn.lock \
      ./
