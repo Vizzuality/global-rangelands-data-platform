@@ -12,8 +12,8 @@ export const env = createEnv({
   },
 
   runtimeEnv: {
-    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_CMS_URL,
+    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
   },
 
