@@ -18,6 +18,7 @@ COPY .browserslistrc \
      .env.local \
      .yarnrc.yml \
      entrypoint.sh \
+     components.json \
      index.js \
      logger.ts \
      next.config.mjs \
