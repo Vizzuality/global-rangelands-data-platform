@@ -1,38 +1,37 @@
-'use client';
-import MapComponent from '@/components/map'
-import MapController from '@/components/map/controls';
-import { MAPBOX_STYLE } from '@/components/map/constants'
-import { useEffect, useState } from 'react';
-import { useMap } from 'react-map-gl';
-import { MapStyles } from '@/components/map/types';
+"use client";
+import MapComponent from "@/components/map";
+import MapController from "./controls";
+import { MAPBOX_STYLE } from "@/components/map/constants";
+import { useState } from "react";
+import { MapStyles } from "@/components/map/types";
+import { AttributionControl } from "react-map-gl";
 
 const Map = () => {
-    const map = useMap()
-    const [mapStyle, setMapStyle] = useState(MAPBOX_STYLE.light)
-    
-    const handleChangeMapStyle = (style: MapStyles) => {
-        setMapStyle(MAPBOX_STYLE[style])
-    }
-    useEffect(() => {
-        console.log(map)
-    }
-    , [map])
-    
-    return (
-        <div className='w-full h-full'>
-          <MapComponent
-            mapStyle={mapStyle}
-            projection={{
-                name: "mercator"
-            }}
-          >
+  const [mapStyle, setMapStyle] = useState<MapStyles>("light");
 
-            <div className="absolute top-6 left-1/2 bg-white/40 backdrop-blur-lg p-6 rounded-[40px]">
-              <MapController onChangeMapStyle={handleChangeMapStyle} />
-            </div>
-          </MapComponent>
-        </div>
-    )
-}
+  const handleChangeMapStyle = (style: MapStyles) => {
+    setMapStyle(style);
+  };
+
+  return (
+    <div className="relative h-full w-full">
+      <MapComponent
+        mapStyle={MAPBOX_STYLE[mapStyle]}
+        projection={{
+          name: "mercator",
+        }}
+        minZoom={0}
+        maxZoom={14}
+      >
+        <AttributionControl
+          style={{ position: "absolute", bottom: 20, left: 20, fontSize: "0.75rem" }}
+          compact={true}
+          position="top-left"
+        />
+        <MapController defaultMapStyle={mapStyle} onChangeMapStyle={handleChangeMapStyle} />
+      </MapComponent>
+    </div>
+  );
+};
 
 export default Map;

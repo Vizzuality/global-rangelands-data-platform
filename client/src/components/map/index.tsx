@@ -6,7 +6,7 @@ import ReactMapGL, { ViewState, ViewStateChangeEvent, MapEvent, useMap } from "r
 
 import { useDebounce } from "rooks";
 
-import {env} from "@/env.mjs";
+import { env } from "@/env.mjs";
 
 import { DEFAULT_VIEW_STATE, MAPBOX_STYLE } from "./constants";
 
@@ -130,10 +130,8 @@ export const Map: FC<CustomMapProps> = ({
     };
   }, [bounds, isFlying]);
 
-  console.log(mapRef)
-
   return (
-    <div className="z-0 h-full w-full">
+    <div className="relative z-0 h-full w-full">
       <ReactMapGL
         id={id}
         initialViewState={initialViewState}
@@ -141,6 +139,7 @@ export const Map: FC<CustomMapProps> = ({
         onMove={handleMapMove}
         onLoad={handleMapLoad}
         mapStyle={MAPBOX_STYLE.light}
+        attributionControl={false}
         {...mapboxProps}
         {...localViewState}
       >
