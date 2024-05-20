@@ -4,7 +4,6 @@ import { FitBoundsOptions } from "mapbox-gl";
 import { MAPBOX_STYLE } from "./constants";
 
 export type MapStyles = keyof typeof MAPBOX_STYLE;
-
 export interface CustomMapProps extends MapProps {
     id?: string;
     /** A function that returns the map instance */
