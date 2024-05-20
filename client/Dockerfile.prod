@@ -18,6 +18,7 @@ COPY .browserslistrc \
      entrypoint.sh \
      index.js \
      logger.ts \
+     components.json \
      next.config.mjs \
      package.json \
      postcss.config.mjs \
