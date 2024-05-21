@@ -17,6 +17,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@svgr/webpack": "^8.1.0",
     "@t3-oss/env-core": "^0.10.1",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "express": "^4.19.2",
