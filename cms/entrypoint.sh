@@ -11,9 +11,8 @@ case "${NODE_ENV}" in
         exec yarn test
         ;;
     production)
-        echo "Import config - Skip on first deploy"
-        # Temporarily disable configuration import fot he first run of cms
-        # yarn config-sync import -y
+        echo "Import config"
+        yarn config-sync import -y
         echo "Running Production Server"
         exec yarn start
         ;;
