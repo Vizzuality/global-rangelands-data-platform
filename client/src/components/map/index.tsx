@@ -11,6 +11,7 @@ import { env } from "@/env.mjs";
 import { DEFAULT_VIEW_STATE, MAPBOX_STYLE } from "./constants";
 
 import type { CustomMapProps } from "./types";
+import { cn } from "@/lib/utils";
 
 export const Map: FC<CustomMapProps> = ({
   // * if no id is passed, react-map-gl will store the map reference in a 'default' key:
@@ -131,7 +132,7 @@ export const Map: FC<CustomMapProps> = ({
   }, [bounds, isFlying]);
 
   return (
-    <div className="relative z-0 h-full w-full">
+    <div className={cn("relative z-0 h-full w-full", className)}>
       <ReactMapGL
         id={id}
         initialViewState={initialViewState}

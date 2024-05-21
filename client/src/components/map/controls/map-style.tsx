@@ -24,7 +24,7 @@ const MapStyleControl = ({ onChangeMapStyle, defaultValue }: MapStyleOptionsProp
             </RadioGroupIndicator>
           </RadioGroupItem>
           <label
-            className="cursor-pointer peer-focus-visible:font-medium underline-offset-2 transition-all duration-300 hover:font-medium hover:underline"
+            className="cursor-pointer underline-offset-2 transition-all duration-300 hover:font-medium hover:underline peer-focus-visible:font-medium"
             htmlFor={option.value}
           >
             {option.label}
