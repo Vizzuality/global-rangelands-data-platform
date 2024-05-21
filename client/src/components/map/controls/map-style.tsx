@@ -16,7 +16,7 @@ const MapStyleControl = ({ onChangeMapStyle, defaultValue }: MapStyleOptionsProp
           <RadioGroupItem
             value={option.value}
             id={option.value}
-            className="flex items-center justify-center border-none"
+            className="peer flex items-center justify-center border-none"
           >
             <Image src={option.icon} alt={option.label} width={20} height={20} />
             <RadioGroupIndicator asChild>
@@ -24,7 +24,7 @@ const MapStyleControl = ({ onChangeMapStyle, defaultValue }: MapStyleOptionsProp
             </RadioGroupIndicator>
           </RadioGroupItem>
           <label
-            className="cursor-pointer underline-offset-2 transition-all duration-300 hover:font-medium hover:underline"
+            className="cursor-pointer peer-focus-visible:font-medium underline-offset-2 transition-all duration-300 hover:font-medium hover:underline"
             htmlFor={option.value}
           >
             {option.label}
