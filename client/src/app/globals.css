@@ -18,3 +18,10 @@ body {
     text-wrap: balance;
   }
 }
+
+.mapboxgl-ctrl-top-left {
+  position: absolute;
+  bottom: 20px;
+  left:20px;
+  width: 100svh;
+}

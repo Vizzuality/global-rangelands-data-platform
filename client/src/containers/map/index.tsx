@@ -4,7 +4,7 @@ import MapController from "./controls";
 import { MAPBOX_STYLE } from "@/components/map/constants";
 import { useState } from "react";
 import { MapStyles } from "@/components/map/types";
-import { AttributionControl } from "react-map-gl";
+import { AttributionControl,  } from "react-map-gl";
 
 const Map = () => {
   const [mapStyle, setMapStyle] = useState<MapStyles>("light");
@@ -14,7 +14,7 @@ const Map = () => {
   };
 
   return (
-    <div className="relative h-full w-full">
+    <div className="h-full w-full">
       <MapComponent
         mapStyle={MAPBOX_STYLE[mapStyle]}
         projection={{
@@ -22,9 +22,10 @@ const Map = () => {
         }}
         minZoom={0}
         maxZoom={14}
+        logoPosition="top-left"
       >
         <AttributionControl
-          style={{ position: "absolute", bottom: 20, left: 20, fontSize: "0.75rem" }}
+          style={{ fontSize: "0.75rem" }}
           compact={true}
           position="top-left"
         />
