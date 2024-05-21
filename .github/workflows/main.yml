@@ -8,6 +8,8 @@ name: Run deploy to GCP
 
 on:
   workflow_dispatch:
+    #Important note on dispatch inputs. It's not possible to have default values for workflow_dispatch inputs on push events
+    # so they *will be empty*. Keep that in mind when using these inputs through the workflow (see dry run on the build/deploy action)
     inputs:
       ENVIRONMENT_NAME_OVERRIDE:
         description: "Environment name to override"

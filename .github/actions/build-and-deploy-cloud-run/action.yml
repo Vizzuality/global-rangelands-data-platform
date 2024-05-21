@@ -30,12 +30,12 @@ inputs:
     required: false
     default: "false" # WARNING Input type is not supported in composite actions. Must treat it as a string
 
-#NOTE Actions needs to specify the shell to use on every action https://stackoverflow.com/questions/71041836/github-actions-required-property-is-missing-shell
+#NOTE Actions needs to specify the shell to use on every steps that uses "runs:" https://stackoverflow.com/questions/71041836/github-actions-required-property-is-missing-shell
 
 outputs:
   url:
     description: url
-    value: ${{steps.deploy.output}}
+    value: ${{steps.deploy.outputs.url}}
 
 runs:
   using: "composite"
@@ -62,7 +62,7 @@ runs:
         docker build -f ${{ inputs.COMPONENT_PATH }}/Dockerfile.prod -t "${{ inputs.GAR_LOCATION }}-docker.pkg.dev/${{ inputs.PROJECT_ID }}/${{ inputs.REPOSITORY }}/${{ inputs.SERVICE }}:${{ github.sha }}" ${{ inputs.COMPONENT_PATH }}
 
     - name: Push Container
-      if: ${{ inputs.DRY_RUN == 'false' }}
+      if: ${{ inputs.DRY_RUN == 'false' || inputs.DRY_RUN == '' }}
       shell: bash
       run: |-
         docker push "${{ inputs.GAR_LOCATION }}-docker.pkg.dev/${{ inputs.PROJECT_ID }}/${{ inputs.REPOSITORY }}/${{ inputs.SERVICE }}:${{ github.sha }}"
@@ -71,7 +71,7 @@ runs:
         docker push "${{ inputs.GAR_LOCATION }}-docker.pkg.dev/${{ inputs.PROJECT_ID }}/${{ inputs.REPOSITORY }}/${{ inputs.SERVICE }}:latest"
 
     - name: Deploy to Cloud Run
-      if: ${{ inputs.DRY_RUN == 'false' }}
+      if: ${{ inputs.DRY_RUN == 'false' || inputs.DRY_RUN == '' }}
       id: deploy
       uses: google-github-actions/deploy-cloudrun@v2
       with:
