@@ -1,12 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-SCRIPT_DIR="$(pwd)"
-CMS_ENV_FILE="$SCRIPT_DIR/cms/.env"
-if [ -f "$CMS_ENV_FILE" ] ; then
-    echo "Exporting CMS config.."
-    cd ./cms && yarn config-sync export -y && git add config/sync/*
-else
-    echo "CMS env file does not exist, can't export config"
-    echo "DEBUG: looking for env file in $CMS_ENV_FILE"
-fi
+cd ./client && yarn types && yarn lint --fix && yarn check-types && git add src/types/generated/
