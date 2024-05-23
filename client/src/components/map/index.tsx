@@ -76,6 +76,7 @@ export const Map: FC<CustomMapProps> = ({
         latitude: constrainedAxis === "y" ? localViewState?.latitude : _viewState.latitude,
         longitude: constrainedAxis === "x" ? localViewState?.longitude : _viewState.longitude,
       };
+      console.log(newViewState);
       setLocalViewState(newViewState);
       debouncedViewStateChange(newViewState);
     },
