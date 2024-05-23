@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_default_items",
+  "info": {
+    "displayName": "Item",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "color": {
+      "type": "string",
+      "required": true,
+      "default": "#000000"
+    }
+  }
+}

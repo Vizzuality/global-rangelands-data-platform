@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_default_legends",
+  "info": {
+    "displayName": "Legend"
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Basic",
+        "Gradient",
+        "Choropleth"
+      ],
+      "required": true,
+      "default": "Basic"
+    },
+    "items": {
+      "displayName": "Item",
+      "type": "component",
+      "repeatable": true,
+      "component": "default.item"
+    }
+  }
+}
