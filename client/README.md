@@ -41,8 +41,9 @@ when running the container.
 
 ### Configuration
 
-| Variable name            | Description                |           Default value |
-| ------------------------ | -------------------------- | ----------------------: |
-| NEXT_PUBLIC_URL          | Canonical URL              |  http://localhost:$PORT |
-| NEXT_PUBLIC_API_URL      | URL of the CMS API.        | http://0.0.0.0:1337/cms |
-| NEXT_PUBLIC_MAPBOX_TOKEN | Mapbox token used for maps |                      '' |
+| Variable name               | Description                           |           Default value |
+| --------------------------- | ------------------------------------- | ----------------------: |
+| NEXT_PUBLIC_URL             | Canonical URL                         |  http://localhost:$PORT |
+| NEXT_PUBLIC_API_URL         | URL of the CMS API.                   | http://0.0.0.0:1337/cms |
+| NEXT_PUBLIC_MAPBOX_TOKEN    | Mapbox token used for maps            |                      '' |
+| CLIENT_ENV_TRANSIFEX_TOKEN  | Transifex token used for translations |                      '' |
