@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "datasets",
+  "info": {
+    "singularName": "dataset",
+    "pluralName": "datasets",
+    "displayName": "Dataset",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "unique": true
+    },
+    "type": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Group",
+        "Temporal"
+      ],
+      "default": "Group",
+      "required": true
+    },
+    "layers": {
+      "displayName": "Layer",
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "default.layer",
+      "required": true
+    }
+  }
+}
