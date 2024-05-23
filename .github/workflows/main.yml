@@ -27,10 +27,10 @@ on:
       - staging
 
     paths:
-      - 'client/**'
-      - 'cms/**'
-      - '.github/workflows/*'
-      - 'infrastructure/**'
+      - "client/**"
+      - "cms/**"
+      - ".github/workflows/*"
+      - "infrastructure/**"
 
 env:
   PROJECT_ID: ${{ secrets.TF_GCP_PROJECT_ID }}
@@ -41,8 +41,8 @@ jobs:
   deploy_client:
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: "read"
+      id-token: "write"
 
     runs-on: ubuntu-latest
     env:
@@ -116,6 +116,19 @@ jobs:
           echo '${{ steps.generate_env_file.outputs.env_file }}' >> $APP_ENV_PATH
           cat $APP_ENV_PATH
 
+      - name: Deploy to Transifex
+        working-directory: client
+        if: ${{ steps.applicable_check.outputs.flag }}
+        id: deploy_transifex
+        env:
+          TRANSIFEX_TOKEN: ${{ secrets.CLIENT_ENV_TRANSIFEX_TOKEN }}
+          TRANSIFEX_SECRET: ${{ secrets[format('{0}_CLIENT_ENV_TRANSIFEX_SECRET', env.ENVIRONMENT)] }}
+        run: |
+          echo 'Installing the Transifex CLI…'
+          curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash -s -- v1.6.13
+          echo 'Pushing the source strings…'
+          npx txjs-cli push ./src --token=${{ env.TRANSIFEX_TOKEN }} --secret=${{ env.TRANSIFEX_SECRET }}
+
       - name: Build and Deploy
         if: ${{ steps.applicable_check.outputs.flag }}
         id: build_and_deploy
@@ -138,8 +151,8 @@ jobs:
   deploy_cms:
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: "read"
+      id-token: "write"
 
     runs-on: ubuntu-latest
     env:
