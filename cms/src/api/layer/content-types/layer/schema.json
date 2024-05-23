@@ -23,12 +23,13 @@
         }
       },
       "type": "string",
-      "required": true
+      "required": true,
+      "unique": true
     },
     "type": {
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "type": "enumeration",
@@ -51,7 +52,7 @@
     "config": {
       "pluginOptions": {
         "i18n": {
-          "localized": true
+          "localized": false
         }
       },
       "type": "json",
@@ -74,7 +75,8 @@
           "localized": true
         }
       },
-      "component": "default.legend"
+      "component": "default.legend",
+      "required": true
     },
     "interaction_config": {
       "pluginOptions": {

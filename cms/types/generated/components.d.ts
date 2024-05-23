@@ -25,16 +25,29 @@ export interface DefaultItem extends Schema.Component {
   };
 }
 
+export interface DefaultLayer extends Schema.Component {
+  collectionName: 'components_default_layers';
+  info: {
+    displayName: 'Layer';
+    description: '';
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    layer: Attribute.Relation<'default.layer', 'oneToOne', 'api::layer.layer'>;
+  };
+}
+
 export interface DefaultLegend extends Schema.Component {
   collectionName: 'components_default_legends';
   info: {
     displayName: 'Legend';
+    description: '';
   };
   attributes: {
     type: Attribute.Enumeration<['Basic', 'Gradient', 'Choropleth']> &
       Attribute.Required &
       Attribute.DefaultTo<'Basic'>;
-    items: Attribute.Component<'default.item', true>;
+    items: Attribute.Component<'default.item', true> & Attribute.Required;
   };
 }
 
@@ -54,6 +67,7 @@ declare module '@strapi/types' {
     export interface Components {
       'default.citations': DefaultCitations;
       'default.item': DefaultItem;
+      'default.layer': DefaultLayer;
       'default.legend': DefaultLegend;
       'default.source': DefaultSource;
     }
