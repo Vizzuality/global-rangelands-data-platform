@@ -76,7 +76,6 @@ export const Map: FC<CustomMapProps> = ({
         latitude: constrainedAxis === "y" ? localViewState?.latitude : _viewState.latitude,
         longitude: constrainedAxis === "x" ? localViewState?.longitude : _viewState.longitude,
       };
-      console.log(newViewState);
       setLocalViewState(newViewState);
       debouncedViewStateChange(newViewState);
     },
@@ -144,6 +143,9 @@ export const Map: FC<CustomMapProps> = ({
         attributionControl={false}
         {...mapboxProps}
         {...localViewState}
+        // Disable the map rotation
+        pitch={0}
+        bearing={0}
       >
         {loaded && children}
       </ReactMapGL>
