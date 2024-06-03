@@ -5,6 +5,7 @@ import { MAPBOX_STYLE } from "@/components/map/constants";
 import { useState } from "react";
 import { MapStyles } from "@/components/map/types";
 import { AttributionControl } from "react-map-gl";
+import LayerManager from "./layer-manager";
 
 const Map = () => {
   const [mapStyle, setMapStyle] = useState<MapStyles>("light");
@@ -26,6 +27,7 @@ const Map = () => {
       >
         <AttributionControl style={{ fontSize: "0.75rem" }} compact={true} position="top-left" />
         <MapController defaultMapStyle={mapStyle} onChangeMapStyle={handleChangeMapStyle} />
+        <LayerManager />
       </MapComponent>
     </div>
   );
