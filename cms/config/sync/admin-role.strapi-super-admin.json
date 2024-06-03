@@ -12,7 +12,11 @@
           "title",
           "type",
           "layers.name",
-          "layers.layer"
+          "layers.layer",
+          "citations.name",
+          "citations.url",
+          "sources.name",
+          "sources.url"
         ],
         "locales": [
           "en",
@@ -57,7 +61,11 @@
           "title",
           "type",
           "layers.name",
-          "layers.layer"
+          "layers.layer",
+          "citations.name",
+          "citations.url",
+          "sources.name",
+          "sources.url"
         ],
         "locales": [
           "en",
@@ -76,7 +84,11 @@
           "title",
           "type",
           "layers.name",
-          "layers.layer"
+          "layers.layer",
+          "citations.name",
+          "citations.url",
+          "sources.name",
+          "sources.url"
         ],
         "locales": [
           "en",
@@ -100,11 +112,7 @@
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config",
-          "sources.name",
-          "sources.url",
-          "citations.name",
-          "citations.url"
+          "interaction_config"
         ],
         "locales": [
           "en",
@@ -154,11 +162,7 @@
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config",
-          "sources.name",
-          "sources.url",
-          "citations.name",
-          "citations.url"
+          "interaction_config"
         ],
         "locales": [
           "en",
@@ -182,11 +186,7 @@
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config",
-          "sources.name",
-          "sources.url",
-          "citations.name",
-          "citations.url"
+          "interaction_config"
         ],
         "locales": [
           "en",

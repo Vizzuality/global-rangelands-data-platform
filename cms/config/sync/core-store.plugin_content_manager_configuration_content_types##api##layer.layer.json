@@ -117,34 +117,6 @@
           "sortable": false
         }
       },
-      "sources": {
-        "edit": {
-          "label": "Sources",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "sources",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "citations": {
-        "edit": {
-          "label": "Citations",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "citations",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -205,6 +177,12 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "title",
+        "type",
+        "description"
+      ],
       "edit": [
         [
           {
@@ -245,25 +223,7 @@
             "name": "interaction_config",
             "size": 12
           }
-        ],
-        [
-          {
-            "name": "sources",
-            "size": 12
-          }
-        ],
-        [
-          {
-            "name": "citations",
-            "size": 12
-          }
         ]
-      ],
-      "list": [
-        "id",
-        "title",
-        "type",
-        "description"
       ]
     },
     "uid": "api::layer.layer"
