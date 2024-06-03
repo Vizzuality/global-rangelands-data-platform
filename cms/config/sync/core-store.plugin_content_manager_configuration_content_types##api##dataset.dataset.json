@@ -61,6 +61,34 @@
           "sortable": false
         }
       },
+      "citations": {
+        "edit": {
+          "label": "citations",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "citations",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "sources": {
+        "edit": {
+          "label": "sources",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "sources",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -141,6 +169,18 @@
         [
           {
             "name": "layers",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "citations",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "sources",
             "size": 12
           }
         ]

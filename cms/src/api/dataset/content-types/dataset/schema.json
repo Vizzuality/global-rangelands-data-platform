@@ -51,6 +51,26 @@
       },
       "component": "default.layer",
       "required": true
+    },
+    "citations": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "default.citations"
+    },
+    "sources": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "default.source"
     }
   }
 }
