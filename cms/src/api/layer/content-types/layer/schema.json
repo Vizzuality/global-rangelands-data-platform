@@ -85,28 +85,6 @@
         }
       },
       "type": "json"
-    },
-    "sources": {
-      "displayName": "Source",
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "default.source"
-    },
-    "citations": {
-      "displayName": "Citations",
-      "type": "component",
-      "repeatable": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "default.citations"
     }
   }
 }

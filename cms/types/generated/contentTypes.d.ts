@@ -828,6 +828,18 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
           localized: true;
         };
       }>;
+    citations: Attribute.Component<'default.citations', true> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    sources: Attribute.Component<'default.source', true> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -916,18 +928,6 @@ export interface ApiLayerLayer extends Schema.CollectionType {
       Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
-        };
-      }>;
-    sources: Attribute.Component<'default.source', true> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    citations: Attribute.Component<'default.citations', true> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
         };
       }>;
     createdAt: Attribute.DateTime;
