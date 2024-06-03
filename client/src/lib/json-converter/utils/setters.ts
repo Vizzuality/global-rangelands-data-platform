@@ -57,7 +57,7 @@ export const setColor = ({ colors_config }: SetColorProps) => {
     return (f: Feature<Geometry>) => {
       return Color(
         (colorValues as Record<string, string | number[]>)[f.properties?.[property]] ||
-          defaultColor,
+        defaultColor,
       )
         .rgb()
         .array() as SetColorsReturn;
