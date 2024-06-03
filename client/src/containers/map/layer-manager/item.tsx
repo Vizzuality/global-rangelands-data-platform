@@ -23,9 +23,11 @@ interface LayerManagerItemProps {
 }
 
 const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => {
-  const { data } = useGetLayersId(id, {
-    populate: "dataset,metadata",
-  });
+  // const { data } = useGetLayersId(id, {
+  //   populate: "dataset,metadata",
+  // });
+
+  const data = mockup.find((l) => l.data.id === id);
 
   // const layersInteractive = useAtomValue(layersInteractiveAtom);
   // const setLayersInteractive = useSetAtom(layersInteractiveAtom);
