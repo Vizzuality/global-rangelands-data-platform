@@ -6,6 +6,13 @@ export const DEFAULT_VIEW_STATE = {
   bearing: 0,
 };
 
+export const DEFAULT_BBOX: [number, number, number, number] = [
+  -118.3665 * 1.1,
+  1.1768 * 1.1,
+  -53.9775 * 1.1,
+  32.7186 * 1.1,
+];
+
 export const MAPBOX_STYLE = {
   dark: "mapbox://styles/grass2024/clvaofz0e00qi01qzfs5va44i",
   light: "mapbox://styles/grass2024/clvf7wk8i016201qu5fbjgrcv",
