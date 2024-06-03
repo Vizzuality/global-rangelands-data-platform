@@ -41,13 +41,12 @@ export interface DefaultLegend extends Schema.Component {
   collectionName: 'components_default_legends';
   info: {
     displayName: 'Legend';
-    description: '';
   };
   attributes: {
     type: Attribute.Enumeration<['Basic', 'Gradient', 'Choropleth']> &
       Attribute.Required &
       Attribute.DefaultTo<'Basic'>;
-    items: Attribute.Component<'default.item', true> & Attribute.Required;
+    items: Attribute.Component<'default.item', true>;
   };
 }
 
