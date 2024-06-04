@@ -9,3 +9,7 @@ output "cms_url" {
 output "api_url" {
   value = local.api_lb_url
 }
+
+output "eet_function_url" {
+  value = local.eet_cf_lb_url
+}

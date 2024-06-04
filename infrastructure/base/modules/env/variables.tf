@@ -106,3 +106,44 @@ variable "backend_path_prefix" {
   type        = string
   description = "Path prefix for the backend service"
 }
+
+
+variable "cloud_functions_path_prefix" {
+  type        = string
+  description = "Path prefix for the functions services"
+}
+
+variable "eet_function_path_prefix" {
+  type        = string
+  description = "Path prefix for the Earth Engine Tiler function"
+}
+
+variable "eet_function_timeout_seconds" {
+  type        = number
+  default     = 180
+  description = "Timeout for the Earth Engine Tiler function"
+}
+
+variable "eet_function_available_memory" {
+  type        = string
+  default     = "256M"
+  description = "Available memory for the Earth Engine Tiler function"
+}
+
+variable "eet_function_available_cpu" {
+  type        = number
+  default     = 1
+  description = "Available cpu for the Earth Engine Tiler function"
+}
+
+variable "eet_function_max_instance_count" {
+  type        = number
+  default     = 1
+  description = "Max instance count for the Earth Engine Tiler function"
+}
+
+variable "eet_function_max_instance_request_concurrency" {
+  type        = number
+  default     = 80
+  description = "Max instance request concurrency for the Earth Engine Tiler function"
+}

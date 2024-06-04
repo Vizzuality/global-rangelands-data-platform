@@ -32,8 +32,8 @@ resource "google_cloud_run_service" "cloud_run" {
       containers {
         ##### FIRST TERRAFORM RUN #####
         # Google provides a pre-deployed “Hello Cloud Run”, use the relevant image right below, after first successful TF run
-        image = "gcr.io/cloudrun/hello"
-        # image = "${var.region}-docker.pkg.dev/${var.project_id}/${var.repository}/${var.name}:latest"
+        #image = "gcr.io/cloudrun/hello"
+        image = "${var.region}-docker.pkg.dev/${var.project_id}/${var.repository}/${var.name}:latest"
 
         ports {
           container_port = var.container_port
