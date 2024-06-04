@@ -21,7 +21,7 @@ export default getRequestConfig(async ({ locale }) => {
   if (!LOCALES.includes(locale)) notFound();
 
   tx.init({
-    token: env.NEXT_PUBLIC_TRANSIFEX_TOKEN,
+    token: env.TRANSIFEX_TOKEN,
   });
 
   await tx.fetchTranslations(locale, { refresh: true });
