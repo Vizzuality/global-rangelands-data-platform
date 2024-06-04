@@ -99,6 +99,7 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   // The only layer type we are using for now is DeckLayer, but the CMS doesn't support the type "Deck", so we are using the type "Mapbox" for now
   if (type === "Mapbox") {
     const { config, params_config } = data.data.attributes;
+    console.log(config, params_config);
     const c = parseConfig<Layer>({
       config,
       params_config,
