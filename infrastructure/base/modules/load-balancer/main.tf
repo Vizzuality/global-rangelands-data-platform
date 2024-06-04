@@ -2,6 +2,15 @@ locals {
   domain = var.subdomain == "" ? var.domain : "${var.subdomain}.${var.domain}"
 }
 
+resource "random_string" "random_string" {
+  length = 4
+  keepers = {
+    name = var.name
+  }
+  special = false
+  upper   = false
+}
+
 resource "google_project_service" "compute_engine_api" {
   service            =  "compute.googleapis.com"
   disable_on_destroy = false
@@ -48,7 +57,7 @@ resource "google_compute_url_map" "http-redirect" {
 # HTTPS Load balancer config with certificate handling
 # ------------------------------------------------------------------------------
 resource "google_compute_managed_ssl_certificate" "load-balancer-certificate" {
-  name = "${var.name}-lb-cert"
+  name = "${var.name}-lb-cert-${random_string.random_string.result}"
 
   managed {
     domains = [local.domain]
@@ -99,6 +108,16 @@ resource "google_compute_url_map" "load-balancer-url-map" {
         }
       }
     }
+
+    path_rule {
+      paths   = ["/${var.cloud_function_path_prefix}/${var.eet_function_path_prefix}/*"]
+      service = google_compute_backend_service.cloud_function_service.id
+      route_action {
+        url_rewrite {
+          path_prefix_rewrite = "/"
+        }
+      }
+    }
   }
 }
 
@@ -123,6 +142,15 @@ resource "google_compute_backend_service" "frontend_service" {
   }
 }
 
+resource "google_compute_backend_service" "cloud_function_service" {
+  name        = "${var.name}-cloudfunction-service"
+  description = "${var.name} cloud function service"
+
+  backend {
+    group = google_compute_region_network_endpoint_group.cloud_function_neg.id
+  }
+}
+
 resource "google_compute_region_network_endpoint_group" "cloudrun_backend_neg" {
   provider              = google-beta
   name                  = "${var.name}-backend-neg"
@@ -140,6 +168,16 @@ resource "google_compute_region_network_endpoint_group" "cloudrun_frontend_neg" 
   region                = var.region
   cloud_run {
     service = var.frontend_cloud_run_name
+  }
+}
+
+resource "google_compute_region_network_endpoint_group" "cloud_function_neg" {
+  provider              = google-beta
+  name                  = "${var.name}-function-neg"
+  network_endpoint_type = "SERVERLESS"
+  region                = var.region
+  cloud_function {
+    function = var.cloud_function_name
   }
 }
 

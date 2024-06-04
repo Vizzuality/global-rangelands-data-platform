@@ -63,6 +63,45 @@ module "backend_cloudrun" {
   tag                = var.environment
 }
 
+module "eet_cloud_function" {
+  source                           = "../cloudfunction"
+  region                           = var.gcp_region
+  project                          = var.gcp_project_id
+  vpc_connector_name               = module.network.vpc_access_connector_name
+  function_name                    = "${var.project_name}-eet"
+  description                      = "Earth Engine Tiler Cloud Function"
+  source_dir                       = "${path.root}/../../cloud_functions/earth_engine_tiler"
+  runtime                          = "nodejs18"
+  entry_point                      = "getTiles"
+  runtime_environment_variables    = local.eet_cloud_function_env
+  secrets                          = local.eet_cloud_function_secrets
+  timeout_seconds                  = var.eet_function_timeout_seconds
+  available_memory                 = var.eet_function_available_memory
+  available_cpu                    = var.eet_function_available_cpu
+  max_instance_count               = var.eet_function_max_instance_count
+  max_instance_request_concurrency = var.eet_function_max_instance_request_concurrency
+
+  depends_on = [module.postgres_application_user_password]
+}
+
+
+locals {
+  eet_cloud_function_env = {
+    DATABASE_CLIENT   = "postgres"
+    DATABASE_HOST     = module.database.database_host
+    DATABASE_NAME     = module.database.database_name
+    DATABASE_USERNAME = module.database.database_user
+    DATABASE_SSL      = false
+  }
+
+  eet_cloud_function_secrets = [{
+    key        = "DATABASE_PASSWORD"
+    project_id = var.gcp_project_id
+    secret     = module.postgres_application_user_password.secret_name
+    version    = module.postgres_application_user_password.latest_version
+  }]
+}
+
 module "database" {
   source            = "../sql"
   name              = var.project_name
@@ -182,6 +221,9 @@ module "load_balancer" {
   name                    = var.project_name
   backend_cloud_run_name  = module.backend_cloudrun.name
   frontend_cloud_run_name = module.frontend_cloudrun.name
+  cloud_function_name     = module.eet_cloud_function.function_name
+  cloud_function_path_prefix = var.cloud_functions_path_prefix
+  eet_function_path_prefix = var.eet_function_path_prefix
   domain                  = var.domain
   subdomain               = var.subdomain
   dns_managed_zone_name   = var.dns_zone_name

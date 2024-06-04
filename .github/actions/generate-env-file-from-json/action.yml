@@ -20,7 +20,7 @@ outputs:
     description: "The env file contents"
     value: ${{steps.env_entries_stripped.outputs.entries_stripped}}
 
-runs: 
+runs:
   using: "composite"
   steps:
     - name: Output secrets and vars as key=value entries

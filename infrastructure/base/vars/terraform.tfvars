@@ -10,7 +10,7 @@ github_project = "global-rangelands-data-platform"
 staging_project_name    = "rdp-staging" //
 production_project_name = "rdp-prod"
 
-domain = "dataplatform.rangelandsdata.org" //TBD
+domain = "rangelandsdata.org" //TBD
 staging_subdomain = "staging" //TBD
 production_subdomain = "" //TBD
 
