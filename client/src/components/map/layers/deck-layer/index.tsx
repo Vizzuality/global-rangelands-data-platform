@@ -12,7 +12,7 @@ export type DeckLayerProps<T> = LayerProps &
   };
 
 const DeckJsonLayer = <T,>({ id, config }: DeckLayerProps<T>) => {
-  console.log(config);
+  console.log("config", config);
   useDeckMapboxOverlay({
     id: `${id}`,
     layer: config,
