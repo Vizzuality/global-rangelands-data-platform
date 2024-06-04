@@ -2,58 +2,17 @@
   {
     "data": {
       "attributes": {
-        "@@type": "TileLayer",
         "title": "Rangeland System",
         "type": "deckgl",
         "description": "TDB",
         "config": {
-          "source": {
-            "id": "rangeland-system",
-            "url": "mapbox://grass2024.187jjhkv",
-            "type": "vector",
-            "promoteId": "id"
-          },
-          "styles": [
-            {
-              "id": "system-fill",
-              "type": "fill",
-              "paint": {
-                "fill-color": "#eb8731",
-                "fill-opacity": {
-                  "o": "@@#params.opacity",
-                  "base": 1,
-                  "@@function": "setOpacity"
-                }
-              },
-              "layout": {
-                "visibility": {
-                  "v": "@@#params.visibility",
-                  "@@function": "setVisibility"
-                }
-              },
-              "source-layer": "Rangeland"
-            },
-            {
-              "id": "system-line",
-              "type": "line",
-              "paint": {
-                "line-color": "#ffffff",
-                "line-width": 1,
-                "line-opacity": {
-                  "o": "@@#params.opacity",
-                  "base": 1,
-                  "@@function": "setOpacity"
-                }
-              },
-              "layout": {
-                "visibility": {
-                  "v": "@@#params.visibility",
-                  "@@function": "setVisibility"
-                }
-              },
-              "source-layer": "Rangeland"
-            }
-          ]
+          "@@type": "MVTLayer",
+          "id": "rangeland-system",
+          "data": [
+            "https://api.mapbox.com/v4/grass2024.187jjhkv/{z}/{x}/{y}.mvt?access_token=pk.eyJ1IjoiZ3Jhc3MyMDI0IiwiYSI6ImNsdWp2MGpuaDBrM3QyanBoam9xbDl6bzYifQ.VkOflR-iJijdTb7DXpcwRQ"
+          ],
+          "getFillColor": [255, 0, 0, 255],
+          "getLineColor": [255, 255, 255, 255]
         },
         "params_config": [],
         "legend_config": {},
