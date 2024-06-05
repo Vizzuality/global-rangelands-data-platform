@@ -23,11 +23,13 @@ interface LayerManagerItemProps {
 }
 
 const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => {
-  // const { data } = useGetLayersId(id, {
-  //   populate: "dataset,metadata",
-  // });
+  const { data } = useGetLayersId(id, {
+    populate: "dataset,metadata",
+  });
 
-  const data = mockup.find((l) => l.data.id === id);
+  // const layersInteractive = useAtomValue(layersInteractiveAtom);
+  // const setLayersInteractive = useSetAtom(layersInteractiveAtom);
+  // const setLayersInteractiveIds = useSetAtom(layersInteractiveIdsAtom);
 
   // const layersInteractive = useAtomValue(layersInteractiveAtom);
   // const setLayersInteractive = useSetAtom(layersInteractiveAtom);
@@ -99,7 +101,6 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   // The only layer type we are using for now is DeckLayer, but the CMS doesn't support the type "Deck", so we are using the type "Mapbox" for now
   if (type === "Mapbox") {
     const { config, params_config } = data.data.attributes;
-    console.log(config, params_config);
     const c = parseConfig<Layer>({
       config,
       params_config,
