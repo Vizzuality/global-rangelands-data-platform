@@ -1,13 +1,13 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::api::dataset.dataset",
+  "key": "plugin_content_manager_configuration_content_types::plugin::slugify.slug",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "title",
-      "defaultSortBy": "title",
+      "mainField": "id",
+      "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,86 +19,30 @@
           "sortable": true
         }
       },
-      "title": {
-        "edit": {
-          "label": "title",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "title",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "type": {
-        "edit": {
-          "label": "type",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "type",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "layers": {
-        "edit": {
-          "label": "layers",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "layers",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "citations": {
-        "edit": {
-          "label": "citations",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "citations",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "sources": {
-        "edit": {
-          "label": "sources",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "sources",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "slug": {
         "edit": {
           "label": "slug",
           "description": "",
           "placeholder": "",
           "visible": true,
-          "editable": false
+          "editable": true
         },
         "list": {
           "label": "slug",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "count": {
+        "edit": {
+          "label": "count",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "count",
           "searchable": true,
           "sortable": true
         }
@@ -163,52 +107,26 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "slug",
+        "count",
+        "createdAt"
+      ],
       "edit": [
-        [
-          {
-            "name": "title",
-            "size": 6
-          }
-        ],
         [
           {
             "name": "slug",
             "size": 6
-          }
-        ],
-        [
+          },
           {
-            "name": "type",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "layers",
-            "size": 12
-          }
-        ],
-        [
-          {
-            "name": "citations",
-            "size": 12
-          }
-        ],
-        [
-          {
-            "name": "sources",
-            "size": 12
+            "name": "count",
+            "size": 4
           }
         ]
-      ],
-      "list": [
-        "id",
-        "title",
-        "type",
-        "layers"
       ]
     },
-    "uid": "api::dataset.dataset"
+    "uid": "plugin::slugify.slug"
   },
   "type": "object",
   "environment": null,
