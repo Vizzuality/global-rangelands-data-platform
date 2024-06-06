@@ -63,7 +63,7 @@
       },
       "config": {
         "edit": {
-          "label": "config",
+          "label": "Config",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -77,7 +77,7 @@
       },
       "params_config": {
         "edit": {
-          "label": "params_config",
+          "label": "Params Config",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -91,7 +91,7 @@
       },
       "legend": {
         "edit": {
-          "label": "legend",
+          "label": "Legend",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -105,7 +105,7 @@
       },
       "interaction_config": {
         "edit": {
-          "label": "interaction_config",
+          "label": "Interaction Config",
           "description": "",
           "placeholder": "",
           "visible": true,
