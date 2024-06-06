@@ -9,9 +9,12 @@ import {
 
 import { DEFAULT_BBOX } from "@/components/map/constants";
 
-export const datasetsParser = parseAsArrayOf(parseAsInteger).withDefault([]);
+const DEFAULT_DATASETS = [1];
+const DEFAULT_LAYERS = [1];
 
-export const layersParser = parseAsArrayOf(parseAsInteger).withDefault([]);
+export const datasetsParser = parseAsArrayOf(parseAsInteger).withDefault(DEFAULT_DATASETS);
+
+export const layersParser = parseAsArrayOf(parseAsInteger).withDefault(DEFAULT_LAYERS);
 export const layersSettingsParser = parseAsJson<{
   [key: string]: Record<string, unknown>;
 }>();
