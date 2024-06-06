@@ -450,7 +450,6 @@ export interface ApiEcoregionEcoregion extends Schema.CollectionType {
     singularName: 'ecoregion';
     pluralName: 'ecoregions';
     displayName: 'Ecoregion';
-    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -617,7 +616,6 @@ export interface ApiRangelandRangeland extends Schema.CollectionType {
     singularName: 'rangeland';
     pluralName: 'rangelands';
     displayName: 'Rangeland';
-    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -647,17 +645,6 @@ export interface ApiRangelandRangeland extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    color: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    ecoregions: Attribute.Relation<
-      'api::rangeland.rangeland',
-      'oneToMany',
-      'api::ecoregion.ecoregion'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
