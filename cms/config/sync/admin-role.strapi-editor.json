@@ -4,6 +4,117 @@
   "description": "Editors can manage and publish contents including those of other users.",
   "permissions": [
     {
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::dataset.dataset",
+      "properties": {
+        "fields": [
+          "title",
+          "type",
+          "layers.name",
+          "layers.layer",
+          "citations.name",
+          "citations.url",
+          "sources.name",
+          "sources.url"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::dataset.dataset",
+      "properties": {
+        "fields": [
+          "title",
+          "type",
+          "layers.name",
+          "layers.layer",
+          "citations.name",
+          "citations.url",
+          "sources.name",
+          "sources.url"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::dataset.dataset",
+      "properties": {
+        "fields": [
+          "title",
+          "type",
+          "layers.name",
+          "layers.layer",
+          "citations.name",
+          "citations.url",
+          "sources.name",
+          "sources.url"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::layer.layer",
+      "properties": {
+        "fields": [
+          "title",
+          "type",
+          "description",
+          "config",
+          "params_config",
+          "legend.type",
+          "legend.items.name",
+          "legend.items.color",
+          "interaction_config"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::layer.layer",
+      "properties": {
+        "fields": [
+          "title",
+          "type",
+          "description",
+          "config",
+          "params_config",
+          "legend.type",
+          "legend.items.name",
+          "legend.items.color",
+          "interaction_config"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::layer.layer",
+      "properties": {
+        "fields": [
+          "title",
+          "type",
+          "description",
+          "config",
+          "params_config",
+          "legend.type",
+          "legend.items.name",
+          "legend.items.color",
+          "interaction_config"
+        ]
+      },
+      "conditions": []
+    },
+    {
       "action": "plugin::upload.assets.copy-link",
       "actionParameters": {},
       "subject": null,
