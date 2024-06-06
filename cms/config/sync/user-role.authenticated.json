@@ -4,6 +4,33 @@
   "type": "authenticated",
   "permissions": [
     {
+      "action": "api::dataset.dataset.find"
+    },
+    {
+      "action": "api::dataset.dataset.findOne"
+    },
+    {
+      "action": "api::ecoregion.ecoregion.find"
+    },
+    {
+      "action": "api::ecoregion.ecoregion.findOne"
+    },
+    {
+      "action": "api::layer.layer.find"
+    },
+    {
+      "action": "api::layer.layer.findOne"
+    },
+    {
+      "action": "api::rangeland.rangeland.find"
+    },
+    {
+      "action": "api::rangeland.rangeland.findOne"
+    },
+    {
+      "action": "plugin::slugify.slugController.findSlug"
+    },
+    {
       "action": "plugin::users-permissions.auth.changePassword"
     },
     {
