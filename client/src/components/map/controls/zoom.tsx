@@ -25,6 +25,7 @@ const MapZoomControl = () => {
   return (
     <div className="rounded-full bg-background p-1.5 shadow-black/10 drop-shadow-md">
       <Button
+        variant="ghost"
         onClick={increaseZoom}
         className="transition-color block h-min rounded-full px-1.5 py-1.5 duration-300 hover:bg-global/20 focus-visible:bg-global"
       >
@@ -32,6 +33,7 @@ const MapZoomControl = () => {
         <span className="sr-only">Zoom in</span>
       </Button>
       <Button
+        variant="ghost"
         onClick={decreaseZoom}
         className="transition-color block h-min rounded-full px-1.5 py-1.5 duration-300 hover:bg-global/20 focus-visible:bg-global"
       >

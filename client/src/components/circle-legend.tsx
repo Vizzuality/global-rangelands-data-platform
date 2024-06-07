@@ -1,15 +1,22 @@
 import { cn } from "@/lib/utils";
 
 type CircleLegendProps = {
-  colors: string[];
+  colors?: string[];
   selected?: boolean;
 };
 
 const CircleLegend = ({ colors, selected }: CircleLegendProps) => {
   if (!colors?.length) return null;
+
+  const stripeGradient = colors.map((color, i) => {
+    const p1 = (100 / colors.length) * i;
+    const p2 = (100 / colors.length) * (i + 1);
+    return `${color} ${p1}%, ${color} ${p2}%`;
+  });
+
   const style = {
     ...(colors.length > 1
-      ? { backgroundImage: `linear-gradient(to right, ${colors.join(", ")})` }
+      ? { backgroundImage: `linear-gradient(to right, ${stripeGradient.join(", ")})` }
       : { backgroundColor: colors[0] }),
   };
   return (
