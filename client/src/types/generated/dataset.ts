@@ -47,7 +47,7 @@ export const getGetDatasetsQueryOptions = <
 >(
   params?: GetDatasetsParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ) => {
@@ -74,7 +74,7 @@ export const useGetDatasets = <
 >(
   params?: GetDatasetsParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -175,7 +175,7 @@ export const getGetDatasetsIdQueryOptions = <
   id: number,
   params?: GetDatasetsIdParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ) => {
@@ -203,7 +203,7 @@ export const useGetDatasetsId = <
   id: number,
   params?: GetDatasetsIdParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {

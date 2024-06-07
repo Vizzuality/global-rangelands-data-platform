@@ -47,7 +47,7 @@ export const getGetLayersQueryOptions = <
 >(
   params?: GetLayersParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ) => {
@@ -74,7 +74,7 @@ export const useGetLayers = <
 >(
   params?: GetLayersParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -172,7 +172,7 @@ export const getGetLayersIdQueryOptions = <
   id: number,
   params?: GetLayersIdParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ) => {
@@ -200,7 +200,7 @@ export const useGetLayersId = <
   id: number,
   params?: GetLayersIdParams,
   options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>;
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>;
     request?: SecondParameter<typeof API>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
