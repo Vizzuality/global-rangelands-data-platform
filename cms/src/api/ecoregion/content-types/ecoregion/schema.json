@@ -46,6 +46,14 @@
       "relation": "manyToOne",
       "target": "api::rangeland.rangeland",
       "inversedBy": "ecoregions"
+    },
+    "color": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }

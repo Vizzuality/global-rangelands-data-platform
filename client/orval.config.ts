@@ -25,6 +25,8 @@ module.exports = {
         tags: [
           "Dataset",
           "Layer",
+          "Rangeland",
+          "Ecoregion"
         ],
       },
     },
