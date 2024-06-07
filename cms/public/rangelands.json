@@ -1,0 +1,56 @@
+{
+  "version": 2,
+  "data": {
+    "api::rangeland.rangeland": {
+      "1": {
+        "id": 1,
+        "title": "Tropical & Subtropical Grasslands, Savannas & Shrublands",
+        "code": "7",
+        "color": "#FEAA01",
+        "locale": "en"
+      },
+      "2": {
+        "id": 2,
+        "title": "Temperate Grasslands, Savannas & Shrublands",
+        "code": "8",
+        "color": "#FEFF73",
+        "locale": "en"
+      },
+      "3": {
+        "id": 3,
+        "title": "Flooded Grasslands & Savannas",
+        "code": "9",
+        "color": "#BEE7FF",
+        "locale": "en"
+      },
+      "4": {
+        "id": 4,
+        "title": "Montane Grasslands & Shrublands",
+        "code": "10",
+        "color": "#D6C39D",
+        "locale": "en"
+      },
+      "5": {
+        "id": 5,
+        "title": "Tundra",
+        "code": "11",
+        "color": "#9ED7C2",
+        "locale": "en"
+      },
+      "6": {
+        "id": 6,
+        "title": "Mediterranean Forests, Woodlands & Scrub",
+        "code": "12",
+        "color": "#FE0000",
+        "locale": "en"
+      },
+      "7": {
+        "id": 7,
+        "title": "Deserts & Xeric Shrublands",
+        "code": "13",
+        "color": "#CC6767",
+        "locale": "en"
+      }
+    }
+  }
+}
