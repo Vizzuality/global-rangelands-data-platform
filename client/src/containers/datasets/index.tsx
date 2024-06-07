@@ -7,13 +7,19 @@ import DatasetsHeader from "./header";
 const Datasets = () => {
   const { data: datasetsData } = useGetDatasets({
     populate: ["layers", "layers.layer"],
-    publicationState: "preview",
   });
 
   return (
-    <div className="space-y-4">
+    <div className="mb-10 space-y-10">
       <DatasetsHeader />
-      {datasetsData?.data?.map((dataset) => <DatasetsItem key={dataset?.id} {...dataset} />)}
+      <div className="space-y-7">
+        {datasetsData?.data?.map((dataset) => (
+          <div key={dataset?.id} className="group space-y-7">
+            <DatasetsItem {...dataset} className="px-6" />
+            <div className="w-full border-b border-slate-200 group-last-of-type:hidden" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
