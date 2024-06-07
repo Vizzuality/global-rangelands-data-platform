@@ -32,7 +32,7 @@ export interface DefaultLayer extends Schema.Component {
     description: '';
   };
   attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    name: Attribute.String & Attribute.Required;
     layer: Attribute.Relation<'default.layer', 'oneToOne', 'api::layer.layer'>;
   };
 }
