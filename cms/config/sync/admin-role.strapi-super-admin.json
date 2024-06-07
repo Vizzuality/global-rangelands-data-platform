@@ -110,7 +110,8 @@
           "title",
           "slug",
           "code",
-          "rangeland"
+          "rangeland",
+          "color"
         ],
         "locales": [
           "en",
@@ -155,7 +156,8 @@
           "title",
           "slug",
           "code",
-          "rangeland"
+          "rangeland",
+          "color"
         ],
         "locales": [
           "en",
@@ -174,7 +176,8 @@
           "title",
           "slug",
           "code",
-          "rangeland"
+          "rangeland",
+          "color"
         ],
         "locales": [
           "en",
