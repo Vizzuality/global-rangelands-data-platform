@@ -315,6 +315,15 @@ export type RangelandLocalizations = {
   data?: RangelandListResponseDataItemLocalized[];
 };
 
+export type RangelandEcoregionsDataItem = {
+  attributes?: RangelandEcoregionsDataItemAttributes;
+  id?: number;
+};
+
+export type RangelandEcoregions = {
+  data?: RangelandEcoregionsDataItem[];
+};
+
 export interface Rangeland {
   code?: string;
   color?: string;
@@ -335,30 +344,6 @@ export interface RangelandResponseDataObject {
   id?: number;
 }
 
-export type RangelandEcoregionsDataItemAttributes = {
-  code?: string;
-  color?: string;
-  createdAt?: string;
-  createdBy?: RangelandEcoregionsDataItemAttributesCreatedBy;
-  locale?: string;
-  localizations?: RangelandEcoregionsDataItemAttributesLocalizations;
-  publishedAt?: string;
-  rangeland?: RangelandEcoregionsDataItemAttributesRangeland;
-  slug?: string;
-  title?: string;
-  updatedAt?: string;
-  updatedBy?: RangelandEcoregionsDataItemAttributesUpdatedBy;
-};
-
-export type RangelandEcoregionsDataItem = {
-  attributes?: RangelandEcoregionsDataItemAttributes;
-  id?: number;
-};
-
-export type RangelandEcoregions = {
-  data?: RangelandEcoregionsDataItem[];
-};
-
 export type RangelandEcoregionsDataItemAttributesUpdatedByDataAttributes = { [key: string]: any };
 
 export type RangelandEcoregionsDataItemAttributesUpdatedByData = {
@@ -372,6 +357,21 @@ export type RangelandEcoregionsDataItemAttributesUpdatedBy = {
 
 export type RangelandEcoregionsDataItemAttributesRangeland = {
   data?: RangelandEcoregionsDataItemAttributesRangelandData;
+};
+
+export type RangelandEcoregionsDataItemAttributes = {
+  code?: string;
+  color?: string;
+  createdAt?: string;
+  createdBy?: RangelandEcoregionsDataItemAttributesCreatedBy;
+  locale?: string;
+  localizations?: RangelandEcoregionsDataItemAttributesLocalizations;
+  publishedAt?: string;
+  rangeland?: RangelandEcoregionsDataItemAttributesRangeland;
+  slug?: string;
+  title?: string;
+  updatedAt?: string;
+  updatedBy?: RangelandEcoregionsDataItemAttributesUpdatedBy;
 };
 
 export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedByDataAttributes = {
@@ -391,26 +391,6 @@ export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesLocaliza
   data?: unknown[];
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributes = {
-  code?: string;
-  color?: string;
-  createdAt?: string;
-  createdBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedBy;
-  ecoregions?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregions;
-  locale?: string;
-  localizations?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesLocalizations;
-  publishedAt?: string;
-  slug?: string;
-  title?: string;
-  updatedAt?: string;
-  updatedBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedBy;
-};
-
-export type RangelandEcoregionsDataItemAttributesRangelandData = {
-  attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributes;
-  id?: number;
-};
-
 export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregionsDataItemAttributes =
   { [key: string]: any };
 
@@ -422,31 +402,6 @@ export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregio
 export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregions = {
   data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregionsDataItem[];
 };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByDataAttributes =
-  { [key: string]: any };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByData =
-  {
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByDataAttributes;
-    id?: number;
-  };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedBy =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByData;
-  };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItem =
-  {
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributes;
-    id?: number;
-  };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRoles =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItem[];
-  };
 
 export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributes = {
   blocked?: boolean;
@@ -473,6 +428,51 @@ export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedB
 export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedBy = {
   data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByData;
 };
+
+export type RangelandEcoregionsDataItemAttributesRangelandDataAttributes = {
+  code?: string;
+  color?: string;
+  createdAt?: string;
+  createdBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedBy;
+  ecoregions?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregions;
+  locale?: string;
+  localizations?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesLocalizations;
+  publishedAt?: string;
+  slug?: string;
+  title?: string;
+  updatedAt?: string;
+  updatedBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedBy;
+};
+
+export type RangelandEcoregionsDataItemAttributesRangelandData = {
+  attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributes;
+  id?: number;
+};
+
+export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByDataAttributes =
+  { [key: string]: any };
+
+export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByData =
+  {
+    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByDataAttributes;
+    id?: number;
+  };
+
+export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedBy =
+  {
+    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByData;
+  };
+
+export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItem =
+  {
+    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributes;
+    id?: number;
+  };
+
+export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRoles =
+  {
+    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItem[];
+  };
 
 export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
   { [key: string]: any };
@@ -596,9 +596,6 @@ export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedB
     data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
-  { [key: string]: any };
-
 export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByData =
   {
     attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByDataAttributes;
@@ -609,6 +606,9 @@ export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedB
   {
     data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByData;
   };
+
+export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
+  { [key: string]: any };
 
 export type RangelandEcoregionsDataItemAttributesLocalizations = {
   data?: unknown[];
@@ -625,6 +625,8 @@ export type RangelandEcoregionsDataItemAttributesCreatedBy = {
   data?: RangelandEcoregionsDataItemAttributesCreatedByData;
 };
 
+export type RangelandCreatedByDataAttributes = { [key: string]: any };
+
 export type RangelandCreatedByData = {
   attributes?: RangelandCreatedByDataAttributes;
   id?: number;
@@ -632,169 +634,6 @@ export type RangelandCreatedByData = {
 
 export type RangelandCreatedBy = {
   data?: RangelandCreatedByData;
-};
-
-export type RangelandCreatedByDataAttributesUpdatedByDataAttributes = { [key: string]: any };
-
-export type RangelandCreatedByDataAttributesUpdatedByData = {
-  attributes?: RangelandCreatedByDataAttributesUpdatedByDataAttributes;
-  id?: number;
-};
-
-export type RangelandCreatedByDataAttributesUpdatedBy = {
-  data?: RangelandCreatedByDataAttributesUpdatedByData;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItem = {
-  attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributes;
-  id?: number;
-};
-
-export type RangelandCreatedByDataAttributesRoles = {
-  data?: RangelandCreatedByDataAttributesRolesDataItem[];
-};
-
-export type RangelandCreatedByDataAttributes = {
-  blocked?: boolean;
-  createdAt?: string;
-  createdBy?: RangelandCreatedByDataAttributesCreatedBy;
-  email?: string;
-  firstname?: string;
-  isActive?: boolean;
-  lastname?: string;
-  preferedLanguage?: string;
-  registrationToken?: string;
-  resetPasswordToken?: string;
-  roles?: RangelandCreatedByDataAttributesRoles;
-  updatedAt?: string;
-  updatedBy?: RangelandCreatedByDataAttributesUpdatedBy;
-  username?: string;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes = {
-  [key: string]: any;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesUsersDataItem = {
-  attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
-  id?: number;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesUsers = {
-  data?: RangelandCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributes = {
-  code?: string;
-  createdAt?: string;
-  createdBy?: RangelandCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-  description?: string;
-  name?: string;
-  permissions?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissions;
-  updatedAt?: string;
-  updatedBy?: RangelandCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  users?: RangelandCreatedByDataAttributesRolesDataItemAttributesUsers;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes = {
-  [key: string]: any;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesUpdatedByData = {
-  attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-  id?: number;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesUpdatedBy = {
-  data?: RangelandCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem = {
-  attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
-  id?: number;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissions = {
-  data?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: any };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-    id?: number;
-  };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes = {
-  action?: string;
-  actionParameters?: unknown;
-  conditions?: unknown;
-  createdAt?: string;
-  createdBy?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-  properties?: unknown;
-  role?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
-  subject?: string;
-  updatedAt?: string;
-  updatedBy?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: any };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
-  {
-    attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
-    id?: number;
-  };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
-  {
-    data?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
-  };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
-  {
-    attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-    id?: number;
-  };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: any };
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes = {
-  [key: string]: any;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesCreatedByData = {
-  attributes?: RangelandCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
-  id?: number;
-};
-
-export type RangelandCreatedByDataAttributesRolesDataItemAttributesCreatedBy = {
-  data?: RangelandCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-};
-
-export type RangelandCreatedByDataAttributesCreatedByDataAttributes = { [key: string]: any };
-
-export type RangelandCreatedByDataAttributesCreatedByData = {
-  attributes?: RangelandCreatedByDataAttributesCreatedByDataAttributes;
-  id?: number;
-};
-
-export type RangelandCreatedByDataAttributesCreatedBy = {
-  data?: RangelandCreatedByDataAttributesCreatedByData;
 };
 
 export type RangelandListResponseMetaPagination = {
@@ -855,8 +694,12 @@ export interface RangelandLocalizationResponse {
   meta?: RangelandLocalizationResponseMeta;
 }
 
+export type RangelandRequestDataEcoregionsItem = number | string;
+
 export type RangelandRequestData = {
   code?: string;
+  color?: string;
+  ecoregions?: RangelandRequestDataEcoregionsItem[];
   locale?: string;
   slug?: string;
   title: string;
@@ -866,8 +709,12 @@ export interface RangelandRequest {
   data: RangelandRequestData;
 }
 
+export type RangelandLocalizationRequestEcoregionsItem = number | string;
+
 export interface RangelandLocalizationRequest {
   code?: string;
+  color?: string;
+  ecoregions?: RangelandLocalizationRequestEcoregionsItem[];
   locale: string;
   slug?: string;
   title: string;
@@ -1007,6 +854,18 @@ export type LayerCreatedByDataAttributesRolesDataItemAttributesUsers = {
   data?: LayerCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
 };
 
+export type LayerCreatedByDataAttributesRolesDataItemAttributes = {
+  code?: string;
+  createdAt?: string;
+  createdBy?: LayerCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
+  description?: string;
+  name?: string;
+  permissions?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissions;
+  updatedAt?: string;
+  updatedBy?: LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
+  users?: LayerCreatedByDataAttributesRolesDataItemAttributesUsers;
+};
+
 export type LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes = {
   [key: string]: any;
 };
@@ -1040,18 +899,6 @@ export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataIt
 
 export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissions = {
   data?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
-};
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributes = {
-  code?: string;
-  createdAt?: string;
-  createdBy?: LayerCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-  description?: string;
-  name?: string;
-  permissions?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissions;
-  updatedAt?: string;
-  updatedBy?: LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  users?: LayerCreatedByDataAttributesRolesDataItemAttributesUsers;
 };
 
 export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
@@ -1177,14 +1024,6 @@ export interface LayerLocalizationResponse {
   meta?: LayerLocalizationResponseMeta;
 }
 
-export type LayerRequestDataType = (typeof LayerRequestDataType)[keyof typeof LayerRequestDataType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const LayerRequestDataType = {
-  Mapbox: "Mapbox",
-  GEE: "GEE",
-} as const;
-
 export type LayerRequestData = {
   config: unknown;
   description: string;
@@ -1200,6 +1039,14 @@ export type LayerRequestData = {
 export interface LayerRequest {
   data: LayerRequestData;
 }
+
+export type LayerRequestDataType = (typeof LayerRequestDataType)[keyof typeof LayerRequestDataType];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const LayerRequestDataType = {
+  Mapbox: "Mapbox",
+  GEE: "GEE",
+} as const;
 
 export type LayerLocalizationRequestType =
   (typeof LayerLocalizationRequestType)[keyof typeof LayerLocalizationRequestType];
@@ -1245,8 +1092,13 @@ export type EcoregionUpdatedBy = {
   data?: EcoregionUpdatedByData;
 };
 
-export type EcoregionLocalizations = {
-  data?: EcoregionListResponseDataItemLocalized[];
+export type EcoregionRangelandData = {
+  attributes?: EcoregionRangelandDataAttributes;
+  id?: number;
+};
+
+export type EcoregionRangeland = {
+  data?: EcoregionRangelandData;
 };
 
 export interface Ecoregion {
@@ -1257,11 +1109,294 @@ export interface Ecoregion {
   locale?: string;
   localizations?: EcoregionLocalizations;
   publishedAt?: string;
+  rangeland?: EcoregionRangeland;
   slug?: string;
   title: string;
   updatedAt?: string;
   updatedBy?: EcoregionUpdatedBy;
 }
+
+export type EcoregionRangelandDataAttributesUpdatedByDataAttributes = { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesUpdatedByData = {
+  attributes?: EcoregionRangelandDataAttributesUpdatedByDataAttributes;
+  id?: number;
+};
+
+export type EcoregionRangelandDataAttributesUpdatedBy = {
+  data?: EcoregionRangelandDataAttributesUpdatedByData;
+};
+
+export type EcoregionRangelandDataAttributesLocalizations = {
+  data?: unknown[];
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItem = {
+  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributes;
+  id?: number;
+};
+
+export type EcoregionRangelandDataAttributesEcoregions = {
+  data?: EcoregionRangelandDataAttributesEcoregionsDataItem[];
+};
+
+export type EcoregionRangelandDataAttributes = {
+  code?: string;
+  color?: string;
+  createdAt?: string;
+  createdBy?: EcoregionRangelandDataAttributesCreatedBy;
+  ecoregions?: EcoregionRangelandDataAttributesEcoregions;
+  locale?: string;
+  localizations?: EcoregionRangelandDataAttributesLocalizations;
+  publishedAt?: string;
+  slug?: string;
+  title?: string;
+  updatedAt?: string;
+  updatedBy?: EcoregionRangelandDataAttributesUpdatedBy;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByDataAttributes = {
+  [key: string]: any;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByData = {
+  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByDataAttributes;
+  id?: number;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedBy = {
+  data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByData;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandDataAttributes = {
+  [key: string]: any;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandData = {
+  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandDataAttributes;
+  id?: number;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangeland = {
+  data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandData;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesLocalizations = {
+  data?: unknown[];
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByData = {
+  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributes;
+  id?: number;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedBy = {
+  data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByData;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributes = {
+  code?: string;
+  color?: string;
+  createdAt?: string;
+  createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedBy;
+  locale?: string;
+  localizations?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesLocalizations;
+  publishedAt?: string;
+  rangeland?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangeland;
+  slug?: string;
+  title?: string;
+  updatedAt?: string;
+  updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedBy;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByDataAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByData =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByDataAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedBy =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByData;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItem =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRoles =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItem[];
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributes = {
+  blocked?: boolean;
+  createdAt?: string;
+  createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedBy;
+  email?: string;
+  firstname?: string;
+  isActive?: boolean;
+  lastname?: string;
+  preferedLanguage?: string;
+  registrationToken?: string;
+  resetPasswordToken?: string;
+  roles?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRoles;
+  updatedAt?: string;
+  updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedBy;
+  username?: string;
+};
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributes =
+  {
+    code?: string;
+    createdAt?: string;
+    createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
+    description?: string;
+    name?: string;
+    permissions?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
+    updatedAt?: string;
+    updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
+    users?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
+  {
+    action?: string;
+    actionParameters?: unknown;
+    conditions?: unknown;
+    createdAt?: string;
+    createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
+    properties?: unknown;
+    role?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
+    subject?: string;
+    updatedAt?: string;
+    updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByDataAttributes =
+  { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByData =
+  {
+    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByDataAttributes;
+    id?: number;
+  };
+
+export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedBy =
+  {
+    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByData;
+  };
+
+export type EcoregionRangelandDataAttributesCreatedByDataAttributes = { [key: string]: any };
+
+export type EcoregionRangelandDataAttributesCreatedByData = {
+  attributes?: EcoregionRangelandDataAttributesCreatedByDataAttributes;
+  id?: number;
+};
+
+export type EcoregionRangelandDataAttributesCreatedBy = {
+  data?: EcoregionRangelandDataAttributesCreatedByData;
+};
 
 export type EcoregionCreatedByDataAttributes = { [key: string]: any };
 
@@ -1314,6 +1449,10 @@ export interface EcoregionListResponseDataItemLocalized {
   attributes?: Ecoregion;
   id?: number;
 }
+
+export type EcoregionLocalizations = {
+  data?: EcoregionListResponseDataItemLocalized[];
+};
 
 export interface EcoregionLocalizationListResponse {
   data?: EcoregionListResponseDataItemLocalized[];
@@ -1411,6 +1550,24 @@ export type DefaultLayerComponentLayerDataAttributesLocalizations = {
   data?: unknown[];
 };
 
+export type DefaultLayerComponentLayerDataAttributes = {
+  config?: unknown;
+  createdAt?: string;
+  createdBy?: DefaultLayerComponentLayerDataAttributesCreatedBy;
+  description?: string;
+  interaction_config?: unknown;
+  legend?: DefaultLayerComponentLayerDataAttributesLegend;
+  locale?: string;
+  localizations?: DefaultLayerComponentLayerDataAttributesLocalizations;
+  params_config?: unknown;
+  publishedAt?: string;
+  slug?: string;
+  title?: string;
+  type?: DefaultLayerComponentLayerDataAttributesType;
+  updatedAt?: string;
+  updatedBy?: DefaultLayerComponentLayerDataAttributesUpdatedBy;
+};
+
 export type DefaultLayerComponentLayerDataAttributesLegendType =
   (typeof DefaultLayerComponentLayerDataAttributesLegendType)[keyof typeof DefaultLayerComponentLayerDataAttributesLegendType];
 
@@ -1431,41 +1588,6 @@ export type DefaultLayerComponentLayerDataAttributesLegend = {
   id?: number;
   items?: DefaultLayerComponentLayerDataAttributesLegendItemsItem[];
   type?: DefaultLayerComponentLayerDataAttributesLegendType;
-};
-
-export type DefaultLayerComponentLayerDataAttributes = {
-  config?: unknown;
-  createdAt?: string;
-  createdBy?: DefaultLayerComponentLayerDataAttributesCreatedBy;
-  description?: string;
-  interaction_config?: unknown;
-  legend?: DefaultLayerComponentLayerDataAttributesLegend;
-  locale?: string;
-  localizations?: DefaultLayerComponentLayerDataAttributesLocalizations;
-  params_config?: unknown;
-  publishedAt?: string;
-  slug?: string;
-  title?: string;
-  type?: DefaultLayerComponentLayerDataAttributesType;
-  updatedAt?: string;
-  updatedBy?: DefaultLayerComponentLayerDataAttributesUpdatedBy;
-};
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributes = {
-  blocked?: boolean;
-  createdAt?: string;
-  createdBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedBy;
-  email?: string;
-  firstname?: string;
-  isActive?: boolean;
-  lastname?: string;
-  preferedLanguage?: string;
-  registrationToken?: string;
-  resetPasswordToken?: string;
-  roles?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles;
-  updatedAt?: string;
-  updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedBy;
-  username?: string;
 };
 
 export type DefaultLayerComponentLayerDataAttributesCreatedByData = {
@@ -1498,6 +1620,23 @@ export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles
   data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItem[];
 };
 
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributes = {
+  blocked?: boolean;
+  createdAt?: string;
+  createdBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedBy;
+  email?: string;
+  firstname?: string;
+  isActive?: boolean;
+  lastname?: string;
+  preferedLanguage?: string;
+  registrationToken?: string;
+  resetPasswordToken?: string;
+  roles?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles;
+  updatedAt?: string;
+  updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedBy;
+  username?: string;
+};
+
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
   { [key: string]: any };
 
@@ -1510,6 +1649,19 @@ export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
   {
     data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
+  };
+
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes =
+  {
+    code?: string;
+    createdAt?: string;
+    createdBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
+    description?: string;
+    name?: string;
+    permissions?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
+    updatedAt?: string;
+    updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
+    users?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
   };
 
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
@@ -1537,19 +1689,6 @@ export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles
     data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
   };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes =
-  {
-    code?: string;
-    createdAt?: string;
-    createdBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-    description?: string;
-    name?: string;
-    permissions?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
-    updatedAt?: string;
-    updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-    users?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
-  };
-
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
   { [key: string]: any };
 
@@ -1562,34 +1701,6 @@ export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
   {
     data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: any };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
-  {
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
-    id?: number;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: any };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
-  {
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-    id?: number;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
   };
 
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
@@ -1606,6 +1717,37 @@ export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles
     updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
   };
 
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
+  { [key: string]: any };
+
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
+  {
+    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
+    id?: number;
+  };
+
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
+  {
+    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
+  };
+
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
+  {
+    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
+    id?: number;
+  };
+
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
+  {
+    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
+  };
+
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
+  { [key: string]: any };
+
+export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
+  { [key: string]: any };
+
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
   {
     attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
@@ -1616,9 +1758,6 @@ export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles
   {
     data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
   };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: any };
 
 export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
   { [key: string]: any };

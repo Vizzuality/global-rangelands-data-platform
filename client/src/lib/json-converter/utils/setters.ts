@@ -82,13 +82,6 @@ const setDataWithMapboxToken = ({ dataUrls }: SetDataWithMapboxTokenProps) => {
   );
 };
 
-const setRengelandColors = ({ layerSlug }: { layerSlug: string }) => {
-  switch (layerSlug) {
-    case "rangeland-biomes":
-      return ["#FF0000", "#00FF00", "#0000FF"];
-  }
-};
-
 const SETTERS = {
   setOpacity,
   setVisibility,
