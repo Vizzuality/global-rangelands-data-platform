@@ -61,6 +61,21 @@
           "sortable": true
         }
       },
+      "rangeland": {
+        "edit": {
+          "label": "rangeland",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "title"
+        },
+        "list": {
+          "label": "rangeland",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -137,6 +152,12 @@
         [
           {
             "name": "slug",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "rangeland",
             "size": 6
           }
         ]

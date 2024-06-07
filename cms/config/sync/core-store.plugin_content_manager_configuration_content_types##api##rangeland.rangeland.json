@@ -75,6 +75,21 @@
           "sortable": true
         }
       },
+      "ecoregions": {
+        "edit": {
+          "label": "ecoregions",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "title"
+        },
+        "list": {
+          "label": "ecoregions",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -144,15 +159,17 @@
         ],
         [
           {
-            "name": "code",
+            "name": "slug",
             "size": 6
           }
         ],
         [
           {
-            "name": "slug",
+            "name": "code",
             "size": 6
-          },
+          }
+        ],
+        [
           {
             "name": "color",
             "size": 6
