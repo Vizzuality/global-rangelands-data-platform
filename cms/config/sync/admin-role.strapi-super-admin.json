@@ -109,7 +109,8 @@
         "fields": [
           "title",
           "slug",
-          "code"
+          "code",
+          "rangeland"
         ],
         "locales": [
           "en",
@@ -153,7 +154,8 @@
         "fields": [
           "title",
           "slug",
-          "code"
+          "code",
+          "rangeland"
         ],
         "locales": [
           "en",
@@ -171,7 +173,8 @@
         "fields": [
           "title",
           "slug",
-          "code"
+          "code",
+          "rangeland"
         ],
         "locales": [
           "en",
@@ -291,7 +294,8 @@
           "title",
           "slug",
           "code",
-          "color"
+          "color",
+          "ecoregions"
         ],
         "locales": [
           "en",
@@ -336,7 +340,8 @@
           "title",
           "slug",
           "code",
-          "color"
+          "color",
+          "ecoregions"
         ],
         "locales": [
           "en",
@@ -355,7 +360,8 @@
           "title",
           "slug",
           "code",
-          "color"
+          "color",
+          "ecoregions"
         ],
         "locales": [
           "en",
