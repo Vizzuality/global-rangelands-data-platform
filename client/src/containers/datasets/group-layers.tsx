@@ -19,28 +19,29 @@ type RangelandLayersProps = {
   slug?: string;
 };
 
-const RangelandLayers = ({ layers, slug }: RangelandLayersProps) => {
+const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) => {
   const t = useTranslations();
   const [syncLayers, setSyncLayers] = useSyncLayers();
 
-  const datasetLayers = useMemo(() => layers?.map((l) => l.id), [layers]);
+  const datasetLayers = useMemo(
+    () => layers?.map((l) => l.layer?.data?.attributes?.slug),
+    [layers],
+  );
 
   const selectedLayerId = datasetLayers?.find((l) => !!l && syncLayers?.includes(l));
 
-  const handleSelectLayer = (layer: string) => {
-    const layerId = Number(layer);
-
+  const handleSelectLayer = (layerSlug: string) => {
     setSyncLayers((prev) => {
       // If there is already a layer from the same dataset, remove the old layer and add the selected one
-      if (datasetLayers?.includes(layerId)) {
+      if (datasetLayers?.includes(layerSlug)) {
         return [
           ...prev.filter((id) => {
             return !datasetLayers?.includes(id);
           }),
-          layerId,
+          layerSlug,
         ];
       }
-      return [...prev, layerId];
+      return [...prev, layerSlug];
     });
   };
 
@@ -48,7 +49,7 @@ const RangelandLayers = ({ layers, slug }: RangelandLayersProps) => {
     () => layers?.find((l) => l.id === selectedLayerId),
     [layers, selectedLayerId],
   );
-  const isRangelandDataset = slug === RANGELAND_DATASET_SLUG;
+  const isRangelandDataset = datasetSlug === RANGELAND_DATASET_SLUG;
 
   const getLegendColors = (layerSlug?: string) => {
     if (!layerSlug) return;
@@ -83,10 +84,10 @@ const RangelandLayers = ({ layers, slug }: RangelandLayersProps) => {
           <SelectGroup>
             {layers?.map((layer) => {
               const layerSlug = layer?.layer?.data?.attributes?.slug;
-              if (!layer.id || !layer.name) return null;
+              if (!layer.id || !layerSlug) return null;
               const colors = getLegendColors(layerSlug);
               return (
-                <SelectItem value={layer.id.toString()} key={layer.id} className="justify-between">
+                <SelectItem value={layerSlug} key={layer.id} className="justify-between">
                   <p>{layer.name}</p>
                   {isRangelandDataset && <CircleLegend colors={colors} />}
                 </SelectItem>

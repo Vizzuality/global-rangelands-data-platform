@@ -40,7 +40,7 @@ const LayerManager = () => {
     const lSettingsKeys = Object.keys(layersSettings || {});
 
     lSettingsKeys.forEach((key) => {
-      if (layers.includes(Number(key))) return;
+      if (layers.includes(key)) return;
 
       setTimeout(() => {
         setLayersSettings((prev) => {
