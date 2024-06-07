@@ -7,7 +7,7 @@
       "searchable": true,
       "pageSize": 10,
       "mainField": "title",
-      "defaultSortBy": "title",
+      "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -57,6 +57,20 @@
         },
         "list": {
           "label": "code",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "color": {
+        "edit": {
+          "label": "color",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "color",
           "searchable": true,
           "sortable": true
         }
@@ -137,6 +151,10 @@
         [
           {
             "name": "slug",
+            "size": 6
+          },
+          {
+            "name": "color",
             "size": 6
           }
         ]

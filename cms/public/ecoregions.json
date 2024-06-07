@@ -1,0 +1,2967 @@
+{
+  "version": 2,
+  "data": {
+    "api::ecoregion.ecoregion": {
+      "1": {
+        "title": "Angolan mopane woodlands",
+        "code": "34",
+        "color": "#B09200",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 1
+      },
+      "2": {
+        "title": "Angolan scarp savanna and woodlands",
+        "code": "35",
+        "color": "#FC8939",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 2
+      },
+      "3": {
+        "title": "Angolan wet miombo woodlands",
+        "code": "36",
+        "color": "#C7AB01",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 3
+      },
+      "4": {
+        "title": "Ascension scrub and grasslands",
+        "code": "37",
+        "color": "#FBA87E",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 4
+      },
+      "5": {
+        "title": "Central bushveld",
+        "code": "38",
+        "color": "#FDAE38",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 5
+      },
+      "6": {
+        "title": "Central Zambezian wet miombo woodlands",
+        "code": "39",
+        "color": "#FFAA01",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 6
+      },
+      "7": {
+        "title": "Drakensberg Escarpment savanna and thicket",
+        "code": "40",
+        "color": "#FCD135",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 7
+      },
+      "8": {
+        "title": "Drakensberg grasslands",
+        "code": "41",
+        "color": "#FDBD7F",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 8
+      },
+      "9": {
+        "title": "Dry miombo woodlands",
+        "code": "42",
+        "color": "#FD965B",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 9
+      },
+      "10": {
+        "title": "East Sudanian savanna",
+        "code": "43",
+        "color": "#E0B51B",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 10
+      },
+      "11": {
+        "title": "Guinean forest-savanna",
+        "code": "44",
+        "color": "#FCEE50",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 11
+      },
+      "12": {
+        "title": "Horn of Africa xeric bushlands",
+        "code": "45",
+        "color": "#FCBE51",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 12
+      },
+      "13": {
+        "title": "Itigi-Sumbu thicket",
+        "code": "46",
+        "color": "#DE5245",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 13
+      },
+      "14": {
+        "title": "Kalahari Acacia woodlands",
+        "code": "47",
+        "color": "#FBA141",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 14
+      },
+      "15": {
+        "title": "Limpopo lowveld",
+        "code": "48",
+        "color": "#FCC03C",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 15
+      },
+      "16": {
+        "title": "Mandara Plateau woodlands",
+        "code": "49",
+        "color": "#FCE55B",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 16
+      },
+      "17": {
+        "title": "Masai xeric grasslands and shrublands",
+        "code": "50",
+        "color": "#FFAA01",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 17
+      },
+      "18": {
+        "title": "Northern Acacia-Commiphora bushlands and thickets",
+        "code": "51",
+        "color": "#DBDB00",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 18
+      },
+      "19": {
+        "title": "Northern Congolian Forest-Savanna",
+        "code": "52",
+        "color": "#ADFC62",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 19
+      },
+      "20": {
+        "title": "Sahelian Acacia savanna",
+        "code": "53",
+        "color": "#FCC369",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 20
+      },
+      "21": {
+        "title": "Serengeti volcanic grasslands",
+        "code": "54",
+        "color": "#D9FB4C",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 21
+      },
+      "22": {
+        "title": "Somali Acacia-Commiphora bushlands and thickets",
+        "code": "55",
+        "color": "#FCD135",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 22
+      },
+      "23": {
+        "title": "South Arabian fog woodlands, shrublands, and dune",
+        "code": "56",
+        "color": "#A87001",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 23
+      },
+      "24": {
+        "title": "Southern Acacia-Commiphora bushlands and thickets",
+        "code": "57",
+        "color": "#D68A00",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 24
+      },
+      "25": {
+        "title": "Southern Congolian forest-savanna",
+        "code": "58",
+        "color": "#ABE600",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 25
+      },
+      "26": {
+        "title": "Southwest Arabian montane woodlands and grasslands",
+        "code": "59",
+        "color": "#A93800",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 26
+      },
+      "27": {
+        "title": "St. Helena scrub and woodlands",
+        "code": "60",
+        "color": "#FCEA3E",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 27
+      },
+      "28": {
+        "title": "Victoria Basin forest-savanna",
+        "code": "61",
+        "color": "#66FC43",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 28
+      },
+      "29": {
+        "title": "West Sudanian savanna",
+        "code": "62",
+        "color": "#E69800",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 29
+      },
+      "30": {
+        "title": "Western Congolian forest-savanna",
+        "code": "63",
+        "color": "#DBDB00",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 30
+      },
+      "31": {
+        "title": "Zambezian Baikiaea woodlands",
+        "code": "64",
+        "color": "#CF7B01",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 31
+      },
+      "32": {
+        "title": "Zambezian mopane woodlands",
+        "code": "65",
+        "color": "#EDFD79",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 32
+      },
+      "33": {
+        "title": "Zambezian-Limpopo mixed woodlands",
+        "code": "66",
+        "color": "#B3FC53",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 33
+      },
+      "34": {
+        "title": "Arnhem Land tropical savanna",
+        "code": "181",
+        "color": "#FCD357",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 34
+      },
+      "35": {
+        "title": "Brigalow tropical savanna",
+        "code": "182",
+        "color": "#8BFC3A",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 35
+      },
+      "36": {
+        "title": "Cape York Peninsula tropical savanna",
+        "code": "183",
+        "color": "#F8FD6F",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 36
+      },
+      "37": {
+        "title": "Carpentaria tropical savanna",
+        "code": "184",
+        "color": "#C5FC7D",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 37
+      },
+      "38": {
+        "title": "Einasleigh upland savanna",
+        "code": "185",
+        "color": "#CEFC39",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 38
+      },
+      "39": {
+        "title": "Kimberly tropical savanna",
+        "code": "186",
+        "color": "#E8FC39",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 39
+      },
+      "40": {
+        "title": "Mitchell Grass Downs",
+        "code": "187",
+        "color": "#D7FC61",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 40
+      },
+      "41": {
+        "title": "Trans Fly savanna and grasslands",
+        "code": "188",
+        "color": "#8FFC7D",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 41
+      },
+      "42": {
+        "title": "Victoria Plains tropical savanna",
+        "code": "189",
+        "color": "#FBCA49",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 42
+      },
+      "43": {
+        "title": "Terai-Duar savanna and grasslands",
+        "code": "311",
+        "color": "#FCD844",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 43
+      },
+      "44": {
+        "title": "Western Gulf coastal grasslands",
+        "code": "384",
+        "color": "#FBFC58",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 44
+      },
+      "45": {
+        "title": "Belizian pine savannas",
+        "code": "564",
+        "color": "#FFAA01",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 45
+      },
+      "46": {
+        "title": "Beni savanna",
+        "code": "565",
+        "color": "#FCF238",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 46
+      },
+      "47": {
+        "title": "Campos Rupestres montane savanna",
+        "code": "566",
+        "color": "#FCB25D",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 47
+      },
+      "48": {
+        "title": "Cerrado",
+        "code": "567",
+        "color": "#E69800",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 48
+      },
+      "49": {
+        "title": "Clipperton Island shrub and grasslands",
+        "code": "568",
+        "color": "#FBE97B",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 49
+      },
+      "50": {
+        "title": "Dry Chaco",
+        "code": "569",
+        "color": "#D4D20E",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 50
+      },
+      "51": {
+        "title": "Guianan savanna",
+        "code": "570",
+        "color": "#FCD379",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 51
+      },
+      "52": {
+        "title": "Humid Chaco",
+        "code": "571",
+        "color": "#FFD221",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 52
+      },
+      "53": {
+        "title": "Llanos",
+        "code": "572",
+        "color": "#FFAA01",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 53
+      },
+      "54": {
+        "title": "Miskito pine forests",
+        "code": "573",
+        "color": "#FBA769",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 54
+      },
+      "55": {
+        "title": "Uruguayan savanna",
+        "code": "574",
+        "color": "#E69800",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 55
+      },
+      "56": {
+        "title": "Hawai'i tropical high shrublands",
+        "code": "639",
+        "color": "#E69800",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 56
+      },
+      "57": {
+        "title": "Hawai'i tropical low shrublands",
+        "code": "640",
+        "color": "#FFAA01",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 57
+      },
+      "58": {
+        "title": "Northwest Hawai'i scrub",
+        "code": "641",
+        "color": "#4AFB48",
+        "rangeland": 1,
+        "locale": "en",
+        "id": 58
+      },
+      "59": {
+        "title": "Amsterdam-Saint Paul Islands temperate grasslands",
+        "code": "67",
+        "color": "#B3FB35",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 59
+      },
+      "60": {
+        "title": "Tristan Da Cunha-Gough Islands shrub and grasslands",
+        "code": "68",
+        "color": "#E8FC77",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 60
+      },
+      "61": {
+        "title": "Canterbury-Otago tussock grasslands",
+        "code": "190",
+        "color": "#FCDC79",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 61
+      },
+      "62": {
+        "title": "Eastern Australia mulga shrublands",
+        "code": "191",
+        "color": "#FDB666",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 62
+      },
+      "63": {
+        "title": "Southeast Australia temperate savanna",
+        "code": "192",
+        "color": "#FDC975",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 63
+      },
+      "64": {
+        "title": "California Central Valley grasslands",
+        "code": "385",
+        "color": "#DEFC4E",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 64
+      },
+      "65": {
+        "title": "Canadian Aspen forests and parklands",
+        "code": "386",
+        "color": "#DB931A",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 65
+      },
+      "66": {
+        "title": "Central US forest-grasslands transition",
+        "code": "387",
+        "color": "#A3FC62",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 66
+      },
+      "67": {
+        "title": "Central Tallgrass prairie",
+        "code": "388",
+        "color": "#DEFC4E",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 67
+      },
+      "68": {
+        "title": "Central-Southern US mixed grasslands",
+        "code": "389",
+        "color": "#FD9943",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 68
+      },
+      "69": {
+        "title": "Cross-Timbers savanna-woodland",
+        "code": "390",
+        "color": "#FBDA4D",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 69
+      },
+      "70": {
+        "title": "Edwards Plateau savanna",
+        "code": "391",
+        "color": "#93FC7C",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 70
+      },
+      "71": {
+        "title": "Flint Hills tallgrass prairie",
+        "code": "392",
+        "color": "#A87001",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 71
+      },
+      "72": {
+        "title": "Mid-Atlantic US coastal savannas",
+        "code": "393",
+        "color": "#FBB04B",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 72
+      },
+      "73": {
+        "title": "Montana Valley and Foothill grasslands",
+        "code": "394",
+        "color": "#C66E02",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 73
+      },
+      "74": {
+        "title": "Nebraska Sand Hills mixed grasslands",
+        "code": "395",
+        "color": "#FCDF6A",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 74
+      },
+      "75": {
+        "title": "Northern Shortgrass prairie",
+        "code": "396",
+        "color": "#FCBA26",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 75
+      },
+      "76": {
+        "title": "Northern Tallgrass prairie",
+        "code": "397",
+        "color": "#FCCA4D",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 76
+      },
+      "77": {
+        "title": "Palouse prairie",
+        "code": "398",
+        "color": "#FDA65F",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 77
+      },
+      "78": {
+        "title": "Southeast US conifer savannas",
+        "code": "399",
+        "color": "#FFAA01",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 78
+      },
+      "79": {
+        "title": "Southeast US mixed woodlands and savannas",
+        "code": "400",
+        "color": "#E8FC5F",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 79
+      },
+      "80": {
+        "title": "Texas blackland prairies",
+        "code": "401",
+        "color": "#F3FC49",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 80
+      },
+      "81": {
+        "title": "Western shortgrass prairie",
+        "code": "402",
+        "color": "#E7BD33",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 81
+      },
+      "82": {
+        "title": "Willamette Valley oak savanna",
+        "code": "403",
+        "color": "#A87001",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 82
+      },
+      "83": {
+        "title": "Espinal",
+        "code": "575",
+        "color": "#829A2C",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 83
+      },
+      "84": {
+        "title": "Humid Pampas",
+        "code": "576",
+        "color": "#D9BD40",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 84
+      },
+      "85": {
+        "title": "Low Monte",
+        "code": "577",
+        "color": "#D6A53C",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 85
+      },
+      "86": {
+        "title": "Patagonian steppe",
+        "code": "578",
+        "color": "#E69800",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 86
+      },
+      "87": {
+        "title": "Alai-Western Tian Shan steppe",
+        "code": "721",
+        "color": "#FCEC35",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 87
+      },
+      "88": {
+        "title": "Al-Hajar foothill xeric woodlands and shrublands",
+        "code": "722",
+        "color": "#CA6634",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 88
+      },
+      "89": {
+        "title": "Al-Hajar montane woodlands and shrublands",
+        "code": "723",
+        "color": "#FCA673",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 89
+      },
+      "90": {
+        "title": "Altai steppe and semi-desert",
+        "code": "724",
+        "color": "#D9FC7E",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 90
+      },
+      "91": {
+        "title": "Central Anatolian steppe",
+        "code": "725",
+        "color": "#737400",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 91
+      },
+      "92": {
+        "title": "Daurian forest steppe",
+        "code": "726",
+        "color": "#7FFC4A",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 92
+      },
+      "93": {
+        "title": "Eastern Anatolian montane steppe",
+        "code": "727",
+        "color": "#FDF674",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 93
+      },
+      "94": {
+        "title": "Emin Valley steppe",
+        "code": "728",
+        "color": "#FD9057",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 94
+      },
+      "95": {
+        "title": "Faroe Islands boreal grasslands",
+        "code": "729",
+        "color": "#FCC960",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 95
+      },
+      "96": {
+        "title": "Gissaro-Alai open woodlands",
+        "code": "730",
+        "color": "#FCFA58",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 96
+      },
+      "97": {
+        "title": "Kazakh forest steppe",
+        "code": "731",
+        "color": "#D8FC36",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 97
+      },
+      "98": {
+        "title": "Kazakh steppe",
+        "code": "732",
+        "color": "#BDFC53",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 98
+      },
+      "99": {
+        "title": "Kazakh upland steppe",
+        "code": "733",
+        "color": "#54FC51",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 99
+      },
+      "100": {
+        "title": "Mongolian-Manchurian grassland",
+        "code": "734",
+        "color": "#F6FC38",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 100
+      },
+      "101": {
+        "title": "Pontic steppe",
+        "code": "735",
+        "color": "#FFAA01",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 101
+      },
+      "102": {
+        "title": "Sayan Intermontane steppe",
+        "code": "736",
+        "color": "#FCFA58",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 102
+      },
+      "103": {
+        "title": "Selenge-Orkhon forest steppe",
+        "code": "737",
+        "color": "#C4FC41",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 103
+      },
+      "104": {
+        "title": "South Siberian forest steppe",
+        "code": "738",
+        "color": "#FCD538",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 104
+      },
+      "105": {
+        "title": "Syrian xeric grasslands and shrublands",
+        "code": "739",
+        "color": "#C9AB17",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 105
+      },
+      "106": {
+        "title": "Tian Shan foothill arid steppe",
+        "code": "740",
+        "color": "#FCC73D",
+        "rangeland": 2,
+        "locale": "en",
+        "id": 106
+      },
+      "107": {
+        "title": "East African halophytics",
+        "code": "69",
+        "color": "#C3E8FA",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 107
+      },
+      "108": {
+        "title": "Etosha Pan halophytics",
+        "code": "70",
+        "color": "#5993B9",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 108
+      },
+      "109": {
+        "title": "Inner Niger Delta flooded savanna",
+        "code": "71",
+        "color": "#96BEE1",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 109
+      },
+      "110": {
+        "title": "Lake Chad flooded savanna",
+        "code": "72",
+        "color": "#43D8F9",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 110
+      },
+      "111": {
+        "title": "Makgadikgadi halophytics",
+        "code": "73",
+        "color": "#2C97C3",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 111
+      },
+      "112": {
+        "title": "Sudd flooded grasslands",
+        "code": "74",
+        "color": "#A7DCFB",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 112
+      },
+      "113": {
+        "title": "Zambezian coastal flooded savanna",
+        "code": "75",
+        "color": "#439CD4",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 113
+      },
+      "114": {
+        "title": "Zambezian flooded grasslands",
+        "code": "76",
+        "color": "#6A89A6",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 114
+      },
+      "115": {
+        "title": "Rann of Kutch seasonal salt marsh",
+        "code": "312",
+        "color": "#72C5F7",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 115
+      },
+      "116": {
+        "title": "Cuban wetlands",
+        "code": "579",
+        "color": "#7F99A6",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 116
+      },
+      "117": {
+        "title": "Enriquillo wetlands",
+        "code": "580",
+        "color": "#46A6FA",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 117
+      },
+      "118": {
+        "title": "Everglades flooded grasslands",
+        "code": "581",
+        "color": "#2AA6BE",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 118
+      },
+      "119": {
+        "title": "Guayaquil flooded grasslands",
+        "code": "582",
+        "color": "#46B7F1",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 119
+      },
+      "120": {
+        "title": "Orinoco wetlands",
+        "code": "583",
+        "color": "#68ADE8",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 120
+      },
+      "121": {
+        "title": "Pantanal",
+        "code": "584",
+        "color": "#29A26C",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 121
+      },
+      "122": {
+        "title": "Paraná flooded savanna",
+        "code": "585",
+        "color": "#3688D1",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 122
+      },
+      "123": {
+        "title": "Southern Cone Mesopotamian savanna",
+        "code": "586",
+        "color": "#A5CDD9",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 123
+      },
+      "124": {
+        "title": "Amur meadow steppe",
+        "code": "741",
+        "color": "#68BED9",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 124
+      },
+      "125": {
+        "title": "Bohai Sea saline meadow",
+        "code": "742",
+        "color": "#3370A6",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 125
+      },
+      "126": {
+        "title": "Nenjiang River grassland",
+        "code": "743",
+        "color": "#5998A9",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 126
+      },
+      "127": {
+        "title": "Nile Delta flooded savanna",
+        "code": "744",
+        "color": "#97DBE8",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 127
+      },
+      "128": {
+        "title": "Saharan halophytics",
+        "code": "745",
+        "color": "#3881AC",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 128
+      },
+      "129": {
+        "title": "Suiphun-Khanka meadows and forest meadows",
+        "code": "746",
+        "color": "#6BD3FA",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 129
+      },
+      "130": {
+        "title": "Tigris-Euphrates alluvial salt marsh",
+        "code": "747",
+        "color": "#6CA8C4",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 130
+      },
+      "131": {
+        "title": "Yellow Sea saline meadow",
+        "code": "748",
+        "color": "#4DA6B8",
+        "rangeland": 3,
+        "locale": "en",
+        "id": 131
+      },
+      "132": {
+        "title": "Angolan montane forest-grassland",
+        "code": "77",
+        "color": "#B57454",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 132
+      },
+      "133": {
+        "title": "East African montane moorlands",
+        "code": "78",
+        "color": "#882AC8",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 133
+      },
+      "134": {
+        "title": "Ethiopian montane grasslands and woodlands",
+        "code": "79",
+        "color": "#B57454",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 134
+      },
+      "135": {
+        "title": "Ethiopian montane moorlands",
+        "code": "80",
+        "color": "#A93800",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 135
+      },
+      "136": {
+        "title": "Highveld grasslands",
+        "code": "81",
+        "color": "#F8C29C",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 136
+      },
+      "137": {
+        "title": "Jos Plateau forest-grassland",
+        "code": "82",
+        "color": "#DEBDAC",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 137
+      },
+      "138": {
+        "title": "Madagascar ericoid thickets",
+        "code": "83",
+        "color": "#E600AA",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 138
+      },
+      "139": {
+        "title": "Mulanje Montane forest-grassland",
+        "code": "84",
+        "color": "#C98D68",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 139
+      },
+      "140": {
+        "title": "Nyanga-Chimanimani Montane forest-grassland",
+        "code": "85",
+        "color": "#B54B01",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 140
+      },
+      "141": {
+        "title": "Rwenzori-Virunga montane moorlands",
+        "code": "86",
+        "color": "#E600AA",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 141
+      },
+      "142": {
+        "title": "Southern Rift Montane forest-grassland",
+        "code": "87",
+        "color": "#A80000",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 142
+      },
+      "143": {
+        "title": "Australian Alps montane grasslands",
+        "code": "193",
+        "color": "#F87C3E",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 143
+      },
+      "144": {
+        "title": "New Zealand South Island montane grasslands",
+        "code": "194",
+        "color": "#B47228",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 144
+      },
+      "145": {
+        "title": "Papuan Central Range sub-alpine grasslands",
+        "code": "195",
+        "color": "#D3AE79",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 145
+      },
+      "146": {
+        "title": "Kinabalu montane alpine meadows",
+        "code": "313",
+        "color": "#C48832",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 146
+      },
+      "147": {
+        "title": "Central Andean dry puna",
+        "code": "587",
+        "color": "#F4A733",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 147
+      },
+      "148": {
+        "title": "Central Andean puna",
+        "code": "588",
+        "color": "#AA66CD",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 148
+      },
+      "149": {
+        "title": "Central Andean wet puna",
+        "code": "589",
+        "color": "#F5C47F",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 149
+      },
+      "150": {
+        "title": "Cordillera Central páramo",
+        "code": "590",
+        "color": "#BD9A64",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 150
+      },
+      "151": {
+        "title": "Cordillera de Merida páramo",
+        "code": "591",
+        "color": "#F4B158",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 151
+      },
+      "152": {
+        "title": "High Monte",
+        "code": "592",
+        "color": "#DBA05E",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 152
+      },
+      "153": {
+        "title": "Northern Andean páramo",
+        "code": "593",
+        "color": "#BF9B77",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 153
+      },
+      "154": {
+        "title": "Santa Marta páramo",
+        "code": "594",
+        "color": "#F1873D",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 154
+      },
+      "155": {
+        "title": "Southern Andean steppe",
+        "code": "595",
+        "color": "#FBB84D",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 155
+      },
+      "156": {
+        "title": "Altai alpine meadow and tundra",
+        "code": "749",
+        "color": "#B8823C",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 156
+      },
+      "157": {
+        "title": "Central Tibetan Plateau alpine steppe",
+        "code": "750",
+        "color": "#E67938",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 157
+      },
+      "158": {
+        "title": "Eastern Himalayan alpine shrub and meadows",
+        "code": "751",
+        "color": "#E8A382",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 158
+      },
+      "159": {
+        "title": "Ghorat-Hazarajat alpine meadow",
+        "code": "752",
+        "color": "#BA3D4D",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 159
+      },
+      "160": {
+        "title": "Hindu Kush alpine meadow",
+        "code": "753",
+        "color": "#FA9A50",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 160
+      },
+      "161": {
+        "title": "Karakoram-West Tibetan Plateau alpine steppe",
+        "code": "754",
+        "color": "#EECB93",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 161
+      },
+      "162": {
+        "title": "Khangai Mountains alpine meadow",
+        "code": "755",
+        "color": "#C27F4B",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 162
+      },
+      "163": {
+        "title": "Kopet Dag woodlands and forest steppe",
+        "code": "756",
+        "color": "#D57739",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 163
+      },
+      "164": {
+        "title": "Kuh Rud and Eastern Iran montane woodlands",
+        "code": "757",
+        "color": "#EB9B3C",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 164
+      },
+      "165": {
+        "title": "Mediterranean High Atlas juniper steppe",
+        "code": "758",
+        "color": "#D6A890",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 165
+      },
+      "166": {
+        "title": "North Tibetan Plateau-Kunlun Mountains alpine desert",
+        "code": "759",
+        "color": "#EC8751",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 166
+      },
+      "167": {
+        "title": "Northwestern Himalayan alpine shrub and meadows",
+        "code": "760",
+        "color": "#F9D6AE",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 167
+      },
+      "168": {
+        "title": "Ordos Plateau steppe",
+        "code": "761",
+        "color": "#F7A86D",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 168
+      },
+      "169": {
+        "title": "Pamir alpine desert and tundra",
+        "code": "762",
+        "color": "#D69F45",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 169
+      },
+      "170": {
+        "title": "Qilian Mountains subalpine meadows",
+        "code": "763",
+        "color": "#A93800",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 170
+      },
+      "171": {
+        "title": "Sayan alpine meadows and tundra",
+        "code": "764",
+        "color": "#B36942",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 171
+      },
+      "172": {
+        "title": "Southeast Tibet shrublands and meadows",
+        "code": "765",
+        "color": "#D5642C",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 172
+      },
+      "173": {
+        "title": "Sulaiman Range alpine meadows",
+        "code": "766",
+        "color": "#720000",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 173
+      },
+      "174": {
+        "title": "Tian Shan montane steppe and meadows",
+        "code": "767",
+        "color": "#DBA859",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 174
+      },
+      "175": {
+        "title": "Tibetan Plateau alpine shrublands and meadows",
+        "code": "768",
+        "color": "#B38160",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 175
+      },
+      "176": {
+        "title": "Western Himalayan alpine shrub and meadows",
+        "code": "769",
+        "color": "#DF72FF",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 176
+      },
+      "177": {
+        "title": "Yarlung Zanbo arid steppe",
+        "code": "770",
+        "color": "#E0B070",
+        "rangeland": 4,
+        "locale": "en",
+        "id": 177
+      },
+      "178": {
+        "title": "Adelie Land tundra",
+        "code": "117",
+        "color": "#63CFAB",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 178
+      },
+      "179": {
+        "title": "Central South Antarctic Peninsula tundra",
+        "code": "118",
+        "color": "#74E4F7",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 179
+      },
+      "180": {
+        "title": "Dronning Maud Land tundra",
+        "code": "119",
+        "color": "#57A7B4",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 180
+      },
+      "181": {
+        "title": "East Antarctic tundra",
+        "code": "120",
+        "color": "#75CCFA",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 181
+      },
+      "182": {
+        "title": "Ellsworth Land tundra",
+        "code": "121",
+        "color": "#72EBD8",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 182
+      },
+      "183": {
+        "title": "Ellsworth Mountains tundra",
+        "code": "122",
+        "color": "#5AB1D2",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 183
+      },
+      "184": {
+        "title": "Enderby Land tundra",
+        "code": "123",
+        "color": "#4CAD9E",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 184
+      },
+      "185": {
+        "title": "Marie Byrd Land tundra",
+        "code": "124",
+        "color": "#5EE6C0",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 185
+      },
+      "186": {
+        "title": "North Victoria Land tundra",
+        "code": "125",
+        "color": "#65D6C4",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 186
+      },
+      "187": {
+        "title": "Northeast Antarctic Peninsula tundra",
+        "code": "126",
+        "color": "#4CA68D",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 187
+      },
+      "188": {
+        "title": "Northwest Antarctic Peninsula tundra",
+        "code": "127",
+        "color": "#6FC1DB",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 188
+      },
+      "189": {
+        "title": "Prince Charles Mountains tundra",
+        "code": "128",
+        "color": "#55C7AE",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 189
+      },
+      "190": {
+        "title": "Scotia Sea Islands tundra",
+        "code": "129",
+        "color": "#71E0D9",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 190
+      },
+      "191": {
+        "title": "South Antarctic Peninsula tundra",
+        "code": "130",
+        "color": "#63EBDF",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 191
+      },
+      "192": {
+        "title": "South Orkney Islands tundra",
+        "code": "131",
+        "color": "#60C4E8",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 192
+      },
+      "193": {
+        "title": "South Victoria Land tundra",
+        "code": "132",
+        "color": "#5DA9DB",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 193
+      },
+      "194": {
+        "title": "Southern Indian Ocean Islands tundra",
+        "code": "133",
+        "color": "#69E7F5",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 194
+      },
+      "195": {
+        "title": "Transantarctic Mountains tundra",
+        "code": "134",
+        "color": "#7AD4F7",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 195
+      },
+      "196": {
+        "title": "Antipodes Subantarctic Islands tundra",
+        "code": "196",
+        "color": "#6BB3F3",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 196
+      },
+      "197": {
+        "title": "Ahklun and Kilbuck Upland Tundra",
+        "code": "404",
+        "color": "#4C82B6",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 197
+      },
+      "198": {
+        "title": "Alaska-St. Elias Range tundra",
+        "code": "405",
+        "color": "#61D2F2",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 198
+      },
+      "199": {
+        "title": "Aleutian Islands tundra",
+        "code": "406",
+        "color": "#4DA6A2",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 199
+      },
+      "200": {
+        "title": "Arctic coastal tundra",
+        "code": "407",
+        "color": "#78F3F1",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 200
+      },
+      "201": {
+        "title": "Arctic foothills tundra",
+        "code": "408",
+        "color": "#4D99B3",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 201
+      },
+      "202": {
+        "title": "Beringia lowland tundra",
+        "code": "409",
+        "color": "#69F6D6",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 202
+      },
+      "203": {
+        "title": "Beringia upland tundra",
+        "code": "410",
+        "color": "#5ACFC7",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 203
+      },
+      "204": {
+        "title": "Brooks-British Range tundra",
+        "code": "411",
+        "color": "#66BECA",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 204
+      },
+      "205": {
+        "title": "Canadian High Arctic tundra",
+        "code": "412",
+        "color": "#579ACE",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 205
+      },
+      "206": {
+        "title": "Canadian Low Arctic tundra",
+        "code": "413",
+        "color": "#4DB18F",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 206
+      },
+      "207": {
+        "title": "Canadian Middle Arctic Tundra",
+        "code": "414",
+        "color": "#6DB5DE",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 207
+      },
+      "208": {
+        "title": "Davis Highlands tundra",
+        "code": "415",
+        "color": "#4CB9BB",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 208
+      },
+      "209": {
+        "title": "Interior Yukon-Alaska alpine tundra",
+        "code": "416",
+        "color": "#6EE3C6",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 209
+      },
+      "210": {
+        "title": "Kalaallit Nunaat Arctic steppe",
+        "code": "417",
+        "color": "#64DEE3",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 210
+      },
+      "211": {
+        "title": "Kalaallit Nunaat High Arctic tundra",
+        "code": "418",
+        "color": "#6AFBEE",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 211
+      },
+      "212": {
+        "title": "Ogilvie-MacKenzie alpine tundra",
+        "code": "419",
+        "color": "#74D0E7",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 212
+      },
+      "213": {
+        "title": "Pacific Coastal Mountain icefields and tundra",
+        "code": "420",
+        "color": "#4C82B6",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 213
+      },
+      "214": {
+        "title": "Torngat Mountain tundra",
+        "code": "421",
+        "color": "#5ABF9D",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 214
+      },
+      "215": {
+        "title": "Cherskii-Kolyma mountain tundra",
+        "code": "771",
+        "color": "#5085A5",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 215
+      },
+      "216": {
+        "title": "Chukchi Peninsula tundra",
+        "code": "772",
+        "color": "#5EC0AB",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 216
+      },
+      "217": {
+        "title": "Kamchatka tundra",
+        "code": "773",
+        "color": "#5E9CC0",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 217
+      },
+      "218": {
+        "title": "Kola Peninsula tundra",
+        "code": "774",
+        "color": "#5DE3E2",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 218
+      },
+      "219": {
+        "title": "Northeast Siberian coastal tundra",
+        "code": "775",
+        "color": "#7BF5CC",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 219
+      },
+      "220": {
+        "title": "Northwest Russian-Novaya Zemlya tundra",
+        "code": "776",
+        "color": "#5DB3C8",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 220
+      },
+      "221": {
+        "title": "Novosibirsk Islands Arctic desert",
+        "code": "777",
+        "color": "#77C2FB",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 221
+      },
+      "222": {
+        "title": "Russian Arctic desert",
+        "code": "778",
+        "color": "#558CB8",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 222
+      },
+      "223": {
+        "title": "Russian Bering tundra",
+        "code": "779",
+        "color": "#4FACB3",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 223
+      },
+      "224": {
+        "title": "Scandinavian Montane Birch forest and grasslands",
+        "code": "780",
+        "color": "#62C8CA",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 224
+      },
+      "225": {
+        "title": "Taimyr-Central Siberian tundra",
+        "code": "781",
+        "color": "#519AAB",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 225
+      },
+      "226": {
+        "title": "Trans-Baikal Bald Mountain tundra",
+        "code": "782",
+        "color": "#5AD5B6",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 226
+      },
+      "227": {
+        "title": "Wrangel Island Arctic desert",
+        "code": "783",
+        "color": "#59B4AF",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 227
+      },
+      "228": {
+        "title": "Yamal-Gydan tundra",
+        "code": "784",
+        "color": "#5ADEC9",
+        "rangeland": 5,
+        "locale": "en",
+        "id": 228
+      },
+      "229": {
+        "title": "Albany thickets",
+        "code": "88",
+        "color": "#FF7F7E",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 229
+      },
+      "230": {
+        "title": "Fynbos shrubland",
+        "code": "89",
+        "color": "#CD8966",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 230
+      },
+      "231": {
+        "title": "Renosterveld shrubland",
+        "code": "90",
+        "color": "#B54B01",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 231
+      },
+      "232": {
+        "title": "Coolgardie woodlands",
+        "code": "197",
+        "color": "#FF7F7E",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 232
+      },
+      "233": {
+        "title": "Esperance mallee",
+        "code": "198",
+        "color": "#E54C00",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 233
+      },
+      "234": {
+        "title": "Eyre and York mallee",
+        "code": "199",
+        "color": "#E54C00",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 234
+      },
+      "235": {
+        "title": "Flinders-Lofty montane woodlands",
+        "code": "200",
+        "color": "#A80000",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 235
+      },
+      "236": {
+        "title": "Hampton mallee and woodlands",
+        "code": "201",
+        "color": "#CD8966",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 236
+      },
+      "237": {
+        "title": "Jarrah-Karri forest and shrublands",
+        "code": "202",
+        "color": "#F5A27A",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 237
+      },
+      "238": {
+        "title": "Murray-Darling woodlands and mallee",
+        "code": "203",
+        "color": "#CD8966",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 238
+      },
+      "239": {
+        "title": "Naracoorte woodlands",
+        "code": "204",
+        "color": "#B3493B",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 239
+      },
+      "240": {
+        "title": "Southwest Australia savanna",
+        "code": "205",
+        "color": "#C63901",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 240
+      },
+      "241": {
+        "title": "Southwest Australia woodlands",
+        "code": "206",
+        "color": "#A80000",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 241
+      },
+      "242": {
+        "title": "California coastal sage and chaparral",
+        "code": "422",
+        "color": "#FF7F7E",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 242
+      },
+      "243": {
+        "title": "California interior chaparral and woodlands",
+        "code": "423",
+        "color": "#FFA77F",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 243
+      },
+      "244": {
+        "title": "California montane chaparral and woodlands",
+        "code": "424",
+        "color": "#A93800",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 244
+      },
+      "245": {
+        "title": "Santa Lucia Montane Chaparral & Woodlands",
+        "code": "425",
+        "color": "#B54B01",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 245
+      },
+      "246": {
+        "title": "Chilean Matorral",
+        "code": "596",
+        "color": "#CD6667",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 246
+      },
+      "247": {
+        "title": "Aegean and Western Turkey sclerophyllous and mixed forests",
+        "code": "785",
+        "color": "#FF7F7C",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 247
+      },
+      "248": {
+        "title": "Anatolian conifer and deciduous mixed forests",
+        "code": "786",
+        "color": "#A80000",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 248
+      },
+      "249": {
+        "title": "Canary Islands dry woodlands and forests",
+        "code": "787",
+        "color": "#FFA77F",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 249
+      },
+      "250": {
+        "title": "Corsican montane broadleaf and mixed forests",
+        "code": "788",
+        "color": "#FF7F7E",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 250
+      },
+      "251": {
+        "title": "Crete Mediterranean forests",
+        "code": "789",
+        "color": "#F5A27A",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 251
+      },
+      "252": {
+        "title": "Cyprus Mediterranean forests",
+        "code": "790",
+        "color": "#A80000",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 252
+      },
+      "253": {
+        "title": "Eastern Mediterranean conifer-broadleaf forests",
+        "code": "791",
+        "color": "#F5A27A",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 253
+      },
+      "254": {
+        "title": "Iberian conifer forests",
+        "code": "792",
+        "color": "#CD8966",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 254
+      },
+      "255": {
+        "title": "Iberian sclerophyllous and semi-deciduous forests",
+        "code": "793",
+        "color": "#E54C00",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 255
+      },
+      "256": {
+        "title": "Illyrian deciduous forests",
+        "code": "794",
+        "color": "#F1873D",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 256
+      },
+      "257": {
+        "title": "Italian sclerophyllous and semi-deciduous forests",
+        "code": "795",
+        "color": "#E54C00",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 257
+      },
+      "258": {
+        "title": "Mediterranean Acacia-Argania dry woodlands and succulent thickets",
+        "code": "796",
+        "color": "#F1873D",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 258
+      },
+      "259": {
+        "title": "Mediterranean dry woodlands and steppe",
+        "code": "797",
+        "color": "#F5A27A",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 259
+      },
+      "260": {
+        "title": "Mediterranean woodlands and forests",
+        "code": "798",
+        "color": "#CD6667",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 260
+      },
+      "261": {
+        "title": "Northeast Spain and Southern France Mediterranean forests",
+        "code": "799",
+        "color": "#D49E54",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 261
+      },
+      "262": {
+        "title": "Northwest Iberian montane forests",
+        "code": "800",
+        "color": "#D49E54",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 262
+      },
+      "263": {
+        "title": "Pindus Mountains mixed forests",
+        "code": "801",
+        "color": "#D49E54",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 263
+      },
+      "264": {
+        "title": "South Apennine mixed montane forests",
+        "code": "802",
+        "color": "#720000",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 264
+      },
+      "265": {
+        "title": "Southeast Iberian shrubs and woodlands",
+        "code": "803",
+        "color": "#C63901",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 265
+      },
+      "266": {
+        "title": "Southern Anatolian montane conifer and deciduous forests",
+        "code": "804",
+        "color": "#C63901",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 266
+      },
+      "267": {
+        "title": "Southwest Iberian Mediterranean sclerophyllous and mixed forests",
+        "code": "805",
+        "color": "#A80000",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 267
+      },
+      "268": {
+        "title": "Tyrrhenian-Adriatic sclerophyllous and mixed forests",
+        "code": "806",
+        "color": "#B02745",
+        "rangeland": 6,
+        "locale": "en",
+        "id": 268
+      },
+      "269": {
+        "title": "Aldabra Island xeric scrub",
+        "code": "91",
+        "color": "#FA647F",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 269
+      },
+      "270": {
+        "title": "Djibouti xeric shrublands",
+        "code": "92",
+        "color": "#F5A27A",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 270
+      },
+      "271": {
+        "title": "Eritrean coastal desert",
+        "code": "93",
+        "color": "#E74E6A",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 271
+      },
+      "272": {
+        "title": "Gariep Karoo",
+        "code": "94",
+        "color": "#C17D4C",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 272
+      },
+      "273": {
+        "title": "Hobyo grasslands and shrublands",
+        "code": "95",
+        "color": "#E05A57",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 273
+      },
+      "274": {
+        "title": "Ile Europa and Bassas da India xeric scrub",
+        "code": "96",
+        "color": "#E3A653",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 274
+      },
+      "275": {
+        "title": "Kalahari xeric savanna",
+        "code": "97",
+        "color": "#E38454",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 275
+      },
+      "276": {
+        "title": "Kaokoveld desert",
+        "code": "98",
+        "color": "#DE5245",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 276
+      },
+      "277": {
+        "title": "Madagascar spiny thickets",
+        "code": "99",
+        "color": "#E05A57",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 277
+      },
+      "278": {
+        "title": "Madagascar succulent woodlands",
+        "code": "100",
+        "color": "#F7885B",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 278
+      },
+      "279": {
+        "title": "Nama Karoo shrublands",
+        "code": "101",
+        "color": "#BA8D4A",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 279
+      },
+      "280": {
+        "title": "Namaqualand-Richtersveld steppe",
+        "code": "102",
+        "color": "#DFB44C",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 280
+      },
+      "281": {
+        "title": "Namib Desert",
+        "code": "103",
+        "color": "#E89B49",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 281
+      },
+      "282": {
+        "title": "Namibian savanna woodlands",
+        "code": "104",
+        "color": "#FCD135",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 282
+      },
+      "283": {
+        "title": "Socotra Island xeric shrublands",
+        "code": "105",
+        "color": "#A80000",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 283
+      },
+      "284": {
+        "title": "Somali montane xeric woodlands",
+        "code": "106",
+        "color": "#E8914E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 284
+      },
+      "285": {
+        "title": "Southwest Arabian coastal xeric shrublands",
+        "code": "107",
+        "color": "#F2B654",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 285
+      },
+      "286": {
+        "title": "Southwest Arabian Escarpment shrublands and woodlands",
+        "code": "108",
+        "color": "#B85E46",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 286
+      },
+      "287": {
+        "title": "Southwest Arabian highland xeric scrub",
+        "code": "109",
+        "color": "#D55063",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 287
+      },
+      "288": {
+        "title": "Succulent Karoo xeric shrublands",
+        "code": "110",
+        "color": "#C73F49",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 288
+      },
+      "289": {
+        "title": "Carnarvon xeric shrublands",
+        "code": "207",
+        "color": "#F27C62",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 289
+      },
+      "290": {
+        "title": "Central Ranges xeric scrub",
+        "code": "208",
+        "color": "#CC5247",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 290
+      },
+      "291": {
+        "title": "Gibson desert",
+        "code": "209",
+        "color": "#CF5167",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 291
+      },
+      "292": {
+        "title": "Great Sandy-Tanami desert",
+        "code": "210",
+        "color": "#FF7F7E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 292
+      },
+      "293": {
+        "title": "Great Victoria desert",
+        "code": "211",
+        "color": "#B3493B",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 293
+      },
+      "294": {
+        "title": "Nullarbor Plains xeric shrublands",
+        "code": "212",
+        "color": "#F05D6F",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 294
+      },
+      "295": {
+        "title": "Pilbara shrublands",
+        "code": "213",
+        "color": "#E34661",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 295
+      },
+      "296": {
+        "title": "Simpson desert",
+        "code": "214",
+        "color": "#E8805D",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 296
+      },
+      "297": {
+        "title": "Tirari-Sturt stony desert",
+        "code": "215",
+        "color": "#D86B42",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 297
+      },
+      "298": {
+        "title": "Western Australian Mulga shrublands",
+        "code": "216",
+        "color": "#F2AF5E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 298
+      },
+      "299": {
+        "title": "Aravalli west thorn scrub forests",
+        "code": "314",
+        "color": "#E67938",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 299
+      },
+      "300": {
+        "title": "Deccan thorn scrub forests",
+        "code": "315",
+        "color": "#C9A63E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 300
+      },
+      "301": {
+        "title": "Godavari-Krishna mangroves",
+        "code": "316",
+        "color": "#E600AA",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 301
+      },
+      "302": {
+        "title": "Indus Valley desert",
+        "code": "317",
+        "color": "#FDA87F",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 302
+      },
+      "303": {
+        "title": "Thar desert",
+        "code": "318",
+        "color": "#CFA149",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 303
+      },
+      "304": {
+        "title": "Baja California desert",
+        "code": "426",
+        "color": "#E0B45B",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 304
+      },
+      "305": {
+        "title": "Central Mexican matorral",
+        "code": "427",
+        "color": "#CC9141",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 305
+      },
+      "306": {
+        "title": "Chihuahuan desert",
+        "code": "428",
+        "color": "#E18C78",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 306
+      },
+      "307": {
+        "title": "Colorado Plateau shrublands",
+        "code": "429",
+        "color": "#FF7F7E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 307
+      },
+      "308": {
+        "title": "Great Basin shrub steppe",
+        "code": "430",
+        "color": "#FFA77F",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 308
+      },
+      "309": {
+        "title": "Gulf of California xeric scrub",
+        "code": "431",
+        "color": "#E18C78",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 309
+      },
+      "310": {
+        "title": "Meseta Central matorral",
+        "code": "432",
+        "color": "#A57024",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 310
+      },
+      "311": {
+        "title": "Mojave desert",
+        "code": "433",
+        "color": "#FA5D4E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 311
+      },
+      "312": {
+        "title": "Snake-Columbia shrub steppe",
+        "code": "434",
+        "color": "#C4694E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 312
+      },
+      "313": {
+        "title": "Sonoran desert",
+        "code": "435",
+        "color": "#FA5870",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 313
+      },
+      "314": {
+        "title": "Tamaulipan matorral",
+        "code": "436",
+        "color": "#BA4A58",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 314
+      },
+      "315": {
+        "title": "Tamaulipan mezquital",
+        "code": "437",
+        "color": "#F9A461",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 315
+      },
+      "316": {
+        "title": "Wyoming Basin shrub steppe",
+        "code": "438",
+        "color": "#B57C47",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 316
+      },
+      "317": {
+        "title": "Araya and Paria xeric scrub",
+        "code": "597",
+        "color": "#B29841",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 317
+      },
+      "318": {
+        "title": "Atacama desert",
+        "code": "598",
+        "color": "#F18650",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 318
+      },
+      "319": {
+        "title": "Caribbean shrublands",
+        "code": "599",
+        "color": "#D98944",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 319
+      },
+      "320": {
+        "title": "Cuban cactus scrub",
+        "code": "600",
+        "color": "#F76A63",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 320
+      },
+      "321": {
+        "title": "Galápagos Islands xeric scrub",
+        "code": "601",
+        "color": "#F5984B",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 321
+      },
+      "322": {
+        "title": "Guajira-Barranquilla xeric scrub",
+        "code": "602",
+        "color": "#F7975B",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 322
+      },
+      "323": {
+        "title": "La Costa xeric shrublands",
+        "code": "603",
+        "color": "#FA595E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 323
+      },
+      "324": {
+        "title": "Malpelo Island xeric scrub",
+        "code": "604",
+        "color": "#B34544",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 324
+      },
+      "325": {
+        "title": "Motagua Valley thornscrub",
+        "code": "605",
+        "color": "#B69248",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 325
+      },
+      "326": {
+        "title": "Paraguaná xeric scrub",
+        "code": "606",
+        "color": "#CC9753",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 326
+      },
+      "327": {
+        "title": "San Lucan xeric scrub",
+        "code": "607",
+        "color": "#A85E1F",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 327
+      },
+      "328": {
+        "title": "Sechura desert",
+        "code": "608",
+        "color": "#F15C56",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 328
+      },
+      "329": {
+        "title": "St. Peter and St. Paul Rocks",
+        "code": "609",
+        "color": "#BFA244",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 329
+      },
+      "330": {
+        "title": "Tehuacán Valley matorral",
+        "code": "610",
+        "color": "#F57558",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 330
+      },
+      "331": {
+        "title": "Afghan Mountains semi-desert",
+        "code": "807",
+        "color": "#FA774D",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 331
+      },
+      "332": {
+        "title": "Alashan Plateau semi-desert",
+        "code": "808",
+        "color": "#F9AB58",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 332
+      },
+      "333": {
+        "title": "Arabian desert",
+        "code": "809",
+        "color": "#FFEBBE",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 333
+      },
+      "334": {
+        "title": "Arabian sand desert",
+        "code": "810",
+        "color": "#FFAA01",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 334
+      },
+      "335": {
+        "title": "Arabian-Persian Gulf coastal plain desert",
+        "code": "811",
+        "color": "#F6CE5C",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 335
+      },
+      "336": {
+        "title": "Azerbaijan shrub desert and steppe",
+        "code": "812",
+        "color": "#B7393D",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 336
+      },
+      "337": {
+        "title": "Badghyz and Karabil semi-desert",
+        "code": "813",
+        "color": "#B86847",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 337
+      },
+      "338": {
+        "title": "Baluchistan xeric woodlands",
+        "code": "814",
+        "color": "#D94F5C",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 338
+      },
+      "339": {
+        "title": "Caspian lowland desert",
+        "code": "815",
+        "color": "#B85349",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 339
+      },
+      "340": {
+        "title": "Central Afghan Mountains xeric woodlands",
+        "code": "816",
+        "color": "#A93800",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 340
+      },
+      "341": {
+        "title": "Central Asian northern desert",
+        "code": "817",
+        "color": "#DE8E59",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 341
+      },
+      "342": {
+        "title": "Central Asian riparian woodlands",
+        "code": "818",
+        "color": "#D06F42",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 342
+      },
+      "343": {
+        "title": "Central Asian southern desert",
+        "code": "819",
+        "color": "#F7BA4F",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 343
+      },
+      "344": {
+        "title": "Central Persian desert basins",
+        "code": "820",
+        "color": "#FDA87F",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 344
+      },
+      "345": {
+        "title": "East Arabian fog shrublands and sand desert",
+        "code": "821",
+        "color": "#734C00",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 345
+      },
+      "346": {
+        "title": "East Sahara Desert",
+        "code": "822",
+        "color": "#D47A55",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 346
+      },
+      "347": {
+        "title": "East Saharan montane xeric woodlands",
+        "code": "823",
+        "color": "#FA774D",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 347
+      },
+      "348": {
+        "title": "Eastern Gobi desert steppe",
+        "code": "824",
+        "color": "#B2863B",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 348
+      },
+      "349": {
+        "title": "Gobi Lakes Valley desert steppe",
+        "code": "825",
+        "color": "#D16B54",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 349
+      },
+      "350": {
+        "title": "Great Lakes Basin desert steppe",
+        "code": "826",
+        "color": "#F9CD64",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 350
+      },
+      "351": {
+        "title": "Junggar Basin semi-desert",
+        "code": "827",
+        "color": "#B35E37",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 351
+      },
+      "352": {
+        "title": "Kazakh semi-desert",
+        "code": "828",
+        "color": "#CE9053",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 352
+      },
+      "353": {
+        "title": "Kopet Dag semi-desert",
+        "code": "829",
+        "color": "#FAD354",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 353
+      },
+      "354": {
+        "title": "Mesopotamian shrub desert",
+        "code": "830",
+        "color": "#E67938",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 354
+      },
+      "355": {
+        "title": "North Arabian desert",
+        "code": "831",
+        "color": "#E3C35C",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 355
+      },
+      "356": {
+        "title": "North Arabian highland shrublands",
+        "code": "832",
+        "color": "#C8853E",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 356
+      },
+      "357": {
+        "title": "North Saharan Xeric Steppe and Woodland",
+        "code": "833",
+        "color": "#C95F51",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 357
+      },
+      "358": {
+        "title": "Paropamisus xeric woodlands",
+        "code": "834",
+        "color": "#E6644C",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 358
+      },
+      "359": {
+        "title": "Qaidam Basin semi-desert",
+        "code": "835",
+        "color": "#CE6C47",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 359
+      },
+      "360": {
+        "title": "Red Sea coastal desert",
+        "code": "836",
+        "color": "#DE6C51",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 360
+      },
+      "361": {
+        "title": "Red Sea-Arabian Desert shrublands",
+        "code": "837",
+        "color": "#CC8245",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 361
+      },
+      "362": {
+        "title": "Registan-North Pakistan sandy desert",
+        "code": "838",
+        "color": "#F6CE5C",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 362
+      },
+      "363": {
+        "title": "Saharan Atlantic coastal desert",
+        "code": "839",
+        "color": "#B43D41",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 363
+      },
+      "364": {
+        "title": "South Arabian plains and plateau desert",
+        "code": "840",
+        "color": "#FFD380",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 364
+      },
+      "365": {
+        "title": "South Iran Nubo-Sindian desert and semi-desert",
+        "code": "841",
+        "color": "#B78139",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 365
+      },
+      "366": {
+        "title": "South Sahara desert",
+        "code": "842",
+        "color": "#DF8245",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 366
+      },
+      "367": {
+        "title": "Taklimakan desert",
+        "code": "843",
+        "color": "#FFAA01",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 367
+      },
+      "368": {
+        "title": "Tibesti-Jebel Uweinat montane xeric woodlands",
+        "code": "844",
+        "color": "#BB7B3D",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 368
+      },
+      "369": {
+        "title": "West Sahara desert",
+        "code": "845",
+        "color": "#F7B152",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 369
+      },
+      "370": {
+        "title": "West Saharan montane xeric woodlands",
+        "code": "846",
+        "color": "#B43D41",
+        "rangeland": 7,
+        "locale": "en",
+        "id": 370
+      }
+    }
+  }
+}

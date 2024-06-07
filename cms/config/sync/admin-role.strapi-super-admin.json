@@ -290,7 +290,8 @@
         "fields": [
           "title",
           "slug",
-          "code"
+          "code",
+          "color"
         ],
         "locales": [
           "en",
@@ -334,7 +335,8 @@
         "fields": [
           "title",
           "slug",
-          "code"
+          "code",
+          "color"
         ],
         "locales": [
           "en",
@@ -352,7 +354,8 @@
         "fields": [
           "title",
           "slug",
-          "code"
+          "code",
+          "color"
         ],
         "locales": [
           "en",
@@ -715,6 +718,20 @@
     },
     {
       "action": "plugin::i18n.locale.update",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-entries.export",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-entries.import",
       "actionParameters": {},
       "subject": null,
       "properties": {},

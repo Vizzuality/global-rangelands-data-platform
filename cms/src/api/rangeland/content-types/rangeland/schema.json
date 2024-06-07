@@ -4,7 +4,8 @@
   "info": {
     "singularName": "rangeland",
     "pluralName": "rangelands",
-    "displayName": "Rangeland"
+    "displayName": "Rangeland",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -39,6 +40,20 @@
         }
       },
       "type": "string"
+    },
+    "color": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "string"
+    },
+    "ecoregions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ecoregion.ecoregion",
+      "mappedBy": "rangeland"
     }
   }
 }
