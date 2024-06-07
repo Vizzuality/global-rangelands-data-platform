@@ -28,8 +28,6 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
     [layers],
   );
 
-  const selectedLayerId = datasetLayers?.find((l) => !!l && syncLayers?.includes(l));
-
   const handleSelectLayer = (layerSlug: string) => {
     setSyncLayers((prev) => {
       // If there is already a layer from the same dataset, remove the old layer and add the selected one
@@ -45,15 +43,16 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
     });
   };
 
-  const selectedLayer = useMemo(
-    () => layers?.find((l) => l.id === selectedLayerId),
-    [layers, selectedLayerId],
-  );
+  const selectedLayer = useMemo(() => {
+    const selectedLayerId = datasetLayers?.find((l) => !!l && syncLayers?.includes(l));
+    return layers?.find((l) => l.layer?.data?.attributes?.slug === selectedLayerId);
+  }, [layers, datasetLayers, syncLayers]);
+
   const isRangelandDataset = datasetSlug === RANGELAND_DATASET_SLUG;
 
   const getLegendColors = (layerSlug?: string) => {
     if (!layerSlug) return;
-    if (!isRangelandDataset) {
+    if (isRangelandDataset) {
       return RANGELAND_LAYERS_COLORS_LEGEND[
         layerSlug as keyof typeof RANGELAND_LAYERS_COLORS_LEGEND
       ];
