@@ -13,10 +13,12 @@ type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
 };
 
-const DatasetsItem = ({ id, attributes, className }: DatasetsItemProps) => {
+const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   const t = useTranslations();
   const [datasets, setDatasets] = useSyncDatasets();
   const [, setLayers] = useSyncLayers();
+
+  const id = attributes?.slug;
 
   const handleToggleDataset = (checked: boolean) => {
     if (!id) return;
@@ -26,11 +28,16 @@ const DatasetsItem = ({ id, attributes, className }: DatasetsItemProps) => {
       }
       return [...prev, id];
     });
+
     if (!checked) {
-      setLayers((prev) => prev.filter((l) => !attributes?.layers?.map((l) => l.id)?.includes(l)));
+      setLayers((prev) =>
+        prev.filter(
+          (l) => !attributes?.layers?.map((l) => l.layer?.data?.attributes?.slug)?.includes(l),
+        ),
+      );
     }
     if (checked) {
-      const firstDatasetLayer = attributes?.layers?.[0]?.id;
+      const firstDatasetLayer = attributes?.layers?.[0]?.layer?.data?.attributes?.slug;
       if (firstDatasetLayer) {
         setLayers((prev) => [...prev, firstDatasetLayer]);
       }

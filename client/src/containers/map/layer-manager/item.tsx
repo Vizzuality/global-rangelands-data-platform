@@ -7,7 +7,7 @@ import { Layer } from "deck.gl";
 
 import { parseConfig } from "@/lib/json-converter";
 
-import { useGetLayersId } from "@/types/generated/layer";
+import { useGetLayers } from "@/types/generated/layer";
 // import { LayerResponseDataObject } from "@/types/generated/strapi.schemas";
 import { LayerTyped } from "@/types/layers";
 
@@ -19,13 +19,21 @@ import DeckLayer from "@/components/map/layers/deck-layer";
 interface LayerManagerItemProps {
   beforeId?: string;
   settings: Record<string, unknown>;
-  id: number;
+  id: string;
 }
 
 const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => {
-  const { data } = useGetLayersId(id, {
-    populate: "dataset,metadata",
-  });
+  const { data } = useGetLayers(
+    {
+      filters: { slug: id },
+      populate: "dataset,metadata",
+    },
+    {
+      query: {
+        select: (response) => response.data?.[0],
+      },
+    },
+  );
 
   // const layersInteractive = useAtomValue(layersInteractiveAtom);
   // const setLayersInteractive = useSetAtom(layersInteractiveAtom);
@@ -71,9 +79,9 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   //   [data?.data?.attributes, id, setLayersInteractive, setLayersInteractiveIds],
   // );
 
-  if (!data?.data?.attributes) return null;
+  if (!data?.attributes) return null;
 
-  const { type } = data.data.attributes as unknown as LayerTyped;
+  const { type } = data.attributes as unknown as LayerTyped;
 
   // We are not using mapbox layers for now, but the component will remain in case of future uses
   // if (type === "mapbox") {
@@ -100,7 +108,7 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
 
   // The only layer type we are using for now is DeckLayer, but the CMS doesn't support the type "Deck", so we are using the type "Mapbox" for now
   if (type === "Mapbox") {
-    const { config, params_config } = data.data.attributes;
+    const { config, params_config } = data.attributes;
     const c = parseConfig<Layer>({
       config,
       params_config,

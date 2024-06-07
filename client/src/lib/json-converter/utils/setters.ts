@@ -57,7 +57,7 @@ export const setColor = ({ colors_config }: SetColorProps) => {
     return (f: Feature<Geometry>) => {
       return Color(
         (colorValues as Record<string, string | number[]>)[f.properties?.[property]] ||
-          defaultColor,
+        defaultColor,
       )
         .rgb()
         .array() as SetColorsReturn;
@@ -80,6 +80,13 @@ const setDataWithMapboxToken = ({ dataUrls }: SetDataWithMapboxTokenProps) => {
   return _setDataUrlAsStringArray(dataUrls).map((url) =>
     url.concat(`?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}`),
   );
+};
+
+const setRengelandColors = ({ layerSlug }: { layerSlug: string }) => {
+  switch (layerSlug) {
+    case "rangeland-biomes":
+      return ["#FF0000", "#00FF00", "#0000FF"];
+  }
 };
 
 const SETTERS = {

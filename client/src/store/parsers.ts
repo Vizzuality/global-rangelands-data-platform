@@ -9,12 +9,12 @@ import {
 
 import { DEFAULT_BBOX } from "@/components/map/constants";
 
-const DEFAULT_DATASETS = [1];
-const DEFAULT_LAYERS = [1];
+const DEFAULT_DATASETS = ["rangeland-systems"];
+const DEFAULT_LAYERS = ["rangeland-system"];
 
-export const datasetsParser = parseAsArrayOf(parseAsInteger).withDefault(DEFAULT_DATASETS);
+export const datasetsParser = parseAsArrayOf(parseAsString).withDefault(DEFAULT_DATASETS);
 
-export const layersParser = parseAsArrayOf(parseAsInteger).withDefault(DEFAULT_LAYERS);
+export const layersParser = parseAsArrayOf(parseAsString).withDefault(DEFAULT_LAYERS);
 export const layersSettingsParser = parseAsJson<{
   [key: string]: Record<string, unknown>;
 }>();
