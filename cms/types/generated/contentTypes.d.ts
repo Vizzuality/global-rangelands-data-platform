@@ -485,6 +485,12 @@ export interface ApiEcoregionEcoregion extends Schema.CollectionType {
       'manyToOne',
       'api::rangeland.rangeland'
     >;
+    color: Attribute.String &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
