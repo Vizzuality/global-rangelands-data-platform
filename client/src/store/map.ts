@@ -49,5 +49,6 @@ export const useSyncSearchParams = () => {
   return serialize({ datasets, layers, layersSettings, bbox, mapStyle });
 };
 
+export const sidebarOpenAtom = atom(false);
 export const layersInteractiveAtom = atom<(number | string)[]>([]);
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);

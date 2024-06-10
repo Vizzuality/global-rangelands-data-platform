@@ -1,12 +1,14 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAtom } from "jotai";
+import { sidebarOpenAtom } from "@/store/map";
 
 const Sidebar = ({ children }: PropsWithChildren): JSX.Element => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useAtom(sidebarOpenAtom);
 
   const toggleOpen = () => setOpen((prev) => !prev);
 
