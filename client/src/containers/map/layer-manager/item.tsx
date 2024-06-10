@@ -7,7 +7,6 @@ import { Layer } from "deck.gl";
 
 import { parseConfig } from "@/lib/json-converter";
 
-import { useGetLayers, useGetLayersId } from "@/types/generated/layer";
 // import { LayerResponseDataObject } from "@/types/generated/strapi.schemas";
 import { LayerTyped } from "@/types/layers";
 
