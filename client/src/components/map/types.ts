@@ -3,7 +3,7 @@ import type { ViewState, MapProps } from "react-map-gl";
 import { FitBoundsOptions } from "mapbox-gl";
 import { MAPBOX_STYLE } from "./constants";
 
-export type MapStyles = keyof typeof MAPBOX_STYLE;
+export type MapStylesIds = keyof typeof MAPBOX_STYLE;
 export interface CustomMapProps extends MapProps {
   id?: string;
   /** A function that returns the map instance */
