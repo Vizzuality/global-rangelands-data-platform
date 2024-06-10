@@ -3,11 +3,14 @@
 import { useGetDatasets } from "@/types/generated/dataset";
 import DatasetsItem from "@/containers/datasets/item";
 import DatasetsHeader from "./header";
+import { useGetLocalizedList } from "@/lib/localized-query";
 
 const Datasets = () => {
-  const { data: datasetsData } = useGetDatasets({
+  const datasetsListQuery = useGetDatasets({
     populate: ["layers", "layers.layer"],
   });
+
+  const { data: datasetsData } = useGetLocalizedList(datasetsListQuery);
 
   return (
     <div className="mb-10 space-y-10">
