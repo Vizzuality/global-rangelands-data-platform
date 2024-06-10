@@ -1,18 +1,16 @@
 "use client";
 import MapComponent from "@/components/map";
-import MapController from "./controls";
 import { MAPBOX_STYLE } from "@/components/map/constants";
-import { useState } from "react";
-import { MapStyles } from "@/components/map/types";
 import { AttributionControl } from "react-map-gl";
 import LayerManager from "./layer-manager";
+import Navigation from "@/containers/navigation";
+import MapStyles from "@/containers/navigation/map-style";
+import Controls from "./controls";
+import MapLayers from "@/containers/navigation/map-layers";
+import { useSyncMapStyle } from "@/store/map";
 
 const Map = () => {
-  const [mapStyle, setMapStyle] = useState<MapStyles>("light");
-
-  const handleChangeMapStyle = (style: MapStyles) => {
-    setMapStyle(style);
-  };
+  const [mapStyle] = useSyncMapStyle();
 
   return (
     <div className="h-full w-full">
@@ -26,9 +24,15 @@ const Map = () => {
         logoPosition="top-left"
       >
         <AttributionControl style={{ fontSize: "0.75rem" }} compact={true} position="top-left" />
-        <MapController defaultMapStyle={mapStyle} onChangeMapStyle={handleChangeMapStyle} />
         <LayerManager />
+        <Controls />
       </MapComponent>
+
+      <Navigation>
+        <MapStyles />
+        <MapLayers />
+      </Navigation>
+      {/* <MapController defaultMapStyle={mapStyle} onChangeMapStyle={handleChangeMapStyle} /> */}
     </div>
   );
 };
