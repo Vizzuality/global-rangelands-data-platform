@@ -7,7 +7,7 @@ const MapLayers = () => {
 
   return (
     <button
-      className="group flex items-center gap-2 rounded-[20px] border-2 border-orange-100/0 px-2.5 py-1.5 text-sm transition-colors duration-300 hover:border-background hover:bg-background focus-visible:border-2 focus-visible:border-orange-100 focus-visible:bg-background focus-visible:outline-0 data-[state=open]:rounded-b-none data-[state=open]:bg-background"
+      className="group flex items-center gap-2 rounded-[20px] border-2 border-orange-100/0 px-2.5 py-1.5 pl-4 text-sm transition-colors duration-300 hover:border-background hover:bg-background focus-visible:border-2 focus-visible:border-orange-100 focus-visible:bg-background focus-visible:outline-0 data-[state=open]:rounded-b-none data-[state=open]:bg-background"
       onClick={() => {
         setSidebarOpen(!sidebarOpen);
       }}
