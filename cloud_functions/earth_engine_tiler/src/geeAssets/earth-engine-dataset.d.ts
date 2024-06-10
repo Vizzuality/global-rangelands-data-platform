@@ -1,6 +1,4 @@
-import ee from '@google/earthengine';
-
-export interface IDataAsset {
+export interface EarthEngineDataset {
   /** Path to earth engine asset */
   readonly assetPath: { [key: string]: string };
   /** Number of years */
@@ -16,5 +14,5 @@ export interface IDataAsset {
 
   /** Function that returns ee.Image instance with asset */
   getEEAsset: (key?: string) => any;
-  getMapUrl: (z: number, x: number, y: number, year?: number) => BinaryData;
+  getMapUrl: (z: number, x: number, y: number, year?: number) => string;
 }

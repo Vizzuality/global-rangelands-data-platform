@@ -1,43 +1,20 @@
-import{ Request, Response} from 'express';
-import {
-  ArrayNotEmpty,
-  validateOrReject,
-  IsEnum,
-  IsInt
-} from 'class-validator';
+import {Request, Response} from 'express';
+import {validateOrReject} from 'class-validator';
 import 'reflect-metadata';
-import { plainToClass } from 'class-transformer';
+import {plainToClass} from 'class-transformer';
+import type {HttpFunction} from '@google-cloud/functions-framework/build/src/functions';
+import {EarthEngineUtils} from './earth-engine-utils';
+import {ModisNetPrimaryProductionDataset} from './geeAssets/modis-net-primary-production-dataset';
+import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
+import {TileRequestDTO, Tilesets} from "./tile-request.dto";
+import {default as fetch , Response as FetchResponse} from "node-fetch";
 
-import   ee  from '@google/earthengine'
-import type { HttpFunction } from '@google-cloud/functions-framework/build/src/functions';
-
-import { eeAuthenticate, eeEvaluate } from './utils';
-
-import { ModisNetPrimaryProduction } from './geeAssets/ModisNetPrimaryProduction';
-
-enum Tilesets {
-  // this is a placeholder for now
-  // modis_net_primary_production = "modis_net_primary_production"
+const assets: Record<Tilesets, EarthEngineDataset> = {
+  [Tilesets.modis_net_primary_production]: ModisNetPrimaryProductionDataset,
 }
-
-class TileRequestParams {
-  // this is a placeholder for now
-  // tileset, z, x, y
-}
-
-export const getTiles: HttpFunction = async (req, res) => {
-
+export const getTiles: HttpFunction = async (req: Request, res: Response) => {
+  // This block handles CORS
   res.set('Access-Control-Allow-Origin', '*');
-
-  const TEST_DICT = {
-    "modis_net_primary_production": ModisNetPrimaryProduction
-  }
-  const isValid = await validateInput(req, res);
-
-  if (!isValid.status) {
-    return isValid.res;
-  }
-
   if (req.method === 'OPTIONS') {
     // Send response to OPTIONS requests
     res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -46,40 +23,55 @@ export const getTiles: HttpFunction = async (req, res) => {
     return res.status(204).send('');
   }
 
+  let tileRequestDTO: TileRequestDTO;
   try {
+    tileRequestDTO = await getAndValidateRequestDTO(req);
+  } catch (errors) {
+    return {status: false, res: res.status(400).json({error: errors})}
+  }
 
-    await eeAuthenticate();
+  const { tileset, x, y, z, year } = tileRequestDTO;
+  console.log(`Requesting tile for ${tileset} with coordinates ${x}-${y}-${z} and year ${year || 'N/A'}`)
 
-    const tileset = req.query.tileset;
-    const asset = TEST_DICT[tileset];
-    const {x, y, z} = req.query;
+  try {
+    await EarthEngineUtils.authenticate();
 
-    const response = await eeEvaluate(asset.getMapUrl(asset.vizParams, x, y, z))
+    const asset = assets[tileset];
 
-    // This is wrong as what we need to give back is the image in the url
-    res.status(200).json(response);
+    const tileURL = 'https://sportshub.cbsistatic.com/i/2021/08/09/3664e245-13d4-48f3-8650-c4f7fd5e4087/dragon-ball-is-super-saiyan-a-godly-power-technique-explained-1269931.jpg'
+    //const tileURL = await EarthEngineUtils.evaluate(asset.getMapUrl(x, y, z, year))
+    console.log(`Obtained tile URL on ${tileURL}`)
+
+    //TODO CACHING
+    // what takes the longest? getting the image url or the image itself? should we cache the url or the image?
+    // create new DB on SQL instance, can't use same strapi DB, redis on memorystore might be overkill
+
+    //Get the tile image and stream it into the function response
+    const imageResponse: FetchResponse = await fetch(tileURL);
+    const contentType = imageResponse.headers.get('content-type');
+
+    if(!imageResponse.ok || !contentType || !imageResponse.body){
+      throw new Error (`A problem ocurred retrieving the tile on ${tileURL}`)
+    }
+
+    res.status(200).contentType(contentType);
+    imageResponse.body.pipe(res);
+
+    return {status: true, res}
 
   } catch (error) {
     console.error(error)
-    res.status(400).json({"error": error.message});
-  }
-
-  return res
-}
-
-async function validateInput(req: Request, res:  Response): Promise<{"status": Boolean, "res": Response}> {
-  try {
-    if (!req.body || !req.query) {
-      return {"status": false,
-            "res":  res.status(400).json({"error":"No data provided"})};
-    }
-
-    await validateOrReject(plainToClass(TileRequestParams, req.query));
-
-    return {"status": true, "res": res};
-  }
-  catch (errors) {
-    return {"status": false, "res": res.status(400).json({"error": errors})};
+    return {status: false, res: res.status(500).json({"error": error.message})}
   }
 }
 
+async function getAndValidateRequestDTO(req: Request): Promise<TileRequestDTO> {
+  if (!req.query) {
+    throw new Error("No data provided");
+  }
+
+  const result = plainToClass(TileRequestDTO, req.query, {enableImplicitConversion: true})
+  await validateOrReject(result);
+
+  return result;
+}

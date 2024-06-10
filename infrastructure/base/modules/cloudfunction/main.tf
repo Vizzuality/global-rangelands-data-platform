@@ -33,6 +33,7 @@ resource "random_id" "default" {
 data "archive_file" "default" {
   type        = "zip"
   output_path = "/tmp/function-${var.function_name}-${random_id.default.hex}.zip"
+  excludes = ["node_modules", "ee_credentials.json"]
   source_dir  = var.source_dir
 }
 

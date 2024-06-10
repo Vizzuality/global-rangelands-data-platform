@@ -35,6 +35,15 @@ module "postgres_application_user_password" {
   use_random_value = true
 }
 
+//This credentials json file is not commited to the VCS and must be
+// placed locally in the correct path when deploying infrastructure changes
+module "earth_engine_credentials" {
+  source  = "../secret_value"
+  region  = var.gcp_region
+  key     = "${var.project_name}_earth_engine_credentials_json"
+  value   = file("${path.root}/../../cloud_functions/earth_engine_tiler/ee_credentials.json")
+}
+
 module "frontend_cloudrun" {
   source             = "../cloudrun"
   name               = "${var.project_name}-fe"
@@ -71,7 +80,7 @@ module "eet_cloud_function" {
   function_name                    = "${var.project_name}-eet"
   description                      = "Earth Engine Tiler Cloud Function"
   source_dir                       = "${path.root}/../../cloud_functions/earth_engine_tiler"
-  runtime                          = "nodejs18"
+  runtime                          = "nodejs20"
   entry_point                      = "getTiles"
   runtime_environment_variables    = local.eet_cloud_function_env
   secrets                          = local.eet_cloud_function_secrets
@@ -86,19 +95,13 @@ module "eet_cloud_function" {
 
 
 locals {
-  eet_cloud_function_env = {
-    DATABASE_CLIENT   = "postgres"
-    DATABASE_HOST     = module.database.database_host
-    DATABASE_NAME     = module.database.database_name
-    DATABASE_USERNAME = module.database.database_user
-    DATABASE_SSL      = false
-  }
+  eet_cloud_function_env = {}
 
   eet_cloud_function_secrets = [{
-    key        = "DATABASE_PASSWORD"
+    key        = "EE_CREDENTIALS_JSON"
     project_id = var.gcp_project_id
-    secret     = module.postgres_application_user_password.secret_name
-    version    = module.postgres_application_user_password.latest_version
+    secret     = module.earth_engine_credentials.secret_name
+    version    = module.earth_engine_credentials.latest_version
   }]
 }
 

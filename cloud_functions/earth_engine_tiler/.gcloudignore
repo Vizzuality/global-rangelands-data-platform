@@ -3,4 +3,5 @@
 .eslintrc.json
 .gitignore
 .prettierrc.js
-package-lock.json
+ee_credentials.json
+node_modules
