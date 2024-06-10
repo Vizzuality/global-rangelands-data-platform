@@ -9,7 +9,6 @@ import {
 } from "nuqs/server";
 
 import { DEFAULT_BBOX, MAPBOX_STYLE } from "@/components/map/constants";
-import { MapStylesIds } from "@/components/map/types";
 import { getKeys } from "@/lib/utils";
 
 const DEFAULT_DATASETS = ["rangeland-systems"];
@@ -25,9 +24,7 @@ export const layersSettingsParser = parseAsJson<{
 export const bboxParser = parseAsArrayOf(parseAsFloat).withDefault(DEFAULT_BBOX);
 //   export const mapSettingsParser =
 // parseAsJson<typeof DEFAULT_MAP_SETTINGS>().withDefault(DEFAULT_MAP_SETTINGS);
-export const mapStyleParser = parseAsStringLiteral<MapStylesIds>(getKeys(MAPBOX_STYLE)).withDefault(
-  "light",
-);
+export const mapStyleParser = parseAsStringLiteral(getKeys(MAPBOX_STYLE)).withDefault("light");
 export const countryParser = parseAsString;
 export const countriesComparisonParser = parseAsArrayOf(parseAsString).withDefault([]);
 
