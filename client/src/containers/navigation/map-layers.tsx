@@ -1,7 +1,9 @@
 import { sidebarOpenAtom, useSyncLayers } from "@/store/map";
 import { useAtom } from "jotai";
+import { useTranslations } from "next-intl";
 
 const MapLayers = () => {
+  const t = useTranslations();
   const [layers] = useSyncLayers();
   const [sidebarOpen, setSidebarOpen] = useAtom(sidebarOpenAtom);
 
@@ -12,7 +14,7 @@ const MapLayers = () => {
         setSidebarOpen(!sidebarOpen);
       }}
     >
-      Map layers
+      {t("Map layers")}
       <div className="relative flex h-[26px] w-[26px] items-center justify-center">
         <div className="flex h-5 w-5 items-center justify-center rounded-full border border-foreground">
           {layers.length}

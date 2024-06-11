@@ -6,8 +6,10 @@ import { ChevronDown } from "lucide-react";
 import GlobeSvg from "@/svgs/globe.svg";
 import { useSyncMapStyle } from "@/store/map";
 import { MapStylesIds } from "@/components/map/types";
+import { useTranslations } from "next-intl";
 
 const MapStyle = () => {
+  const t = useTranslations();
   const [mapStyle, setMapStyle] = useSyncMapStyle();
 
   return (
@@ -16,7 +18,7 @@ const MapStyle = () => {
         <div className="relative flex h-[26px] w-[26px] items-center justify-center">
           <GlobeSvg className="fill-globe" />
         </div>
-        Map style
+        {t("Map style")}
         <ChevronDown className="w-5 group-data-[state=open]:rotate-180" />
       </PopoverTrigger>
 
