@@ -2,12 +2,16 @@
 
 import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 
-import { useSyncDatasets, useSyncLayers } from "@/store/map";
+import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
-import { useTranslations } from "next-intl";
 import CitationsIcon from "@/svgs/citations.svg";
 import GroupLayers from "./group-layers";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+import { RANGELAND_DATASET_SLUG } from "./constants";
+import { CircleHelpIcon, EyeIcon } from "lucide-react";
+import { Toggle } from "@radix-ui/react-toggle";
+import { useMemo } from "react";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -16,8 +20,8 @@ type DatasetsItemProps = DatasetListResponseDataItem & {
 const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   const t = useTranslations();
   const [datasets, setDatasets] = useSyncDatasets();
-  const [, setLayers] = useSyncLayers();
-
+  const [layersSettings, setLayersSettings] = useSyncLayersSettings();
+  const [layers, setLayers] = useSyncLayers();
   const id = attributes?.slug;
 
   const handleToggleDataset = (checked: boolean) => {
@@ -44,15 +48,61 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
     }
   };
 
+  const datasetLayer = useMemo(
+    () =>
+      attributes?.layers?.find(
+        (layer) =>
+          !!layer.layer?.data?.attributes?.slug &&
+          layers.includes(layer.layer.data.attributes.slug),
+      )?.layer?.data?.attributes,
+    [attributes, layers],
+  );
+
+  const handleChangeVisibility = (visible: boolean) => {
+    const datasetLayerSlug = datasetLayer?.slug;
+    if (datasetLayerSlug) {
+      setLayersSettings((prev) => ({
+        ...prev,
+        [datasetLayerSlug]: {
+          ...(prev?.[datasetLayerSlug] || {}),
+          visibility: visible,
+        },
+      }));
+    }
+  };
+
+  const datasetVisibility = useMemo(() => {
+    if (!!datasetLayer?.slug) {
+      return (
+        !layersSettings?.[datasetLayer?.slug] ||
+        (layersSettings?.[datasetLayer?.slug]?.visibility as boolean)
+      );
+    }
+  }, [datasetLayer?.slug, layersSettings]);
+
   return (
     <div className={cn("space-y-7", className)}>
-      <div className="flex items-center gap-3 font-medium">
-        <Switch
-          id={`toggle-${id}`}
-          checked={datasets?.includes(id!)}
-          onCheckedChange={handleToggleDataset}
-        />
-        <label htmlFor={`toggle-${id}`}>{attributes?.title}</label>
+      <div className="flex items-center justify-between gap-3 font-medium">
+        <div>
+          {attributes?.slug !== RANGELAND_DATASET_SLUG && (
+            <Switch
+              id={`toggle-${id}`}
+              checked={datasets?.includes(id!)}
+              onCheckedChange={handleToggleDataset}
+            />
+          )}
+          <label htmlFor={`toggle-${id}`}>{attributes?.title}</label>
+        </div>
+        <div className="flex gap-2">
+          <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
+          <Toggle
+            className="data-[state=off]:opacity-20"
+            onPressedChange={handleChangeVisibility}
+            pressed={datasetVisibility}
+          >
+            <EyeIcon className="h-6 w-6 fill-foreground stroke-background" />
+          </Toggle>
+        </div>
       </div>
       {attributes?.type === "Group" && (
         <GroupLayers layers={attributes?.layers} slug={attributes?.slug} />

@@ -7,6 +7,8 @@ import {
   layersParser,
   layersSettingsParser,
   mapStyleParser,
+  rangelandRegionsParser,
+  rangelandsTypeParser,
 } from "./parsers";
 
 export const useSyncDatasets = () => {
@@ -29,12 +31,22 @@ export const useSyncMapStyle = () => {
   return useQueryState("map-style", mapStyleParser);
 };
 
+export const useSyncRangelandType = () => {
+  return useQueryState("rangeland-type", rangelandsTypeParser);
+};
+
+export const useSyncRangelandRegion = () => {
+  return useQueryState("rangeland-region", rangelandRegionsParser);
+};
+
 const searchParams = {
   bbox: bboxParser,
   datasets: datasetsParser,
   layers: layersParser,
   layersSettings: layersSettingsParser,
   mapStyle: mapStyleParser,
+  rangelangType: rangelandsTypeParser,
+  rangelandRegion: rangelandRegionsParser,
 };
 
 const serialize = createSerializer(searchParams);
@@ -45,8 +57,18 @@ export const useSyncSearchParams = () => {
   const [layers] = useSyncLayers();
   const [layersSettings] = useSyncLayersSettings();
   const [mapStyle] = useSyncMapStyle();
+  const [rangelangType] = useSyncRangelandType();
+  const [rangelandRegion] = useSyncRangelandRegion();
 
-  return serialize({ datasets, layers, layersSettings, bbox, mapStyle });
+  return serialize({
+    datasets,
+    layers,
+    layersSettings,
+    bbox,
+    mapStyle,
+    rangelandRegion,
+    rangelangType,
+  });
 };
 
 export const sidebarOpenAtom = atom(false);
