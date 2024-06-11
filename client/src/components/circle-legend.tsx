@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type CircleLegendProps = {
+export type CircleLegendProps = {
   colors?: string[];
   selected?: boolean;
 };

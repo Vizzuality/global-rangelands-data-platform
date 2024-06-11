@@ -20,6 +20,8 @@ export const layersParser = parseAsArrayOf(parseAsString).withDefault(DEFAULT_LA
 export const layersSettingsParser = parseAsJson<{
   [key: string]: Record<string, unknown>;
 }>();
+export const rangelandsTypeParser = parseAsString.withDefault(DEFAULT_LAYERS[0]);
+export const rangelandRegionsParser = parseAsArrayOf(parseAsString).withDefault([]);
 
 export const bboxParser = parseAsArrayOf(parseAsFloat).withDefault(DEFAULT_BBOX);
 //   export const mapSettingsParser =
