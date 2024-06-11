@@ -14,5 +14,5 @@ export interface EarthEngineDataset {
 
   /** Function that returns ee.Image instance with asset */
   getEEAsset: (key?: string) => any;
-  getMapUrl: (z: number, x: number, y: number, year?: number) => string;
+  getMapUrl: (z: number, x: number, y: number, year?: number) => any;
 }
