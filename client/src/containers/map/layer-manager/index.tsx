@@ -9,6 +9,7 @@ import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import LayerManagerItem from "@/containers/map/layer-manager/item";
 
 import { DeckMapboxOverlayProvider } from "@/components/map/provider";
+import Mask from "@/containers/map/layer-manager/mask";
 
 const LayerManager = () => {
   const { current: map } = useMap();
@@ -87,6 +88,8 @@ const LayerManager = () => {
             />
           );
         })}
+
+        <Mask id="rangeland-system-mask" settings={{ opacity: 1, visibility: true }} />
       </>
     </DeckMapboxOverlayProvider>
   );
