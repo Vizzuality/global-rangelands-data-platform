@@ -22,10 +22,14 @@
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
     "x-generation-date": "2024-06-13T08:40:32.783Z"
 =======
     "x-generation-date": "2024-06-10T15:12:02.509Z"
 >>>>>>> b45498b (Masks: first steps)
+=======
+    "x-generation-date": "2024-06-11T07:40:26.624Z"
+>>>>>>> f9c9c30 (Masks: geojson)
   },
   "servers": [
     {
