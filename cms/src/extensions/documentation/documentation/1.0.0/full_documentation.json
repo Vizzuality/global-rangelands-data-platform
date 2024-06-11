@@ -21,7 +21,11 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
+<<<<<<< HEAD
     "x-generation-date": "2024-06-13T08:40:32.783Z"
+=======
+    "x-generation-date": "2024-06-10T15:12:02.509Z"
+>>>>>>> b45498b (Masks: first steps)
   },
   "servers": [
     {

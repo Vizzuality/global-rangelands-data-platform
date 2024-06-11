@@ -118,8 +118,10 @@ export const useDeckMapboxOverlay = ({
     // Give the map a chance to load the background layer before adding the Deck layer
     setTimeout(() => {
       // https://github.com/visgl/deck.gl/blob/c2ba79b08b0ea807c6779d8fe1aaa307ebc22f91/modules/mapbox/src/resolve-layers.ts#L66
+      layer.id = i;
       // @ts-expect-error not typed
-      addLayer(layer.clone({ id: i, beforeId: id }));
+      layer.beforeId = id;
+      addLayer(layer);
     }, 10);
   }, [i, id, layer, addLayer]);
 
