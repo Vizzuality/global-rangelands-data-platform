@@ -37,10 +37,10 @@ export const getTiles: HttpFunction = async (req: Request, res: Response) => {
     await EarthEngineUtils.authenticate();
 
     const asset = assets[tileset];
-
-    const tileURL = 'https://sportshub.cbsistatic.com/i/2021/08/09/3664e245-13d4-48f3-8650-c4f7fd5e4087/dragon-ball-is-super-saiyan-a-godly-power-technique-explained-1269931.jpg'
-    //const tileURL = await EarthEngineUtils.evaluate(asset.getMapUrl(x, y, z, year))
-    console.log(`Obtained tile URL on ${tileURL}`)
+    if (!asset) {
+      throw new Error(`Tileset ${tileset} not found`)
+    }
+    const tileURL = await asset.getMapUrl(z, x, y, year);
 
     //TODO CACHING
     // what takes the longest? getting the image url or the image itself? should we cache the url or the image?

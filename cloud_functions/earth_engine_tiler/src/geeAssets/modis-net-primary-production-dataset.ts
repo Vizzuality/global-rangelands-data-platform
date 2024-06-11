@@ -1,5 +1,5 @@
 import { EarthEngineDataset } from './earth-engine-dataset';
-//import ee from '@google/earthengine/src/ee';
+import ee from '@google/earthengine';
 
 
 export const ModisNetPrimaryProductionDataset: EarthEngineDataset = {
@@ -15,17 +15,13 @@ export const ModisNetPrimaryProductionDataset: EarthEngineDataset = {
   },
 
   getEEAsset() {
-    //return ee.ImageCollection(this.assetPath.default);
+    return ee.ImageCollection(this.assetPath.default);
   },
 
   getMapUrl(z, x, y, year) {
-/*
-    const image = ee.ImageCollection(this.assetPath.default).filter(ee.Filter.date(`${String(year)}-01-01`, `${String(year)}-12-31`));
-    const url = ee.data.getTileUrl(image.getMapId(this.vizParams), x, y, z)
 
-    return url;
+    const image = this.getEEAsset().filter(ee.Filter.date(`${String(year)}-01-01`, `${String(year)}-12-31`));
 
- */
-    return ''
+    return ee.data.getTileUrl(image.getMapId(this.vizParams), x, y, z);
   },
 };

@@ -1,4 +1,4 @@
-//import ee from '@google/earthengine';
+import ee from '@google/earthengine';
 import { readFileSync } from 'fs';
 import path from 'path';
 
@@ -10,8 +10,7 @@ function getCredentialsJSON(): string {
 
 export class EarthEngineUtils {
   static authenticate(): Promise<void> {
-    return new Promise((resolve, reject) => {resolve();})
-    /*
+    // return new Promise((resolve, reject) => {resolve();})
     return new Promise((resolve, reject) => {
       // Authenticate to service account using short living access tokens
       const PRIVATE_KEY = JSON.parse(getCredentialsJSON());
@@ -21,10 +20,8 @@ export class EarthEngineUtils {
         (error: any) => console.error(error),
       );
     });
-    */
   }
 
-  /*
   static evaluate(eeStatement: ee.ComputedObject): Promise<any> {
     return new Promise((resolve, reject) => {
       eeStatement.evaluate((success: any, failure: any) => {
@@ -33,6 +30,4 @@ export class EarthEngineUtils {
       });
     });
   }
-
-   */
 }
