@@ -24,10 +24,20 @@ export const getTiles: HttpFunction = async (req: Request, res: Response) => {
   }
 
   let tileRequestDTO: TileRequestDTO;
+  let asset: EarthEngineDataset;
+
+  //Validation Block
   try {
     tileRequestDTO = await getAndValidateRequestDTO(req);
+
+    asset = assets[tileRequestDTO.tileset];
+    if (!asset) {
+      throw new Error(`Tileset ${tileRequestDTO.tileset} not found`);
+    }
+
+    asset.isYearValid(tileRequestDTO.year);
   } catch (errors) {
-    return {status: false, res: res.status(400).json({error: errors})}
+    return generateErrorResponse(res, 400, errors)
   }
 
   const { tileset, x, y, z, year } = tileRequestDTO;
@@ -36,15 +46,13 @@ export const getTiles: HttpFunction = async (req: Request, res: Response) => {
   try {
     await EarthEngineUtils.authenticate();
 
-    const asset = assets[tileset];
-    if (!asset) {
-      throw new Error(`Tileset ${tileset} not found`)
-    }
     const tileURL = await asset.getMapUrl(z, x, y, year);
+    console.log(`Obtained tile URL on ${tileURL}`)
 
     //TODO CACHING
-    // what takes the longest? getting the image url or the image itself? should we cache the url or the image?
-    // create new DB on SQL instance, can't use same strapi DB, redis on memorystore might be overkill
+    // The calculations when requesting the tile URL take the longest, images are not probably going to be very big (not even MBs)
+    // create new schema on Strapi DB instance, can't use same schema without workarounds, redis on memorystore might be overkill
+    // Not critical for MVP phase
 
     //Get the tile image and stream it into the function response
     const imageResponse: FetchResponse = await fetch(tileURL);
@@ -61,7 +69,7 @@ export const getTiles: HttpFunction = async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error(error)
-    return {status: false, res: res.status(500).json({"error": error.message})}
+    return generateErrorResponse(res, 500, error)
   }
 }
 
@@ -74,4 +82,8 @@ async function getAndValidateRequestDTO(req: Request): Promise<TileRequestDTO> {
   await validateOrReject(result);
 
   return result;
+}
+
+function generateErrorResponse(res: Response, status: number, error: Error | Error[]){
+  return {status: false, res: res.status(500).json({"error": error})}
 }
