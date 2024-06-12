@@ -1,4 +1,4 @@
-import { ChevronDown, FilterIcon, XIcon } from "lucide-react";
+import { ChevronDown, FilterIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
@@ -11,8 +11,8 @@ import {
   useState,
 } from "react";
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
-import { ScrollArea } from "./ui/scroll-area";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+import { ScrollArea } from "./scroll-area";
 import { DialogTrigger, Dialog, DialogContent } from "@radix-ui/react-dialog";
 
 interface MultiSelectOption {
@@ -41,10 +41,9 @@ const MultiSelectItem = ({ option, toggleOption, isSelected }: MultiSelectItemPr
     <CommandItem
       onSelect={() => toggleOption(option.value)}
       style={{ pointerEvents: "auto", opacity: 1 }}
-      className="flex cursor-pointer items-center justify-between"
+      className="flex cursor-pointer items-center justify-between gap-2"
     >
       <div className="flex items-center gap-1">
-        {isSelected && <XIcon className="h-4 w-4 flex-shrink-0" />}
         <span
           className={cn(
             "text-xs underline-offset-2 hover:underline",
@@ -68,7 +67,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       if (JSON.stringify(selectedValues) !== JSON.stringify(defaultValue)) {
         setSelectedValues(defaultValue);
       }
-    }, [defaultValue]);
+    }, [defaultValue, selectedValues]);
 
     // const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     //   if (event.key === "Enter") {
@@ -114,7 +113,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
               <ScrollArea className="max-h-[500px]">
                 <Command>
                   {/* <CommandInput placeholder="Search..." onKeyDown={handleInputKeyDown} /> */}
-                  <CommandList className="space-y-2 p-3 pl-10">
+                  <CommandList className="space-y-2 p-3">
                     <CommandGroup>
                       {options.map((group) => {
                         if (group.options?.length) {
@@ -125,11 +124,31 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                               className="w-full"
                             >
                               <CollapsibleTrigger className="group mb-3 flex w-full items-center gap-3">
-                                <span className="flex-1 text-start text-sm">{group.label}</span>
+                                <span
+                                  className={cn(
+                                    "flex-1 text-start text-sm",
+                                    group.options?.some((option) =>
+                                      selectedValues.includes(option.value),
+                                    ) && "font-bold",
+                                  )}
+                                >
+                                  {group.label}
+                                </span>
+                                {group.options?.some((option) =>
+                                  selectedValues.includes(option.value),
+                                ) && (
+                                  <span className="text-xs font-bold text-foreground">
+                                    {
+                                      group.options.filter((option) =>
+                                        selectedValues.includes(option.value),
+                                      ).length
+                                    }
+                                  </span>
+                                )}
                                 {group.icon && <group.icon selected={false} />}
                                 <ChevronDown className="h-4 w-4 group-data-[state=open]:rotate-180 group-data-[state=closed]:stroke-gray-400" />
                               </CollapsibleTrigger>
-                              <CollapsibleContent className="pl-8">
+                              <CollapsibleContent>
                                 {group.options?.map((option) => {
                                   const isSelected = selectedValues.includes(option.value);
                                   return (
@@ -145,6 +164,7 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                             </Collapsible>
                           );
                         }
+
                         return (
                           <MultiSelectItem
                             option={group}

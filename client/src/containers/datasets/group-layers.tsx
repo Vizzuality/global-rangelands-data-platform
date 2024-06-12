@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectGroup,
 } from "@/components/ui/select";
-import CircleLegend, { CircleLegendProps } from "@/components/circle-legend";
+import CircleLegend, { CircleLegendProps } from "@/components/ui/circle-legend";
 import {
   RANGELAND_LAYERS_COLORS_LEGEND,
   RANGELAND_DATASET_SLUG,
@@ -27,7 +27,7 @@ import { useTranslations } from "@/i18n";
 import { useEffect, useMemo } from "react";
 import { useGetRangelands } from "@/types/generated/rangeland";
 
-import { MultiSelect } from "@/components/multi-select";
+import { MultiSelect } from "@/components/ui/multi-select";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
@@ -152,6 +152,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
             {isRangelandDataset && selectedLayer?.layer?.data?.attributes?.slug && (
               <CircleLegend
                 selected
+                removable={false}
                 colors={getLegendColors(selectedLayer.layer.data.attributes.slug)}
               />
             )}
@@ -209,7 +210,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
                   </TooltipProvider>
                 )}
               </div>
-              <CircleLegend selected colors={getLegendColors(rangelandType)} />
+              <CircleLegend selected removable={false} colors={getLegendColors(rangelandType)} />
             </div>
           }
         />

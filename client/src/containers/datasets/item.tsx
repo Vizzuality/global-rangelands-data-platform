@@ -83,7 +83,7 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   return (
     <div className={cn("space-y-7", className)}>
       <div className="flex items-center justify-between gap-3 font-medium">
-        <div>
+        <div className="flex items-center justify-between gap-1">
           {attributes?.slug !== RANGELAND_DATASET_SLUG && (
             <Switch
               id={`toggle-${id}`}
@@ -93,8 +93,10 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
           )}
           <label htmlFor={`toggle-${id}`}>{attributes?.title}</label>
         </div>
-        <div className="flex gap-2">
+
+        <div className="flex items-center gap-2">
           <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
+
           <Toggle
             className="data-[state=off]:opacity-20"
             onPressedChange={handleChangeVisibility}
