@@ -89,7 +89,11 @@ const LayerManager = () => {
           );
         })}
 
-        <Mask id="rangeland-system-mask" settings={{ opacity: 1, visibility: true }} />
+        <Mask
+          id="rangeland-system-mask"
+          beforeId="water"
+          settings={{ opacity: 1, visibility: true }}
+        />
       </>
     </DeckMapboxOverlayProvider>
   );

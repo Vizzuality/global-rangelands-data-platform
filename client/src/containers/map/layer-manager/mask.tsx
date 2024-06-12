@@ -1,17 +1,10 @@
 "use client";
 
-// import { ReactElement, cloneElement, useCallback } from "react";
-
 import { GeoJsonLayer } from "@deck.gl/layers";
-import { Layer } from "react-map-gl";
 import { DataFilterExtension, DataFilterExtensionProps } from "@deck.gl/extensions";
-// import { useAtomValue, useSetAtom } from "jotai";
-
-// import { layersInteractiveAtom, layersInteractiveIdsAtom } from "@/store/map";
 
 import DeckLayer from "@/components/map/layers/deck-layer";
 import { useMemo } from "react";
-// import MapboxLayer from "@/components/map/layers/mapbox-layer";
 
 interface MaskProps {
   beforeId?: string;
@@ -19,7 +12,7 @@ interface MaskProps {
   id: string;
 }
 
-const Mask = ({ id }: MaskProps) => {
+const Mask = ({ id, beforeId }: MaskProps) => {
   const c = useMemo(() => {
     return new GeoJsonLayer<
       {
@@ -27,18 +20,22 @@ const Mask = ({ id }: MaskProps) => {
       },
       DataFilterExtensionProps
     >({
-      id,
+      id: `${id}-layer-deck`,
       data: "/data/rangeland-ecoregions.json",
+      // @ts-expect-error - TS doesn't know about the beforeId prop
+      beforeId,
       operation: "mask",
+      visible: true,
+      opacity: 1,
+      pickable: false,
       getFilterCategory: (f) => f.properties.biome_num,
       filterCategories: [7, 8, 9, 10, 11, 12, 13],
       extensions: [new DataFilterExtension({ categorySize: 1 })],
     });
-  }, [id]);
+  }, [id, beforeId]);
 
   return (
     <>
-      <Layer id={`${id}-layer`} key={id} type="background" layout={{ visibility: "none" }} />
       <DeckLayer id={`${id}-layer`} config={c} />;
     </>
   );

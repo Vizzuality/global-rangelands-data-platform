@@ -105,14 +105,18 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
 
   // The only layer type we are using for now is DeckLayer, but the CMS doesn't support the type "Deck", so we are using the type "Mapbox" for now
   if (type === "Mapbox") {
-    const { config, params_config } = data.data.attributes;
+    const { config, params_config } = data.data.attributes as unknown as LayerTyped;
     const c = parseConfig<Layer>({
-      config,
+      config: {
+        ...config,
+        id: `${id}-layer-deck`,
+        beforeId: `${id}-layer`,
+      },
       params_config,
       settings,
     });
 
-    return <DeckLayer id={`${id}-layer`} beforeId={beforeId} config={c} />;
+    return <DeckLayer key={`${id}-layer`} id={`${id}-layer`} beforeId={beforeId} config={c} />;
   }
 
   // We are not using component layers for now, but the component will remain in case of future uses
