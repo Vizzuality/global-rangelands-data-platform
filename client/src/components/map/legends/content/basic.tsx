@@ -1,4 +1,4 @@
-import CircleLegend from "@/components/circle-legend";
+import CircleLegend from "@/components/ui/circle-legend";
 import { LegendComponent } from "../../types";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDownIcon } from "lucide-react";

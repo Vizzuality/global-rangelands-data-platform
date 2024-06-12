@@ -23,7 +23,7 @@ const Legends = () => {
           alignOffset={20}
           sideOffset={20}
           side="left"
-          className="w-[348px] -translate-y-10 bg-background"
+          className="w-[348px] -translate-y-10 space-y-4 bg-background"
         >
           {datasets?.map((d) => <LegendItem key={d} dataset={d} />)}
         </PopoverContent>

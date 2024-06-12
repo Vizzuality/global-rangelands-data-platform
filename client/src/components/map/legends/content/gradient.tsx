@@ -1,5 +1,5 @@
-import CircleLegend from "@/components/circle-legend";
 import { LegendComponent } from "../../types";
+import { cn } from "@/lib/utils";
 
 type LegendComponentProps = {
   items: LegendComponent["items"];
@@ -8,13 +8,25 @@ type LegendComponentProps = {
 const GradientLegend = ({ items }: LegendComponentProps) => {
   return (
     <div>
-      <ul>
-        {items?.map((i) => (
-          <li key={i.name} className="flex gap-4">
-            {!!i.color && <CircleLegend colors={[i.color]} />}
-            <span className="text-xs font-light">{i.name}</span>
-          </li>
-        ))}
+      <div
+        className="flex h-3 w-full rounded-full"
+        style={{
+          backgroundImage: `linear-gradient(to right, ${items.map((i) => i.color).join(",")})`,
+        }}
+      />
+      <ul className="mt-1 flex w-full justify-between">
+        {items
+          .filter(({ name }) => typeof name !== "undefined" && name !== null)
+          .map(({ name }) => (
+            <li
+              key={`${name}`}
+              className={cn({
+                "flex-shrink-0 text-xs font-light text-foreground": true,
+              })}
+            >
+              {name}
+            </li>
+          ))}
       </ul>
     </div>
   );

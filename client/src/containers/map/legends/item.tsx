@@ -32,7 +32,7 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
 
   const { data: datasetData } = useGetBySlug<DatasetResponse>(`dataset/${dataset}`, {
-    populate: "layers,layers.layer,layers.layer.legend",
+    populate: "layers,layers.layer,layers.layer.legend,layers.layer.legend.items",
     locale,
   });
 
@@ -145,7 +145,7 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
   }, [isRangelandDataset, datasetLayer]);
 
   return (
-    <div>
+    <div className="space-y-2 border-b border-b-gray-300 pb-4 last-of-type:border-b-0 last-of-type:pb-0">
       <LegendHeader
         visible={settings.visibility}
         opacity={settings.opacity}
