@@ -5,6 +5,8 @@ import { DataFilterExtension, DataFilterExtensionProps } from "@deck.gl/extensio
 
 import DeckLayer from "@/components/map/layers/deck-layer";
 import { useMemo } from "react";
+import { useSyncRangelandRegions } from "@/store/map";
+import { useGetRangelands } from "@/types/generated/rangeland";
 
 interface MaskProps {
   beforeId?: string;
@@ -13,6 +15,23 @@ interface MaskProps {
 }
 
 const Mask = ({ id, beforeId }: MaskProps) => {
+  const [rangelandRegions] = useSyncRangelandRegions();
+  const { data: rangelandsData } = useGetRangelands({
+    populate: "*",
+    sort: "title:asc",
+  });
+
+  console.log(rangelandsData);
+
+  const biomes = useMemo(() => {
+    return rangelandsData?.data
+      ?.filter((r) => {
+        if (rangelandRegions.length === 0) return true;
+        return rangelandRegions.includes(r.attributes?.code || "");
+      })
+      ?.map((r) => +(r.attributes?.code || 0));
+  }, [rangelandRegions, rangelandsData]);
+
   const c = useMemo(() => {
     return new GeoJsonLayer<
       {
@@ -29,10 +48,10 @@ const Mask = ({ id, beforeId }: MaskProps) => {
       opacity: 1,
       pickable: false,
       getFilterCategory: (f) => f.properties.biome_num,
-      filterCategories: [7, 8, 9, 10, 11, 12, 13],
+      filterCategories: biomes,
       extensions: [new DataFilterExtension({ categorySize: 1 })],
     });
-  }, [id, beforeId]);
+  }, [id, beforeId, biomes]);
 
   return (
     <>

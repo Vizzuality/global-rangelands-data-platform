@@ -35,8 +35,8 @@ export const useSyncRangelandType = () => {
   return useQueryState("rangeland-type", rangelandsTypeParser);
 };
 
-export const useSyncRangelandRegion = () => {
-  return useQueryState("rangeland-region", rangelandRegionsParser);
+export const useSyncRangelandRegions = () => {
+  return useQueryState("rangeland-regions", rangelandRegionsParser);
 };
 
 const searchParams = {
@@ -58,7 +58,7 @@ export const useSyncSearchParams = () => {
   const [layersSettings] = useSyncLayersSettings();
   const [mapStyle] = useSyncMapStyle();
   const [rangelangType] = useSyncRangelandType();
-  const [rangelandRegion] = useSyncRangelandRegion();
+  const [rangelandRegion] = useSyncRangelandRegions();
 
   return serialize({
     datasets,
