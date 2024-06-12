@@ -20,7 +20,7 @@ import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
 import {
   useSyncDatasets,
   useSyncLayers,
-  useSyncRangelandRegion,
+  useSyncRangelandRegions,
   useSyncRangelandType,
 } from "@/store/map";
 import { useTranslations } from "@/i18n";
@@ -42,7 +42,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
   const [syncDatasets] = useSyncDatasets();
   const [syncLayers, setSyncLayers] = useSyncLayers();
   const [rangelandType, setRangelandType] = useSyncRangelandType();
-  const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegion();
+  const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
 
   const datasetLayers = useMemo(
     () => layers?.map((l) => l.layer?.data?.attributes?.slug),
