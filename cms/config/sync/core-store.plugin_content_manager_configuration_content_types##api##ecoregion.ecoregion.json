@@ -76,6 +76,20 @@
           "sortable": true
         }
       },
+      "color": {
+        "edit": {
+          "label": "color",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "color",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -136,6 +150,12 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "title",
+        "slug",
+        "code"
+      ],
       "edit": [
         [
           {
@@ -159,14 +179,12 @@
           {
             "name": "rangeland",
             "size": 6
+          },
+          {
+            "name": "color",
+            "size": 6
           }
         ]
-      ],
-      "list": [
-        "id",
-        "title",
-        "slug",
-        "code"
       ]
     },
     "uid": "api::ecoregion.ecoregion"
