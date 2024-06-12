@@ -91,7 +91,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
         setRangelandType(null);
       }
     }
-  }, [datasetSlug, syncDatasets, isRangelandDataset]);
+  }, [datasetSlug, syncDatasets, isRangelandDataset, setRangelandRegion, setRangelandType]);
 
   const { data: rangelandsData } = useGetRangelands(
     {
