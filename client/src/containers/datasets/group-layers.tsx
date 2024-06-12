@@ -143,7 +143,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
         defaultValue={selectedLayer?.layer?.data?.attributes?.slug}
         value={selectedLayer?.layer?.data?.attributes?.slug}
       >
-        <SelectTrigger className="flex gap-3">
+        <SelectTrigger>
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <ColorSwatchIcon />
