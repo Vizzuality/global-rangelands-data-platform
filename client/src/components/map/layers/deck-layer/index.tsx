@@ -29,7 +29,6 @@ const DeckJsonLayer = <T,>({ id, config }: DeckLayerProps<T>) => {
   useEffect(() => {
     if (!config) return;
     return () => {
-      console.log("removeLayer", i);
       removeLayer(i);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
