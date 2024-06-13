@@ -11,12 +11,14 @@ import * as GeoLayers from "@deck.gl/geo-layers";
 import * as AggregationLayers from "@deck.gl/aggregation-layers";
 import { MaskExtension, DataFilterExtension } from "@deck.gl/extensions";
 import { CSVLoader } from "@loaders.gl/csv";
+import RasterLayer from "@/components/map/layers/deck-layer/raster";
 
 export const JSON_CONFIGURATION = new JSONConfiguration({
   React,
   classes: Object.assign({}, Layers, GeoLayers, AggregationLayers, {
     MaskExtension,
     DataFilterExtension,
+    RasterLayer,
   }),
   functions: FUNCTIONS,
   constants: {
