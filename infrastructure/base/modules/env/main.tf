@@ -35,6 +35,15 @@ module "postgres_application_user_password" {
   use_random_value = true
 }
 
+//This credentials json file is not commited to the VCS and must be
+// placed locally in the correct path when deploying infrastructure changes
+module "earth_engine_credentials" {
+  source  = "../secret_value"
+  region  = var.gcp_region
+  key     = "${var.project_name}_earth_engine_credentials_json"
+  value   = file("${path.root}/../../cloud_functions/earth_engine_tiler/ee_credentials.json")
+}
+
 module "frontend_cloudrun" {
   source             = "../cloudrun"
   name               = "${var.project_name}-fe"
@@ -61,6 +70,39 @@ module "backend_cloudrun" {
   min_scale          = var.backend_min_scale
   max_scale          = var.backend_max_scale
   tag                = var.environment
+}
+
+module "eet_cloud_function" {
+  source                           = "../cloudfunction"
+  region                           = var.gcp_region
+  project                          = var.gcp_project_id
+  vpc_connector_name               = module.network.vpc_access_connector_name
+  function_name                    = "${var.project_name}-eet"
+  description                      = "Earth Engine Tiler Cloud Function"
+  source_dir                       = "${path.root}/../../cloud_functions/earth_engine_tiler"
+  runtime                          = "nodejs20"
+  entry_point                      = "eetApp"
+  runtime_environment_variables    = local.eet_cloud_function_env
+  secrets                          = local.eet_cloud_function_secrets
+  timeout_seconds                  = var.eet_function_timeout_seconds
+  available_memory                 = var.eet_function_available_memory
+  available_cpu                    = var.eet_function_available_cpu
+  max_instance_count               = var.eet_function_max_instance_count
+  max_instance_request_concurrency = var.eet_function_max_instance_request_concurrency
+
+  depends_on = [module.postgres_application_user_password]
+}
+
+
+locals {
+  eet_cloud_function_env = {}
+
+  eet_cloud_function_secrets = [{
+    key        = "EE_CREDENTIALS_JSON"
+    project_id = var.gcp_project_id
+    secret     = module.earth_engine_credentials.secret_name
+    version    = module.earth_engine_credentials.latest_version
+  }]
 }
 
 module "database" {
@@ -182,6 +224,9 @@ module "load_balancer" {
   name                    = var.project_name
   backend_cloud_run_name  = module.backend_cloudrun.name
   frontend_cloud_run_name = module.frontend_cloudrun.name
+  cloud_function_name     = module.eet_cloud_function.function_name
+  cloud_function_path_prefix = var.cloud_functions_path_prefix
+  eet_function_path_prefix = var.eet_function_path_prefix
   domain                  = var.domain
   subdomain               = var.subdomain
   dns_managed_zone_name   = var.dns_zone_name

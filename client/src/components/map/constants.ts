@@ -16,7 +16,7 @@ export const DEFAULT_BBOX: [number, number, number, number] = [
 export const MAPBOX_STYLE = {
   dark: "mapbox://styles/grass2024/clvaofz0e00qi01qzfs5va44i",
   light: "mapbox://styles/grass2024/clvf7wk8i016201qu5fbjgrcv",
-};
+} as const;
 
 export const mapStyleOptions = [
   {

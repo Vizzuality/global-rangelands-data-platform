@@ -2,6 +2,7 @@ locals {
   frontend_lb_url = "https://${local.domain}"
   cms_lb_url      = "https://${local.domain}/${var.backend_path_prefix}/"
   api_lb_url      = "https://${local.domain}/${var.backend_path_prefix}/api/"
+  eet_cf_lb_url      = "https://${local.domain}/${var.cloud_functions_path_prefix}/${var.eet_function_path_prefix}/"
   # to test while DNS not set up
   # frontend_lb_url    = module.frontend_cloudrun.cloudrun_service_url
   # cms_lb_url         = "${module.backend_cloudrun.cloudrun_service_url}/"
@@ -19,6 +20,7 @@ locals {
     "CLIENT_REPOSITORY" = module.frontend_gcr.repository_name
     "CMS_SERVICE"       = module.backend_cloudrun.name
     "CLIENT_SERVICE"    = module.frontend_cloudrun.name
+    "EET_CF_NAME"           = module.eet_cloud_function.function_name
   }
   # those need to have their names prefixed with the environment name, so as to be able to differentiate between staging and production
   # could be achieved using GH environments as well, which would be a good alternative flow, but it is not available in all GH plans
@@ -41,6 +43,7 @@ locals {
   client_variable_map_with_unprefixed_keys = {
     NEXT_PUBLIC_URL         = local.frontend_lb_url
     NEXT_PUBLIC_API_URL     = local.api_lb_url
+    NEXT_PUBLIC_EET_CF_URL  = local.eet_cf_lb_url
     NEXT_PUBLIC_ENVIRONMENT = "production"
     LOG_LEVEL               = "info"
   }
@@ -53,7 +56,28 @@ locals {
     for key, value in local.client_secret_map_with_unprefixed_keys :
     "TF_${upper(var.environment)}_CLIENT_ENV_${key}" => value
   }
-
+  // There's no need to export CF environment
+/*
+  gee_cf_variable_map_with_unprefixed_keys = {
+    GEE_CF_URL = local.gee_cf_lb_url
+  }
+  gee_cf_secret_map_with_unprefixed_keys = {
+    DATABASE_CLIENT   = "postgres"
+    DATABASE_HOST     = module.database.database_host
+    DATABASE_NAME     = module.database.database_name
+    DATABASE_USERNAME = module.database.database_user
+    DATABASE_PASSWORD = module.database.database_password
+    DATABASE_SSL      = false
+  }
+  gee_cf_variable_map = {
+    for key, value in local.gee_cf_variable_map_with_unprefixed_keys :
+    "TF_${upper(var.environment)}_GEE_CF_ENV_${key}" => value
+  }
+  gee_cf_secret_map = {
+    for key, value in local.gee_cf_secret_map_with_unprefixed_keys :
+    "TF_${upper(var.environment)}_GEE_CF_ENV_${key}" => value
+  }
+*/
   cms_variable_map_with_unprefixed_keys = {
     CMS_URL = local.cms_lb_url
   }

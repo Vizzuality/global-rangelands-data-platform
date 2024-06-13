@@ -177,6 +177,12 @@
         ],
         [
           {
+            "name": "color",
+            "size": 6
+          }
+        ],
+        [
+          {
             "name": "rangeland",
             "size": 6
           },

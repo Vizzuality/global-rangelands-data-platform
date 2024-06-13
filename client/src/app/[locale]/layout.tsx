@@ -1,10 +1,9 @@
 import "./globals.css";
 
 import { getTranslations } from "@/i18n";
-import { NextIntlClientProvider } from "next-intl";
-
 import { getMessages } from "next-intl/server";
 import LayoutProviders from "./layout-providers";
+import NextIntlProvider from "@/components/next-intl-provider";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale });
@@ -28,11 +27,11 @@ export default async function LocaleLayout({
 
   return (
     <LayoutProviders>
-      <NextIntlClientProvider messages={messages}>
-        <html lang={locale}>
+      <html lang={locale}>
+        <NextIntlProvider locale={locale} messages={messages}>
           <body>{children}</body>
-        </html>
-      </NextIntlClientProvider>
+        </NextIntlProvider>
+      </html>
     </LayoutProviders>
   );
 }

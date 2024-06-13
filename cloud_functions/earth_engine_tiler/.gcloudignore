@@ -1,0 +1,7 @@
+.editorconfig
+.eslintignore
+.eslintrc.json
+.gitignore
+.prettierrc.js
+ee_credentials.json
+node_modules

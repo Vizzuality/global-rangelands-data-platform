@@ -9,6 +9,7 @@ import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import LayerManagerItem from "@/containers/map/layer-manager/item";
 
 import { DeckMapboxOverlayProvider } from "@/components/map/provider";
+import Mask from "@/containers/map/layer-manager/mask";
 
 const LayerManager = () => {
   const { current: map } = useMap();
@@ -40,7 +41,7 @@ const LayerManager = () => {
     const lSettingsKeys = Object.keys(layersSettings || {});
 
     lSettingsKeys.forEach((key) => {
-      if (layers.includes(Number(key))) return;
+      if (layers.includes(key)) return;
 
       setTimeout(() => {
         setLayersSettings((prev) => {
@@ -59,18 +60,22 @@ const LayerManager = () => {
           Generate all transparent backgrounds to be able to sort by layers without an error
           - https://github.com/visgl/react-map-gl/issues/939#issuecomment-625290200
         */}
-        {layers.map((l, i) => {
-          const beforeId = i === 0 ? baseLayer : `${layers[i - 1]}-layer`;
-          return (
-            <Layer
-              id={`${l}-layer`}
-              key={l}
-              type="background"
-              layout={{ visibility: "none" }}
-              beforeId={beforeId}
-            />
-          );
-        })}
+        {layers
+          .toSorted((a) => {
+            return a.includes("rangeland") ? 1 : -1;
+          })
+          .map((l, i) => {
+            const beforeId = i === 0 ? baseLayer : `${layers[i - 1]}-layer`;
+            return (
+              <Layer
+                id={`${l}-layer`}
+                key={l}
+                type="background"
+                layout={{ visibility: "none" }}
+                beforeId={beforeId}
+              />
+            );
+          })}
 
         {/*
           Loop through active layers. The id is gonna be used to fetch the current layer and know how to order the layers.
@@ -83,10 +88,19 @@ const LayerManager = () => {
               key={l}
               id={l}
               beforeId={beforeId}
-              settings={(layersSettings && layersSettings[l]) ?? { opacity: 1, visibility: true }}
+              settings={{
+                ...{ opacity: 1, visibility: true },
+                ...(!!layersSettings && layersSettings[l]),
+              }}
             />
           );
         })}
+
+        <Mask
+          id="rangeland-system-mask"
+          beforeId="water"
+          settings={{ opacity: 1, visibility: true }}
+        />
       </>
     </DeckMapboxOverlayProvider>
   );

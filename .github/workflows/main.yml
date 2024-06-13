@@ -27,10 +27,11 @@ on:
       - staging
 
     paths:
-      - "client/**"
-      - "cms/**"
-      - ".github/workflows/*"
-      - "infrastructure/**"
+      - 'client/**'
+      - 'cms/**'
+      - 'cloud_functions/**'
+      - '.github/workflows/*'
+      - 'infrastructure/**'
 
 env:
   PROJECT_ID: ${{ secrets.TF_GCP_PROJECT_ID }}
@@ -41,8 +42,8 @@ jobs:
   deploy_client:
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: 'read'
+      id-token: 'write'
 
     runs-on: ubuntu-latest
     env:
@@ -151,8 +152,8 @@ jobs:
   deploy_cms:
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: 'read'
+      id-token: 'write'
 
     runs-on: ubuntu-latest
     env:
@@ -245,3 +246,65 @@ jobs:
       - name: Show Output
         if: ${{ steps.applicable_check.outputs.flag }}
         run: echo ${{ steps.build_and_deploy.outputs.url || 'No URL generated' }}
+
+  deploy_cloud_function:
+    # Add 'id-token' with the intended permissions for workload identity federation
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: cf-changes
+        with:
+          filters: |
+            cloud_function:
+              - 'cloud_functions/**'
+              - '.github/workflows/**'
+
+      - name: Applicable check
+        id: applicable_check
+        run: |
+          {
+            echo "flag=${{ github.event_name == 'workflow_dispatch' || steps.cf-changes.outputs.cloud_function == 'true' }}"
+          } >> $GITHUB_OUTPUT
+
+      - name: Extract branch name
+        if: ${{ steps.applicable_check.outputs.flag }}
+        run: |
+          {
+            branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+            echo "branch=${branch}"
+            echo "branch_upper=${branch^^}"
+          } >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Set environment name
+        if: ${{ steps.applicable_check.outputs.flag }}
+        id: environment_name
+        run: |
+          {
+            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT_NAME_OVERRIDE || steps.extract_branch.outputs.branch == 'main' && 'PRODUCTION' || steps.extract_branch.outputs.branch_upper }}"
+          } >> $GITHUB_ENV
+
+      - name: Build and Deploy
+        if: ${{ steps.applicable_check.outputs.flag }}
+        id: build_and_deploy
+        uses: ./.github/actions/build-and-deploy-cloud-function
+        with:
+          GCP_SA_KEY: ${{ secrets[format('TF_{0}_GCP_SA_KEY', env.ENVIRONMENT)] }}
+          REGION: ${{ env.REGION }}
+          CLOUD_FUNCTION_NAME: ${{ secrets[format('TF_{0}_EET_CF_NAME', env.ENVIRONMENT)] }}
+          CLOUD_FUNCTION_PATH: "cloud_functions/earth_engine_tiler/"
+          DRY_RUN: ${{ inputs.dry_run }}
+
+      # If required, use the Cloud Run url output in later steps
+      - name: Show Output
+        if: ${{ steps.applicable_check.outputs.flag }}
+        run: echo ${{ steps.build_and_deploy.outputs.url || 'No URL generated' }}
+

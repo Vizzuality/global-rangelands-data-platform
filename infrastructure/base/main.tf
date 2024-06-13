@@ -23,6 +23,8 @@ module "staging" {
   domain              = var.domain
   subdomain           = var.staging_subdomain
   backend_path_prefix = "cms"
+  cloud_functions_path_prefix = "functions"
+  eet_function_path_prefix = "eet"
   uptime_alert_email  = var.uptime_alert_email
   environment         = "staging"
   database_name       = "strapi"

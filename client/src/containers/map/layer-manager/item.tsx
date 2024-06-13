@@ -7,25 +7,38 @@ import { Layer } from "deck.gl";
 
 import { parseConfig } from "@/lib/json-converter";
 
-import { useGetLayersId } from "@/types/generated/layer";
 // import { LayerResponseDataObject } from "@/types/generated/strapi.schemas";
 import { LayerTyped } from "@/types/layers";
 
 // import { layersInteractiveAtom, layersInteractiveIdsAtom } from "@/store/map";
 
 import DeckLayer from "@/components/map/layers/deck-layer";
+import { useLocale } from "next-intl";
+import { useGetBySlug } from "@/lib/localized-query";
+import { LayerResponse } from "@/types/generated/strapi.schemas";
+import { useBiomes, useEcoregions } from "@/lib/filters";
 // import MapboxLayer from "@/components/map/layers/mapbox-layer";
 
 interface LayerManagerItemProps {
   beforeId?: string;
   settings: Record<string, unknown>;
-  id: number;
+  id: string;
 }
 
 const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => {
-  const { data } = useGetLayersId(id, {
+  const locale = useLocale();
+
+  const biomes = useBiomes();
+  const ecoregions = useEcoregions();
+
+  const { data } = useGetBySlug<LayerResponse>(`layer/${id}`, {
     populate: "dataset,metadata",
+    locale,
   });
+
+  // const layersInteractive = useAtomValue(layersInteractiveAtom);
+  // const setLayersInteractive = useSetAtom(layersInteractiveAtom);
+  // const setLayersInteractiveIds = useSetAtom(layersInteractiveIdsAtom);
 
   // const layersInteractive = useAtomValue(layersInteractiveAtom);
   // const setLayersInteractive = useSetAtom(layersInteractiveAtom);
@@ -96,14 +109,22 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
 
   // The only layer type we are using for now is DeckLayer, but the CMS doesn't support the type "Deck", so we are using the type "Mapbox" for now
   if (type === "Mapbox") {
-    const { config, params_config } = data.data.attributes;
+    const { config, params_config } = data.data.attributes as unknown as LayerTyped;
     const c = parseConfig<Layer>({
-      config,
+      config: {
+        ...config,
+        id: `${id}-layer-deck`,
+        beforeId: `${id}-layer`,
+      },
       params_config,
-      settings,
+      settings: {
+        ...settings,
+        biomes,
+        ecoregions,
+      },
     });
 
-    return <DeckLayer id={`${id}-layer`} beforeId={beforeId} config={c} />;
+    return <DeckLayer key={`${id}-layer`} id={`${id}-layer`} beforeId={beforeId} config={c} />;
   }
 
   // We are not using component layers for now, but the component will remain in case of future uses

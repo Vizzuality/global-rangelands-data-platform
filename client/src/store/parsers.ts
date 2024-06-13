@@ -5,21 +5,28 @@ import {
   parseAsString,
   parseAsJson,
   parseAsBoolean,
+  parseAsStringLiteral,
 } from "nuqs/server";
 
-import { DEFAULT_BBOX } from "@/components/map/constants";
+import { DEFAULT_BBOX, MAPBOX_STYLE } from "@/components/map/constants";
+import { getKeys } from "@/lib/utils";
 
-export const datasetsParser = parseAsArrayOf(parseAsInteger).withDefault([]);
+const DEFAULT_DATASETS = ["rangeland-systems"];
+const DEFAULT_LAYERS = ["rangeland-system"];
 
-export const layersParser = parseAsArrayOf(parseAsInteger).withDefault([]);
+export const datasetsParser = parseAsArrayOf(parseAsString).withDefault(DEFAULT_DATASETS);
+
+export const layersParser = parseAsArrayOf(parseAsString).withDefault(DEFAULT_LAYERS);
 export const layersSettingsParser = parseAsJson<{
   [key: string]: Record<string, unknown>;
 }>();
+export const rangelandsTypeParser = parseAsString.withDefault(DEFAULT_LAYERS[0]);
+export const rangelandRegionsParser = parseAsArrayOf(parseAsString).withDefault([]);
 
 export const bboxParser = parseAsArrayOf(parseAsFloat).withDefault(DEFAULT_BBOX);
 //   export const mapSettingsParser =
 // parseAsJson<typeof DEFAULT_MAP_SETTINGS>().withDefault(DEFAULT_MAP_SETTINGS);
-
+export const mapStyleParser = parseAsStringLiteral(getKeys(MAPBOX_STYLE)).withDefault("light");
 export const countryParser = parseAsString;
 export const countriesComparisonParser = parseAsArrayOf(parseAsString).withDefault([]);
 
