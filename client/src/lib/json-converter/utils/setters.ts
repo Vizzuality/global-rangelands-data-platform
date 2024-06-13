@@ -82,11 +82,25 @@ const setDataWithMapboxToken = ({ dataUrls }: SetDataWithMapboxTokenProps) => {
   );
 };
 
+type SetRasterTilesProps = {
+  src: string;
+  searchparams?: Record<string, string | number>;
+};
+const setRasterTiles = ({ src, searchparams = {} }: SetRasterTilesProps) => {
+  const searchParams = new URLSearchParams();
+  Object.entries(searchparams).forEach(([key, value]) => {
+    searchParams.append(key, value as string);
+  });
+
+  return `${src}?${searchParams.toString()}`;
+};
+
 const SETTERS = {
   setOpacity,
   setVisibility,
   setColor,
   setDataWithMapboxToken,
+  setRasterTiles,
 } as const;
 
 export default SETTERS;
