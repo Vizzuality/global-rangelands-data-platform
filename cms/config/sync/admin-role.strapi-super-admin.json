@@ -17,7 +17,8 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description"
         ],
         "locales": [
           "en",
@@ -67,7 +68,8 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description"
         ],
         "locales": [
           "en",
@@ -91,7 +93,8 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description"
         ],
         "locales": [
           "en",
@@ -110,7 +113,8 @@
           "title",
           "slug",
           "code",
-          "rangeland"
+          "rangeland",
+          "color"
         ],
         "locales": [
           "en",
@@ -155,7 +159,8 @@
           "title",
           "slug",
           "code",
-          "rangeland"
+          "rangeland",
+          "color"
         ],
         "locales": [
           "en",
@@ -174,7 +179,8 @@
           "title",
           "slug",
           "code",
-          "rangeland"
+          "rangeland",
+          "color"
         ],
         "locales": [
           "en",
