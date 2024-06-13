@@ -15,7 +15,7 @@ export const ModisNetPrimaryProductionDataset: EarthEngineDataset = {
 
   isYearValid (year?: number) : boolean {
     if(!year){
-      throw new Error(`Year ${year} is not valid`)
+      throw new Error(`Year '${year}' is not valid`)
     }
     return true;
   },
