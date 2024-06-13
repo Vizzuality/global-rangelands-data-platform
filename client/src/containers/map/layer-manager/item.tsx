@@ -16,6 +16,7 @@ import DeckLayer from "@/components/map/layers/deck-layer";
 import { useLocale } from "next-intl";
 import { useGetBySlug } from "@/lib/localized-query";
 import { LayerResponse } from "@/types/generated/strapi.schemas";
+import { useBiomes, useEcoregions } from "@/lib/filters";
 // import MapboxLayer from "@/components/map/layers/mapbox-layer";
 
 interface LayerManagerItemProps {
@@ -26,6 +27,9 @@ interface LayerManagerItemProps {
 
 const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => {
   const locale = useLocale();
+
+  const biomes = useBiomes();
+  const ecoregions = useEcoregions();
 
   const { data } = useGetBySlug<LayerResponse>(`layer/${id}`, {
     populate: "dataset,metadata",
@@ -113,7 +117,11 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
         beforeId: `${id}-layer`,
       },
       params_config,
-      settings,
+      settings: {
+        ...settings,
+        biomes,
+        ecoregions,
+      },
     });
 
     return <DeckLayer key={`${id}-layer`} id={`${id}-layer`} beforeId={beforeId} config={c} />;
