@@ -2,7 +2,6 @@ import {IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional} from "class-validator";
 import {Type} from "class-transformer";
 
 export enum Tilesets {
-  // this is a placeholder for now
   modis_net_primary_production = "modis_net_primary_production"
 }
 

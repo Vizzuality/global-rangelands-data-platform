@@ -1,28 +1,39 @@
-import {Request, Response} from 'express';
-import {validateOrReject} from 'class-validator';
+import express, {Request, Response, Router} from 'express';
+import {validateOrReject, ValidationError} from 'class-validator';
 import 'reflect-metadata';
 import {plainToClass} from 'class-transformer';
-import type {HttpFunction} from '@google-cloud/functions-framework/build/src/functions';
 import {EarthEngineUtils} from './earth-engine-utils';
 import {ModisNetPrimaryProductionDataset} from './geeAssets/modis-net-primary-production-dataset';
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
 import {default as fetch , Response as FetchResponse} from "node-fetch";
+import {pipeline} from "stream/promises";
 
+//Asset Mapping
 const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.modis_net_primary_production]: ModisNetPrimaryProductionDataset,
 }
-export const getTiles: HttpFunction = async (req: Request, res: Response) => {
-  // This block handles CORS
+
+//We're using express to simplify path parameter parsing for the Tiles endpoint
+const router = Router();
+const app = express();
+app.use('/', router);
+exports.eetApp = app;
+
+
+router.get('/:z/:x/:y', async (req: Request, res: Response) : Promise<void> => {
+  ///// This block handles CORS
   res.set('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') {
     // Send response to OPTIONS requests
     res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.set('Access-Control-Allow-Headers', 'Content-Type');
     res.set('Access-Control-Max-Age', '3600');
-    return res.status(204).send('');
+    res.status(204).send('');
+    return;
   }
 
+  ///// Request processing
   let tileRequestDTO: TileRequestDTO;
   let asset: EarthEngineDataset;
 
@@ -35,9 +46,10 @@ export const getTiles: HttpFunction = async (req: Request, res: Response) => {
       throw new Error(`Tileset ${tileRequestDTO.tileset} not found`);
     }
 
-    asset.isYearValid(tileRequestDTO.year);
+    asset.isYearValid(tileRequestDTO.year); //Year might be required or not depending on the asset
   } catch (errors) {
-    return generateErrorResponse(res, 400, errors)
+    sendErrorResponse(res, 400, errors)
+    return;
   }
 
   const { tileset, x, y, z, year } = tileRequestDTO;
@@ -63,27 +75,41 @@ export const getTiles: HttpFunction = async (req: Request, res: Response) => {
     }
 
     res.status(200).contentType(contentType);
-    imageResponse.body.pipe(res);
-
-    return {status: true, res}
-
+    await pipeline(imageResponse.body, res);
   } catch (error) {
-    console.error(error)
-    return generateErrorResponse(res, 500, error)
+    sendErrorResponse(res, 500, error);
   }
-}
+});
 
 async function getAndValidateRequestDTO(req: Request): Promise<TileRequestDTO> {
   if (!req.query) {
-    throw new Error("No data provided");
+    throw new Error("Missing query parameters (tileset and/or year)");
   }
 
-  const result = plainToClass(TileRequestDTO, req.query, {enableImplicitConversion: true})
-  await validateOrReject(result);
+  const result = plainToClass(
+    TileRequestDTO,
+    { ...req.query, ...req.params },
+    { enableImplicitConversion: true }
+  )
+  await validateOrReject(result, { validationError: { target: false } });
 
   return result;
 }
 
-function generateErrorResponse(res: Response, status: number, error: Error | Error[]){
-  return {status: false, res: res.status(500).json({"error": error})}
+function sendErrorResponse(res: Response, status: number, errors: any){
+  // Using class validator's validateOrReject, rejects by throwing a list of ValidationErrors, but native Errors are thrown
+  // as a single non-array Error object, so this check must be done first to process the errors as a list later
+  errors = errors.length ? errors : [errors];
+
+  // Native JS Errors have all their properties as non-enumerable, so it's JSON.stringified when sending the response
+  // it will yield empty objects, but ValidationErrors are their own classes and don't extend native Errors
+  // This is a bit of a hacky way to simplify responses, by transforming native Errors to actual objects with the error
+  // message and leaving the ValidationErrors as is
+  const responseErrors = errors.map((error)=>
+    error instanceof ValidationError ?
+      error : { message: error.message }
+  )
+  console.log('Returning Errors: ' + JSON.stringify(responseErrors))
+
+  res.status( status ).json( { errors: responseErrors } )
 }

@@ -81,7 +81,7 @@ module "eet_cloud_function" {
   description                      = "Earth Engine Tiler Cloud Function"
   source_dir                       = "${path.root}/../../cloud_functions/earth_engine_tiler"
   runtime                          = "nodejs20"
-  entry_point                      = "getTiles"
+  entry_point                      = "eetApp"
   runtime_environment_variables    = local.eet_cloud_function_env
   secrets                          = local.eet_cloud_function_secrets
   timeout_seconds                  = var.eet_function_timeout_seconds
