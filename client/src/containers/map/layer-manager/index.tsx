@@ -60,18 +60,22 @@ const LayerManager = () => {
           Generate all transparent backgrounds to be able to sort by layers without an error
           - https://github.com/visgl/react-map-gl/issues/939#issuecomment-625290200
         */}
-        {layers.map((l, i) => {
-          const beforeId = i === 0 ? baseLayer : `${layers[i - 1]}-layer`;
-          return (
-            <Layer
-              id={`${l}-layer`}
-              key={l}
-              type="background"
-              layout={{ visibility: "none" }}
-              beforeId={beforeId}
-            />
-          );
-        })}
+        {layers
+          .toSorted((a) => {
+            return a.includes("rangeland") ? 1 : -1;
+          })
+          .map((l, i) => {
+            const beforeId = i === 0 ? baseLayer : `${layers[i - 1]}-layer`;
+            return (
+              <Layer
+                id={`${l}-layer`}
+                key={l}
+                type="background"
+                layout={{ visibility: "none" }}
+                beforeId={beforeId}
+              />
+            );
+          })}
 
         {/*
           Loop through active layers. The id is gonna be used to fetch the current layer and know how to order the layers.
