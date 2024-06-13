@@ -89,7 +89,7 @@ const LayerManager = () => {
               id={l}
               beforeId={beforeId}
               settings={{
-                ...{ opacity: 1, visibility: true },
+                // ...{ opacity: 1, visibility: true },
                 ...(!!layersSettings && layersSettings[l]),
               }}
             />

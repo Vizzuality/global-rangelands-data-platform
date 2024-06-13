@@ -1,17 +1,21 @@
+"use client";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useSyncDatasets } from "@/store/map";
 import { Layers3Icon } from "lucide-react";
 import LegendItem from "./item";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Legends = () => {
   const [datasets] = useSyncDatasets();
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
-      <Popover>
+      <Popover open={open}>
         <PopoverTrigger asChild>
           <Button
+            onClick={() => setOpen(!open)}
             variant="ghost"
             className="transition-color block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 hover:bg-orange-100 focus-visible:bg-global data-[state=open]:bg-global"
           >

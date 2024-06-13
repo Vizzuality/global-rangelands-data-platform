@@ -1,25 +1,20 @@
-import {
-  RANGELAND_DATASET_SLUG,
-  RANGELAND_ECOREGIONS,
-  RANGELAND_SISTEM_COLOR,
-  RANGELAND_SYSTEM,
-} from "@/containers/datasets/constants";
 import { useGetBySlug } from "@/lib/localized-query";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
-import { useGetRangelands } from "@/types/generated/rangeland";
 import { DatasetResponse } from "@/types/generated/strapi.schemas";
 import { useLocale } from "next-intl";
-import { createElement, useCallback, useMemo } from "react";
+import { createElement, useMemo } from "react";
 import LegendHeader from "@/components/map/legends/header";
 import LegendContent from "@/components/map/legends";
 import BasicLegend from "@/components/map/legends/content/basic";
 import GradientLegend from "@/components/map/legends/content/gradient";
+import RangelandLegend from "@/components/map/legends/content/rangeland";
 import { LegendComponent } from "@/components/map/types";
 import { ParamsConfig } from "@/types/layers";
 
 const LEGEND_CONTENT = {
   Basic: BasicLegend,
   Gradient: GradientLegend,
+  Rangeland: RangelandLegend,
 };
 
 type LegendItemProps = {
@@ -36,20 +31,6 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
     locale,
   });
 
-  const isRangelandDataset = datasetData?.data?.attributes?.slug === RANGELAND_DATASET_SLUG;
-
-  const { data: rangelandsData } = useGetRangelands(
-    {
-      populate: "*",
-      sort: "title:asc",
-    },
-    {
-      query: {
-        enabled: isRangelandDataset,
-      },
-    },
-  );
-
   const datasetLayer = useMemo(() => {
     return datasetData?.data?.attributes?.layers?.find((layer) => {
       return (
@@ -58,44 +39,20 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
     });
   }, [datasetData, layers]);
 
-  // Extract the legend items from the dataset layer
-  const getLayerItems = useCallback((): LegendComponent["items"] => {
-    const layer = datasetLayer?.layer?.data?.attributes;
-    if (isRangelandDataset) {
-      if (layer?.slug === RANGELAND_SYSTEM) {
-        return [{ name: "Global", color: RANGELAND_SISTEM_COLOR }];
-      }
-      return (
-        rangelandsData?.data?.map((rd) => ({
-          name: rd?.attributes?.title,
-          color: rd?.attributes?.color,
-          ...(layer?.slug === RANGELAND_ECOREGIONS
-            ? {
-                items: rd?.attributes?.ecoregions?.data?.map((b) => ({
-                  name: b?.attributes?.title,
-                  color: b?.attributes?.color,
-                })),
-              }
-            : {}),
-        })) || []
-      );
-    }
-    return layer?.legend?.items || [];
-  }, [datasetLayer, isRangelandDataset, rangelandsData]);
-
   const _isLegendType = (legendType?: string): legendType is keyof typeof LEGEND_CONTENT => {
     return !!legendType && legendType in LEGEND_CONTENT;
   };
 
   const LEGEND = useMemo(() => {
-    const legendType = isRangelandDataset
-      ? "Basic"
-      : datasetLayer?.layer?.data?.attributes?.legend?.type;
+    const legendType = datasetLayer?.layer?.data?.attributes?.legend?.type;
+
     if (_isLegendType(legendType)) {
-      const props = { items: getLayerItems() };
+      const props = {
+        items: datasetLayer?.layer?.data?.attributes?.legend?.items as LegendComponent["items"],
+      };
       return createElement(LEGEND_CONTENT[legendType], props);
     }
-  }, [isRangelandDataset, datasetLayer]);
+  }, [datasetLayer]);
 
   const settings = useMemo(() => {
     const layerSettings =
@@ -136,21 +93,13 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
     }
   };
 
-  const layerSubtitle = useMemo(() => {
-    const layer = datasetLayer?.layer?.data?.attributes;
-    if (layer?.slug !== RANGELAND_SYSTEM) {
-      return datasetLayer?.name;
-    }
-    return;
-  }, [isRangelandDataset, datasetLayer]);
-
   return (
     <div className="space-y-2 border-b border-b-gray-300 pb-4 last-of-type:border-b-0 last-of-type:pb-0">
       <LegendHeader
         visible={settings.visibility}
         opacity={settings.opacity}
         title={datasetData?.data?.attributes?.title}
-        subtitle={layerSubtitle}
+        subtitle={datasetLayer?.name}
         info={datasetLayer?.layer?.data?.attributes?.description}
         setOpacity={(o) => setLayerSettings("opacity", o)}
         setVisibility={(v) => setLayerSettings("visibility", v)}
