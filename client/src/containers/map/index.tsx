@@ -19,7 +19,7 @@ const Map = () => {
         projection={{
           name: "mercator",
         }}
-        minZoom={0}
+        minZoom={2}
         maxZoom={14}
         logoPosition="top-left"
       >

@@ -34,8 +34,9 @@ These resources include, but are not limited to:
 
 - Google Compute instance - bastion host to access the GCP infrastructure
 - Artifact Registry, for docker image storage
-- Cloud Run, to host the client application, API/CMS and TiTiler server
+- Cloud Run, to host the client application, API/CMS
 - Cloud SQL, for relational data storage
+- Cloud Functions for the Earth Engine mini tiler server
 - Networking resources
 - Uptime monitoring
 - Error reporting
@@ -73,7 +74,7 @@ to allow terraform to write to GH Secrets.
 
 ### Github Actions
 
-As part of this infrastructure, Github Actions are used to automatically apply code updates for the client application, API/CMS and the TiTiler server.
+As part of this infrastructure, Github Actions are used to automatically apply code updates for the client application, API/CMS and the Cloud Functions EE tiler.
 
 #### Building new code versions
 
@@ -82,6 +83,7 @@ Deployment to the CloudRun instances is accomplished by building Docker images a
   - the following secrets set by terraform in STAGING_CLIENT_ENV_TF_MANAGED (in the format of an .env file):
     - NEXT_PUBLIC_URL
     - NEXT_PUBLIC_API_URL
+    - NEXT_PUBLIC_EET_CF_URL
     - NEXT_PUBLIC_ENVIRONMENT
     - LOG_LEVEL
   - additional secrets set manually in STAGING_CLIENT_ENV (copy to be managed in LastPass)
@@ -101,6 +103,8 @@ Deployment to the CloudRun instances is accomplished by building Docker images a
     - DATABASE_USERNAME
     - DATABASE_PASSWORD
     - DATABASE_SSL
+
+For Cloud Functions, build is executed remotely on GCP, and all variables and secrets are defined as part of the Cloud Functions (they can be checked on the GCP console).
 
 The workflow is currently set up to deploy to the staging instance when merging to develop.
 

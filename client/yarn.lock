@@ -2251,7 +2251,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@loaders.gl/core@npm:^4.2.0":
+"@loaders.gl/core@npm:^4.2.0, @loaders.gl/core@npm:^4.2.2":
   version: 4.2.2
   resolution: "@loaders.gl/core@npm:4.2.2"
   dependencies:
@@ -2273,6 +2273,18 @@ __metadata:
   peerDependencies:
     "@loaders.gl/core": ^4.0.0
   checksum: 10c0/f49dd6046d9b58d406273be89d3c7c8601816545fcac3e6b28f3fb9579711ca1ad497031e505dd5d72ad00c3895f21259943322ced77c477a357246924c9d432
+  languageName: node
+  linkType: hard
+
+"@loaders.gl/csv@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "@loaders.gl/csv@npm:4.2.2"
+  dependencies:
+    "@loaders.gl/loader-utils": "npm:4.2.2"
+    "@loaders.gl/schema": "npm:4.2.2"
+  peerDependencies:
+    "@loaders.gl/core": ^4.0.0
+  checksum: 10c0/fa84f13e3fdf9574524a45519e6ad7c1c3b7b20d9f50cd3b37ed4c7fc79552d5fde701c72ae84f8723a2bea55e4694de6ada06613678f258401fab80bde40e6d
   languageName: node
   linkType: hard
 
@@ -4355,6 +4367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/d3-dsv@npm:^3":
+  version: 3.0.7
+  resolution: "@types/d3-dsv@npm:3.0.7"
+  checksum: 10c0/c0f01da862465594c8a28278b51c850af3b4239cc22b14fd1a19d7a98f93d94efa477bf59d8071beb285dca45bf614630811451e18e7c52add3a0abfee0a1871
+  languageName: node
+  linkType: hard
+
 "@types/d3-scale@npm:^3.0.0":
   version: 3.3.5
   resolution: "@types/d3-scale@npm:3.3.5"
@@ -5670,6 +5689,8 @@ __metadata:
     "@deck.gl/json": "npm:^9.0.17"
     "@deck.gl/layers": "npm:^9.0.17"
     "@deck.gl/mapbox": "npm:^9.0.17"
+    "@loaders.gl/core": "npm:^4.2.2"
+    "@loaders.gl/csv": "npm:^4.2.2"
     "@radix-ui/react-collapsible": "npm:^1.0.3"
     "@radix-ui/react-dialog": "npm:^1.0.5"
     "@radix-ui/react-popover": "npm:^1.0.7"
@@ -5685,6 +5706,7 @@ __metadata:
     "@tanstack/react-query": "npm:^5.40.1"
     "@transifex/native": "npm:^7.1.0"
     "@types/color": "npm:^3.0.6"
+    "@types/d3-dsv": "npm:^3"
     "@types/express": "npm:^4"
     "@types/mapbox-gl": "npm:^3"
     "@types/node": "npm:^20"
@@ -5696,6 +5718,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     cmdk: "npm:^1.0.0"
     color: "npm:^4.2.3"
+    d3-dsv: "npm:^3.0.1"
     deck.gl: "npm:^9.0.17"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.3"
@@ -5842,17 +5865,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:7, commander@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "commander@npm:7.2.0"
+  checksum: 10c0/8d690ff13b0356df7e0ebbe6c59b4712f754f4b724d4f473d3cc5b3fdcf978e3a5dc3078717858a2ceb50b0f84d0660a7f22a96cdc50fb877d0c9bb31593d23a
+  languageName: node
+  linkType: hard
+
 "commander@npm:^4.0.0":
   version: 4.1.1
   resolution: "commander@npm:4.1.1"
   checksum: 10c0/84a76c08fe6cc08c9c93f62ac573d2907d8e79138999312c92d4155bc2325d487d64d13f669b2000c9f8caf70493c1be2dac74fec3c51d5a04f8bc3ae1830bab
-  languageName: node
-  linkType: hard
-
-"commander@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "commander@npm:7.2.0"
-  checksum: 10c0/8d690ff13b0356df7e0ebbe6c59b4712f754f4b724d4f473d3cc5b3fdcf978e3a5dc3078717858a2ceb50b0f84d0660a7f22a96cdc50fb877d0c9bb31593d23a
   languageName: node
   linkType: hard
 
@@ -6062,6 +6085,27 @@ __metadata:
   version: 3.1.0
   resolution: "d3-color@npm:3.1.0"
   checksum: 10c0/a4e20e1115fa696fce041fbe13fbc80dc4c19150fa72027a7c128ade980bc0eeeba4bcf28c9e21f0bce0e0dbfe7ca5869ef67746541dcfda053e4802ad19783c
+  languageName: node
+  linkType: hard
+
+"d3-dsv@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "d3-dsv@npm:3.0.1"
+  dependencies:
+    commander: "npm:7"
+    iconv-lite: "npm:0.6"
+    rw: "npm:1"
+  bin:
+    csv2json: bin/dsv2json.js
+    csv2tsv: bin/dsv2dsv.js
+    dsv2dsv: bin/dsv2dsv.js
+    dsv2json: bin/dsv2json.js
+    json2csv: bin/json2dsv.js
+    json2dsv: bin/json2dsv.js
+    json2tsv: bin/json2dsv.js
+    tsv2csv: bin/dsv2dsv.js
+    tsv2json: bin/dsv2json.js
+  checksum: 10c0/10e6af9e331950ed258f34ab49ac1b7060128ef81dcf32afc790bd1f7e8c3cc2aac7f5f875250a83f21f39bb5925fbd0872bb209f8aca32b3b77d32bab8a65ab
   languageName: node
   linkType: hard
 
@@ -7891,7 +7935,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:^0.6.2":
+"iconv-lite@npm:0.6, iconv-lite@npm:^0.6.2":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -10751,7 +10795,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rw@npm:^1.3.3":
+"rw@npm:1, rw@npm:^1.3.3":
   version: 1.3.3
   resolution: "rw@npm:1.3.3"
   checksum: 10c0/b1e1ef37d1e79d9dc7050787866e30b6ddcb2625149276045c262c6b4d53075ddc35f387a856a8e76f0d0df59f4cd58fe24707e40797ebee66e542b840ed6a53

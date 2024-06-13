@@ -20,7 +20,7 @@ import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
 import {
   useSyncDatasets,
   useSyncLayers,
-  useSyncRangelandRegion,
+  useSyncRangelandRegions,
   useSyncRangelandType,
 } from "@/store/map";
 import { useTranslations } from "@/i18n";
@@ -28,7 +28,6 @@ import { useEffect, useMemo } from "react";
 import { useGetRangelands } from "@/types/generated/rangeland";
 
 import { MultiSelect } from "@/components/ui/multi-select";
-import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 
@@ -42,7 +41,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
   const [syncDatasets] = useSyncDatasets();
   const [syncLayers, setSyncLayers] = useSyncLayers();
   const [rangelandType, setRangelandType] = useSyncRangelandType();
-  const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegion();
+  const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
 
   const datasetLayers = useMemo(
     () => layers?.map((l) => l.layer?.data?.attributes?.slug),
@@ -143,7 +142,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
         defaultValue={selectedLayer?.layer?.data?.attributes?.slug}
         value={selectedLayer?.layer?.data?.attributes?.slug}
       >
-        <SelectTrigger className="flex gap-3">
+        <SelectTrigger>
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <ColorSwatchIcon />
@@ -192,16 +191,15 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="h-6 w-6 px-0 py-0 text-xs"
+                        <span
+                          className="border-input hover:bg-accent hover:text-accent-foreground flex h-5 w-5 items-center justify-center rounded-full border bg-background px-0 py-0 text-xs"
                           onClick={(e) => {
                             e.stopPropagation();
                             setRangelandRegion([]);
                           }}
                         >
                           <XIcon className="h-3 w-3" />
-                        </Button>
+                        </span>
                       </TooltipTrigger>
                       <TooltipContent className="bg-background text-xs">
                         {t("Remove all filters")}

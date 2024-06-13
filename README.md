@@ -8,21 +8,22 @@ This README is an early WIP, and will be edited as needed, as the project moves 
 
 - *Strapi Headless CMS*: The back-end application is implemented using Strapi, which provides a flexible content management system and exposes APIs for dynamic data retrieval.
 
-- *TiTiler*: A Python FastAPI application for dynamic tiling, used for serving Raster tile data
+- *Cloud Functions*: A small GCP Cloud Function to server as a mini tiler server/interface to use request data from GMV's Earth Engine account
 
 External services:
 
-- *Mapbox*: used for serving layers for the map
+- *Mapbox* and *Google Earth Engine*: used for serving layers for the map
 
 - *Transifex*: a globalization management system, used to localize the application into several languages.
 
 
 This repository contains all the code and documentation necessary to set up and deploy the project. It is organized into the following subdirectories:
 
-| Subdirectory name | Description                                                 | Documentation                                           |
-|-------------------|-------------------------------------------------------------|---------------------------------------------------------|
-| frontend          | The Next.js client application                            | [frontend/README.md](frontend/README.md)                |
-| cms               | The Strapi CMS / API                                        | [cms/README.md](cms/README.md)                          |
+| Subdirectory name | Description                                                                                      | Documentation                                        |
+|-------------------|--------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| frontend          | The Next.js client application                                                                   | [frontend/README.md](frontend/README.md)             |
+| cms               | The Strapi CMS / API                                                                             | [cms/README.md](cms/README.md)                       |
+| cloud_functions   | Cloud Functions (Earth Engine Tiler)                                                             | [cloud_functions/README.md](cms/README.md)           |
 | infrastructure    | The Terraform project & GH Actions workflow (provisioning & deployment to Google Cloud Platform) | [infrastructure/README.md](infrastructure/README.md) |
 
 ### Deployment and Infrastructure
