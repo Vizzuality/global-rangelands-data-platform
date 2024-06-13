@@ -5,8 +5,8 @@ import { DataFilterExtension, DataFilterExtensionProps } from "@deck.gl/extensio
 
 import DeckLayer from "@/components/map/layers/deck-layer";
 import { useMemo } from "react";
-import { useSyncRangelandRegions, useSyncRangelandType } from "@/store/map";
-import { useGetRangelands } from "@/types/generated/rangeland";
+import { useSyncRangelandType } from "@/store/map";
+import { useBiomes, useEcoregions } from "@/lib/filters";
 
 interface MaskProps {
   beforeId?: string;
@@ -16,34 +16,9 @@ interface MaskProps {
 
 const Mask = ({ id, beforeId }: MaskProps) => {
   const [rangelandType] = useSyncRangelandType();
-  const [rangelandRegions] = useSyncRangelandRegions();
-  const { data: rangelandsData } = useGetRangelands({
-    populate: "*",
-    sort: "title:asc",
-  });
 
-  const biomes = useMemo(() => {
-    return (
-      rangelandsData?.data
-        ?.map((r) => +(r.attributes?.code || 0) ?? [])
-        ?.filter((r) => {
-          if (rangelandRegions.length === 0) return true;
-          return rangelandRegions.includes(`${r}`);
-        }) ?? []
-    );
-  }, [rangelandRegions, rangelandsData]);
-
-  const ecoregions = useMemo(() => {
-    return (
-      rangelandsData?.data
-        ?.map((r) => r.attributes?.ecoregions?.data?.map((e) => +(e.attributes?.code || 0)) ?? [])
-        ?.flat()
-        ?.filter((r) => {
-          if (rangelandRegions.length === 0) return true;
-          return rangelandRegions.includes(`${r}`);
-        }) ?? []
-    );
-  }, [rangelandRegions, rangelandsData]);
+  const biomes = useBiomes();
+  const ecoregions = useEcoregions();
 
   const filterCategories = useMemo(() => {
     if (rangelandType === "rangeland-biomes") return biomes;
