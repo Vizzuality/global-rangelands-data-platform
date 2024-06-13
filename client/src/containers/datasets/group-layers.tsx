@@ -28,7 +28,6 @@ import { useEffect, useMemo } from "react";
 import { useGetRangelands } from "@/types/generated/rangeland";
 
 import { MultiSelect } from "@/components/ui/multi-select";
-import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 
@@ -192,16 +191,15 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="h-6 w-6 px-0 py-0 text-xs"
+                        <span
+                          className="border-input hover:bg-accent hover:text-accent-foreground flex h-5 w-5 items-center justify-center rounded-full border bg-background px-0 py-0 text-xs"
                           onClick={(e) => {
                             e.stopPropagation();
                             setRangelandRegion([]);
                           }}
                         >
                           <XIcon className="h-3 w-3" />
-                        </Button>
+                        </span>
                       </TooltipTrigger>
                       <TooltipContent className="bg-background text-xs">
                         {t("Remove all filters")}
