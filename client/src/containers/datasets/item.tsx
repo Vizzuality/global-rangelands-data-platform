@@ -9,9 +9,8 @@ import GroupLayers from "./group-layers";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
-import { CircleHelpIcon, EyeIcon } from "lucide-react";
-import { Toggle } from "@radix-ui/react-toggle";
 import { useMemo } from "react";
+import { LayerInfo, LayerVisibility } from "@/components/map/legends/header/buttons";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -99,15 +98,12 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
+            <LayerInfo />
 
-            <Toggle
-              className="data-[state=off]:opacity-20"
-              onPressedChange={handleChangeVisibility}
-              pressed={datasetVisibility}
-            >
-              <EyeIcon className="h-6 w-6 fill-foreground stroke-background" />
-            </Toggle>
+            <LayerVisibility
+              visible={datasetVisibility}
+              onChangeVisibility={handleChangeVisibility}
+            />
           </div>
         </div>
         <div>

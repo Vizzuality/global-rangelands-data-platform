@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components
 
 type LayerVisibilityProps = {
   onChangeVisibility: (v: boolean) => void;
-  visible: boolean;
+  visible?: boolean;
 };
 const LayerVisibility = ({ onChangeVisibility, visible }: LayerVisibilityProps) => {
   return (
