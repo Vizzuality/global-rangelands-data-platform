@@ -1,9 +1,11 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Toggle } from "@/components/ui/toggle";
-import { CircleHelpIcon, EyeIcon } from "lucide-react";
+import { CircleHelpIcon } from "lucide-react";
 import OpacityIcon from "@/svgs/opacity.svg";
 import Slider from "@/components/ui/slider";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import EyeOffIcon from "@/svgs/eye-off.svg";
+import EyeIcon from "@/svgs/eye.svg";
 
 type LayerVisibilityProps = {
   onChangeVisibility: (v: boolean) => void;
@@ -11,12 +13,9 @@ type LayerVisibilityProps = {
 };
 const LayerVisibility = ({ onChangeVisibility, visible }: LayerVisibilityProps) => {
   return (
-    <Toggle
-      className="h-min px-0 data-[state=off]:opacity-20"
-      onPressedChange={onChangeVisibility}
-      pressed={visible}
-    >
-      <EyeIcon className="h-6 w-6 fill-foreground stroke-background" />
+    <Toggle className="group h-min px-0" onPressedChange={onChangeVisibility} pressed={visible}>
+      <EyeIcon className="h-5 w-5 fill-foreground group-data-[state=off]:hidden" />
+      <EyeOffIcon className="h-5 w-5 fill-foreground group-data-[state=on]:hidden" />
     </Toggle>
   );
 };
@@ -55,7 +54,7 @@ type LayerInfoProps = {
 
 const LayerInfo = ({ info, title }: LayerInfoProps) => (
   <Dialog>
-    <DialogTrigger className="h-min">
+    <DialogTrigger disabled={!info} className="h-min">
       <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
     </DialogTrigger>
     <DialogContent>

@@ -57,13 +57,28 @@ export const setColor = ({ colors_config }: SetColorProps) => {
     return (f: Feature<Geometry>) => {
       return Color(
         (colorValues as Record<string, string | number[]>)[f.properties?.[property]] ||
-          defaultColor,
+        defaultColor,
       )
         .rgb()
         .array() as SetColorsReturn;
     };
   }
   return Color(defaultColor).rgb().array() as SetColorsReturn;
+};
+
+
+type SetRangelandColorProps = {
+  colors: { code: number, color: number }[];
+  property: string;
+};
+
+export const setRangelandColor = ({ colors, property }: SetRangelandColorProps) => {
+  return (f: Feature<Geometry>) => {
+    const color = colors?.[f.properties?.[property]];
+    return Color(color || [0, 0, 0])
+      .rgb()
+      .array() as SetColorsReturn;
+  };
 };
 
 const _setDataUrlAsStringArray = (dataUrls: string[] | string) => {
@@ -95,12 +110,21 @@ const setRasterTiles = ({ src, searchparams = {} }: SetRasterTilesProps) => {
   return `${src}?${searchParams.toString()}`;
 };
 
+type SetFilterCategoriesProps = {
+  filter: Record<string, unknown>;
+};
+const setFilterCategories = ({ filter }: SetFilterCategoriesProps) => {
+  return Object.keys(filter).map((key) => +(key) || 0)?.slice(0, 100);
+}
+
 const SETTERS = {
   setOpacity,
   setVisibility,
   setColor,
+  setRangelandColor,
   setDataWithMapboxToken,
   setRasterTiles,
+  setFilterCategories
 } as const;
 
 export default SETTERS;

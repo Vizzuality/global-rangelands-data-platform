@@ -104,9 +104,8 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         <PopoverContent
           side="bottom"
           sideOffset={0}
-          // avoidCollisions={false}
           className={cn(
-            "border-input peer w-[--radix-popover-trigger-width] rounded-md border bg-background p-0 shadow-lg data-[side=bottom]:rounded-t-none",
+            "border-input peer w-[--radix-popover-trigger-width] -translate-y-px rounded-md border bg-background p-0 shadow-lg data-[side=bottom]:rounded-t-none",
             className,
           )}
         >

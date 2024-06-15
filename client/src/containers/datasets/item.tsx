@@ -85,21 +85,23 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   return (
     <div className={cn("space-y-6", className)}>
       <div className="space-y-2">
-        <div className="flex items-center justify-between gap-3 font-medium">
-          <div className="flex items-center justify-between gap-1">
+        <div className="flex justify-between gap-3 font-medium">
+          <div className="flex justify-between gap-3">
             {attributes?.slug !== RANGELAND_DATASET_SLUG && (
               <Switch
                 id={`toggle-${id}`}
                 checked={datasets?.includes(id!)}
                 onCheckedChange={handleToggleDataset}
+                className="my-1"
               />
             )}
-            <label htmlFor={`toggle-${id}`}>{attributes?.title}</label>
+            <label className="leading-tight" htmlFor={`toggle-${id}`}>
+              {attributes?.title}
+            </label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="mt-px flex gap-2">
             <LayerInfo />
-
             <LayerVisibility
               visible={datasetVisibility}
               onChangeVisibility={handleChangeVisibility}
