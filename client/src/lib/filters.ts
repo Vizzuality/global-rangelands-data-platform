@@ -16,12 +16,11 @@ export const useBiomes = () => {
         if (rangelandRegions.length === 0 || rangelandRegions.includes(`${code}`)) {
           return {
             ...acc,
-            [code]: curr.attributes?.color ?? undefined
-          }
+            [code]: curr.attributes?.color ?? undefined,
+          };
         }
         return acc;
       }, {}) ?? {}
-
     );
   }, [rangelandRegions, rangelandsData]);
 };
@@ -36,20 +35,21 @@ export const useEcoregions = () => {
   return useMemo(() => {
     return (
       rangelandsData?.data?.slice(1)?.reduce<Record<string, string>>((acc, curr) => {
-        const ecoregions = curr.attributes?.ecoregions?.data?.reduce<Record<string, string>>((a, c) => {
-          const code = +(c.attributes?.code || 0);
-          if (rangelandRegions.length === 0 || rangelandRegions.includes(`${code}`)) {
-            return {
-              ...a,
-              [code]: c.attributes?.color ?? undefined
+        const ecoregions =
+          curr.attributes?.ecoregions?.data?.reduce<Record<string, string>>((a, c) => {
+            const code = +(c.attributes?.code || 0);
+            if (rangelandRegions.length === 0 || rangelandRegions.includes(`${code}`)) {
+              return {
+                ...a,
+                [code]: c.attributes?.color ?? undefined,
+              };
             }
-          }
-          return a;
-        }, {}) ?? {};
+            return a;
+          }, {}) ?? {};
         return {
           ...acc,
-          ...ecoregions
-        }
+          ...ecoregions,
+        };
       }, {}) ?? {}
     );
   }, [rangelandRegions, rangelandsData]);

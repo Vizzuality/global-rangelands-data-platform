@@ -66,9 +66,8 @@ export const setColor = ({ colors_config }: SetColorProps) => {
   return Color(defaultColor).rgb().array() as SetColorsReturn;
 };
 
-
 type SetRangelandColorProps = {
-  colors: { code: number, color: number }[];
+  colors: { code: number; color: number }[];
   property: string;
 };
 
@@ -114,8 +113,10 @@ type SetFilterCategoriesProps = {
   filter: Record<string, unknown>;
 };
 const setFilterCategories = ({ filter }: SetFilterCategoriesProps) => {
-  return Object.keys(filter).map((key) => +(key) || 0)?.slice(0, 100);
-}
+  return Object.keys(filter)
+    .map((key) => +key || 0)
+    ?.slice(0, 100);
+};
 
 const SETTERS = {
   setOpacity,
