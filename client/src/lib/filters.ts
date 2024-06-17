@@ -9,20 +9,18 @@ export const useBiomes = () => {
     sort: "title:asc",
   });
 
-  return useMemo(() => {
+  const biomes = useMemo(() => {
     return (
-      rangelandsData?.data?.reduce<Record<string, string>>((acc, curr) => {
-        const code = +(curr.attributes?.code || 0);
-        if (rangelandRegions.length === 0 || rangelandRegions.includes(`${code}`)) {
-          return {
-            ...acc,
-            [code]: curr.attributes?.color ?? undefined,
-          };
-        }
-        return acc;
-      }, {}) ?? {}
+      rangelandsData?.data
+        ?.map((r) => +(r.attributes?.code || 0) ?? [])
+        ?.filter((r) => {
+          if (rangelandRegions.length === 0) return true;
+          return rangelandRegions.includes(`${r}`);
+        }) ?? []
     );
   }, [rangelandRegions, rangelandsData]);
+
+  return biomes;
 };
 
 export const useEcoregions = () => {
@@ -32,25 +30,17 @@ export const useEcoregions = () => {
     sort: "title:asc",
   });
 
-  return useMemo(() => {
+  const ecoregions = useMemo(() => {
     return (
-      rangelandsData?.data?.slice(1)?.reduce<Record<string, string>>((acc, curr) => {
-        const ecoregions =
-          curr.attributes?.ecoregions?.data?.reduce<Record<string, string>>((a, c) => {
-            const code = +(c.attributes?.code || 0);
-            if (rangelandRegions.length === 0 || rangelandRegions.includes(`${code}`)) {
-              return {
-                ...a,
-                [code]: c.attributes?.color ?? undefined,
-              };
-            }
-            return a;
-          }, {}) ?? {};
-        return {
-          ...acc,
-          ...ecoregions,
-        };
-      }, {}) ?? {}
+      rangelandsData?.data
+        ?.map((r) => r.attributes?.ecoregions?.data?.map((e) => +(e.attributes?.code || 0)) ?? [])
+        ?.flat()
+        ?.filter((r) => {
+          if (rangelandRegions.length === 0) return true;
+          return rangelandRegions.includes(`${r}`);
+        }) ?? []
     );
   }, [rangelandRegions, rangelandsData]);
+
+  return ecoregions;
 };
