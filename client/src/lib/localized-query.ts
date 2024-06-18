@@ -64,8 +64,16 @@ export const getBySlugIdQueryOptions = <
 };
 
 const _isNotFoundError = (error: unknown) => {
-  return !!(error && typeof error === "object" && "response" in error && !!error.response && typeof error.response === "object" && "status" in error.response && error?.response?.status === 404)
-}
+  return !!(
+    error &&
+    typeof error === "object" &&
+    "response" in error &&
+    !!error.response &&
+    typeof error.response === "object" &&
+    "status" in error.response &&
+    error?.response?.status === 404
+  );
+};
 
 export const useGetBySlug = <
   TData = Awaited<ReturnType<typeof getBySlugId>>,
@@ -78,19 +86,20 @@ export const useGetBySlug = <
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = useMemo(
-    () => getBySlugIdQueryOptions(id, params, {
-      ...options,
-      query: {
-        retry: (failureCount: number, error) => {
-          if (_isNotFoundError(error)) {
-            return false;
-          }
-          return failureCount < 3;
+    () =>
+      getBySlugIdQueryOptions(id, params, {
+        ...options,
+        query: {
+          retry: (failureCount: number, error) => {
+            if (_isNotFoundError(error)) {
+              return false;
+            }
+            return failureCount < 3;
+          },
+          ...options?.query,
+          queryKey: options?.query?.queryKey ?? [],
         },
-        ...options?.query,
-        queryKey: options?.query?.queryKey ?? [],
-      },
-    }),
+      }),
     [id, params, options],
   );
 
