@@ -132,7 +132,7 @@ export const Map: FC<CustomMapProps> = ({
   }, [bounds, isFlying]);
 
   return (
-    <div className={cn("relative z-0 h-full w-full", className)}>
+    <div className={cn("absolute left-0 top-0 z-0 h-full w-full", className)}>
       <ReactMapGL
         id={id}
         initialViewState={initialViewState}
