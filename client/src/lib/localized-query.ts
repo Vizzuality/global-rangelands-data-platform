@@ -75,7 +75,6 @@ const _isNotFoundError = (error: unknown) => {
   );
 };
 
-
 export const useGetBySlug = <
   TData = Awaited<ReturnType<typeof getBySlugId>>,
   TError = ErrorType<Error>,
@@ -96,7 +95,11 @@ export const useGetBySlug = <
             }
             return failureCount < 3;
           },
-          ...options?.query as UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData>,
+          ...(options?.query as UseQueryOptions<
+            Awaited<ReturnType<typeof getBySlugId>>,
+            TError,
+            TData
+          >),
         },
       }),
     [id, params, options],
@@ -112,7 +115,11 @@ export const useGetBySlug = <
     {
       query: {
         enabled: _isNotFoundError(query.error),
-        ...options?.query as UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData>,
+        ...(options?.query as UseQueryOptions<
+          Awaited<ReturnType<typeof getBySlugId>>,
+          TError,
+          TData
+        >),
       },
     },
   );
@@ -130,7 +137,6 @@ export const useGetBySlug = <
 
   return query;
 };
-
 
 /**
  * useGetLocalizedList
