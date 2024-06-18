@@ -10,6 +10,7 @@ import { useLocale } from "next-intl";
 import { DEFAULT_LOCALE } from "@/middleware";
 
 import API, { ErrorType } from "@/services/api";
+import { useMemo } from "react";
 
 type StrapiDATA = {
   data?: {
@@ -62,6 +63,10 @@ export const getBySlugIdQueryOptions = <
   return { queryKey, queryFn, enabled: !!id, ...queryOptions };
 };
 
+const _isNotFoundError = (error: unknown) => {
+  return !!(error && typeof error === "object" && "response" in error && !!error.response && typeof error.response === "object" && "status" in error.response && error?.response?.status === 404)
+}
+
 export const useGetBySlug = <
   TData = Awaited<ReturnType<typeof getBySlugId>>,
   TError = ErrorType<Error>,
@@ -72,23 +77,51 @@ export const useGetBySlug = <
     query?: UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getBySlugIdQueryOptions(id, params, options);
+  const queryOptions = useMemo(
+    () => getBySlugIdQueryOptions(id, params, {
+      ...options,
+      query: {
+        retry: (failureCount: number, error) => {
+          if (_isNotFoundError(error)) {
+            return false;
+          }
+          return failureCount < 3;
+        },
+        ...options?.query,
+        queryKey: options?.query?.queryKey ?? [],
+      },
+    }),
+    [id, params, options],
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
   const queryDefaultOptions = getBySlugIdQueryOptions(
     id,
     {
       ...params,
       locale: DEFAULT_LOCALE,
     },
-    options,
+    {
+      ...options,
+      query: {
+        queryKey: options?.query?.queryKey ?? [],
+        enabled: _isNotFoundError(query.error),
+        ...options?.query,
+      },
+    },
   );
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
   const queryDefault = useQuery(queryDefaultOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
   };
 
   query.queryKey = queryOptions.queryKey;
   queryDefault.queryKey = queryDefaultOptions.queryKey;
+
+  if (_isNotFoundError(query.error)) {
+    return queryDefault;
+  }
 
   return query;
 };
