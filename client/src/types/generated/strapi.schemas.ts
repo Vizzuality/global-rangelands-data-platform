@@ -728,6 +728,7 @@ export const DefaultLegendComponentType = {
   Basic: "Basic",
   Gradient: "Gradient",
   Choropleth: "Choropleth",
+  Rangeland: "Rangeland",
 } as const;
 
 export type DefaultLegendComponentItemsItem = {
@@ -1576,6 +1577,7 @@ export const DefaultLayerComponentLayerDataAttributesLegendType = {
   Basic: "Basic",
   Gradient: "Gradient",
   Choropleth: "Choropleth",
+  Rangeland: "Rangeland",
 } as const;
 
 export type DefaultLayerComponentLayerDataAttributesLegendItemsItem = {

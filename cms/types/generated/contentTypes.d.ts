@@ -19,15 +19,15 @@ export interface AdminPermission extends Schema.CollectionType {
   };
   attributes: {
     action: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     actionParameters: Attribute.JSON & Attribute.DefaultTo<{}>;
     subject: Attribute.String &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     properties: Attribute.JSON & Attribute.DefaultTo<{}>;
     conditions: Attribute.JSON & Attribute.DefaultTo<[]>;
     role: Attribute.Relation<'admin::permission', 'manyToOne', 'admin::role'>;
@@ -38,13 +38,13 @@ export interface AdminPermission extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'admin::permission',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -67,41 +67,41 @@ export interface AdminUser extends Schema.CollectionType {
   };
   attributes: {
     firstname: Attribute.String &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     lastname: Attribute.String &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     username: Attribute.String;
     email: Attribute.Email &
-      Attribute.Required &
-      Attribute.Private &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 6;
-      }>;
+    Attribute.Required &
+    Attribute.Private &
+    Attribute.Unique &
+    Attribute.SetMinMaxLength<{
+      minLength: 6;
+    }>;
     password: Attribute.Password &
-      Attribute.Private &
-      Attribute.SetMinMaxLength<{
-        minLength: 6;
-      }>;
+    Attribute.Private &
+    Attribute.SetMinMaxLength<{
+      minLength: 6;
+    }>;
     resetPasswordToken: Attribute.String & Attribute.Private;
     registrationToken: Attribute.String & Attribute.Private;
     isActive: Attribute.Boolean &
-      Attribute.Private &
-      Attribute.DefaultTo<false>;
+    Attribute.Private &
+    Attribute.DefaultTo<false>;
     roles: Attribute.Relation<'admin::user', 'manyToMany', 'admin::role'> &
-      Attribute.Private;
+    Attribute.Private;
     blocked: Attribute.Boolean & Attribute.Private & Attribute.DefaultTo<false>;
     preferedLanguage: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'admin::user', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<'admin::user', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -124,17 +124,17 @@ export interface AdminRole extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     code: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     description: Attribute.String;
     users: Attribute.Relation<'admin::role', 'manyToMany', 'admin::user'>;
     permissions: Attribute.Relation<
@@ -145,9 +145,9 @@ export interface AdminRole extends Schema.CollectionType {
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'admin::role', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<'admin::role', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -170,24 +170,24 @@ export interface AdminApiToken extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     description: Attribute.String &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }> &
-      Attribute.DefaultTo<''>;
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }> &
+    Attribute.DefaultTo<''>;
     type: Attribute.Enumeration<['read-only', 'full-access', 'custom']> &
-      Attribute.Required &
-      Attribute.DefaultTo<'read-only'>;
+    Attribute.Required &
+    Attribute.DefaultTo<'read-only'>;
     accessKey: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     lastUsedAt: Attribute.DateTime;
     permissions: Attribute.Relation<
       'admin::api-token',
@@ -203,13 +203,13 @@ export interface AdminApiToken extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'admin::api-token',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -232,10 +232,10 @@ export interface AdminApiTokenPermission extends Schema.CollectionType {
   };
   attributes: {
     action: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     token: Attribute.Relation<
       'admin::api-token-permission',
       'manyToOne',
@@ -248,13 +248,13 @@ export interface AdminApiTokenPermission extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'admin::api-token-permission',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -277,21 +277,21 @@ export interface AdminTransferToken extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     description: Attribute.String &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }> &
-      Attribute.DefaultTo<''>;
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }> &
+    Attribute.DefaultTo<''>;
     accessKey: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     lastUsedAt: Attribute.DateTime;
     permissions: Attribute.Relation<
       'admin::transfer-token',
@@ -307,13 +307,13 @@ export interface AdminTransferToken extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'admin::transfer-token',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -336,10 +336,10 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
   attributes: {
     action: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
+    Attribute.Required &
+    Attribute.SetMinMaxLength<{
+      minLength: 1;
+    }>;
     token: Attribute.Relation<
       'admin::transfer-token-permission',
       'manyToOne',
@@ -352,13 +352,339 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'admin::transfer-token-permission',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
+  };
+}
+
+export interface ApiDatasetDataset extends Schema.CollectionType {
+  collectionName: 'datasets';
+  info: {
+    singularName: 'dataset';
+    pluralName: 'datasets';
+    displayName: 'Dataset';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    type: Attribute.Enumeration<['Group', 'Temporal']> &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }> &
+    Attribute.DefaultTo<'Group'>;
+    layers: Attribute.Component<'default.layer', true> &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    citations: Attribute.Component<'default.citations', true> &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    sources: Attribute.Component<'default.source', true> &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    slug: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    description: Attribute.Text &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::dataset.dataset',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::dataset.dataset',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::dataset.dataset',
+      'oneToMany',
+      'api::dataset.dataset'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiEcoregionEcoregion extends Schema.CollectionType {
+  collectionName: 'ecoregions';
+  info: {
+    singularName: 'ecoregion';
+    pluralName: 'ecoregions';
+    displayName: 'Ecoregion';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    slug: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    code: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    rangeland: Attribute.Relation<
+      'api::ecoregion.ecoregion',
+      'manyToOne',
+      'api::rangeland.rangeland'
+    >;
+    color: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::ecoregion.ecoregion',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::ecoregion.ecoregion',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::ecoregion.ecoregion',
+      'oneToMany',
+      'api::ecoregion.ecoregion'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiLayerLayer extends Schema.CollectionType {
+  collectionName: 'layers';
+  info: {
+    singularName: 'layer';
+    pluralName: 'layers';
+    displayName: 'Layer';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    type: Attribute.Enumeration<['Mapbox', 'GEE']> &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }> &
+    Attribute.DefaultTo<'GEE'>;
+    description: Attribute.Text &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    config: Attribute.JSON &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    params_config: Attribute.JSON &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    legend: Attribute.Component<'default.legend'> &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    interaction_config: Attribute.JSON &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    slug: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::layer.layer',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::layer.layer',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::layer.layer',
+      'oneToMany',
+      'api::layer.layer'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiRangelandRangeland extends Schema.CollectionType {
+  collectionName: 'rangelands';
+  info: {
+    singularName: 'rangeland';
+    pluralName: 'rangelands';
+    displayName: 'Rangeland';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
+    slug: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    code: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    color: Attribute.String &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
+    ecoregions: Attribute.Relation<
+      'api::rangeland.rangeland',
+      'oneToMany',
+      'api::ecoregion.ecoregion'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::rangeland.rangeland',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::rangeland.rangeland',
+      'oneToOne',
+      'admin::user'
+    > &
+    Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::rangeland.rangeland',
+      'oneToMany',
+      'api::rangeland.rangeland'
+    >;
+    locale: Attribute.String;
   };
 }
 
@@ -399,16 +725,16 @@ export interface PluginUploadFile extends Schema.CollectionType {
       'manyToOne',
       'plugin::upload.folder'
     > &
-      Attribute.Private;
+    Attribute.Private;
     folderPath: Attribute.String &
-      Attribute.Required &
-      Attribute.Private &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-        },
-        number
-      >;
+    Attribute.Required &
+    Attribute.Private &
+    Attribute.SetMinMax<
+      {
+        min: 1;
+      },
+      number
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -416,13 +742,13 @@ export interface PluginUploadFile extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::upload.file',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -443,13 +769,13 @@ export interface PluginUploadFolder extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-        },
-        number
-      >;
+    Attribute.Required &
+    Attribute.SetMinMax<
+      {
+        min: 1;
+      },
+      number
+    >;
     pathId: Attribute.Integer & Attribute.Required & Attribute.Unique;
     parent: Attribute.Relation<
       'plugin::upload.folder',
@@ -467,13 +793,13 @@ export interface PluginUploadFolder extends Schema.CollectionType {
       'plugin::upload.file'
     >;
     path: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-        },
-        number
-      >;
+    Attribute.Required &
+    Attribute.SetMinMax<
+      {
+        min: 1;
+      },
+      number
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -481,13 +807,13 @@ export interface PluginUploadFolder extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::upload.folder',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -517,7 +843,7 @@ export interface PluginContentReleasesRelease extends Schema.CollectionType {
     status: Attribute.Enumeration<
       ['ready', 'blocked', 'failed', 'done', 'empty']
     > &
-      Attribute.Required;
+    Attribute.Required;
     actions: Attribute.Relation<
       'plugin::content-releases.release',
       'oneToMany',
@@ -530,13 +856,13 @@ export interface PluginContentReleasesRelease extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::content-releases.release',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -580,13 +906,13 @@ export interface PluginContentReleasesReleaseAction
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::content-releases.release-action',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -619,13 +945,13 @@ export interface PluginSlugifySlug extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::slugify.slug',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -651,13 +977,13 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-          max: 50;
-        },
-        number
-      >;
+    Attribute.SetMinMax<
+      {
+        min: 1;
+        max: 50;
+      },
+      number
+    >;
     code: Attribute.String & Attribute.Unique;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -666,13 +992,13 @@ export interface PluginI18NLocale extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::i18n.locale',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -708,13 +1034,13 @@ export interface PluginUsersPermissionsPermission
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::users-permissions.permission',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -737,10 +1063,10 @@ export interface PluginUsersPermissionsRole extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 3;
-      }>;
+    Attribute.Required &
+    Attribute.SetMinMaxLength<{
+      minLength: 3;
+    }>;
     description: Attribute.String;
     type: Attribute.String & Attribute.Unique;
     permissions: Attribute.Relation<
@@ -760,13 +1086,13 @@ export interface PluginUsersPermissionsRole extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::users-permissions.role',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -785,22 +1111,22 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   attributes: {
     username: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 3;
-      }>;
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetMinMaxLength<{
+      minLength: 3;
+    }>;
     email: Attribute.Email &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 6;
-      }>;
+    Attribute.Required &
+    Attribute.SetMinMaxLength<{
+      minLength: 6;
+    }>;
     provider: Attribute.String;
     password: Attribute.Password &
-      Attribute.Private &
-      Attribute.SetMinMaxLength<{
-        minLength: 6;
-      }>;
+    Attribute.Private &
+    Attribute.SetMinMaxLength<{
+      minLength: 6;
+    }>;
     resetPasswordToken: Attribute.String & Attribute.Private;
     confirmationToken: Attribute.String & Attribute.Private;
     confirmed: Attribute.Boolean & Attribute.DefaultTo<false>;
@@ -817,13 +1143,13 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
   };
 }
 
@@ -845,52 +1171,46 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     type: Attribute.Enumeration<['Group', 'Temporal']> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<'Group'>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }> &
+    Attribute.DefaultTo<'Group'>;
     layers: Attribute.Component<'default.layer', true> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     citations: Attribute.Component<'default.citations', true> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     sources: Attribute.Component<'default.source', true> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    description: Attribute.Text &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -899,13 +1219,13 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::dataset.dataset',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     localizations: Attribute.Relation<
       'api::dataset.dataset',
       'oneToMany',
@@ -933,35 +1253,35 @@ export interface ApiEcoregionEcoregion extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     code: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     rangeland: Attribute.Relation<
       'api::ecoregion.ecoregion',
       'manyToOne',
       'api::rangeland.rangeland'
     >;
     color: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -970,13 +1290,13 @@ export interface ApiEcoregionEcoregion extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::ecoregion.ecoregion',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     localizations: Attribute.Relation<
       'api::ecoregion.ecoregion',
       'oneToMany',
@@ -1004,60 +1324,60 @@ export interface ApiLayerLayer extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.Unique &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     type: Attribute.Enumeration<['Mapbox', 'GEE']> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<'GEE'>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }> &
+    Attribute.DefaultTo<'GEE'>;
     description: Attribute.Text &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     config: Attribute.JSON &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     params_config: Attribute.JSON &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     legend: Attribute.Component<'default.legend'> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     interaction_config: Attribute.JSON &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1066,13 +1386,13 @@ export interface ApiLayerLayer extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::layer.layer',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     localizations: Attribute.Relation<
       'api::layer.layer',
       'oneToMany',
@@ -1100,30 +1420,30 @@ export interface ApiRangelandRangeland extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    Attribute.Required &
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: true;
+      };
+    }>;
     slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     code: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     color: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    Attribute.SetPluginOptions<{
+      i18n: {
+        localized: false;
+      };
+    }>;
     ecoregions: Attribute.Relation<
       'api::rangeland.rangeland',
       'oneToMany',
@@ -1137,13 +1457,13 @@ export interface ApiRangelandRangeland extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::rangeland.rangeland',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
+    Attribute.Private;
     localizations: Attribute.Relation<
       'api::rangeland.rangeland',
       'oneToMany',

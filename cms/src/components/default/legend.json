@@ -1,7 +1,8 @@
 {
   "collectionName": "components_default_legends",
   "info": {
-    "displayName": "Legend"
+    "displayName": "Legend",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -10,7 +11,8 @@
       "enum": [
         "Basic",
         "Gradient",
-        "Choropleth"
+        "Choropleth",
+        "Rangeland"
       ],
       "required": true,
       "default": "Basic"
