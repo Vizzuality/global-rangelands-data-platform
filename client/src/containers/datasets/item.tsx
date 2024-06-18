@@ -9,9 +9,8 @@ import GroupLayers from "./group-layers";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
-import { CircleHelpIcon, EyeIcon } from "lucide-react";
-import { Toggle } from "@radix-ui/react-toggle";
 import { useMemo } from "react";
+import { LayerInfo, LayerVisibility } from "@/components/map/legends/header/buttons";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -80,39 +79,54 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
     }
   }, [datasetLayer?.slug, layersSettings]);
 
+  const description =
+    attributes && "description" in attributes && (attributes?.description as string | undefined);
+
   return (
-    <div className={cn("space-y-7", className)}>
-      <div className="flex items-center justify-between gap-3 font-medium">
-        <div className="flex items-center justify-between gap-1">
-          {attributes?.slug !== RANGELAND_DATASET_SLUG && (
-            <Switch
-              id={`toggle-${id}`}
-              checked={datasets?.includes(id!)}
-              onCheckedChange={handleToggleDataset}
+    <div className={cn("space-y-6", className)}>
+      <div className="space-y-2">
+        <div className="flex justify-between gap-3 font-medium">
+          <div className="flex justify-between gap-3">
+            {attributes?.slug !== RANGELAND_DATASET_SLUG && (
+              <Switch
+                id={`toggle-${id}`}
+                checked={datasets?.includes(id!)}
+                onCheckedChange={handleToggleDataset}
+                className="my-1"
+              />
+            )}
+            <label className="leading-tight" htmlFor={`toggle-${id}`}>
+              {attributes?.title}
+            </label>
+          </div>
+
+          <div className="mt-px flex gap-2">
+            <LayerInfo />
+            <LayerVisibility
+              visible={datasetVisibility}
+              onChangeVisibility={handleChangeVisibility}
             />
-          )}
-          <label htmlFor={`toggle-${id}`}>{attributes?.title}</label>
+          </div>
         </div>
-
-        <div className="flex items-center gap-2">
-          <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
-
-          <Toggle
-            className="data-[state=off]:opacity-20"
-            onPressedChange={handleChangeVisibility}
-            pressed={datasetVisibility}
-          >
-            <EyeIcon className="h-6 w-6 fill-foreground stroke-background" />
-          </Toggle>
+        <div>
+          <p className="text-xs">{description}</p>
         </div>
       </div>
+
       {attributes?.type === "Group" && (
         <GroupLayers layers={attributes?.layers} slug={attributes?.slug} />
       )}
       <div className="flex items-center gap-2">
-        <span className="text-xs uppercase text-foreground underline underline-offset-2">
-          {t("data source")}
-        </span>
+        {!!attributes?.sources?.[0]?.url && (
+          <a
+            href={attributes?.sources?.[0].url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs uppercase text-foreground underline underline-offset-2"
+          >
+            {t("data source")}
+          </a>
+        )}
         <CitationsIcon className="h-5 w-5" />
       </div>
     </div>

@@ -46,8 +46,10 @@ const Mask = ({ id, beforeId }: MaskProps) => {
     >;
 
     const features = d.features.filter((f) => {
-      if (rangelandType === "rangeland-biomes") return biomes.includes(f.properties.biome_num);
-      if (rangelandType === "rangeland-ecoregions") return ecoregions.includes(f.properties.eco_id);
+      if (rangelandType === "rangeland-biomes")
+        return Object.keys(biomes).includes(f.properties.biome_num.toString());
+      if (rangelandType === "rangeland-ecoregions")
+        return Object.keys(ecoregions).includes(f.properties.eco_id.toString());
 
       return true;
     });
