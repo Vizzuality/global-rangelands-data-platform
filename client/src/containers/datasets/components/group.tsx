@@ -13,7 +13,7 @@ import {
   RANGELAND_DATASET_SLUG,
   RANGELAND_ECOREGIONS,
   RANGELAND_SYSTEM,
-} from "./constants";
+} from "../constants";
 import ColorSwatchIcon from "@/svgs/color-swatch.svg";
 
 import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
@@ -31,12 +31,12 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import { XIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 
-type RangelandLayersProps = {
+type GroupDatasetProps = {
   layers: DefaultLayerComponent[];
   slug?: string;
 };
 
-const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) => {
+const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
   const t = useTranslations();
   const [syncDatasets] = useSyncDatasets();
   const [syncLayers, setSyncLayers] = useSyncLayers();
@@ -217,4 +217,4 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
   );
 };
 
-export default RangelandLayers;
+export default GroupDataset;

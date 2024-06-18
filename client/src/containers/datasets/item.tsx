@@ -5,12 +5,13 @@ import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
 import CitationsIcon from "@/svgs/citations.svg";
-import GroupLayers from "./group-layers";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
 import { useMemo } from "react";
 import { LayerInfo, LayerVisibility } from "@/components/map/legends/header/buttons";
+import GroupDataset from "./components/group";
+import TemporalDataset from "./components/temporal";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -114,8 +115,9 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
       </div>
 
       {attributes?.type === "Group" && (
-        <GroupLayers layers={attributes?.layers} slug={attributes?.slug} />
+        <GroupDataset layers={attributes?.layers} slug={attributes?.slug} />
       )}
+      {attributes?.type === "Temporal" && <TemporalDataset layers={attributes?.layers} />}
       <div className="flex items-center gap-2">
         {!!attributes?.sources?.[0]?.url && (
           <a
