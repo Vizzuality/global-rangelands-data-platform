@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useSyncLayersSettings } from "@/store/map";
+import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
 import { CalendarDaysIcon } from "lucide-react";
 
@@ -32,9 +32,8 @@ const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
     layer?.layer?.data?.attributes?.params_config as Record<string, unknown>[]
   )?.find((p) => p.key === "year")?.default;
 
-  console.log(defaultSelected);
-
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
+  const [layers] = useSyncLayers();
 
   const options = isCorrectTimeSelect(timeSelect)
     ? Array.from({ length: timeSelect[1] - timeSelect[0] + 1 }, (_, i) => timeSelect[0] + i)
@@ -57,9 +56,15 @@ const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
 
   const value = layerSlug && (layersSettings?.[layerSlug]?.year as string | undefined);
   const defaultValue = typeof defaultSelected === "number" ? `${defaultSelected}` : undefined;
+  const isDisabled = !layerSlug || !layers?.includes(layerSlug);
 
   return (
-    <Select defaultValue={defaultValue} value={value} onValueChange={onSelectTime}>
+    <Select
+      disabled={isDisabled}
+      defaultValue={defaultValue}
+      value={value}
+      onValueChange={onSelectTime}
+    >
       <SelectTrigger>
         <div className="flex gap-2">
           <CalendarDaysIcon className="h-5 w-5 text-foreground" />
