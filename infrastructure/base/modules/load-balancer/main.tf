@@ -146,6 +146,16 @@ resource "google_compute_backend_service" "cloud_function_service" {
   name        = "${var.name}-cloudfunction-service"
   description = "${var.name} cloud function service"
 
+  enable_cdn = true
+
+  cdn_policy {
+    cache_key_policy {
+      include_query_string = true
+    }
+    cache_mode  = "FORCE_CACHE_ALL"
+    default_ttl = 604800 // 1 week, this could potentially be increased, since maps are bound to remain unchanged
+  }
+
   backend {
     group = google_compute_region_network_endpoint_group.cloud_function_neg.id
   }
