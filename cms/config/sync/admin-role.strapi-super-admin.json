@@ -17,7 +17,8 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description"
         ],
         "locales": [
           "en",
@@ -67,7 +68,8 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description"
         ],
         "locales": [
           "en",
@@ -91,7 +93,8 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description"
         ],
         "locales": [
           "en",

@@ -150,6 +150,12 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "title",
+        "slug",
+        "code"
+      ],
       "edit": [
         [
           {
@@ -179,14 +185,12 @@
           {
             "name": "rangeland",
             "size": 6
+          },
+          {
+            "name": "color",
+            "size": 6
           }
         ]
-      ],
-      "list": [
-        "id",
-        "title",
-        "slug",
-        "code"
       ]
     },
     "uid": "api::ecoregion.ecoregion"

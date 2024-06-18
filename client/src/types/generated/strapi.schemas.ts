@@ -1823,6 +1823,7 @@ export interface Dataset {
   citations?: DefaultCitationsComponent[];
   createdAt?: string;
   createdBy?: DatasetCreatedBy;
+  description?: string;
   layers: DefaultLayerComponent[];
   locale?: string;
   localizations?: DatasetLocalizations;
@@ -1904,6 +1905,7 @@ export const DatasetRequestDataType = {
 
 export type DatasetRequestData = {
   citations?: DefaultCitationsComponent[];
+  description?: string;
   layers: DefaultLayerComponent[];
   locale?: string;
   slug?: string;
@@ -1927,6 +1929,7 @@ export const DatasetLocalizationRequestType = {
 
 export interface DatasetLocalizationRequest {
   citations?: DefaultCitationsComponent[];
+  description?: string;
   layers: DefaultLayerComponent[];
   locale: string;
   slug?: string;
