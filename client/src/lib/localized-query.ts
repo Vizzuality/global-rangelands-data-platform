@@ -51,7 +51,7 @@ export const getBySlugIdQueryOptions = <
     query?: UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData>;
   },
 ): UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData> & {
-  queryKey: QueryKey;
+  queryKey?: QueryKey;
 } => {
   const { query: queryOptions } = options ?? {};
 
@@ -75,6 +75,7 @@ const _isNotFoundError = (error: unknown) => {
   );
 };
 
+
 export const useGetBySlug = <
   TData = Awaited<ReturnType<typeof getBySlugId>>,
   TError = ErrorType<Error>,
@@ -88,7 +89,6 @@ export const useGetBySlug = <
   const queryOptions = useMemo(
     () =>
       getBySlugIdQueryOptions(id, params, {
-        ...options,
         query: {
           retry: (failureCount: number, error) => {
             if (_isNotFoundError(error)) {
@@ -96,13 +96,11 @@ export const useGetBySlug = <
             }
             return failureCount < 3;
           },
-          ...options?.query,
-          queryKey: options?.query?.queryKey ?? [],
+          ...options?.query as UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData>,
         },
       }),
     [id, params, options],
   );
-
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
   const queryDefaultOptions = getBySlugIdQueryOptions(
@@ -112,11 +110,9 @@ export const useGetBySlug = <
       locale: DEFAULT_LOCALE,
     },
     {
-      ...options,
       query: {
-        queryKey: options?.query?.queryKey ?? [],
         enabled: _isNotFoundError(query.error),
-        ...options?.query,
+        ...options?.query as UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData>,
       },
     },
   );
@@ -134,6 +130,7 @@ export const useGetBySlug = <
 
   return query;
 };
+
 
 /**
  * useGetLocalizedList
