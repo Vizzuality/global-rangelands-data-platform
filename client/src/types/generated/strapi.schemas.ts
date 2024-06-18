@@ -1820,8 +1820,7 @@ export type DatasetCreatedBy = {
 };
 
 export interface Dataset {
-  citations?: DefaultCitationsComponent;
-  config?: unknown;
+  citations?: DefaultCitationsComponent[];
   createdAt?: string;
   createdBy?: DatasetCreatedBy;
   description?: string;
@@ -1905,8 +1904,7 @@ export const DatasetRequestDataType = {
 } as const;
 
 export type DatasetRequestData = {
-  citations?: DefaultCitationsComponent;
-  config?: unknown;
+  citations?: DefaultCitationsComponent[];
   description?: string;
   layers: DefaultLayerComponent[];
   locale?: string;
@@ -1930,8 +1928,7 @@ export const DatasetLocalizationRequestType = {
 } as const;
 
 export interface DatasetLocalizationRequest {
-  citations?: DefaultCitationsComponent;
-  config?: unknown;
+  citations?: DefaultCitationsComponent[];
   description?: string;
   layers: DefaultLayerComponent[];
   locale: string;
