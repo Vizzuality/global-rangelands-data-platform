@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import {plainToClass} from 'class-transformer';
 import {EarthEngineUtils} from './earth-engine-utils';
 import {ModisNetPrimaryProductionDataset} from './geeAssets/modis-net-primary-production-dataset';
+import {AnthropogenicBiomes} from './geeAssets/anthropogenic-biomes';
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
 import {default as fetch , Response as FetchResponse} from "node-fetch";
@@ -12,6 +13,7 @@ import {pipeline} from "stream/promises";
 //Asset Mapping
 const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.modis_net_primary_production]: ModisNetPrimaryProductionDataset,
+  [Tilesets.anthropogenic_biomes]: AnthropogenicBiomes
 }
 
 //We're using express to simplify path parameter parsing for the Tiles endpoint
