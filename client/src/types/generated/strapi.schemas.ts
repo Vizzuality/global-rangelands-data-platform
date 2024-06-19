@@ -777,7 +777,7 @@ export interface Layer {
   config: unknown;
   createdAt?: string;
   createdBy?: LayerCreatedBy;
-  description: string;
+  description?: string;
   interaction_config?: unknown;
   legend: DefaultLegendComponent;
   locale?: string;
@@ -1027,7 +1027,7 @@ export interface LayerLocalizationResponse {
 
 export type LayerRequestData = {
   config: unknown;
-  description: string;
+  description?: string;
   interaction_config?: unknown;
   legend: DefaultLegendComponent;
   locale?: string;
@@ -1060,7 +1060,7 @@ export const LayerLocalizationRequestType = {
 
 export interface LayerLocalizationRequest {
   config: unknown;
-  description: string;
+  description?: string;
   interaction_config?: unknown;
   legend: DefaultLegendComponent;
   locale: string;
