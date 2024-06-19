@@ -561,7 +561,6 @@ export interface ApiLayerLayer extends Schema.CollectionType {
       }> &
       Attribute.DefaultTo<'GEE'>;
     description: Attribute.Text &
-      Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;

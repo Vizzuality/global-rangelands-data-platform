@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-06-19T10:06:08.278Z"
+    "x-generation-date": "2024-06-19T10:15:10.215Z"
   },
   "servers": [
     {
@@ -1597,7 +1597,6 @@
         "required": [
           "title",
           "type",
-          "description",
           "config",
           "legend",
           "locale"
@@ -1641,7 +1640,6 @@
             "required": [
               "title",
               "type",
-              "description",
               "config",
               "legend"
             ],
@@ -1795,7 +1793,6 @@
         "required": [
           "title",
           "type",
-          "description",
           "config",
           "legend"
         ],
