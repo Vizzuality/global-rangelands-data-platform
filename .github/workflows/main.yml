@@ -127,8 +127,10 @@ jobs:
         run: |
           echo 'Installing the Transifex CLI…'
           curl -o- https://raw.githubusercontent.com/transifex/cli/master/install.sh | bash -s -- v1.6.13
+          echo 'Reload profile'
+          . ~/.bashrc
           echo 'Pushing the source strings…'
-          npx txjs-cli push ./src --token=${{ env.TRANSIFEX_TOKEN }} --secret=${{ env.TRANSIFEX_SECRET }}
+          npx --yes @transifex/cli push ./src --token=${{ env.TRANSIFEX_TOKEN }} --secret=${{ env.TRANSIFEX_SECRET }}
 
       - name: Build and Deploy
         if: ${{ steps.applicable_check.outputs.flag }}
