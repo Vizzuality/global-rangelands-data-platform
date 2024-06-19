@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const Legends = () => {
   const [datasets] = useSyncDatasets();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <div>

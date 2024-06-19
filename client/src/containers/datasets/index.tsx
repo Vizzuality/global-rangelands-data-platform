@@ -14,7 +14,7 @@ const Datasets = () => {
   const { data: datasetsData } = useGetLocalizedList(datasetsListQuery);
 
   return (
-    <div className="mb-10 space-y-10">
+    <div className="mb-10 space-y-7">
       <DatasetsHeader />
       <div className="space-y-7">
         {datasetsData?.data?.map((dataset) => (
