@@ -117,6 +117,20 @@
           "sortable": true
         }
       },
+      "info": {
+        "edit": {
+          "label": "info",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "info",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -177,12 +191,6 @@
       }
     },
     "layouts": {
-      "list": [
-        "id",
-        "title",
-        "type",
-        "layers"
-      ],
       "edit": [
         [
           {
@@ -223,9 +231,21 @@
         [
           {
             "name": "description",
-            "size": 6
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "info",
+            "size": 12
           }
         ]
+      ],
+      "list": [
+        "id",
+        "title",
+        "type",
+        "layers"
       ]
     },
     "uid": "api::dataset.dataset"
