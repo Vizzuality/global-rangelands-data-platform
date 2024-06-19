@@ -7,7 +7,7 @@ import { useGetLocalizedList } from "@/lib/localized-query";
 
 const Datasets = () => {
   const datasetsListQuery = useGetDatasets({
-    populate: ["layers", "layers.layer", "sources"],
+    populate: ["layers", "layers.layer", "sources", "citations"],
     sort: "id:asc",
   });
 

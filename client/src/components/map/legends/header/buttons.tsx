@@ -6,6 +6,8 @@ import Slider from "@/components/ui/slider";
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import EyeOffIcon from "@/svgs/eye-off.svg";
 import EyeIcon from "@/svgs/eye.svg";
+import { ReactNode } from "react";
+import { DialogProps } from "@radix-ui/react-dialog";
 
 type LayerVisibilityProps = {
   onChangeVisibility: (v: boolean) => void;
@@ -47,19 +49,19 @@ const LayerOpacity = ({ opacity = 1, onChangeOpacity }: LayerOpacityProps) => (
   </Popover>
 );
 
-type LayerInfoProps = {
-  info?: string;
+type LayerInfoProps = DialogProps & {
+  info?: ReactNode;
   title?: string;
 };
 
-const LayerInfo = ({ info, title }: LayerInfoProps) => (
-  <Dialog>
+const LayerInfo = ({ info, title, ...props }: LayerInfoProps) => (
+  <Dialog {...props}>
     <DialogTrigger disabled={!info} className="h-min">
       <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>{title}</DialogHeader>
-      <p className="text-sm">{info}</p>
+      <div className="text-sm">{info}</div>
     </DialogContent>
   </Dialog>
 );

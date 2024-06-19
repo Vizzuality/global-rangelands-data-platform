@@ -4,7 +4,7 @@ import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 
 import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
-import CitationsIcon from "@/svgs/citations.svg";
+// import CitationsIcon from "@/svgs/citations.svg";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
@@ -12,6 +12,7 @@ import { useMemo } from "react";
 import { LayerInfo, LayerVisibility } from "@/components/map/legends/header/buttons";
 import GroupDataset from "./components/group";
 import TemporalDataset from "./components/temporal";
+import DatasetInfo from "./info";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -102,7 +103,10 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
           </div>
 
           <div className="mt-px flex gap-2">
-            <LayerInfo />
+            <LayerInfo
+              title={attributes?.title}
+              info={<DatasetInfo citations={attributes?.citations} info={attributes?.info} />}
+            />
             <LayerVisibility
               visible={datasetVisibility}
               onChangeVisibility={handleChangeVisibility}
@@ -119,9 +123,9 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
       )}
       {attributes?.type === "Temporal" && <TemporalDataset layers={attributes?.layers} />}
       <div className="flex items-center gap-2">
-        {!!attributes?.sources?.[0]?.url && (
+        {!!attributes?.sources?.url && (
           <a
-            href={attributes?.sources?.[0].url}
+            href={attributes?.sources?.url}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs uppercase text-foreground underline underline-offset-2"
@@ -129,7 +133,7 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
             {t("data source")}
           </a>
         )}
-        <CitationsIcon className="h-5 w-5" />
+        {/* <CitationsIcon className="h-5 w-5" /> */}
       </div>
     </div>
   );

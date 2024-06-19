@@ -7,7 +7,7 @@ const Legend = ({ children }: PropsWithChildren) => {
   return (
     <div>
       <ScrollAreaPrimitive.Root type="scroll" className="relative overflow-hidden">
-        <ScrollAreaPrimitive.Viewport className="max-h-48 w-full">
+        <ScrollAreaPrimitive.Viewport className="max-h-[200px] w-full">
           {children}
         </ScrollAreaPrimitive.Viewport>
         <ScrollBar />

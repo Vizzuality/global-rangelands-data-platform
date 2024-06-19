@@ -1802,6 +1802,7 @@ export type DatasetType = (typeof DatasetType)[keyof typeof DatasetType];
 export const DatasetType = {
   Group: "Group",
   Temporal: "Temporal",
+  Simple: "Simple",
 } as const;
 
 export type DatasetLocalizations = {
@@ -1824,12 +1825,13 @@ export interface Dataset {
   createdAt?: string;
   createdBy?: DatasetCreatedBy;
   description?: string;
+  info?: string;
   layers: DefaultLayerComponent[];
   locale?: string;
   localizations?: DatasetLocalizations;
   publishedAt?: string;
   slug?: string;
-  sources?: DefaultSourceComponent[];
+  sources?: DefaultSourceComponent;
   title: string;
   type: DatasetType;
   updatedAt?: string;
@@ -1901,15 +1903,17 @@ export type DatasetRequestDataType =
 export const DatasetRequestDataType = {
   Group: "Group",
   Temporal: "Temporal",
+  Simple: "Simple",
 } as const;
 
 export type DatasetRequestData = {
   citations?: DefaultCitationsComponent[];
   description?: string;
+  info?: string;
   layers: DefaultLayerComponent[];
   locale?: string;
   slug?: string;
-  sources?: DefaultSourceComponent[];
+  sources?: DefaultSourceComponent;
   title: string;
   type: DatasetRequestDataType;
 };
@@ -1925,15 +1929,17 @@ export type DatasetLocalizationRequestType =
 export const DatasetLocalizationRequestType = {
   Group: "Group",
   Temporal: "Temporal",
+  Simple: "Simple",
 } as const;
 
 export interface DatasetLocalizationRequest {
   citations?: DefaultCitationsComponent[];
   description?: string;
+  info?: string;
   layers: DefaultLayerComponent[];
   locale: string;
   slug?: string;
-  sources?: DefaultSourceComponent[];
+  sources?: DefaultSourceComponent;
   title: string;
   type: DatasetLocalizationRequestType;
 }
