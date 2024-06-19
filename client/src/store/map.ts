@@ -71,6 +71,6 @@ export const useSyncSearchParams = () => {
   });
 };
 
-export const sidebarOpenAtom = atom(false);
+export const sidebarOpenAtom = atom(true);
 export const layersInteractiveAtom = atom<(number | string)[]>([]);
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);

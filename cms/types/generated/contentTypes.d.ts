@@ -420,13 +420,7 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    description: Attribute.Text &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    info: Attribute.RichText &
+    description: Attribute.RichText &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
