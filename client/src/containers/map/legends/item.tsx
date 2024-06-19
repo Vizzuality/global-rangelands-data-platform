@@ -99,7 +99,7 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
         visible={settings.visibility}
         opacity={settings.opacity}
         title={datasetData?.data?.attributes?.title}
-        subtitle={datasetLayer?.name}
+        // subtitle={datasetLayer?.name}
         info={datasetLayer?.layer?.data?.attributes?.description}
         setOpacity={(o) => setLayerSettings("opacity", o)}
         setVisibility={(v) => setLayerSettings("visibility", v)}
