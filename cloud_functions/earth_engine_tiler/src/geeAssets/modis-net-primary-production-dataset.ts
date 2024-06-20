@@ -14,9 +14,11 @@ export const ModisNetPrimaryProductionDataset: EarthEngineCollection = {
     palette: ['bbe029', '0a9501', '074b03']
   },
 
-  isYearValid (year?: number) : boolean {
-    if(!year){
-      throw new Error(`Year '${year}' is not valid`)
+  areYearsValid (startYear, endYear) : boolean {
+    //This Asset is meant for tiles of a single year. startYear only will be used as the selector for the info required
+    // endYear is unneeded and ignored
+    if(!startYear){
+      throw new Error(`Year '${startYear}' is not valid`)
     }
     return true;
   },
@@ -25,9 +27,9 @@ export const ModisNetPrimaryProductionDataset: EarthEngineCollection = {
     return ee.ImageCollection(this.assetPath.default);
   },
 
-  getMapUrl(z, x, y, year) {
+  getMapUrl(z, x, y, startYear, endYear) {
     const image = this.getEEAsset()
-      .filter( ee.Filter.date( `${String(year)}-01-01`, `${String(year)}-12-31` ) );
+      .filter( ee.Filter.date( `${String(startYear)}-01-01`, `${String(startYear)}-12-31` ) );
     return ee.data.getTileUrl( image.getMapId(this.vizParams), x, y, z );
   },
 };

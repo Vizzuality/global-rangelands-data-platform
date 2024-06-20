@@ -8,7 +8,7 @@ export const AnthropogenicBiomes: EarthEngineImage = {
 
   bandName: 'b1',
 
-  sldStyles: '<RasterSymbolizer>' + 
+  sldStyles: '<RasterSymbolizer>' +
   '<ColorMap type="values" extended="false">' +
     '<ColorMapEntry color="#A80000" quantity="11" />' + // Urban
     '<ColorMapEntry color="#FF0000" quantity="12" />' + // Mixed settlements
@@ -31,7 +31,8 @@ export const AnthropogenicBiomes: EarthEngineImage = {
     '<ColorMapEntry color="#E1E1E1" quantity="62" />' + // Wild treeless and barren lands
   '</ColorMap>' + '</RasterSymbolizer>',
 
-  isYearValid (year?: number) : boolean {
+  areYearsValid (startYear?: number, endYear?: number) : boolean {
+    //This Asset is static, and year selector are irrelevant
     return true;
   },
 

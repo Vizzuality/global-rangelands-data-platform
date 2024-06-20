@@ -31,5 +31,10 @@ export class TileRequestDTO {
   @IsOptional()
   @Type(()=>Number)
   @IsInt()
-  year?: number;
+  startYear?: number;
+
+  @IsOptional()
+  @Type(()=>Number)
+  @IsInt()
+  endYear?: number;
 }
