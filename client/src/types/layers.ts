@@ -25,18 +25,17 @@ export type LegendConfig = {
 };
 
 export type InteractionConfig = {
-  enabled: boolean;
-  events: {
-    type: "click" | "hover";
-    values: {
-      key: string;
-      label: string;
-      format?: FormatProps;
-    }[];
+  event: "click" | "hover";
+  type: string;
+  values: {
+    key: string;
+    value: string;
+    format?: FormatProps;
   }[];
 };
 
 export type LayerProps = {
+  slug?: string;
   id?: string;
   zIndex?: number;
   onAdd?: (props: Config) => void;

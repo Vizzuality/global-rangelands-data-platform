@@ -1,4 +1,5 @@
 import "./globals.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 import { getTranslations } from "@/i18n";
 import { getMessages } from "next-intl/server";
