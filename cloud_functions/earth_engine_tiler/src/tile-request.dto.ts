@@ -2,7 +2,8 @@ import {IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional} from "class-validator";
 import {Type} from "class-transformer";
 
 export enum Tilesets {
-  modis_net_primary_production = "modis_net_primary_production"
+  modis_net_primary_production = "modis_net_primary_production",
+  anthropogenic_biomes = "anthropogenic_biomes"
 }
 
 

@@ -30,7 +30,7 @@ Example request:
 
 ``` bash
 curl -X GET -G \
-'http://localhost:8080/1/2/3/?tileset=modis_net_primary_production&year=2020' 
+'http://localhost:8080/2/2/1/?tileset=modis_net_primary_production&year=2020' 
 ```
 
 Response:
