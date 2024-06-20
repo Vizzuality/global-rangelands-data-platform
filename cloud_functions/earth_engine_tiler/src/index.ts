@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import {plainToClass} from 'class-transformer';
 import {EarthEngineUtils} from './earth-engine-utils';
 import {ModisNetPrimaryProductionDataset} from './geeAssets/modis-net-primary-production-dataset';
+import {ModisNetPrimaryProductionChange} from './geeAssets/modis-net-primary-production-change';
 import {AnthropogenicBiomes} from './geeAssets/anthropogenic-biomes';
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
@@ -14,6 +15,7 @@ import * as crypto from "crypto";
 //Asset Mapping
 const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.modis_net_primary_production]: ModisNetPrimaryProductionDataset,
+  [Tilesets.modis_net_primary_production_change]: ModisNetPrimaryProductionChange,
   [Tilesets.anthropogenic_biomes]: AnthropogenicBiomes
 }
 
