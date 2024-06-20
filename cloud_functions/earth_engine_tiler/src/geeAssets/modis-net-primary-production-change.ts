@@ -14,9 +14,12 @@ export const ModisNetPrimaryProductionChange: EarthEngineCollection = {
     palette: ["#B30200", '#FFFFCC', '#066C59']
   },
 
-  isYearValid (year?: number) : boolean {
-    if(!year){
-      throw new Error(`Year '${year}' is not valid`)
+  areYearsValid (startYear?: number, endYear?: number) : boolean {
+    if(!startYear){
+      throw new Error(`startYear '${startYear}' is not valid`)
+    }
+    if(!endYear){
+      throw new Error(`endYear '${endYear}' is not valid`)
     }
     return true;
   },
@@ -25,13 +28,15 @@ export const ModisNetPrimaryProductionChange: EarthEngineCollection = {
     return ee.ImageCollection(this.assetPath.default);
   },
 
-  getMapUrl(z, x, y, year) {
+  getMapUrl(z, x, y, startYear, endYear) {
 
     const image_start = this.getEEAsset()
-    .filter( ee.Filter.date( `${String(2001)}-01-01`, `${String(2001)}-12-31` ) ).first();
+      .filter( ee.Filter.date( `${String(startYear)}-01-01`, `${String(startYear)}-12-31` ) )
+      .first();
 
     const image_end = this.getEEAsset()
-      .filter( ee.Filter.date( `${String(year)}-01-01`, `${String(year)}-12-31` ) ).first();
+      .filter( ee.Filter.date( `${String(endYear)}-01-01`, `${String(endYear)}-12-31` ) )
+      .first();
 
     const image = image_end.subtract(image_start)
 

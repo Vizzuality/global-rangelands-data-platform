@@ -16,7 +16,7 @@ export class EarthEngineUtils {
 
       ee.data.authenticateViaPrivateKey(PRIVATE_KEY,
         () => ee.initialize(null, null, resolve, reject),
-        (error: any) => console.error(error),
+        (error: any) => console.error(error), //should it have reject here????
       );
     });
   }

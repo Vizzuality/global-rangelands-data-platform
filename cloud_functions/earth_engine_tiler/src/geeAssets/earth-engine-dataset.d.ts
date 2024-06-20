@@ -4,14 +4,14 @@ export interface EarthEngineDataset {
 
   // Performs validation of the year, intended for use with Assets that require a year
   // If not valid, an error should be thrown
-  isYearValid: (year?: number) => boolean;
+  areYearsValid: (startYear?: number, endYear?: number) => boolean;
 
   // Function that returns ee.Image instance with asset
   getEEAsset: (key?: string) => any;
-  getMapUrl: (z: number, x: number, y: number, year?: number) => any;
+  getMapUrl: (z: number, x: number, y: number, startYear?: number, endYear?: number) => any;
 }
 
-interface EarthEngineCollection extends EarthEngineDataset {
+export interface EarthEngineCollection extends EarthEngineDataset {
   /** Visualization parameters */
   readonly vizParams: {
     bands: string[],
@@ -21,7 +21,7 @@ interface EarthEngineCollection extends EarthEngineDataset {
   };
 }
 
-interface EarthEngineImage extends EarthEngineDataset {
+export interface EarthEngineImage extends EarthEngineDataset {
   /** Band names */
   readonly bandName: string;
 
