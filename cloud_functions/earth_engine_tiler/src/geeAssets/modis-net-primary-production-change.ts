@@ -1,8 +1,8 @@
-import { EarthEngineCollection } from './earth-engine-dataset';
+import { ContinuousDataset } from './earth-engine-dataset';
 import ee from '@google/earthengine';
 
 
-export const ModisNetPrimaryProductionChange: EarthEngineCollection = {
+export const ModisNetPrimaryProductionChange: ContinuousDataset = {
   assetPath: {
     default: "MODIS/061/MOD17A3HGF"
   },
