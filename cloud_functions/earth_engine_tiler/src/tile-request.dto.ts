@@ -4,7 +4,8 @@ import {Type} from "class-transformer";
 export enum Tilesets {
   modis_net_primary_production = "modis_net_primary_production",
   modis_net_primary_production_change = "modis_net_primary_production_change",
-  anthropogenic_biomes = "anthropogenic_biomes"
+  anthropogenic_biomes = "anthropogenic_biomes",
+  livestock_production_systems = "livestock_production_systems"
 }
 
 
