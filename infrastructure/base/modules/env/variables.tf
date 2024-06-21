@@ -136,6 +136,12 @@ variable "eet_function_available_cpu" {
   description = "Available cpu for the Earth Engine Tiler function"
 }
 
+variable "eet_function_min_instance_count" {
+  type        = number
+  default     = 0
+  description = "Min instance count for the Earth Engine Tiler function"
+}
+
 variable "eet_function_max_instance_count" {
   type        = number
   default     = 1
