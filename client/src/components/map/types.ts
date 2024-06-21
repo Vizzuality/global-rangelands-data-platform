@@ -33,3 +33,5 @@ export type LegendComponent = {
   })[];
   title: string;
 };
+
+export type MapTooltipProps = Record<string, unknown>;

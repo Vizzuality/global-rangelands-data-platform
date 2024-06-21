@@ -47,6 +47,7 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
       config: {
         ...config,
         id: `${id}-layer-deck`,
+        slug: id,
         beforeId: `${id}-layer`,
       },
       params_config,

@@ -8,10 +8,10 @@ import MapStyles from "@/containers/navigation/map-style";
 import Controls from "./controls";
 import MapLayers from "@/containers/navigation/map-layers";
 import { useSyncMapStyle } from "@/store/map";
+import MapTooltip from "./popups";
 
 const Map = () => {
   const [mapStyle] = useSyncMapStyle();
-
   return (
     <div className="h-full w-full">
       <MapComponent
@@ -26,13 +26,14 @@ const Map = () => {
         <AttributionControl style={{ fontSize: "0.75rem" }} compact={true} position="top-left" />
         <LayerManager />
         <Controls />
+
+        <MapTooltip />
       </MapComponent>
 
       <Navigation>
         <MapStyles />
         <MapLayers />
       </Navigation>
-      {/* <MapController defaultMapStyle={mapStyle} onChangeMapStyle={handleChangeMapStyle} /> */}
     </div>
   );
 };

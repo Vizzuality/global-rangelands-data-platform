@@ -10,6 +10,7 @@ import {
   rangelandRegionsParser,
   rangelandsTypeParser,
 } from "./parsers";
+import { PickingInfo } from "deck.gl";
 
 export const useSyncDatasets = () => {
   return useQueryState("datasets", datasetsParser);
@@ -73,4 +74,5 @@ export const useSyncSearchParams = () => {
 
 export const sidebarOpenAtom = atom(true);
 export const layersInteractiveAtom = atom<(number | string)[]>([]);
+export const deckLayersInteractiveAtom = atom<Record<string, PickingInfo>>({});
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);

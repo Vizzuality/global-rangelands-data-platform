@@ -1,0 +1,9 @@
+.mapboxgl-popup-content {
+  background-color: transparent;
+  padding: 0;
+  border-radius: theme("borderRadius.lg");
+  box-shadow: theme("boxShadow.lg");
+}
+.mapboxgl-popup-close-button {
+  display: none;
+}
