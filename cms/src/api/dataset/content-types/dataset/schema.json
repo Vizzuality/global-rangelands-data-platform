@@ -33,11 +33,7 @@
         }
       },
       "type": "enumeration",
-      "enum": [
-        "Group",
-        "Temporal",
-        "Simple"
-      ],
+      "enum": ["Group", "Temporal", "Simple"],
       "default": "Group",
       "required": true
     },
@@ -82,14 +78,6 @@
       "type": "string"
     },
     "description": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text"
-    },
-    "info": {
       "pluginOptions": {
         "i18n": {
           "localized": true

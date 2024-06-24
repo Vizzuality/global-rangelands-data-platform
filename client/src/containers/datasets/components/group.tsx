@@ -18,6 +18,7 @@ import ColorSwatchIcon from "@/svgs/color-swatch.svg";
 
 import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
 import {
+  deckLayersInteractiveAtom,
   useSyncDatasets,
   useSyncLayers,
   useSyncRangelandRegions,
@@ -30,6 +31,7 @@ import { useGetRangelands } from "@/types/generated/rangeland";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { XIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+import { useSetAtom } from "jotai";
 
 type GroupDatasetProps = {
   layers: DefaultLayerComponent[];
@@ -42,6 +44,7 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
   const [syncLayers, setSyncLayers] = useSyncLayers();
   const [rangelandType, setRangelandType] = useSyncRangelandType();
   const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
+  const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
 
   const datasetLayers = useMemo(
     () => layers?.map((l) => l.layer?.data?.attributes?.slug),
@@ -65,6 +68,7 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
       setRangelandType(layerSlug);
       setRangelandRegion([]);
     }
+    setDeckInteractiveLayers({});
   };
 
   const selectedLayer = useMemo(() => {

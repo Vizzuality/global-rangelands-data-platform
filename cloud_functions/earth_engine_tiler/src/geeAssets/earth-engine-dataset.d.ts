@@ -1,9 +1,17 @@
 export interface EarthEngineDataset {
   /** Path to earth engine asset */
   readonly assetPath: { [key: string]: string };
-  /** Number of years */
-  readonly numYears: number;
 
+  // Performs validation of the year, intended for use with Assets that require a year
+  // If not valid, an error should be thrown
+  areYearsValid: (startYear?: number, endYear?: number) => boolean;
+
+  // Function that returns ee.Image instance with asset
+  getEEAsset: (key?: string) => any;
+  getMapUrl: (z: number, x: number, y: number, startYear?: number, endYear?: number) => any;
+}
+
+export interface EarthEngineCollection extends EarthEngineDataset {
   /** Visualization parameters */
   readonly vizParams: {
     bands: string[],
@@ -11,12 +19,12 @@ export interface EarthEngineDataset {
     max: number,
     palette: string[]
   };
+}
 
-  // Performs validation of the year, intended for use with Assets that require a year
-  // If not valid, an error should be thrown
-  isYearValid: (year?: number) => boolean;
+export interface EarthEngineImage extends EarthEngineDataset {
+  /** Band names */
+  readonly bandName: string;
 
-  // Function that returns ee.Image instance with asset
-  getEEAsset: (key?: string) => any;
-  getMapUrl: (z: number, x: number, y: number, year?: number) => any;
+  /** Visualization parameters */
+  readonly sldStyles: string;
 }
