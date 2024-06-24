@@ -120,12 +120,12 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                         <Collapsible
                           disabled={!group.options?.length}
                           key={group.label}
-                          className="w-full"
+                          className="w-full px-2"
                         >
                           <CollapsibleTrigger className="group mb-2 flex w-full items-center gap-3">
                             <span
                               className={cn(
-                                "flex-1 text-start text-sm",
+                                "flex-1 text-start text-xs",
                                 group.options?.some((option) =>
                                   selectedValues.includes(option.value),
                                 ) && "font-bold",
