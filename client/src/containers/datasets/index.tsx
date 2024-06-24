@@ -9,6 +9,7 @@ const Datasets = () => {
   const datasetsListQuery = useGetDatasets({
     populate: ["layers", "layers.layer", "sources", "citations"],
     sort: "id:asc",
+    locale: "all",
   });
 
   const { data: datasetsData } = useGetLocalizedList(datasetsListQuery);
