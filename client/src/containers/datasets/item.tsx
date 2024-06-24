@@ -81,9 +81,6 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
     }
   }, [datasetLayer?.slug, layersSettings]);
 
-  const description =
-    attributes && "description" in attributes && (attributes?.description as string | undefined);
-
   return (
     <div className={cn("space-y-6", className)}>
       <div className="space-y-2">
