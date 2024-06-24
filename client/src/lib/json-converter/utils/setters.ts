@@ -95,12 +95,34 @@ const setRasterTiles = ({ src, searchparams = {} }: SetRasterTilesProps) => {
   return `${src}?${searchParams.toString()}`;
 };
 
+type SetRangelandsColorProps = {
+  colors: Record<string, string | number[]>;
+  property: string;
+};
+const setRangelandsColor = ({ colors, property }: SetRangelandsColorProps) => {
+  return (f: Feature<Geometry>) => {
+    const color = colors[f.properties?.[property]];
+    return Color(color || "#000000")
+      .rgb()
+      .array() as SetColorsReturn;
+  };
+};
+
+type SetFilterCategoriesProps = {
+  categories: Record<string, string>;
+};
+const setFilterCategories = ({ categories }: SetFilterCategoriesProps) => {
+  return !!categories && typeof categories === "object" ? Object.keys(categories) : [];
+};
+
 const SETTERS = {
   setOpacity,
   setVisibility,
   setColor,
   setDataWithMapboxToken,
   setRasterTiles,
+  setRangelandsColor,
+  setFilterCategories,
 } as const;
 
 export default SETTERS;

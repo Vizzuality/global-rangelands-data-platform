@@ -11,15 +11,18 @@ export const useBiomes = () => {
 
   const biomes = useMemo(() => {
     return (
-      rangelandsData?.data
-        ?.map((r) => +(r.attributes?.code || 0) ?? [])
-        ?.filter((r) => {
-          if (rangelandRegions.length === 0) return true;
-          return rangelandRegions.includes(`${r}`);
-        }) ?? []
+      rangelandsData?.data?.reduce<Record<string, string | undefined>>((acc, curr) => {
+        const code = curr.attributes?.code;
+        if (!!code && (rangelandRegions.length === 0 || rangelandRegions.includes(code))) {
+          return {
+            ...acc,
+            [code]: curr.attributes?.color,
+          };
+        }
+        return acc;
+      }, {}) ?? {}
     );
   }, [rangelandRegions, rangelandsData]);
-
   return biomes;
 };
 
@@ -32,13 +35,19 @@ export const useEcoregions = () => {
 
   const ecoregions = useMemo(() => {
     return (
-      rangelandsData?.data
-        ?.map((r) => r.attributes?.ecoregions?.data?.map((e) => +(e.attributes?.code || 0)) ?? [])
-        ?.flat()
-        ?.filter((r) => {
-          if (rangelandRegions.length === 0) return true;
-          return rangelandRegions.includes(`${r}`);
-        }) ?? []
+      rangelandsData?.data?.reduce((acc, curr) => {
+        const e: Record<string, string | undefined> = {};
+        curr.attributes?.ecoregions?.data?.forEach((eco) => {
+          const code = eco.attributes?.code;
+          if (!!code && (rangelandRegions.length === 0 || rangelandRegions.includes(code))) {
+            e[code] = eco.attributes?.color;
+          }
+        });
+        return {
+          ...acc,
+          ...e,
+        };
+      }, {}) ?? {}
     );
   }, [rangelandRegions, rangelandsData]);
 
