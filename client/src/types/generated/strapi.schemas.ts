@@ -1505,8 +1505,8 @@ export interface DefaultSourceComponent {
 }
 
 export interface DefaultCitationsComponent {
+  content?: string;
   id?: number;
-  name?: string;
   url?: string;
 }
 

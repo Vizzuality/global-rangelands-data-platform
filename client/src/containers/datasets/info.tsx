@@ -35,15 +35,17 @@ const DatasetInfo = ({ citations, info, title, ...props }: DatsetInfoProps) => {
                 <p className="text-sm font-medium">{t("Dataset reference")}</p>
                 {citations.map((citation) => (
                   <div className="text-xs" key={citation.id}>
-                    <p>{citation?.name}</p>
-                    <a
-                      href={citation?.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline"
-                    >
-                      {citation?.url}
-                    </a>
+                    <p>{citation?.content}</p>
+                    {!!citation?.url && (
+                      <a
+                        href={citation?.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                      >
+                        {citation?.url}
+                      </a>
+                    )}
                   </div>
                 ))}
               </div>
