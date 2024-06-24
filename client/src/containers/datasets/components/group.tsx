@@ -32,6 +32,7 @@ import { MultiSelect } from "@/components/ui/multi-select";
 import { XIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { useSetAtom } from "jotai";
+import { useGetLocalizedList } from "@/lib/localized-query";
 
 type GroupDatasetProps = {
   layers: DefaultLayerComponent[];
@@ -96,10 +97,11 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
     }
   }, [datasetSlug, syncDatasets, isRangelandDataset, setRangelandRegion, setRangelandType]);
 
-  const { data: rangelandsData } = useGetRangelands(
+  const rangelandsQuery = useGetRangelands(
     {
       populate: "*",
       sort: "title:asc",
+      locale: "all",
     },
     {
       query: {
@@ -107,6 +109,8 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
       },
     },
   );
+
+  const { data: rangelandsData } = useGetLocalizedList(rangelandsQuery);
 
   const handleFilter = (filters: string[]) => {
     setRangelandRegion(filters);

@@ -8,16 +8,20 @@ import { RANGELAND_BIOMES, RANGELAND_ECOREGIONS } from "@/containers/datasets/co
 import { useGetRangelands } from "@/types/generated/rangeland";
 import { useSyncRangelandRegions, useSyncRangelandType } from "@/store/map";
 import { useTranslations } from "@/i18n";
+import { useGetLocalizedList } from "@/lib/localized-query";
 
 const RangelandLegend = () => {
   const t = useTranslations();
   const [rangelandType] = useSyncRangelandType();
   const [rangelandRegions] = useSyncRangelandRegions();
 
-  const { data: rangelandsData } = useGetRangelands({
+  const rangelandsQuery = useGetRangelands({
     populate: "*",
     sort: "title:asc",
+    locale: "all",
   });
+
+  const { data: rangelandsData } = useGetLocalizedList(rangelandsQuery);
 
   const items = useMemo((): LegendComponent["items"] => {
     const biomes =
