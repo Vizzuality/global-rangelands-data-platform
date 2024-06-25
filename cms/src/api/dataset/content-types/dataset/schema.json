@@ -33,11 +33,7 @@
         }
       },
       "type": "enumeration",
-      "enum": [
-        "Group",
-        "Temporal",
-        "Simple"
-      ],
+      "enum": ["Group", "Temporal", "Simple"],
       "default": "Group",
       "required": true
     },

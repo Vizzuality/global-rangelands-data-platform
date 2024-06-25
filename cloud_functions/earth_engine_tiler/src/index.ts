@@ -1,16 +1,16 @@
-import express, {Request, Response, Router} from 'express';
-import {validateOrReject, ValidationError} from 'class-validator';
+import express, { Request, Response, Router } from 'express';
+import { validateOrReject, ValidationError } from 'class-validator';
 import 'reflect-metadata';
-import {plainToClass} from 'class-transformer';
-import {EarthEngineUtils} from './earth-engine-utils';
-import {ModisNetPrimaryProductionDataset} from './geeAssets/modis-net-primary-production-dataset';
-import {ModisNetPrimaryProductionChange} from './geeAssets/modis-net-primary-production-change';
-import {AnthropogenicBiomes} from './geeAssets/anthropogenic-biomes';
-import {LivestockProductionSystems} from './geeAssets/livestock-production-systems';
-import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
-import {TileRequestDTO, Tilesets} from "./tile-request.dto";
-import {default as fetch , Response as FetchResponse} from "node-fetch";
-import {pipeline} from "stream/promises";
+import { plainToClass } from 'class-transformer';
+import { EarthEngineUtils } from './earth-engine-utils';
+import { ModisNetPrimaryProductionDataset } from './geeAssets/modis-net-primary-production-dataset';
+import { ModisNetPrimaryProductionChange } from './geeAssets/modis-net-primary-production-change';
+import { AnthropogenicBiomes } from './geeAssets/anthropogenic-biomes';
+import { LivestockProductionSystems } from './geeAssets/livestock-production-systems';
+import { EarthEngineDataset } from "./geeAssets/earth-engine-dataset";
+import { TileRequestDTO, Tilesets } from "./tile-request.dto";
+import { default as fetch, Response as FetchResponse } from "node-fetch";
+import { pipeline } from "stream/promises";
 import * as crypto from "crypto";
 
 //Asset Mapping
@@ -28,7 +28,7 @@ app.use('/', router);
 exports.eetApp = app;
 
 
-router.get('/:z/:x/:y', async (req: Request, res: Response) : Promise<void> => {
+router.get('/:z/:x/:y', async (req: Request, res: Response): Promise<void> => {
   const logId = crypto.createHash('sha1').update(performance.now().toString()).digest('hex');
 
   ///// This block handles CORS
@@ -78,9 +78,9 @@ router.get('/:z/:x/:y', async (req: Request, res: Response) : Promise<void> => {
     const imageResponse: FetchResponse = await fetch(tileURL);
     const contentType = imageResponse.headers.get('content-type');
 
-    if(!imageResponse.ok || !contentType || !imageResponse.body){
+    if (!imageResponse.ok || !contentType || !imageResponse.body) {
       const errorResponse = imageResponse.body ? JSON.stringify(imageResponse.body) : 'N/A';
-      throw new Error (`A problem ocurred retrieving the tile on ${tileURL}. Status: ${imageResponse.status} - Error Response: ${errorResponse}`)
+      throw new Error(`A problem ocurred retrieving the tile on ${tileURL}. Status: ${imageResponse.status} - Error Response: ${errorResponse}`)
     }
 
     res.status(200).contentType(contentType);
@@ -105,7 +105,7 @@ async function getAndValidateRequestDTO(req: Request): Promise<TileRequestDTO> {
   return result;
 }
 
-function sendErrorResponse(res: Response, logId: string, status: number, errors: any){
+function sendErrorResponse(res: Response, logId: string, status: number, errors: any) {
   // Using class validator's validateOrReject, rejects by throwing a list of ValidationErrors, but native Errors are thrown
   // as a single non-array Error object, so this check must be done first to process the errors as a list later
   errors = errors.length ? errors : [errors];
@@ -114,11 +114,11 @@ function sendErrorResponse(res: Response, logId: string, status: number, errors:
   // it will yield empty objects, but ValidationErrors are their own classes and don't extend native Errors
   // This is a bit of a hacky way to simplify responses, by transforming native Errors to actual objects with the error
   // message and leaving the ValidationErrors as is
-  const responseErrors = errors.map((error)=>
+  const responseErrors = errors.map((error) =>
     error instanceof ValidationError ?
       error : { message: error.message }
   )
   console.log(`${logId} - Returning Errors:  ${JSON.stringify(responseErrors)}`)
 
-  res.status( status ).json( { errors: responseErrors } )
+  res.status(status).json({ errors: responseErrors })
 }
