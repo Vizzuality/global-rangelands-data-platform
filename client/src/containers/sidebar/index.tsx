@@ -15,14 +15,14 @@ const Sidebar = ({ children }: PropsWithChildren): JSX.Element => {
   return (
     <aside
       className={cn(
-        "relative left-0 top-0 z-10 h-full w-96 bg-background shadow transition-transform duration-300 ease-in-out",
+        "relative left-0 top-0 z-10 h-full bg-background shadow transition-transform duration-300 ease-in-out",
         {
           "-translate-x-full": !open,
           "translate-x-0": open,
         },
       )}
     >
-      <ScrollArea className="relative h-[var(--content-height)]">{children}</ScrollArea>
+      <ScrollArea className="relative h-[var(--content-height)] w-96">{children}</ScrollArea>
 
       <div className="absolute left-full top-6 z-0 rounded-r-full bg-white/40 p-1 pl-0 shadow backdrop-blur-lg">
         <button className="rounded-r-full bg-background px-1 py-2.5 " onClick={toggleOpen}>
