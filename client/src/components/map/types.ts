@@ -2,6 +2,7 @@ import type { ViewState, MapProps } from "react-map-gl";
 
 import { FitBoundsOptions } from "mapbox-gl";
 import { MAPBOX_STYLE } from "./constants";
+import { DefaultLayerComponentLayerDataAttributesLegendItemsItem } from "@/types/generated/strapi.schemas";
 
 export type MapStylesIds = keyof typeof MAPBOX_STYLE;
 export interface CustomMapProps extends MapProps {
@@ -25,3 +26,12 @@ export interface CustomMapProps extends MapProps {
   /** A function that exposes the viewport */
   onMapViewStateChange?: (viewstate: Partial<ViewState>) => void;
 }
+
+export type LegendComponent = {
+  items: (DefaultLayerComponentLayerDataAttributesLegendItemsItem & {
+    items?: DefaultLayerComponentLayerDataAttributesLegendItemsItem[];
+  })[];
+  title: string;
+};
+
+export type MapTooltipProps = Record<string, unknown>;

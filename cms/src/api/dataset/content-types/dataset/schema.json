@@ -35,7 +35,8 @@
       "type": "enumeration",
       "enum": [
         "Group",
-        "Temporal"
+        "Temporal",
+        "Simple"
       ],
       "default": "Group",
       "required": true
@@ -64,7 +65,7 @@
     },
     "sources": {
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -79,6 +80,14 @@
         }
       },
       "type": "string"
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext"
     }
   }
 }

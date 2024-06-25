@@ -7,13 +7,15 @@ import { useGetLocalizedList } from "@/lib/localized-query";
 
 const Datasets = () => {
   const datasetsListQuery = useGetDatasets({
-    populate: ["layers", "layers.layer"],
+    populate: ["layers", "layers.layer", "sources", "citations"],
+    sort: "id:asc",
+    locale: "all",
   });
 
   const { data: datasetsData } = useGetLocalizedList(datasetsListQuery);
 
   return (
-    <div className="mb-10 space-y-10">
+    <div className="mb-10 space-y-7">
       <DatasetsHeader />
       <div className="space-y-7">
         {datasetsData?.data?.map((dataset) => (

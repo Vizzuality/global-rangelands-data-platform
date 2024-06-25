@@ -4,14 +4,21 @@ import 'reflect-metadata';
 import {plainToClass} from 'class-transformer';
 import {EarthEngineUtils} from './earth-engine-utils';
 import {ModisNetPrimaryProductionDataset} from './geeAssets/modis-net-primary-production-dataset';
+import {ModisNetPrimaryProductionChange} from './geeAssets/modis-net-primary-production-change';
+import {AnthropogenicBiomes} from './geeAssets/anthropogenic-biomes';
+import {LivestockProductionSystems} from './geeAssets/livestock-production-systems';
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
 import {default as fetch , Response as FetchResponse} from "node-fetch";
 import {pipeline} from "stream/promises";
+import * as crypto from "crypto";
 
 //Asset Mapping
 const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.modis_net_primary_production]: ModisNetPrimaryProductionDataset,
+  [Tilesets.modis_net_primary_production_change]: ModisNetPrimaryProductionChange,
+  [Tilesets.anthropogenic_biomes]: AnthropogenicBiomes,
+  [Tilesets.livestock_production_systems]: LivestockProductionSystems
 }
 
 //We're using express to simplify path parameter parsing for the Tiles endpoint
@@ -22,6 +29,8 @@ exports.eetApp = app;
 
 
 router.get('/:z/:x/:y', async (req: Request, res: Response) : Promise<void> => {
+  const logId = crypto.createHash('sha1').update(performance.now().toString()).digest('hex');
+
   ///// This block handles CORS
   res.set('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') {
@@ -46,21 +55,20 @@ router.get('/:z/:x/:y', async (req: Request, res: Response) : Promise<void> => {
       throw new Error(`Tileset ${tileRequestDTO.tileset} not found`);
     }
 
-    asset.isYearValid(tileRequestDTO.year); //Year might be required or not depending on the asset
+    asset.areYearsValid(tileRequestDTO.startYear, tileRequestDTO.endYear); //Year might be required or not depending on the asset
   } catch (errors) {
-    sendErrorResponse(res, 400, errors)
+    sendErrorResponse(res, logId, 400, errors)
     return;
   }
 
-  const { tileset, x, y, z, year } = tileRequestDTO;
-  console.log(`Requesting tile for ${tileset} with coordinates ${x}-${y}-${z} and year ${year || 'N/A'}`)
+  const { tileset, x, y, z, startYear, endYear } = tileRequestDTO;
+  console.log(`${logId} - Requesting tile for ${tileset} with coordinates ${x}-${y}-${z} and startYear ${startYear || 'N/A'} / endYear ${endYear || 'N/A'}`)
 
   try {
     await EarthEngineUtils.authenticate();
 
-    const tileURL = await asset.getMapUrl(z, x, y, year);
-    console.log(`Obtained tile URL on ${tileURL}`)
-
+    const tileURL = await asset.getMapUrl(z, x, y, startYear, endYear);
+    console.log(`${logId} - Obtained tile URL on ${tileURL}`)
     //TODO CACHING
     // The calculations when requesting the tile URL take the longest, images are not probably going to be very big (not even MBs)
     // create new schema on Strapi DB instance, can't use same schema without workarounds, redis on memorystore might be overkill
@@ -71,13 +79,14 @@ router.get('/:z/:x/:y', async (req: Request, res: Response) : Promise<void> => {
     const contentType = imageResponse.headers.get('content-type');
 
     if(!imageResponse.ok || !contentType || !imageResponse.body){
-      throw new Error (`A problem ocurred retrieving the tile on ${tileURL}`)
+      const errorResponse = imageResponse.body ? JSON.stringify(imageResponse.body) : 'N/A';
+      throw new Error (`A problem ocurred retrieving the tile on ${tileURL}. Status: ${imageResponse.status} - Error Response: ${errorResponse}`)
     }
 
     res.status(200).contentType(contentType);
     await pipeline(imageResponse.body, res);
   } catch (error) {
-    sendErrorResponse(res, 500, error);
+    sendErrorResponse(res, logId, 500, error);
   }
 });
 
@@ -96,7 +105,7 @@ async function getAndValidateRequestDTO(req: Request): Promise<TileRequestDTO> {
   return result;
 }
 
-function sendErrorResponse(res: Response, status: number, errors: any){
+function sendErrorResponse(res: Response, logId: string, status: number, errors: any){
   // Using class validator's validateOrReject, rejects by throwing a list of ValidationErrors, but native Errors are thrown
   // as a single non-array Error object, so this check must be done first to process the errors as a list later
   errors = errors.length ? errors : [errors];
@@ -109,7 +118,7 @@ function sendErrorResponse(res: Response, status: number, errors: any){
     error instanceof ValidationError ?
       error : { message: error.message }
   )
-  console.log('Returning Errors: ' + JSON.stringify(responseErrors))
+  console.log(`${logId} - Returning Errors:  ${JSON.stringify(responseErrors)}`)
 
   res.status( status ).json( { errors: responseErrors } )
 }

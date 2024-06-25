@@ -87,6 +87,7 @@ module "eet_cloud_function" {
   timeout_seconds                  = var.eet_function_timeout_seconds
   available_memory                 = var.eet_function_available_memory
   available_cpu                    = var.eet_function_available_cpu
+  min_instance_count               = var.eet_function_min_instance_count
   max_instance_count               = var.eet_function_max_instance_count
   max_instance_request_concurrency = var.eet_function_max_instance_request_concurrency
 

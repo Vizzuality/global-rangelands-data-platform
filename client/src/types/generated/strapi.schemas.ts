@@ -777,7 +777,7 @@ export interface Layer {
   config: unknown;
   createdAt?: string;
   createdBy?: LayerCreatedBy;
-  description: string;
+  description?: string;
   interaction_config?: unknown;
   legend: DefaultLegendComponent;
   locale?: string;
@@ -1027,7 +1027,7 @@ export interface LayerLocalizationResponse {
 
 export type LayerRequestData = {
   config: unknown;
-  description: string;
+  description?: string;
   interaction_config?: unknown;
   legend: DefaultLegendComponent;
   locale?: string;
@@ -1060,7 +1060,7 @@ export const LayerLocalizationRequestType = {
 
 export interface LayerLocalizationRequest {
   config: unknown;
-  description: string;
+  description?: string;
   interaction_config?: unknown;
   legend: DefaultLegendComponent;
   locale: string;
@@ -1505,8 +1505,8 @@ export interface DefaultSourceComponent {
 }
 
 export interface DefaultCitationsComponent {
+  content?: string;
   id?: number;
-  name?: string;
   url?: string;
 }
 
@@ -1802,6 +1802,7 @@ export type DatasetType = (typeof DatasetType)[keyof typeof DatasetType];
 export const DatasetType = {
   Group: "Group",
   Temporal: "Temporal",
+  Simple: "Simple",
 } as const;
 
 export type DatasetLocalizations = {
@@ -1823,12 +1824,13 @@ export interface Dataset {
   citations?: DefaultCitationsComponent[];
   createdAt?: string;
   createdBy?: DatasetCreatedBy;
+  description?: string;
   layers: DefaultLayerComponent[];
   locale?: string;
   localizations?: DatasetLocalizations;
   publishedAt?: string;
   slug?: string;
-  sources?: DefaultSourceComponent[];
+  sources?: DefaultSourceComponent;
   title: string;
   type: DatasetType;
   updatedAt?: string;
@@ -1900,14 +1902,16 @@ export type DatasetRequestDataType =
 export const DatasetRequestDataType = {
   Group: "Group",
   Temporal: "Temporal",
+  Simple: "Simple",
 } as const;
 
 export type DatasetRequestData = {
   citations?: DefaultCitationsComponent[];
+  description?: string;
   layers: DefaultLayerComponent[];
   locale?: string;
   slug?: string;
-  sources?: DefaultSourceComponent[];
+  sources?: DefaultSourceComponent;
   title: string;
   type: DatasetRequestDataType;
 };
@@ -1923,14 +1927,16 @@ export type DatasetLocalizationRequestType =
 export const DatasetLocalizationRequestType = {
   Group: "Group",
   Temporal: "Temporal",
+  Simple: "Simple",
 } as const;
 
 export interface DatasetLocalizationRequest {
   citations?: DefaultCitationsComponent[];
+  description?: string;
   layers: DefaultLayerComponent[];
   locale: string;
   slug?: string;
-  sources?: DefaultSourceComponent[];
+  sources?: DefaultSourceComponent;
   title: string;
   type: DatasetLocalizationRequestType;
 }

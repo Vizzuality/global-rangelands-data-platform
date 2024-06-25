@@ -15,6 +15,8 @@ import { useControl, useMap } from "react-map-gl";
 
 import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import { Layer } from "deck.gl";
+import { useSetAtom } from "jotai";
+import { deckLayersInteractiveAtom } from "@/store/map";
 
 interface DeckMapboxOverlayContext {
   addLayer: (layer: any) => void;
@@ -37,10 +39,26 @@ function useMapboxOverlay(
 ) {
   const { default: map } = useMap();
   map?.getCanvas().style.cursor;
+  const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
   const overlay = useControl<MapboxOverlay>(
     () =>
       new MapboxOverlay({
         ...props,
+        onClick: (info, event) => {
+          event.stopPropagation();
+          if (!info?.picked) setDeckInteractiveLayers({});
+          setDeckInteractiveLayers((prev) => {
+            const slug =
+              info?.layer?.props &&
+              "slug" in info?.layer?.props &&
+              (info?.layer?.props?.slug as string);
+            if (!slug) return prev;
+            return {
+              ...prev,
+              [slug]: info,
+            };
+          });
+        },
         getCursor: () => map?.getCanvas().style.cursor || "",
       }),
   );

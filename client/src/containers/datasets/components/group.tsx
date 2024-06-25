@@ -13,11 +13,12 @@ import {
   RANGELAND_DATASET_SLUG,
   RANGELAND_ECOREGIONS,
   RANGELAND_SYSTEM,
-} from "./constants";
+} from "../constants";
 import ColorSwatchIcon from "@/svgs/color-swatch.svg";
 
 import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
 import {
+  deckLayersInteractiveAtom,
   useSyncDatasets,
   useSyncLayers,
   useSyncRangelandRegions,
@@ -30,18 +31,21 @@ import { useGetRangelands } from "@/types/generated/rangeland";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { XIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+import { useSetAtom } from "jotai";
+import { useGetLocalizedList } from "@/lib/localized-query";
 
-type RangelandLayersProps = {
+type GroupDatasetProps = {
   layers: DefaultLayerComponent[];
   slug?: string;
 };
 
-const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) => {
+const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
   const t = useTranslations();
   const [syncDatasets] = useSyncDatasets();
   const [syncLayers, setSyncLayers] = useSyncLayers();
   const [rangelandType, setRangelandType] = useSyncRangelandType();
   const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
+  const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
 
   const datasetLayers = useMemo(
     () => layers?.map((l) => l.layer?.data?.attributes?.slug),
@@ -65,6 +69,7 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
       setRangelandType(layerSlug);
       setRangelandRegion([]);
     }
+    setDeckInteractiveLayers({});
   };
 
   const selectedLayer = useMemo(() => {
@@ -92,10 +97,11 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
     }
   }, [datasetSlug, syncDatasets, isRangelandDataset, setRangelandRegion, setRangelandType]);
 
-  const { data: rangelandsData } = useGetRangelands(
+  const rangelandsQuery = useGetRangelands(
     {
       populate: "*",
       sort: "title:asc",
+      locale: "all",
     },
     {
       query: {
@@ -103,6 +109,8 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
       },
     },
   );
+
+  const { data: rangelandsData } = useGetLocalizedList(rangelandsQuery);
 
   const handleFilter = (filters: string[]) => {
     setRangelandRegion(filters);
@@ -217,4 +225,4 @@ const RangelandLayers = ({ layers, slug: datasetSlug }: RangelandLayersProps) =>
   );
 };
 
-export default RangelandLayers;
+export default GroupDataset;

@@ -12,6 +12,8 @@ import * as AggregationLayers from "@deck.gl/aggregation-layers";
 import { MaskExtension, DataFilterExtension } from "@deck.gl/extensions";
 import { CSVLoader } from "@loaders.gl/csv";
 import RasterLayer from "@/components/map/layers/deck-layer/raster";
+import BasicLegend from "@/components/map/legends/content/basic";
+import RangelandLegend from "@/components/map/legends/content/rangeland";
 
 export const JSON_CONFIGURATION = new JSONConfiguration({
   React,
@@ -26,9 +28,8 @@ export const JSON_CONFIGURATION = new JSONConfiguration({
   },
   enumerations: {},
   reactComponents: {
-    // LegendTypeBasic,
-    // LegendTypeChoropleth,
-    // LegendTypeGradient,
+    BasicLegend,
+    RangelandLegend,
   },
 });
 

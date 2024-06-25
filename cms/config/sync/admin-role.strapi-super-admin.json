@@ -17,12 +17,14 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description",
+          "info"
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -34,8 +36,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -47,8 +49,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -67,12 +69,14 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description",
+          "info"
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -91,12 +95,14 @@
           "citations.url",
           "sources.name",
           "sources.url",
-          "slug"
+          "slug",
+          "description",
+          "info"
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -115,8 +121,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -128,8 +134,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -141,8 +147,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -161,8 +167,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -181,8 +187,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -206,8 +212,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -219,8 +225,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -232,8 +238,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -257,8 +263,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -282,8 +288,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -302,8 +308,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -315,8 +321,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -328,8 +334,8 @@
       "properties": {
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -348,8 +354,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []
@@ -368,8 +374,8 @@
         ],
         "locales": [
           "en",
-          "fr",
-          "es"
+          "es",
+          "fr"
         ]
       },
       "conditions": []

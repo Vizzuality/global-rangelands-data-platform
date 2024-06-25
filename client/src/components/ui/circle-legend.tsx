@@ -5,9 +5,10 @@ export type CircleLegendProps = {
   colors?: string[];
   selected?: boolean;
   removable?: boolean;
+  className?: string;
 };
 
-const CircleLegend = ({ colors, selected, removable = true }: CircleLegendProps) => {
+const CircleLegend = ({ colors, selected, className, removable = true }: CircleLegendProps) => {
   if (!colors?.length) return null;
 
   const stripeGradient = colors.map((color, i) => {
@@ -27,6 +28,7 @@ const CircleLegend = ({ colors, selected, removable = true }: CircleLegendProps)
       className={cn(
         "flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full",
         selected && "border-[1.5px] border-foreground",
+        className,
       )}
     >
       {selected && removable && <XIcon className="h-3 w-3 flex-shrink-0" />}

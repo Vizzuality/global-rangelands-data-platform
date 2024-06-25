@@ -5,13 +5,14 @@ import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
 import CitationsIcon from "@/svgs/citations.svg";
-import GroupLayers from "./group-layers";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
-import { CircleHelpIcon, EyeIcon } from "lucide-react";
-import { Toggle } from "@radix-ui/react-toggle";
 import { useMemo } from "react";
+import { LayerVisibility } from "@/components/map/legends/header/buttons";
+import GroupDataset from "./components/group";
+import TemporalDataset from "./components/temporal";
+import DatasetInfo from "./info";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -81,40 +82,59 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   }, [datasetLayer?.slug, layersSettings]);
 
   return (
-    <div className={cn("space-y-7", className)}>
-      <div className="flex items-center justify-between gap-3 font-medium">
-        <div className="flex items-center justify-between gap-1">
-          {attributes?.slug !== RANGELAND_DATASET_SLUG && (
-            <Switch
-              id={`toggle-${id}`}
-              checked={datasets?.includes(id!)}
-              onCheckedChange={handleToggleDataset}
+    <div className={cn("space-y-6", className)}>
+      <div className="space-y-2">
+        <div className="flex justify-between gap-3 font-medium">
+          <div className="flex justify-between gap-3">
+            {attributes?.slug !== RANGELAND_DATASET_SLUG && (
+              <Switch
+                id={`toggle-${id}`}
+                checked={datasets?.includes(id!)}
+                onCheckedChange={handleToggleDataset}
+                className="my-1"
+              />
+            )}
+            <label className="leading-tight" htmlFor={`toggle-${id}`}>
+              {attributes?.title}
+            </label>
+          </div>
+
+          <div className="mt-px flex gap-2">
+            <LayerVisibility
+              visible={datasetVisibility}
+              onChangeVisibility={handleChangeVisibility}
             />
-          )}
-          <label htmlFor={`toggle-${id}`}>{attributes?.title}</label>
+          </div>
         </div>
-
-        <div className="flex items-center gap-2">
-          <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
-
-          <Toggle
-            className="data-[state=off]:opacity-20"
-            onPressedChange={handleChangeVisibility}
-            pressed={datasetVisibility}
-          >
-            <EyeIcon className="h-6 w-6 fill-foreground stroke-background" />
-          </Toggle>
+        <div className="space-y-5">
+          <p className="line-clamp-3 text-xs">{attributes?.description}</p>
+          <div className="flex gap-2">
+            <DatasetInfo
+              title={attributes?.title}
+              citations={attributes?.citations}
+              info={attributes?.description}
+            />
+            <div className="flex items-center gap-2">
+              {!!attributes?.sources?.url && (
+                <a
+                  href={attributes?.sources?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex gap-1 text-xs font-medium uppercase text-foreground underline underline-offset-2"
+                >
+                  {t("data source")}
+                  <CitationsIcon className="h-5 w-5" />
+                </a>
+              )}
+            </div>
+          </div>
         </div>
       </div>
+
       {attributes?.type === "Group" && (
-        <GroupLayers layers={attributes?.layers} slug={attributes?.slug} />
+        <GroupDataset layers={attributes?.layers} slug={attributes?.slug} />
       )}
-      <div className="flex items-center gap-2">
-        <span className="text-xs uppercase text-foreground underline underline-offset-2">
-          {t("data source")}
-        </span>
-        <CitationsIcon className="h-5 w-5" />
-      </div>
+      {attributes?.type === "Temporal" && <TemporalDataset layers={attributes?.layers} />}
     </div>
   );
 };

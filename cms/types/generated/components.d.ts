@@ -4,9 +4,10 @@ export interface DefaultCitations extends Schema.Component {
   collectionName: 'components_default_citations';
   info: {
     displayName: 'Citations';
+    description: '';
   };
   attributes: {
-    name: Attribute.String & Attribute.Required;
+    content: Attribute.Text & Attribute.Required;
     url: Attribute.String;
   };
 }

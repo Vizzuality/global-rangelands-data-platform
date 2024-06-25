@@ -387,7 +387,7 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    type: Attribute.Enumeration<['Group', 'Temporal']> &
+    type: Attribute.Enumeration<['Group', 'Temporal', 'Simple']> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
@@ -408,7 +408,7 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    sources: Attribute.Component<'default.source', true> &
+    sources: Attribute.Component<'default.source'> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -418,6 +418,12 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
       Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
+        };
+      }>;
+    description: Attribute.RichText &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
         };
       }>;
     createdAt: Attribute.DateTime;
@@ -549,7 +555,6 @@ export interface ApiLayerLayer extends Schema.CollectionType {
       }> &
       Attribute.DefaultTo<'GEE'>;
     description: Attribute.Text &
-      Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
