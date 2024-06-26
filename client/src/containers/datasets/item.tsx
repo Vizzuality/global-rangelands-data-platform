@@ -11,9 +11,8 @@ import { RANGELAND_DATASET_SLUG } from "./constants";
 import { useMemo } from "react";
 import { LayerVisibility } from "@/components/map/legends/header/buttons";
 import GroupDataset from "./components/group";
-import TemporalDataset from "./components/temporal";
 import DatasetInfo from "./info";
-import TemporalChangesDataset from "./components/temporal-changes";
+import TemporalChangesDataset from "./components/temporal";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -82,8 +81,6 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
       case "Group":
         return <GroupDataset layers={attributes?.layers} slug={attributes?.slug} />;
       case "Temporal":
-        return <TemporalDataset layers={attributes?.layers} />;
-      case "Temporal-changes":
         return <TemporalChangesDataset layers={attributes?.layers} />;
       default:
         return null;

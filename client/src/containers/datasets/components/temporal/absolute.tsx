@@ -9,10 +9,6 @@ import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
 import { CalendarDaysIcon } from "lucide-react";
 
-type TemporalDatasetProps = {
-  layers: DefaultLayerComponent[];
-};
-
 type TemporalDatasetItemProps = {
   layer: DefaultLayerComponent;
 };
@@ -24,7 +20,7 @@ const isCorrectTimeSelect = (timeSelect: unknown): timeSelect is [number, number
     timeSelect.every((t) => typeof t === "number")
   );
 };
-const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
+export const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
   const timeSelect = (
     layer?.layer?.data?.attributes?.params_config as Record<string, unknown>[]
   )?.find((p) => p.key === "time-select")?.default;
@@ -81,17 +77,3 @@ const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
     </Select>
   );
 };
-
-const TemporalDataset = ({ layers }: TemporalDatasetProps) => {
-  return layers?.map((layer) => {
-    if (!layer?.layer?.data?.attributes?.slug) return null;
-    return (
-      <div key={layer.id} className="space-y-2">
-        {layers.length > 1 && <h2>{layer.name}</h2>}
-        <TemporalDatasetItem layer={layer} />
-      </div>
-    );
-  });
-};
-
-export default TemporalDataset;

@@ -8,18 +8,9 @@ import {
 } from "@/components/ui/select";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CalendarDaysIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
-
-type TemporalDatasetProps = {
-  layers: DefaultLayerComponent[];
-};
-
-type TemporalDatasetItemProps = {
-  layer: DefaultLayerComponent;
-};
+import { useEffect, useMemo } from "react";
 
 const isCorrectTimeSelect = (timeSelect: unknown): timeSelect is [number, number] => {
   return (
@@ -86,10 +77,12 @@ const _getOptions = (params_config: unknown, start?: number, end?: number) => {
 const selectTypes = ["absolute", "changes"] as const;
 type SelectType = (typeof selectTypes)[number];
 
-const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
+type TemporalDatasetItemProps = {
+  layer: DefaultLayerComponent;
+  selectType: SelectType;
+};
+export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatasetItemProps) => {
   const t = useTranslations();
-
-  const [selectType, setSelectedType] = useState<SelectType>("absolute");
 
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
   const [layers] = useSyncLayers();
@@ -142,10 +135,6 @@ const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
     });
   };
 
-  const handleSelectType = (value: SelectType) => {
-    setSelectedType(value);
-  };
-
   useEffect(() => {
     if (selectType === "absolute") {
       setLayersSettings((prev) => {
@@ -174,33 +163,6 @@ const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
 
   return (
     <div className="space-y-4">
-      <RadioGroup
-        className="flex gap-4 text-xs"
-        onValueChange={handleSelectType}
-        disabled={isDisabled}
-        defaultValue={selectType}
-      >
-        <div className="flex gap-2">
-          <RadioGroupItem
-            id="dataset-absolute"
-            className="flex h-4 w-4 items-center justify-center rounded-full border border-foreground"
-            value={selectTypes[0]}
-          />
-          <label htmlFor="dataset-absolute" className="flex items-center gap-2">
-            {t("See absolute value")}
-          </label>
-        </div>
-        <div className="flex gap-2">
-          <RadioGroupItem
-            id="dataset-changes"
-            className="flex h-4 w-4 items-center justify-center rounded-full border border-foreground"
-            value={selectTypes[1]}
-          />
-          <label htmlFor="dataset-changes" className="flex items-center gap-2">
-            {t("See changes over time")}
-          </label>
-        </div>
-      </RadioGroup>
       <div className="flex gap-2 text-xs">
         <div className="flex-1 space-y-1">
           {selectType === "changes" && <span>{t("Start date")}</span>}
@@ -228,17 +190,3 @@ const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
     </div>
   );
 };
-
-const TemporalChangesDataset = ({ layers }: TemporalDatasetProps) => {
-  return layers?.map((layer) => {
-    if (!layer?.layer?.data?.attributes?.slug) return null;
-    return (
-      <div key={layer.id} className="space-y-2">
-        {layers.length > 1 && <h2>{layer.name}</h2>}
-        <TemporalDatasetItem layer={layer} />
-      </div>
-    );
-  });
-};
-
-export default TemporalChangesDataset;
