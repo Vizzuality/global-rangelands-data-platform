@@ -9,7 +9,7 @@ import BasicLegend from "@/components/map/legends/content/basic";
 import GradientLegend from "@/components/map/legends/content/gradient";
 import RangelandLegend from "@/components/map/legends/content/rangeland";
 import { LegendComponent } from "@/components/map/types";
-import { ParamsConfig } from "@/types/layers";
+import { getLayerSettings } from "@/lib/utils";
 
 const LEGEND_CONTENT = {
   Basic: BasicLegend,
@@ -55,28 +55,7 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
   }, [datasetLayer]);
 
   const settings = useMemo(() => {
-    const layerSettings =
-      (!!datasetLayer?.layer?.data?.attributes?.slug &&
-        layersSettings?.[datasetLayer?.layer?.data?.attributes?.slug]) ||
-      {};
-
-    const params =
-      (datasetLayer?.layer?.data?.attributes?.params_config as ParamsConfig)?.reduce(
-        (acc, curr) => {
-          if (curr.key === "colors") return acc;
-          return {
-            ...acc,
-            [curr.key]: curr.default,
-          };
-        },
-        {},
-      ) || {};
-
-    const currSettings = Object.assign({}, params, layerSettings);
-    return {
-      visibility: (currSettings.visibility as boolean) ?? true,
-      opacity: (currSettings.opacity as number) ?? 1,
-    };
+    return getLayerSettings(datasetLayer?.layer?.data?.attributes, layersSettings);
   }, [layersSettings, datasetLayer]);
 
   const setLayerSettings = (key: string, value: boolean | number) => {

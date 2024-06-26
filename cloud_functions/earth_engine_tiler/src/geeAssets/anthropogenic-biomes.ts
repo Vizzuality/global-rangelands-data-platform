@@ -1,7 +1,7 @@
-import { EarthEngineImage } from './earth-engine-dataset';
+import { CategoricalDataset } from './earth-engine-dataset';
 import ee from '@google/earthengine';
 
-export const AnthropogenicBiomes: EarthEngineImage = {
+export const AnthropogenicBiomes: CategoricalDataset = {
   assetPath: {
     default: "projects/gmvad-grass/assets/a2000_global_ByteCompress"
   },

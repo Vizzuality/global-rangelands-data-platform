@@ -1,7 +1,7 @@
-import { EarthEngineImage } from './earth-engine-dataset';
+import { CategoricalDataset } from './earth-engine-dataset';
 import ee from '@google/earthengine';
 
-export const LivestockProductionSystems: EarthEngineImage = {
+export const LivestockProductionSystems: CategoricalDataset = {
   assetPath: {
     default: "projects/gmvad-grass/assets/ps_cmb_ByteCompress"
   },

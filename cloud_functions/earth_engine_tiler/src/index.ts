@@ -7,6 +7,7 @@ import {ModisNetPrimaryProductionDataset} from './geeAssets/modis-net-primary-pr
 import {ModisNetPrimaryProductionChange} from './geeAssets/modis-net-primary-production-change';
 import {AnthropogenicBiomes} from './geeAssets/anthropogenic-biomes';
 import {LivestockProductionSystems} from './geeAssets/livestock-production-systems';
+import {ForestLoss} from './geeAssets/forest-loss';
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
 import {default as fetch , Response as FetchResponse} from "node-fetch";
@@ -18,7 +19,8 @@ const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.modis_net_primary_production]: ModisNetPrimaryProductionDataset,
   [Tilesets.modis_net_primary_production_change]: ModisNetPrimaryProductionChange,
   [Tilesets.anthropogenic_biomes]: AnthropogenicBiomes,
-  [Tilesets.livestock_production_systems]: LivestockProductionSystems
+  [Tilesets.livestock_production_systems]: LivestockProductionSystems,
+  [Tilesets.forest_loss]: ForestLoss
 }
 
 //We're using express to simplify path parameter parsing for the Tiles endpoint

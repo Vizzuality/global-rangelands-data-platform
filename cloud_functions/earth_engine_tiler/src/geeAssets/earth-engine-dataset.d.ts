@@ -11,7 +11,7 @@ export interface EarthEngineDataset {
   getMapUrl: (z: number, x: number, y: number, startYear?: number, endYear?: number) => any;
 }
 
-export interface EarthEngineCollection extends EarthEngineDataset {
+export interface ContinuousDataset extends EarthEngineDataset {
   /** Visualization parameters */
   readonly vizParams: {
     bands: string[],
@@ -21,7 +21,7 @@ export interface EarthEngineCollection extends EarthEngineDataset {
   };
 }
 
-export interface EarthEngineImage extends EarthEngineDataset {
+export interface CategoricalDataset extends EarthEngineDataset {
   /** Band names */
   readonly bandName: string;
 
