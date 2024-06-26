@@ -95,6 +95,29 @@ const setRasterTiles = ({ src, searchparams = {} }: SetRasterTilesProps) => {
   return `${src}?${searchParams.toString()}`;
 };
 
+type SetTimeChangeRasterTilesProps = {
+  src: string;
+  searchparams?: Record<string, string | number>;
+  tilesetSingle?: string;
+  tilesetChange?: string;
+};
+const setTimeChangeRasterTiles = ({
+  src,
+  searchparams = {},
+  tilesetChange = "",
+  tilesetSingle = "",
+}: SetTimeChangeRasterTilesProps) => {
+  const searchParams = new URLSearchParams();
+  Object.entries(searchparams).forEach(([key, value]) => {
+    if (value) {
+      searchParams.append(key, value as string);
+    }
+  });
+  searchParams.append("tileset", searchparams.endYear ? tilesetChange : tilesetSingle);
+
+  return `${src}?${searchParams.toString()}`;
+};
+
 type SetRangelandsColorProps = {
   colors: Record<string, string | number[]>;
   property: string;
@@ -121,6 +144,7 @@ const SETTERS = {
   setColor,
   setDataWithMapboxToken,
   setRasterTiles,
+  setTimeChangeRasterTiles,
   setRangelandsColor,
   setFilterCategories,
 } as const;

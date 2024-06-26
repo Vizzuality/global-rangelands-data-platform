@@ -5,7 +5,7 @@ import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
 import CitationsIcon from "@/svgs/citations.svg";
-import { cn } from "@/lib/utils";
+import { cn, getLayerSettings } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
 import { useMemo } from "react";
@@ -13,6 +13,7 @@ import { LayerVisibility } from "@/components/map/legends/header/buttons";
 import GroupDataset from "./components/group";
 import TemporalDataset from "./components/temporal";
 import DatasetInfo from "./info";
+import TemporalChangesDataset from "./components/temporal-changes";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -73,13 +74,21 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   };
 
   const datasetVisibility = useMemo(() => {
-    if (!!datasetLayer?.slug) {
-      return (
-        !layersSettings?.[datasetLayer?.slug] ||
-        (layersSettings?.[datasetLayer?.slug]?.visibility as boolean)
-      );
+    return getLayerSettings(datasetLayer, layersSettings)?.visibility;
+  }, [datasetLayer, layersSettings]);
+
+  const COMPONENT = useMemo(() => {
+    switch (attributes?.type) {
+      case "Group":
+        return <GroupDataset layers={attributes?.layers} slug={attributes?.slug} />;
+      case "Temporal":
+        return <TemporalDataset layers={attributes?.layers} />;
+      case "Temporal-changes":
+        return <TemporalChangesDataset layers={attributes?.layers} />;
+      default:
+        return null;
     }
-  }, [datasetLayer?.slug, layersSettings]);
+  }, [attributes?.type, attributes?.layers, attributes?.slug]);
 
   return (
     <div className={cn("space-y-6", className)}>
@@ -131,10 +140,7 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
         </div>
       </div>
 
-      {attributes?.type === "Group" && (
-        <GroupDataset layers={attributes?.layers} slug={attributes?.slug} />
-      )}
-      {attributes?.type === "Temporal" && <TemporalDataset layers={attributes?.layers} />}
+      {COMPONENT}
     </div>
   );
 };

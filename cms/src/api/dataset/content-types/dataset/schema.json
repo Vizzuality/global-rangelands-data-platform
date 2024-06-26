@@ -36,6 +36,7 @@
       "enum": [
         "Group",
         "Temporal",
+        "Temporal-changes",
         "Simple"
       ],
       "default": "Group",
