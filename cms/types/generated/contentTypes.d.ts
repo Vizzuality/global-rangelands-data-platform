@@ -387,7 +387,9 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    type: Attribute.Enumeration<['Group', 'Temporal', 'Simple']> &
+    type: Attribute.Enumeration<
+      ['Group', 'Temporal', 'Temporal-changes', 'Simple']
+    > &
       Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
