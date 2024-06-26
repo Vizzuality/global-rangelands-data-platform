@@ -34,6 +34,27 @@ module "staging" {
   database_name       = "strapi"
   database_user       = "strapi"
 }
+
+resource "google_storage_bucket" "landing_page_bucket" {
+  name = "rdp-landing-bucket"
+  project = var.gcp_project_id
+  location = "US"
+  storage_class = "STANDARD"
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+}
+
+// https://stackoverflow.com/questions/75373877/how-to-create-public-google-bucket-with-uniform-bucket-level-access-enabled
+// https://cloud.google.com/storage/docs/uniform-bucket-level-access
+resource "google_storage_bucket_iam_member" "landing_bucket_permissions"{
+  bucket = google_storage_bucket.landing_page_bucket.name
+  member = "allUsers"
+  role = "roles/storage.objectViewer"
+}
+
 /*
 module "production" {
   source              = "./modules/env"
