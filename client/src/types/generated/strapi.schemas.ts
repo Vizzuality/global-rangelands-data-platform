@@ -1764,7 +1764,6 @@ export type DatasetType = (typeof DatasetType)[keyof typeof DatasetType];
 export const DatasetType = {
   Group: "Group",
   Temporal: "Temporal",
-  "Temporal-changes": "Temporal-changes",
   Simple: "Simple",
 } as const;
 
@@ -1865,7 +1864,6 @@ export type DatasetRequestDataType =
 export const DatasetRequestDataType = {
   Group: "Group",
   Temporal: "Temporal",
-  "Temporal-changes": "Temporal-changes",
   Simple: "Simple",
 } as const;
 
@@ -1891,7 +1889,6 @@ export type DatasetLocalizationRequestType =
 export const DatasetLocalizationRequestType = {
   Group: "Group",
   Temporal: "Temporal",
-  "Temporal-changes": "Temporal-changes",
   Simple: "Simple",
 } as const;
 
