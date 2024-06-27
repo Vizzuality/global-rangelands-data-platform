@@ -7,6 +7,7 @@ import { LayerProps } from "@/types/layers";
 
 export interface RasterLayerProps extends LayerProps {
   id: string;
+  beforeId: string;
   source: RasterSource;
   opacity: number;
   visibility: boolean;
@@ -15,14 +16,25 @@ export interface RasterLayerProps extends LayerProps {
 }
 
 class RasterLayer {
-  constructor({ id, source, visibility, opacity, tileProps, bitmapProps }: RasterLayerProps) {
+  constructor({
+    id,
+    source,
+    visibility,
+    opacity,
+    beforeId,
+    tileProps,
+    bitmapProps,
+  }: RasterLayerProps) {
     return new TileLayer<unknown>({
       ...tileProps,
       id,
+      // @ts-expect-error - `beforeId` is not a valid prop for TileLayer
+      beforeId,
       data: source.tiles,
       tileSize: source.tileSize ?? 256,
       minZoom: source.minzoom,
       maxZoom: source.maxzoom,
+      year: 2020,
       visible: visibility ?? true,
       opacity: opacity ?? 1,
       refinementStrategy: "never",
