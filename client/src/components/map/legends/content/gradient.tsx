@@ -9,7 +9,7 @@ const GradientLegend = ({ items }: LegendComponentProps) => {
   return (
     <div>
       <div
-        className="flex h-3 w-full rounded-full"
+        className="flex h-2 w-full rounded-full"
         style={{
           backgroundImage: `linear-gradient(to right, ${items.map((i) => i.color).join(",")})`,
         }}
