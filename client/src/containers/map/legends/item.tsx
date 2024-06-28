@@ -11,10 +11,12 @@ import RangelandLegend from "@/components/map/legends/content/rangeland";
 import { LegendComponent } from "@/components/map/types";
 import { getLayerSettings } from "@/lib/utils";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
+import LegendChoropleth from "@/components/map/legends/content/choropleth";
 
 const LEGEND_CONTENT = {
   Basic: BasicLegend,
   Gradient: GradientLegend,
+  Choropleth: LegendChoropleth,
   Rangeland: RangelandLegend,
 };
 
