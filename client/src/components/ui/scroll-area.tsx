@@ -17,7 +17,9 @@ const ScrollArea = React.forwardRef<
     <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
       {children}
     </ScrollAreaPrimitive.Viewport>
-    <ScrollBar />
+    <ScrollBar className="w-1.5">
+      <ScrollAreaPrimitive.Thumb className="bg-gray-300" />
+    </ScrollBar>
     <ScrollAreaPrimitive.Corner />
   </ScrollAreaPrimitive.Root>
 ));
@@ -43,4 +45,22 @@ const ScrollBar = React.forwardRef<
 ));
 ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName;
 
-export { ScrollArea, ScrollBar };
+type ScrollAreaWithThumbProps = React.PropsWithChildren & {
+  className?: string;
+};
+const ScrollAreaWithThumb = ({ children, className }: ScrollAreaWithThumbProps) => {
+  return (
+    <ScrollArea className={cn("relative", className)}>
+      <ScrollAreaPrimitive.ScrollAreaViewport className="h-full w-full">
+        {children}
+        <div className="absolute bottom-0 z-50 h-12 w-[calc(100%-8px)] bg-gradient-to-b from-background/10 via-background/70 to-background"></div>
+      </ScrollAreaPrimitive.ScrollAreaViewport>
+      <ScrollAreaPrimitive.ScrollAreaScrollbar className="w-1.5">
+        <ScrollAreaPrimitive.ScrollAreaThumb className="rounded-md bg-gray-300" />
+      </ScrollAreaPrimitive.ScrollAreaScrollbar>
+      <ScrollAreaPrimitive.ScrollAreaCorner />
+    </ScrollArea>
+  );
+};
+
+export { ScrollArea, ScrollBar, ScrollAreaWithThumb };

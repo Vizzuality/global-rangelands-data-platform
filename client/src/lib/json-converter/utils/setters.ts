@@ -1,3 +1,4 @@
+import { RANGELAND_SISTEM_COLOR } from "@/containers/datasets/constants";
 import { env } from "@/env.mjs";
 import { LegendConfig } from "@/types/layers";
 import Color from "color";
@@ -122,12 +123,15 @@ type SetRangelandsColorProps = {
   colors: Record<string, string | number[]>;
   property: string;
 };
-const setRangelandsColor = ({ colors, property }: SetRangelandsColorProps) => {
+export const setRangelandsColor = ({ colors, property }: SetRangelandsColorProps) => {
   return (f: Feature<Geometry>) => {
     const color = colors[f.properties?.[property]];
-    return Color(color || "#000000")
-      .rgb()
-      .array() as SetColorsReturn;
+    if (color) {
+      return Color(color || "#000000")
+        .rgb()
+        .array() as SetColorsReturn;
+    }
+    return Color(RANGELAND_SISTEM_COLOR).rgb().array() as SetColorsReturn;
   };
 };
 

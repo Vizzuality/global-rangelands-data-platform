@@ -1,15 +1,16 @@
+"use client";
 import { useGetBySlug } from "@/lib/localized-query";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { DatasetResponse } from "@/types/generated/strapi.schemas";
 import { useLocale } from "next-intl";
-import { createElement, useMemo } from "react";
+import { createElement, useMemo, useState } from "react";
 import LegendHeader from "@/components/map/legends/header";
-import LegendContent from "@/components/map/legends";
 import BasicLegend from "@/components/map/legends/content/basic";
 import GradientLegend from "@/components/map/legends/content/gradient";
 import RangelandLegend from "@/components/map/legends/content/rangeland";
 import { LegendComponent } from "@/components/map/types";
 import { getLayerSettings } from "@/lib/utils";
+import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 
 const LEGEND_CONTENT = {
   Basic: BasicLegend,
@@ -25,6 +26,7 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
   const locale = useLocale();
   const [layers] = useSyncLayers();
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
+  const [isOpen, setIsOpen] = useState(true);
 
   const { data: datasetData } = useGetBySlug<DatasetResponse>(`dataset/${dataset}`, {
     populate: "layers,layers.layer,layers.layer.legend,layers.layer.legend.items",
@@ -73,18 +75,20 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
   };
 
   return (
-    <div className="space-y-2 border-b border-b-gray-300 pb-4 last-of-type:border-b-0 last-of-type:pb-0">
-      <LegendHeader
-        visible={settings.visibility}
-        opacity={settings.opacity}
-        title={datasetData?.data?.attributes?.title}
-        // subtitle={datasetLayer?.name}
-        info={datasetLayer?.layer?.data?.attributes?.description}
-        setOpacity={(o) => setLayerSettings("opacity", o)}
-        setVisibility={(v) => setLayerSettings("visibility", v)}
-      />
-      <LegendContent>{LEGEND}</LegendContent>
-    </div>
+    <Collapsible open={isOpen} defaultOpen asChild>
+      <div className="group space-y-2 border-b border-b-gray-300 pb-4 last-of-type:border-b-0 last-of-type:pb-0">
+        <LegendHeader
+          visible={settings.visibility}
+          opacity={settings.opacity}
+          title={datasetData?.data?.attributes?.title}
+          handleChangeIsOpen={() => setIsOpen((prev) => !prev)}
+          info={datasetLayer?.layer?.data?.attributes?.description}
+          setOpacity={(o) => setLayerSettings("opacity", o)}
+          setVisibility={(v) => setLayerSettings("visibility", v)}
+        />
+        <CollapsibleContent>{LEGEND}</CollapsibleContent>
+      </div>
+    </Collapsible>
   );
 };
 
