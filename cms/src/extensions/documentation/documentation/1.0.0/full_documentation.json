@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-06-26T08:04:00.647Z"
+    "x-generation-date": "2024-06-28T08:34:37.413Z"
   },
   "servers": [
     {
@@ -449,13 +449,6 @@
                     "properties": {
                       "title": {
                         "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "Mapbox",
-                          "GEE"
-                        ]
                       },
                       "description": {
                         "type": "string"
@@ -1590,7 +1583,6 @@
       "LayerLocalizationRequest": {
         "required": [
           "title",
-          "type",
           "config",
           "legend",
           "locale"
@@ -1599,13 +1591,6 @@
         "properties": {
           "title": {
             "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Mapbox",
-              "GEE"
-            ]
           },
           "description": {
             "type": "string"
@@ -1633,7 +1618,6 @@
           "data": {
             "required": [
               "title",
-              "type",
               "config",
               "legend"
             ],
@@ -1641,13 +1625,6 @@
             "properties": {
               "title": {
                 "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "Mapbox",
-                  "GEE"
-                ]
               },
               "description": {
                 "type": "string"
@@ -1786,20 +1763,12 @@
         "type": "object",
         "required": [
           "title",
-          "type",
           "config",
           "legend"
         ],
         "properties": {
           "title": {
             "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Mapbox",
-              "GEE"
-            ]
           },
           "description": {
             "type": "string"

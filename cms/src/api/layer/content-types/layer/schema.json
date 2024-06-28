@@ -26,20 +26,6 @@
       "required": true,
       "unique": true
     },
-    "type": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "enumeration",
-      "enum": [
-        "Mapbox",
-        "GEE"
-      ],
-      "default": "GEE",
-      "required": true
-    },
     "description": {
       "pluginOptions": {
         "i18n": {

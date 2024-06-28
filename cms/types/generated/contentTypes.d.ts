@@ -548,14 +548,6 @@ export interface ApiLayerLayer extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    type: Attribute.Enumeration<['Mapbox', 'GEE']> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
-      Attribute.DefaultTo<'GEE'>;
     description: Attribute.Text &
       Attribute.SetPluginOptions<{
         i18n: {
