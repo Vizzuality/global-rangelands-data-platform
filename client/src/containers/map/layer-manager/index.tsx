@@ -54,7 +54,7 @@ const LayerManager = () => {
   }, [layers, layersSettings, setLayersSettings]);
 
   const LAYERS = layers.toSorted((a) => {
-    const bottomSlugs = ["rangeland-system", "rangeland-biomes", "rangeland-ecoregions"]
+    const bottomSlugs = ["rangeland-system", "rangeland-biomes", "rangeland-ecoregions"];
     return bottomSlugs.includes(a) ? 1 : -1;
   });
 
