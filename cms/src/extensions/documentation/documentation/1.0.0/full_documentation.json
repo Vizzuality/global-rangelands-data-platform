@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-06-28T09:37:22.360Z"
+    "x-generation-date": "2024-06-28T09:46:54.439Z"
   },
   "servers": [
     {
@@ -103,7 +103,6 @@
             "enum": [
               "Group",
               "Temporal",
-              "Temporal-changes",
               "Simple"
             ]
           },
@@ -155,7 +154,6 @@
                 "enum": [
                   "Group",
                   "Temporal",
-                  "Temporal-changes",
                   "Simple"
                 ]
               },
@@ -317,7 +315,6 @@
             "enum": [
               "Group",
               "Temporal",
-              "Temporal-changes",
               "Simple"
             ]
           },
