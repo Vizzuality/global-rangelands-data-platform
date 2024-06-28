@@ -41,7 +41,7 @@ const Legends = () => {
               <div className="my-6 space-y-4 px-6">
                 {datasets?.map((d) => <LegendItem key={d} dataset={d} />)}
               </div>
-              <div className="absolute bottom-0 z-50 h-8 w-[calc(100%-8px)] translate-y-2 bg-background blur-sm"></div>
+              <div className="absolute bottom-0 z-50 h-7 w-[calc(100%-8px)] translate-y-2 bg-background blur-sm"></div>
             </ScrollAreaViewport>
             <Scrollbar className="w-1.5">
               <ScrollAreaThumb className="rounded-md bg-gray-300" />
