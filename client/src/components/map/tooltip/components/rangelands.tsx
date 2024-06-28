@@ -77,7 +77,7 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-lg bg-background">
+    <div className="overflow-hidden rounded-lg bg-background drop-shadow-2xl">
       <div className="border-t-[12px]" style={{ borderColor: content.color }}></div>
       <div className="space-y-4 p-6 pt-3">
         <div className="space-y-2">

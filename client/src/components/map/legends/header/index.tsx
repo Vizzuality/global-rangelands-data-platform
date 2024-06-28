@@ -1,4 +1,6 @@
+import { ChevronDown } from "lucide-react";
 import { LayerInfo, LayerOpacity, LayerVisibility } from "./buttons";
+import { Button } from "@/components/ui/button";
 
 type LegendHeaderProps = {
   title?: string;
@@ -8,6 +10,7 @@ type LegendHeaderProps = {
   setVisibility: (v: boolean) => void;
   visible: boolean;
   info?: string;
+  handleChangeIsOpen: () => void;
 };
 
 const LegendHeader = ({
@@ -18,6 +21,7 @@ const LegendHeader = ({
   info,
   opacity,
   visible,
+  handleChangeIsOpen,
 }: LegendHeaderProps) => {
   return (
     <div>
@@ -26,6 +30,9 @@ const LegendHeader = ({
         <LayerOpacity onChangeOpacity={setOpacity} opacity={opacity} />
         {!!info && <LayerInfo info={info} title={title} />}
         <LayerVisibility onChangeVisibility={setVisibility} visible={visible} />
+        <Button onClick={handleChangeIsOpen} variant="link" className="h-fit px-0 py-0">
+          <ChevronDown className="h-5 w-5 shrink-0 group-data-[state=open]:rotate-180" />
+        </Button>
       </div>
       {subtitle && <span className="text-xs">{subtitle}</span>}
     </div>
