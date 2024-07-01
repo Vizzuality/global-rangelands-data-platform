@@ -1,5 +1,6 @@
 import { ContinuousDataset } from './earth-engine-dataset';
 import ee from '@google/earthengine';
+import {EarthEngineUtils} from "../earth-engine-utils";
 
 
 export const ModisNetPrimaryProductionChange: ContinuousDataset = {
@@ -28,7 +29,7 @@ export const ModisNetPrimaryProductionChange: ContinuousDataset = {
     return ee.ImageCollection(this.assetPath.default);
   },
 
-  getMapUrl(z, x, y, startYear, endYear) {
+  async getMapUrl(z, x, y, startYear, endYear) {
 
     const image_start = this.getEEAsset()
       .filter( ee.Filter.date( `${String(startYear)}-01-01`, `${String(startYear)}-12-31` ) )
@@ -40,6 +41,8 @@ export const ModisNetPrimaryProductionChange: ContinuousDataset = {
 
     const image = image_end.subtract(image_start)
 
-    return ee.data.getTileUrl( image.getMapId(this.vizParams), x, y, z );
+    const mapId = await EarthEngineUtils.getMapId(image, this.vizParams);
+
+    return ee.data.getTileUrl( mapId, x, y, z );
   },
 };
