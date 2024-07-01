@@ -26,9 +26,9 @@ module "staging" {
   cloud_functions_path_prefix = "functions"
   eet_function_path_prefix = "eet"
   eet_function_available_memory = "512M"
-  eet_function_min_instance_count = 0
-  eet_function_max_instance_count = 2
-  eet_function_max_instance_request_concurrency = 160
+  eet_function_min_instance_count = 2
+  eet_function_max_instance_count = 6
+  eet_function_max_instance_request_concurrency = 40
   uptime_alert_email  = var.uptime_alert_email
   environment         = "staging"
   database_name       = "strapi"

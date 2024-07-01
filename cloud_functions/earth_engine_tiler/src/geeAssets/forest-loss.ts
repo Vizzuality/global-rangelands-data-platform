@@ -1,5 +1,6 @@
 import { ContinuousDataset } from './earth-engine-dataset';
 import ee from '@google/earthengine';
+import {EarthEngineUtils} from "../earth-engine-utils";
 
 
 export const ForestLoss: ContinuousDataset = {
@@ -23,8 +24,11 @@ export const ForestLoss: ContinuousDataset = {
     return ee.Image(this.assetPath.default);
   },
 
-  getMapUrl(z, x, y, startYear, endYear) {
+  async getMapUrl(z, x, y, startYear, endYear) {
     const image = this.getEEAsset()
-    return ee.data.getTileUrl( image.getMapId(this.vizParams), x, y, z );
+
+    const mapId = await EarthEngineUtils.getMapId(image);
+
+    return ee.data.getTileUrl( mapId, x, y, z );
   },
 };

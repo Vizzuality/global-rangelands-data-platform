@@ -1,5 +1,6 @@
 import { CategoricalDataset } from './earth-engine-dataset';
 import ee from '@google/earthengine';
+import {EarthEngineUtils} from "../earth-engine-utils";
 
 export const LivestockProductionSystems: CategoricalDataset = {
   assetPath: {
@@ -8,7 +9,7 @@ export const LivestockProductionSystems: CategoricalDataset = {
 
   bandName: 'b1',
 
-  sldStyles: '<RasterSymbolizer>' + 
+  sldStyles: '<RasterSymbolizer>' +
   '<ColorMap type="values" extended="false">' +
     '<ColorMapEntry color="#F9FFE5" quantity="1" />' + // LG Rangelands Hyperarid
     '<ColorMapEntry color="#FDFFBB" quantity="2" />' + // LG Rangelands Arid
@@ -35,8 +36,11 @@ export const LivestockProductionSystems: CategoricalDataset = {
     return ee.Image(this.assetPath.default);
   },
 
-  getMapUrl(z, x, y) {
+  async getMapUrl(z, x, y) {
     const image = this.getEEAsset().select(this.bandName).sldStyle(this.sldStyles);
-    return ee.data.getTileUrl( image.getMapId(), x, y, z );
+
+    const mapId = await EarthEngineUtils.getMapId(image);
+
+    return ee.data.getTileUrl( mapId, x, y, z );
   },
 };

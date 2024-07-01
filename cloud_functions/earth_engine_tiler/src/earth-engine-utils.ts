@@ -29,4 +29,16 @@ export class EarthEngineUtils {
       });
     });
   }
+
+  static getMapId(image: ee.Image, vizzParams?: any): Promise<any>{
+    return new Promise((resolve, reject) => {
+      image.getMapId(vizzParams, (mapId, errorMessage) => {
+        if(errorMessage){
+          reject(new Error(errorMessage));
+        } else {
+          resolve(mapId)
+        }
+      })
+    });
+  }
 }
