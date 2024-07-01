@@ -26,14 +26,35 @@ module "staging" {
   cloud_functions_path_prefix = "functions"
   eet_function_path_prefix = "eet"
   eet_function_available_memory = "512M"
-  eet_function_min_instance_count = 0
-  eet_function_max_instance_count = 2
-  eet_function_max_instance_request_concurrency = 160
+  eet_function_min_instance_count = 2
+  eet_function_max_instance_count = 6
+  eet_function_max_instance_request_concurrency = 40
   uptime_alert_email  = var.uptime_alert_email
   environment         = "staging"
   database_name       = "strapi"
   database_user       = "strapi"
 }
+
+resource "google_storage_bucket" "landing_page_bucket" {
+  name = "rdp-landing-bucket"
+  project = var.gcp_project_id
+  location = "US"
+  storage_class = "STANDARD"
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+}
+
+// https://stackoverflow.com/questions/75373877/how-to-create-public-google-bucket-with-uniform-bucket-level-access-enabled
+// https://cloud.google.com/storage/docs/uniform-bucket-level-access
+resource "google_storage_bucket_iam_member" "landing_bucket_permissions"{
+  bucket = google_storage_bucket.landing_page_bucket.name
+  member = "allUsers"
+  role = "roles/storage.objectViewer"
+}
+
 /*
 module "production" {
   source              = "./modules/env"

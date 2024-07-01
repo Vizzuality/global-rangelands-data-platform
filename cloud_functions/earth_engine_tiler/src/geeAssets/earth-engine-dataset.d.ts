@@ -8,7 +8,7 @@ export interface EarthEngineDataset {
 
   // Function that returns ee.Image instance with asset
   getEEAsset: (key?: string) => any;
-  getMapUrl: (z: number, x: number, y: number, startYear?: number, endYear?: number) => any;
+  getMapUrl: (z: number, x: number, y: number, startYear?: number, endYear?: number) => Promise<any>;
 }
 
 export interface ContinuousDataset extends EarthEngineDataset {

@@ -1,5 +1,6 @@
 import { CategoricalDataset } from './earth-engine-dataset';
 import ee from '@google/earthengine';
+import {EarthEngineUtils} from "../earth-engine-utils";
 
 export const AnthropogenicBiomes: CategoricalDataset = {
   assetPath: {
@@ -40,8 +41,11 @@ export const AnthropogenicBiomes: CategoricalDataset = {
     return ee.Image(this.assetPath.default);
   },
 
-  getMapUrl(z, x, y) {
+  async getMapUrl(z, x, y) {
     const image = this.getEEAsset().select(this.bandName).sldStyle(this.sldStyles);
-    return ee.data.getTileUrl( image.getMapId(), x, y, z );
+
+    const mapId = await EarthEngineUtils.getMapId(image);
+
+    return ee.data.getTileUrl( mapId, x, y, z );
   },
 };
