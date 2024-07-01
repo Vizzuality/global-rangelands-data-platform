@@ -1,7 +1,6 @@
 "use client";
 
 import { Link, usePathname } from "@/navigation";
-import RangelandLogoIcon from "@/svgs/rangeland-logo.svg";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -10,6 +9,7 @@ import {
   NavigationMenuList,
 } from "@radix-ui/react-navigation-menu";
 import { useTranslations } from "@/i18n";
+import HomeLink from "@/components/ui/home-link";
 
 const HeaderNavigation = () => {
   const pathname = usePathname();
@@ -22,16 +22,15 @@ const HeaderNavigation = () => {
     },
   ];
 
+  const isMap = pathname === "/map";
+
   return (
     <div className="flex-1">
       <NavigationMenu className="w-full justify-between">
         <NavigationMenuList className="flex w-full flex-1 items-center justify-between">
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link href="/" className="flex gap-4">
-                <RangelandLogoIcon className="fill-global" />
-                <h1 className="w-32 text-sm text-white">{t("Rangelands Data Platform")}</h1>
-              </Link>
+              <HomeLink className={isMap ? "text-white" : "text-global"} />
             </NavigationMenuLink>
           </NavigationMenuItem>
           {NAVIGATION_ITEMS.map((item) => {
@@ -40,8 +39,9 @@ const HeaderNavigation = () => {
               <NavigationMenuItem
                 key={item.href}
                 className={cn(
-                  "flex h-[var(--header-height)] items-center border-t-4 border-t-transparent pb-1 text-sm text-white transition-colors duration-300",
+                  "flex h-[var(--header-height)] items-center border-t-4 border-t-transparent pb-1 text-sm transition-colors duration-300",
                   isActive && "border-global text-global",
+                  isMap ? "text-white" : "text-foreground",
                 )}
               >
                 <NavigationMenuLink active={isActive} asChild>

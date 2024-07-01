@@ -9,6 +9,12 @@ const config: Config = {
         foreground: "rgb(var(--foreground-rgb) / <alpha-value>)",
         background: "rgb(var(--background-rgb) / <alpha-value>)",
       },
+      lineHeight: {
+        relaxed: "185%",
+      },
+    },
+    container: {
+      padding: '2rem',
     },
   },
 };
