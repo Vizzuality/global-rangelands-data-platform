@@ -1,12 +1,11 @@
-import { useTranslations } from "@/i18n";
+import Footer from "@/containers/footer";
+import HomeComponent from "@/containers/home";
 
 export default function Home() {
-  const t = useTranslations();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>{t("Rangelands Data Platform")}</div>
-      <div>{t("Exploring Rangelands")}</div>
-      <div>{t("Test string")}</div>
+    <main className="h-auto min-h-screen w-[100vsw] overflow-x-hidden">
+      <HomeComponent />
+      <Footer />
     </main>
   );
 }

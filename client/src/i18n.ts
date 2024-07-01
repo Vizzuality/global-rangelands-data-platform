@@ -8,12 +8,12 @@ import { getTranslations as getNextIntlTranslations } from "next-intl/server";
 
 export const useTranslations = () => {
   const t = useNextIntlTranslations();
-  return (str: string) => t(str.replaceAll(".", "{{dot}}"));
+  return (str: string) => t(str.replaceAll("{{dot}}", "."));
 };
 
 export const getTranslations = async (opts?: { locale: string }) => {
   const t = await getNextIntlTranslations(opts);
-  return (str: string) => t(str.replaceAll(".", "{{dot}}"));
+  return (str: string) => t(str.replaceAll("{{dot}}", "."));
 };
 
 export function onError(error: IntlError) {
@@ -34,7 +34,7 @@ export default getRequestConfig(async ({ locale }) => {
   await tx.fetchTranslations(locale, { refresh: true });
   const translations = Object.fromEntries(
     Object.entries(tx.cache.getTranslations(locale)).map(([key, value]) => [
-      key.replaceAll(".", "{{dot}}"),
+      key.replaceAll("{{dot}}", "."),
       value,
     ]),
   );

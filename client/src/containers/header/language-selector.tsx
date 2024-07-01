@@ -35,7 +35,7 @@ const LanguageSelector = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="group flex h-fit w-fit gap-2 rounded-full border border-white bg-transparent px-5 py-3.5 text-sm text-white">
+      <DropdownMenuTrigger className="group flex h-fit w-fit gap-2 rounded-full border border-white bg-foreground px-5 py-3.5 text-sm text-white">
         <LanguagesIcon className="h-5 w-5" />
         <span>{t("Select Language")}:</span>
         <span>{localeLabels[locale]}</span>
