@@ -9,6 +9,7 @@ export interface RangelandsLayerComponentProps {
   opacity?: number;
   visibility?: boolean;
   colorProperty: string;
+  lineWidth?: number;
 }
 
 const RangelandsLayerComponent = ({
@@ -17,6 +18,7 @@ const RangelandsLayerComponent = ({
   opacity,
   visibility,
   colorProperty,
+  lineWidth = 1,
   ...props
 }: RangelandsLayerComponentProps) => {
   const dataWithMapboxToken = data + `?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
@@ -30,19 +32,19 @@ const RangelandsLayerComponent = ({
         data: dataWithMapboxToken,
         opacity: opacity ?? 1,
         visible: visibility ?? true,
-        ...props,
         pickable: true,
         onHover: (info) => {
           setHoveredProperty(info?.object?.properties?.[colorProperty]);
         },
         getLineWidth: (f) => {
-          return f?.properties?.[colorProperty] === hoveredProperty ? 2 : 0;
+          return f?.properties?.[colorProperty] === hoveredProperty ? lineWidth : 0;
         },
         lineWidthUnits: "pixels",
         getLineColor: [255, 255, 255],
         updateTriggers: {
           getLineWidth: hoveredProperty,
         },
+        ...props,
       }),
     [id, dataWithMapboxToken, opacity, visibility, props],
   );
