@@ -1,5 +1,4 @@
-import createNextIntlPlugin from 'next-intl/plugin'
-
+import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin();
 
@@ -10,6 +9,11 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "api.mapbox.com",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/rdp-landing-bucket/**",
       },
     ],
   },

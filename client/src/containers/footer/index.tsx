@@ -34,32 +34,37 @@ const Footer = () => {
   ];
 
   return (
-    <div className="bg-foreground">
-      <div className="container mx-auto flex text-white">
-        <div className="flex flex-1 flex-col justify-between gap-10 py-10 pr-40">
+    <div className=" relative bg-foreground">
+      <div className="container z-50 mx-auto">
+        <div className="flex w-[55%] flex-col justify-between gap-10 py-10 pr-40">
           <HomeLink className="text-white" />
-          <div>
-            <p className="text-xs">{t("Designed and developed by")}:</p>
-            <div className="flex">
+          <div className="space-y-3">
+            <p className="text-xs text-white">{t("Designed and developed by")}:</p>
+            <div className="flex items-center gap-4">
               <Image
                 src={GMVLogo}
                 alt={t("gmv innovating solutions")}
-                className="h-16 w-20 object-contain"
+                className="h-6 w-16 object-contain"
               />
-              <Image src={VizzLogo} alt={t("Vizzuality")} className="h-16 w-24 object-contain" />
+              <Image src={VizzLogo} alt={t("Vizzuality")} className="h-6 w-24 object-contain" />
             </div>
           </div>
         </div>
-        <div className="flex flex-1 flex-col justify-center gap-2 border-l border-[#4D4C71] px-20 py-10 text-sm leading-loose text-white">
-          {LINKS.map((link) => (
-            <Link
-              href={link.href}
-              key={link.href}
-              className="underline-offset-2 transition-all duration-300 hover:underline"
-            >
-              {link.title}
-            </Link>
-          ))}
+      </div>
+
+      <div className="absolute top-0 h-full w-full">
+        <div className="mx-auto flex h-full justify-end">
+          <div className="flex w-[45vw] flex-col justify-center gap-2  border-l border-[#4D4C71] px-20 py-10 text-sm leading-loose text-white">
+            {LINKS.map((link) => (
+              <Link
+                href={link.href}
+                key={link.href}
+                className="underline-offset-2 transition-all duration-300 hover:underline"
+              >
+                {link.title}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>
