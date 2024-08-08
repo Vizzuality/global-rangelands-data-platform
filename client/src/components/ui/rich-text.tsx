@@ -16,7 +16,7 @@ const RichText = ({ children, className }: RichTextProps) => {
     <Markdown
       components={{
         a: (props) => (
-          <a {...omit(props, "node")} target="_blank" className="underline break-all">
+          <a {...omit(props, "node")} target="_blank" className="break-all underline">
             {props.children}
           </a>
         ),
