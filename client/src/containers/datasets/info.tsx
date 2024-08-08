@@ -41,7 +41,7 @@ const DatasetInfo = ({ citations, info, title, ...props }: DatsetInfoProps) => {
                         href={citation?.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline"
+                        className="underline break-all"
                       >
                         {citation?.url}
                       </a>
