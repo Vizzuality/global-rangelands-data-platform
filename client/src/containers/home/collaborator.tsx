@@ -18,11 +18,11 @@ const Collaborators = () => {
       <p className="text-center uppercase">{t("collaborators")}:</p>
       <div className="flex flex-wrap content-center items-center justify-between gap-6">
         {COLLABORATORS.map(({ name, image }) => (
-          <div key={name} className="p-5">
+          <div key={name} className="flex-1 p-5">
             <Image
               src={image}
               alt={name}
-              className="h-full max-h-20 w-full max-w-40 object-contain"
+              className="mx-auto h-full max-h-20 w-full max-w-40 object-contain"
             />
           </div>
         ))}
