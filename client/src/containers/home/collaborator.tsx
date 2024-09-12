@@ -19,11 +19,7 @@ const Collaborators = () => {
       <div className="flex flex-wrap content-center items-center justify-between gap-6">
         {COLLABORATORS.map(({ name, image }) => (
           <div key={name} className="flex-1 p-5">
-            <Image
-              src={image}
-              alt={name}
-              className="mx-auto h-full max-h-20 w-full max-w-40 object-contain"
-            />
+            <Image src={image} alt={name} className="mx-auto h-20 w-full max-w-44 object-contain" />
           </div>
         ))}
       </div>
