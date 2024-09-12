@@ -1,21 +1,13 @@
 import { useTranslations } from "@/i18n";
 import Image from "next/image";
 
-import ILC from "@/assets/images/collaborators/ilc.png";
-import Rangelands from "@/assets/images/collaborators/rangelands.png";
 import ILRI from "@/assets/images/collaborators/ilri.png";
-import UNEP from "@/assets/images/collaborators/unep.png";
-import FAO from "@/assets/images/collaborators/fao.png";
-import WWF from "@/assets/images/collaborators/wwf.png";
+import GEF from "@/assets/images/collaborators/gef.png";
 import IUCN from "@/assets/images/collaborators/iucn.png";
 
 const COLLABORATORS = [
-  { name: "ilc", image: ILC },
-  { name: "rangelands", image: Rangelands },
+  { name: "gef", image: GEF },
   { name: "ilri", image: ILRI },
-  { name: "unep", image: UNEP },
-  { name: "fao", image: FAO },
-  { name: "wwf", image: WWF },
   { name: "iucn", image: IUCN },
 ];
 
