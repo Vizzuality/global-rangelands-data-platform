@@ -3,7 +3,7 @@ import Legends from "../legends";
 
 const MapControlsContainer = () => {
   return (
-    <div className="absolute bottom-5 right-5 space-y-1.5">
+    <div className="absolute bottom-6 right-5 space-y-1.5">
       <MapZoomControl />
       <Legends />
     </div>

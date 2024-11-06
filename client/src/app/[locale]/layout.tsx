@@ -1,5 +1,5 @@
-import "./globals.css";
 import "mapbox-gl/dist/mapbox-gl.css";
+import "./globals.css";
 
 import localFont from "next/font/local";
 

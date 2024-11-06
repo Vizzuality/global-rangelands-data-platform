@@ -21,9 +21,9 @@ const Map = () => {
         }}
         minZoom={2}
         maxZoom={14}
-        logoPosition="top-left"
+        logoPosition="bottom-left"
       >
-        <AttributionControl style={{ fontSize: "0.75rem" }} compact={true} position="top-left" />
+        <AttributionControl style={{ fontSize: "10px" }} position="bottom-right" />
         <LayerManager />
         <Controls />
 
