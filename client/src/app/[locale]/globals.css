@@ -21,9 +21,7 @@ body {
   }
 }
 
-.mapboxgl-ctrl-top-left {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  width: 100svh;
+.mapboxgl-ctrl-bottom-left .mapboxgl-ctrl {
+  transform: scale(0.9);
+  margin: 0 0px 3px 0px;
 }
