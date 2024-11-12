@@ -154,7 +154,9 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <ColorSwatchIcon />
-              {selectedLayer?.name || t("Types")}
+              <span className="line-clamp-1 max-w-[250px]">
+                {selectedLayer?.name || t("Types")}
+              </span>
             </div>
             {isRangelandDataset && selectedLayer?.layer?.data?.attributes?.slug && (
               <CircleLegend
@@ -182,7 +184,7 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
         </SelectContent>
       </Select>
 
-      {!!rangelandsData?.data?.length && (
+      {!!isRangelandDataset && !!rangelandsData?.data?.length && (
         <MultiSelect
           defaultValue={rangelandRegion || []}
           options={filterOptions}
