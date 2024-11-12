@@ -7,6 +7,12 @@ resource "google_project_service" "iam_service" {
   service = "iam.googleapis.com"
 }
 
+// Apparently needed to deploy cloud functions from the GH actions
+resource "google_project_service" "cloud_resource_manager_service" {
+  project = var.gcp_project_id
+  service = "cloudresourcemanager.googleapis.com"
+}
+
 module "network" {
   source     = "../network"
   project_id = var.gcp_project_id
@@ -127,6 +133,7 @@ module "bastion" {
   name            = var.project_name
   project_id      = var.gcp_project_id
   subnetwork_name = module.network.subnetwork_name
+  ssh_keys        = var.ssh_keys
 }
 
 module "client_uptime_check" {

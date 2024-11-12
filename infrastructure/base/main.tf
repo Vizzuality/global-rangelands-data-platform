@@ -33,6 +33,7 @@ module "staging" {
   environment         = "staging"
   database_name       = "strapi"
   database_user       = "strapi"
+  ssh_keys            = var.ssh_keys
 }
 
 resource "google_storage_bucket" "landing_page_bucket" {

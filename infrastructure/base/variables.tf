@@ -54,3 +54,9 @@ variable "production_subdomain" {
   type = string
   description = "Subdomain for the production environment"
 }
+
+variable "ssh_keys" {
+  type        = list(string)
+  description = "List of SSH keys to add to the bastion host"
+  default     = []
+}
