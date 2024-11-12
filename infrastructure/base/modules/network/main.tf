@@ -57,6 +57,19 @@ resource "google_compute_firewall" "web_ingress" {
   }
 }
 
+resource "google_compute_firewall" "ssh_ingress" {
+  name    = "${var.name}-allow-ssh-ingress"
+  network = google_compute_network.network.name
+
+  direction = "INGRESS"
+
+  source_ranges = ["0.0.0.0/0"]
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+}
+
 resource "google_compute_firewall" "ssh_iap_ingress" {
   name    = "${var.name}-ssh-iap-ingress"
   network = google_compute_network.network.name

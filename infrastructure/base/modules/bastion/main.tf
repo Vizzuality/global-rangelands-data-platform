@@ -17,20 +17,24 @@ resource "google_compute_instance" "bastion" {
 
   network_interface {
     subnetwork = var.subnetwork_name
+    access_config {}
   }
 
   service_account {
     email  = data.google_compute_default_service_account.default.email
-    scopes = ["sql-admin"]
+    scopes = ["cloud-platform"]
   }
 
   allow_stopping_for_update = true
+
+  metadata = {
+    ssh-keys = join( "\n", [for ssh-key in var.ssh_keys : "ubuntu:${ssh-key}"])
+  }
 
   lifecycle {
     ignore_changes = [
       boot_disk,
       labels,
-      metadata # SSH keys added via gcloud compute ssh
     ]
   }
 }

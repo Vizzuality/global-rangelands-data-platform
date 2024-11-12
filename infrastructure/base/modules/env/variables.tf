@@ -153,3 +153,9 @@ variable "eet_function_max_instance_request_concurrency" {
   default     = 80
   description = "Max instance request concurrency for the Earth Engine Tiler function"
 }
+
+variable "ssh_keys" {
+  type        = list(string)
+  description = "List of SSH keys to add to the bastion host"
+  default     = []
+}
