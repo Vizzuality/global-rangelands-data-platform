@@ -7,10 +7,13 @@ export enum Tilesets {
   anthropogenic_biomes = "anthropogenic_biomes",
   livestock_production_systems = "livestock_production_systems",
   forest_loss = "forest_loss",
+  gridded_livestock_buffalo = "gridded_livestock_buffalo",
   gridded_livestock_cattle = "gridded_livestock_cattle",
+  gridded_livestock_chicken = "gridded_livestock_chicken",
+  gridded_livestock_duck = "gridded_livestock_duck",
   gridded_livestock_goat = "gridded_livestock_goat",
   gridded_livestock_horse = "gridded_livestock_horse",
-  gridded_livestock_buffalo = "gridded_livestock_buffalo",
+  gridded_livestock_pig = "gridded_livestock_pig",
   gridded_livestock_sheep = "gridded_livestock_sheep"
 }
 
