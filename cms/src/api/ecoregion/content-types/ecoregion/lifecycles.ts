@@ -2,20 +2,17 @@ import slugify from "slugify";
 
 export default {
   async beforeCreate(event) {
-    const { title, locale } = event.params.data;
+    const { title } = event.params.data;
 
-    if (title && locale === 'en') {
+    if (title) {
       event.params.data.slug = slugify(title, { lower: true, strict: true, trim: true });
     }
   },
 
   async beforeUpdate(event) {
     const { title } = event.params.data;
-    const existingEntity: any = await strapi.entityService.findOne('api::ecoregion.ecoregion', event.params.where.id, {
-      fields: ['locale']
-    });
 
-    if (title && existingEntity.locale && existingEntity.locale === 'en') {
+    if (title) {
       event.params.data.slug = slugify(title, { lower: true, strict: true, trim: true });
     }
   }

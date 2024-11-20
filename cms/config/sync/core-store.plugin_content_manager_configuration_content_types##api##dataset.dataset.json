@@ -113,20 +113,20 @@
         },
         "list": {
           "label": "description",
-          "searchable": true,
-          "sortable": true
+          "searchable": false,
+          "sortable": false
         }
       },
-      "info": {
+      "translations": {
         "edit": {
-          "label": "info",
+          "label": "translations",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "info",
+          "label": "translations",
           "searchable": false,
           "sortable": false
         }
@@ -191,6 +191,12 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "title",
+        "type",
+        "layers"
+      ],
       "edit": [
         [
           {
@@ -236,16 +242,10 @@
         ],
         [
           {
-            "name": "info",
+            "name": "translations",
             "size": 12
           }
         ]
-      ],
-      "list": [
-        "id",
-        "title",
-        "type",
-        "layers"
       ]
     },
     "uid": "api::dataset.dataset"

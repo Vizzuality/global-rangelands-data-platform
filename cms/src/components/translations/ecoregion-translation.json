@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_translations_ecoregion_translations",
+  "info": {
+    "displayName": "Ecoregion Translation",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "locale": {
+      "type": "enumeration",
+      "enum": [
+        "es",
+        "fr"
+      ],
+      "required": true
+    }
+  }
+}

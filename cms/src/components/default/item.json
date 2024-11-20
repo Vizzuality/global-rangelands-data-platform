@@ -13,6 +13,12 @@
       "type": "string",
       "required": true,
       "default": "#000000"
+    },
+    "name_es": {
+      "type": "string"
+    },
+    "name_fr": {
+      "type": "string"
     }
   }
 }

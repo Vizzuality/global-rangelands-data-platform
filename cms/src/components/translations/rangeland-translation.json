@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_translations_rangeland_translations",
+  "info": {
+    "displayName": "Rangeland Translation",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "locale": {
+      "type": "enumeration",
+      "enum": [
+        "es",
+        "fr"
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_translations_layer_translations",
+  "info": {
+    "displayName": "Layer Translation",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "locale": {
+      "type": "enumeration",
+      "enum": [
+        "es",
+        "fr"
+      ]
+    }
+  }
+}
