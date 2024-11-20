@@ -8,6 +8,7 @@ import {ModisNetPrimaryProductionChange} from './geeAssets/modis-net-primary-pro
 import {AnthropogenicBiomes} from './geeAssets/anthropogenic-biomes';
 import {LivestockProductionSystems} from './geeAssets/livestock-production-systems';
 import {ForestLoss} from './geeAssets/forest-loss';
+import {GriddedLivestockTotal} from './geeAssets/gridded-livestock-total'; 
 import {GriddedLivestockBuffalo} from './geeAssets/gridded-livestock-buffalo'; 
 import {GriddedLivestockCattle} from './geeAssets/gridded-livestock-cattle';
 import {GriddedLivestockChicken} from './geeAssets/gridded-livestock-chicken'; 
@@ -29,6 +30,7 @@ const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.anthropogenic_biomes]: AnthropogenicBiomes,
   [Tilesets.livestock_production_systems]: LivestockProductionSystems,
   [Tilesets.forest_loss]: ForestLoss,
+  [Tilesets.gridded_livestock_total]: GriddedLivestockTotal,
   [Tilesets.gridded_livestock_buffalo]: GriddedLivestockBuffalo,
   [Tilesets.gridded_livestock_cattle]: GriddedLivestockCattle,
   [Tilesets.gridded_livestock_chicken]: GriddedLivestockChicken,
