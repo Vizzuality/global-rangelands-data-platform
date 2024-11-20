@@ -8,10 +8,13 @@ import {ModisNetPrimaryProductionChange} from './geeAssets/modis-net-primary-pro
 import {AnthropogenicBiomes} from './geeAssets/anthropogenic-biomes';
 import {LivestockProductionSystems} from './geeAssets/livestock-production-systems';
 import {ForestLoss} from './geeAssets/forest-loss';
-import {GriddedLivestockCattle} from './geeAssets/gridded-livestock-cattle';
-import {GriddedLivestockGoat} from './geeAssets/gridded-livestock-goat';
-import {GriddedLivestockHorse} from './geeAssets/gridded-livestock-horse'; 
 import {GriddedLivestockBuffalo} from './geeAssets/gridded-livestock-buffalo'; 
+import {GriddedLivestockCattle} from './geeAssets/gridded-livestock-cattle';
+import {GriddedLivestockChicken} from './geeAssets/gridded-livestock-chicken'; 
+import {GriddedLivestockDuck} from './geeAssets/gridded-livestock-duck'; 
+import {GriddedLivestockGoat} from './geeAssets/gridded-livestock-goat';
+import {GriddedLivestockHorse} from './geeAssets/gridded-livestock-horse';
+import {GriddedLivestockPig} from './geeAssets/gridded-livestock-pig';  
 import {GriddedLivestockSheep} from './geeAssets/gridded-livestock-sheep'; 
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
@@ -26,10 +29,13 @@ const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.anthropogenic_biomes]: AnthropogenicBiomes,
   [Tilesets.livestock_production_systems]: LivestockProductionSystems,
   [Tilesets.forest_loss]: ForestLoss,
+  [Tilesets.gridded_livestock_buffalo]: GriddedLivestockBuffalo,
   [Tilesets.gridded_livestock_cattle]: GriddedLivestockCattle,
+  [Tilesets.gridded_livestock_chicken]: GriddedLivestockChicken,
+  [Tilesets.gridded_livestock_duck]: GriddedLivestockDuck,
   [Tilesets.gridded_livestock_goat]: GriddedLivestockGoat,
   [Tilesets.gridded_livestock_horse]: GriddedLivestockHorse,
-  [Tilesets.gridded_livestock_buffalo]: GriddedLivestockBuffalo,
+  [Tilesets.gridded_livestock_pig]: GriddedLivestockPig,
   [Tilesets.gridded_livestock_sheep]: GriddedLivestockSheep,
 }
 
