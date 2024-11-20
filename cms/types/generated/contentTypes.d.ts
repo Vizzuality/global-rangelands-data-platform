@@ -373,27 +373,10 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
   options: {
     draftAndPublish: true;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
     type: Attribute.Enumeration<['Group', 'Temporal', 'Simple']> &
       Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }> &
       Attribute.DefaultTo<'Group'>;
     layers: Attribute.Component<'default.layer', true> &
       Attribute.Required &
@@ -402,30 +385,20 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    citations: Attribute.Component<'default.citations', true> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    sources: Attribute.Component<'default.source'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    description: Attribute.RichText &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    citations: Attribute.Component<'default.citations', true>;
+    sources: Attribute.Component<'default.source'>;
+    slug: Attribute.String;
+    description: Attribute.RichText;
+    translations: Attribute.Component<
+      'translations.dataset-translation',
+      true
+    > &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -441,12 +414,6 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::dataset.dataset',
-      'oneToMany',
-      'api::dataset.dataset'
-    >;
-    locale: Attribute.String;
   };
 }
 
@@ -461,42 +428,26 @@ export interface ApiEcoregionEcoregion extends Schema.CollectionType {
   options: {
     draftAndPublish: true;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    code: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    title: Attribute.String & Attribute.Required;
+    slug: Attribute.String;
+    code: Attribute.String;
     rangeland: Attribute.Relation<
       'api::ecoregion.ecoregion',
       'manyToOne',
       'api::rangeland.rangeland'
     >;
-    color: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
+    color: Attribute.String;
+    translations: Attribute.Component<
+      'translations.ecoregion-translation',
+      true
+    > &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -512,12 +463,6 @@ export interface ApiEcoregionEcoregion extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::ecoregion.ecoregion',
-      'oneToMany',
-      'api::ecoregion.ecoregion'
-    >;
-    locale: Attribute.String;
   };
 }
 
@@ -532,58 +477,21 @@ export interface ApiLayerLayer extends Schema.CollectionType {
   options: {
     draftAndPublish: true;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    description: Attribute.Text &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    config: Attribute.JSON &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    params_config: Attribute.JSON &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    legend: Attribute.Component<'default.legend'> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    interaction_config: Attribute.JSON &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    description: Attribute.Text;
+    config: Attribute.JSON & Attribute.Required;
+    params_config: Attribute.JSON;
+    legend: Attribute.Component<'default.legend'> & Attribute.Required;
+    interaction_config: Attribute.JSON;
+    slug: Attribute.String;
+    translations: Attribute.Component<'translations.layer-translation', true> &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -599,12 +507,6 @@ export interface ApiLayerLayer extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::layer.layer',
-      'oneToMany',
-      'api::layer.layer'
-    >;
-    locale: Attribute.String;
   };
 }
 
@@ -619,42 +521,26 @@ export interface ApiRangelandRangeland extends Schema.CollectionType {
   options: {
     draftAndPublish: true;
   };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
   attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    slug: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    code: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    color: Attribute.String &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
+    title: Attribute.String & Attribute.Required;
+    slug: Attribute.String;
+    code: Attribute.String;
+    color: Attribute.String;
     ecoregions: Attribute.Relation<
       'api::rangeland.rangeland',
       'oneToMany',
       'api::ecoregion.ecoregion'
     >;
+    translations: Attribute.Component<
+      'translations.rangeland-translation',
+      true
+    > &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -670,12 +556,6 @@ export interface ApiRangelandRangeland extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::rangeland.rangeland',
-      'oneToMany',
-      'api::rangeland.rangeland'
-    >;
-    locale: Attribute.String;
   };
 }
 

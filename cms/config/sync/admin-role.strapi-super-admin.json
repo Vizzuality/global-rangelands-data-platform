@@ -11,20 +11,16 @@
         "fields": [
           "title",
           "type",
-          "layers.name",
           "layers.layer",
-          "citations.name",
+          "citations.content",
           "citations.url",
           "sources.name",
           "sources.url",
           "slug",
           "description",
-          "info"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -33,26 +29,14 @@
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
       "subject": "api::dataset.dataset",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
       "action": "plugin::content-manager.explorer.publish",
       "actionParameters": {},
       "subject": "api::dataset.dataset",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
@@ -63,20 +47,16 @@
         "fields": [
           "title",
           "type",
-          "layers.name",
           "layers.layer",
-          "citations.name",
+          "citations.content",
           "citations.url",
           "sources.name",
           "sources.url",
           "slug",
           "description",
-          "info"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -89,20 +69,16 @@
         "fields": [
           "title",
           "type",
-          "layers.name",
           "layers.layer",
-          "citations.name",
+          "citations.content",
           "citations.url",
           "sources.name",
           "sources.url",
           "slug",
           "description",
-          "info"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -117,12 +93,9 @@
           "slug",
           "code",
           "rangeland",
-          "color"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "color",
+          "translations.title",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -131,26 +104,14 @@
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
       "subject": "api::ecoregion.ecoregion",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
       "action": "plugin::content-manager.explorer.publish",
       "actionParameters": {},
       "subject": "api::ecoregion.ecoregion",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
@@ -163,12 +124,9 @@
           "slug",
           "code",
           "rangeland",
-          "color"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "color",
+          "translations.title",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -183,12 +141,9 @@
           "slug",
           "code",
           "rangeland",
-          "color"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "color",
+          "translations.title",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -200,20 +155,19 @@
       "properties": {
         "fields": [
           "title",
-          "type",
           "description",
           "config",
           "params_config",
           "legend.type",
           "legend.items.name",
           "legend.items.color",
+          "legend.items.name_es",
+          "legend.items.name_fr",
           "interaction_config",
-          "slug"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "slug",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -222,26 +176,14 @@
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
       "subject": "api::layer.layer",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
       "action": "plugin::content-manager.explorer.publish",
       "actionParameters": {},
       "subject": "api::layer.layer",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
@@ -251,20 +193,19 @@
       "properties": {
         "fields": [
           "title",
-          "type",
           "description",
           "config",
           "params_config",
           "legend.type",
           "legend.items.name",
           "legend.items.color",
+          "legend.items.name_es",
+          "legend.items.name_fr",
           "interaction_config",
-          "slug"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "slug",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -276,20 +217,19 @@
       "properties": {
         "fields": [
           "title",
-          "type",
           "description",
           "config",
           "params_config",
           "legend.type",
           "legend.items.name",
           "legend.items.color",
+          "legend.items.name_es",
+          "legend.items.name_fr",
           "interaction_config",
-          "slug"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "slug",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -304,12 +244,9 @@
           "slug",
           "code",
           "color",
-          "ecoregions"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "ecoregions",
+          "translations.title",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -318,26 +255,14 @@
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
       "subject": "api::rangeland.rangeland",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
       "action": "plugin::content-manager.explorer.publish",
       "actionParameters": {},
       "subject": "api::rangeland.rangeland",
-      "properties": {
-        "locales": [
-          "en",
-          "es",
-          "fr"
-        ]
-      },
+      "properties": {},
       "conditions": []
     },
     {
@@ -350,12 +275,9 @@
           "slug",
           "code",
           "color",
-          "ecoregions"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "ecoregions",
+          "translations.title",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -370,12 +292,9 @@
           "slug",
           "code",
           "color",
-          "ecoregions"
-        ],
-        "locales": [
-          "en",
-          "es",
-          "fr"
+          "ecoregions",
+          "translations.title",
+          "translations.locale"
         ]
       },
       "conditions": []

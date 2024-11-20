@@ -6,11 +6,6 @@
   },
   "options": {},
   "attributes": {
-    "name": {
-      "type": "string",
-      "required": true,
-      "unique": false
-    },
     "layer": {
       "type": "relation",
       "relation": "oneToOne",

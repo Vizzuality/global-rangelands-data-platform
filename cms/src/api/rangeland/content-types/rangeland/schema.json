@@ -10,43 +10,23 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "title": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "pluginOptions": {},
       "type": "string",
       "required": true
     },
     "slug": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "string"
     },
     "code": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "string"
     },
     "color": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "string"
     },
     "ecoregions": {
@@ -54,6 +34,12 @@
       "relation": "oneToMany",
       "target": "api::ecoregion.ecoregion",
       "mappedBy": "rangeland"
+    },
+    "translations": {
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.rangeland-translation",
+      "max": 2
     }
   }
 }

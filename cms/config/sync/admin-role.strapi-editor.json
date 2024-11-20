@@ -11,12 +11,14 @@
         "fields": [
           "title",
           "type",
-          "layers.name",
           "layers.layer",
-          "citations.name",
+          "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url"
+          "sources.url",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -29,12 +31,14 @@
         "fields": [
           "title",
           "type",
-          "layers.name",
           "layers.layer",
-          "citations.name",
+          "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url"
+          "sources.url",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -47,12 +51,14 @@
         "fields": [
           "title",
           "type",
-          "layers.name",
           "layers.layer",
-          "citations.name",
+          "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url"
+          "sources.url",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -64,14 +70,16 @@
       "properties": {
         "fields": [
           "title",
-          "type",
           "description",
           "config",
           "params_config",
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config"
+          "interaction_config",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -83,14 +91,16 @@
       "properties": {
         "fields": [
           "title",
-          "type",
           "description",
           "config",
           "params_config",
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config"
+          "interaction_config",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []
@@ -102,14 +112,16 @@
       "properties": {
         "fields": [
           "title",
-          "type",
           "description",
           "config",
           "params_config",
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config"
+          "interaction_config",
+          "translations.title",
+          "translations.description",
+          "translations.locale"
         ]
       },
       "conditions": []

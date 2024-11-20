@@ -10,35 +10,19 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "title": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "pluginOptions": {},
       "type": "string",
       "required": true
     },
     "slug": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "string"
     },
     "code": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "string"
     },
     "rangeland": {
@@ -48,12 +32,14 @@
       "inversedBy": "ecoregions"
     },
     "color": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "pluginOptions": {},
       "type": "string"
+    },
+    "translations": {
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.ecoregion-translation",
+      "max": 2
     }
   }
 }

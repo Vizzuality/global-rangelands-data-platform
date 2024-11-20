@@ -23,6 +23,8 @@ export interface DefaultItem extends Schema.Component {
     color: Attribute.String &
       Attribute.Required &
       Attribute.DefaultTo<'#000000'>;
+    name_es: Attribute.String;
+    name_fr: Attribute.String;
   };
 }
 
@@ -33,7 +35,6 @@ export interface DefaultLayer extends Schema.Component {
     description: '';
   };
   attributes: {
-    name: Attribute.String & Attribute.Required;
     layer: Attribute.Relation<'default.layer', 'oneToOne', 'api::layer.layer'>;
   };
 }
@@ -65,6 +66,57 @@ export interface DefaultSource extends Schema.Component {
   };
 }
 
+export interface TranslationsDatasetTranslation extends Schema.Component {
+  collectionName: 'components_translations_dataset_translations';
+  info: {
+    displayName: 'Dataset Translation';
+    icon: 'discuss';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.RichText;
+    locale: Attribute.Enumeration<['es', 'fr']> & Attribute.Required;
+  };
+}
+
+export interface TranslationsEcoregionTranslation extends Schema.Component {
+  collectionName: 'components_translations_ecoregion_translations';
+  info: {
+    displayName: 'Ecoregion Translation';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    locale: Attribute.Enumeration<['es', 'fr']> & Attribute.Required;
+  };
+}
+
+export interface TranslationsLayerTranslation extends Schema.Component {
+  collectionName: 'components_translations_layer_translations';
+  info: {
+    displayName: 'Layer Translation';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    locale: Attribute.Enumeration<['es', 'fr']>;
+  };
+}
+
+export interface TranslationsRangelandTranslation extends Schema.Component {
+  collectionName: 'components_translations_rangeland_translations';
+  info: {
+    displayName: 'Rangeland Translation';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    locale: Attribute.Enumeration<['es', 'fr']>;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
@@ -73,6 +125,10 @@ declare module '@strapi/types' {
       'default.layer': DefaultLayer;
       'default.legend': DefaultLegend;
       'default.source': DefaultSource;
+      'translations.dataset-translation': TranslationsDatasetTranslation;
+      'translations.ecoregion-translation': TranslationsEcoregionTranslation;
+      'translations.layer-translation': TranslationsLayerTranslation;
+      'translations.rangeland-translation': TranslationsRangelandTranslation;
     }
   }
 }

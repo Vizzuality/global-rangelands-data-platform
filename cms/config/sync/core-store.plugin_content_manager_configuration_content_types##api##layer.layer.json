@@ -33,20 +33,6 @@
           "sortable": true
         }
       },
-      "type": {
-        "edit": {
-          "label": "type",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "type",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "description": {
         "edit": {
           "label": "description",
@@ -131,6 +117,20 @@
           "sortable": true
         }
       },
+      "translations": {
+        "edit": {
+          "label": "translations",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "translations",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -191,6 +191,12 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "title",
+        "description",
+        "translations"
+      ],
       "edit": [
         [
           {
@@ -201,12 +207,6 @@
         [
           {
             "name": "slug",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "type",
             "size": 6
           }
         ],
@@ -239,13 +239,13 @@
             "name": "interaction_config",
             "size": 12
           }
+        ],
+        [
+          {
+            "name": "translations",
+            "size": 12
+          }
         ]
-      ],
-      "list": [
-        "id",
-        "title",
-        "type",
-        "description"
       ]
     },
     "uid": "api::layer.layer"

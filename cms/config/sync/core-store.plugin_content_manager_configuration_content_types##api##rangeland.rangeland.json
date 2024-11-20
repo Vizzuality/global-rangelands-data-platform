@@ -90,6 +90,20 @@
           "sortable": false
         }
       },
+      "translations": {
+        "edit": {
+          "label": "translations",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "translations",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -150,6 +164,12 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "title",
+        "slug",
+        "code"
+      ],
       "edit": [
         [
           {
@@ -174,13 +194,13 @@
             "name": "color",
             "size": 6
           }
+        ],
+        [
+          {
+            "name": "translations",
+            "size": 12
+          }
         ]
-      ],
-      "list": [
-        "id",
-        "title",
-        "slug",
-        "code"
       ]
     },
     "uid": "api::rangeland.rangeland"

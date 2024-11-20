@@ -10,75 +10,49 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {
-    "i18n": {
-      "localized": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "title": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "pluginOptions": {},
       "type": "string",
       "required": true,
       "unique": true
     },
     "description": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "pluginOptions": {},
       "type": "text",
       "required": false
     },
     "config": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "json",
       "required": true
     },
     "params_config": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "json"
     },
     "legend": {
       "displayName": "Legend",
       "type": "component",
       "repeatable": false,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
+      "pluginOptions": {},
       "component": "default.legend",
       "required": true
     },
     "interaction_config": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "json"
     },
     "slug": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
+      "pluginOptions": {},
       "type": "string"
+    },
+    "translations": {
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.layer-translation",
+      "max": 2
     }
   }
 }

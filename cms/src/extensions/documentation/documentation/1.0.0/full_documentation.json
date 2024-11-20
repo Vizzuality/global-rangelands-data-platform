@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-06-28T13:55:12.607Z"
+    "x-generation-date": "2024-11-19T18:17:20.923Z"
   },
   "servers": [
     {
@@ -86,52 +86,6 @@
           }
         }
       },
-      "DatasetLocalizationRequest": {
-        "required": [
-          "title",
-          "type",
-          "layers",
-          "locale"
-        ],
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "Group",
-              "Temporal",
-              "Simple"
-            ]
-          },
-          "layers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DefaultLayerComponent"
-            }
-          },
-          "citations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DefaultCitationsComponent"
-            }
-          },
-          "sources": {
-            "$ref": "#/components/schemas/DefaultSourceComponent"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "locale": {
-            "type": "string"
-          }
-        }
-      },
       "DatasetRequest": {
         "type": "object",
         "required": [
@@ -178,75 +132,10 @@
               "description": {
                 "type": "string"
               },
-              "locale": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "DatasetResponseDataObjectLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Dataset"
-          }
-        }
-      },
-      "DatasetLocalizationResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/DatasetResponseDataObjectLocalized"
-          },
-          "meta": {
-            "type": "object"
-          }
-        }
-      },
-      "DatasetListResponseDataItemLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Dataset"
-          }
-        }
-      },
-      "DatasetLocalizationListResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DatasetListResponseDataItemLocalized"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "pagination": {
-                "type": "object",
-                "properties": {
-                  "page": {
-                    "type": "integer"
-                  },
-                  "pageSize": {
-                    "type": "integer",
-                    "minimum": 25
-                  },
-                  "pageCount": {
-                    "type": "integer",
-                    "maximum": 1
-                  },
-                  "total": {
-                    "type": "integer"
-                  }
+              "translations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TranslationsDatasetTranslationComponent"
                 }
               }
             }
@@ -339,6 +228,12 @@
           "description": {
             "type": "string"
           },
+          "translations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationsDatasetTranslationComponent"
+            }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -384,20 +279,6 @@
                 }
               }
             }
-          },
-          "localizations": {
-            "type": "object",
-            "properties": {
-              "data": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DatasetListResponseDataItemLocalized"
-                }
-              }
-            }
-          },
-          "locale": {
-            "type": "string"
           }
         }
       },
@@ -428,9 +309,6 @@
         "properties": {
           "id": {
             "type": "number"
-          },
-          "name": {
-            "type": "string"
           },
           "layer": {
             "type": "object",
@@ -480,6 +358,12 @@
                                 },
                                 "color": {
                                   "type": "string"
+                                },
+                                "name_es": {
+                                  "type": "string"
+                                },
+                                "name_fr": {
+                                  "type": "string"
                                 }
                               }
                             }
@@ -489,6 +373,30 @@
                       "interaction_config": {},
                       "slug": {
                         "type": "string"
+                      },
+                      "translations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "locale": {
+                              "type": "string",
+                              "enum": [
+                                "es",
+                                "fr"
+                              ]
+                            }
+                          }
+                        }
                       },
                       "createdAt": {
                         "type": "string",
@@ -787,18 +695,6 @@
                             }
                           }
                         }
-                      },
-                      "localizations": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {}
-                          }
-                        }
-                      },
-                      "locale": {
-                        "type": "string"
                       }
                     }
                   }
@@ -836,38 +732,24 @@
           }
         }
       },
-      "EcoregionLocalizationRequest": {
-        "required": [
-          "title",
-          "locale"
-        ],
+      "TranslationsDatasetTranslationComponent": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "number"
+          },
           "title": {
             "type": "string"
           },
-          "slug": {
-            "type": "string"
-          },
-          "code": {
-            "type": "string"
-          },
-          "rangeland": {
-            "oneOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "string"
-              }
-            ],
-            "example": "string or id"
-          },
-          "color": {
+          "description": {
             "type": "string"
           },
           "locale": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "es",
+              "fr"
+            ]
           }
         }
       },
@@ -906,75 +788,10 @@
               "color": {
                 "type": "string"
               },
-              "locale": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "EcoregionResponseDataObjectLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Ecoregion"
-          }
-        }
-      },
-      "EcoregionLocalizationResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/EcoregionResponseDataObjectLocalized"
-          },
-          "meta": {
-            "type": "object"
-          }
-        }
-      },
-      "EcoregionListResponseDataItemLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Ecoregion"
-          }
-        }
-      },
-      "EcoregionLocalizationListResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EcoregionListResponseDataItemLocalized"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "pagination": {
-                "type": "object",
-                "properties": {
-                  "page": {
-                    "type": "integer"
-                  },
-                  "pageSize": {
-                    "type": "integer",
-                    "minimum": 25
-                  },
-                  "pageCount": {
-                    "type": "integer",
-                    "maximum": 1
-                  },
-                  "total": {
-                    "type": "integer"
-                  }
+              "translations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TranslationsEcoregionTranslationComponent"
                 }
               }
             }
@@ -1108,6 +925,27 @@
                                     },
                                     "color": {
                                       "type": "string"
+                                    },
+                                    "translations": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "number"
+                                          },
+                                          "title": {
+                                            "type": "string"
+                                          },
+                                          "locale": {
+                                            "type": "string",
+                                            "enum": [
+                                              "es",
+                                              "fr"
+                                            ]
+                                          }
+                                        }
+                                      }
                                     },
                                     "createdAt": {
                                       "type": "string",
@@ -1406,22 +1244,31 @@
                                           }
                                         }
                                       }
-                                    },
-                                    "localizations": {
-                                      "type": "object",
-                                      "properties": {
-                                        "data": {
-                                          "type": "array",
-                                          "items": {}
-                                        }
-                                      }
-                                    },
-                                    "locale": {
-                                      "type": "string"
                                     }
                                   }
                                 }
                               }
+                            }
+                          }
+                        }
+                      },
+                      "translations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "locale": {
+                              "type": "string",
+                              "enum": [
+                                "es",
+                                "fr"
+                              ]
                             }
                           }
                         }
@@ -1471,18 +1318,6 @@
                             }
                           }
                         }
-                      },
-                      "localizations": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "array",
-                            "items": {}
-                          }
-                        }
-                      },
-                      "locale": {
-                        "type": "string"
                       }
                     }
                   }
@@ -1492,6 +1327,12 @@
           },
           "color": {
             "type": "string"
+          },
+          "translations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationsEcoregionTranslationComponent"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -1538,20 +1379,6 @@
                 }
               }
             }
-          },
-          "localizations": {
-            "type": "object",
-            "properties": {
-              "data": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EcoregionListResponseDataItemLocalized"
-                }
-              }
-            }
-          },
-          "locale": {
-            "type": "string"
           }
         }
       },
@@ -1577,32 +1404,21 @@
           }
         }
       },
-      "LayerLocalizationRequest": {
-        "required": [
-          "title",
-          "config",
-          "legend",
-          "locale"
-        ],
+      "TranslationsEcoregionTranslationComponent": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "number"
+          },
           "title": {
             "type": "string"
           },
-          "description": {
-            "type": "string"
-          },
-          "config": {},
-          "params_config": {},
-          "legend": {
-            "$ref": "#/components/schemas/DefaultLegendComponent"
-          },
-          "interaction_config": {},
-          "slug": {
-            "type": "string"
-          },
           "locale": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "es",
+              "fr"
+            ]
           }
         }
       },
@@ -1635,75 +1451,10 @@
               "slug": {
                 "type": "string"
               },
-              "locale": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "LayerResponseDataObjectLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Layer"
-          }
-        }
-      },
-      "LayerLocalizationResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/LayerResponseDataObjectLocalized"
-          },
-          "meta": {
-            "type": "object"
-          }
-        }
-      },
-      "LayerListResponseDataItemLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Layer"
-          }
-        }
-      },
-      "LayerLocalizationListResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LayerListResponseDataItemLocalized"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "pagination": {
-                "type": "object",
-                "properties": {
-                  "page": {
-                    "type": "integer"
-                  },
-                  "pageSize": {
-                    "type": "integer",
-                    "minimum": 25
-                  },
-                  "pageCount": {
-                    "type": "integer",
-                    "maximum": 1
-                  },
-                  "total": {
-                    "type": "integer"
-                  }
+              "translations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TranslationsLayerTranslationComponent"
                 }
               }
             }
@@ -1778,6 +1529,12 @@
           "interaction_config": {},
           "slug": {
             "type": "string"
+          },
+          "translations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationsLayerTranslationComponent"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -2076,20 +1833,6 @@
                 }
               }
             }
-          },
-          "localizations": {
-            "type": "object",
-            "properties": {
-              "data": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/LayerListResponseDataItemLocalized"
-                }
-              }
-            }
-          },
-          "locale": {
-            "type": "string"
           }
         }
       },
@@ -2143,47 +1886,36 @@
                 },
                 "color": {
                   "type": "string"
+                },
+                "name_es": {
+                  "type": "string"
+                },
+                "name_fr": {
+                  "type": "string"
                 }
               }
             }
           }
         }
       },
-      "RangelandLocalizationRequest": {
-        "required": [
-          "title",
-          "locale"
-        ],
+      "TranslationsLayerTranslationComponent": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "number"
+          },
           "title": {
             "type": "string"
           },
-          "slug": {
+          "description": {
             "type": "string"
-          },
-          "code": {
-            "type": "string"
-          },
-          "color": {
-            "type": "string"
-          },
-          "ecoregions": {
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "type": "integer"
-                },
-                {
-                  "type": "string"
-                }
-              ],
-              "example": "string or id"
-            }
           },
           "locale": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "es",
+              "fr"
+            ]
           }
         }
       },
@@ -2225,75 +1957,10 @@
                   "example": "string or id"
                 }
               },
-              "locale": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "RangelandResponseDataObjectLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Rangeland"
-          }
-        }
-      },
-      "RangelandLocalizationResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/RangelandResponseDataObjectLocalized"
-          },
-          "meta": {
-            "type": "object"
-          }
-        }
-      },
-      "RangelandListResponseDataItemLocalized": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "attributes": {
-            "$ref": "#/components/schemas/Rangeland"
-          }
-        }
-      },
-      "RangelandLocalizationListResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RangelandListResponseDataItemLocalized"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "pagination": {
-                "type": "object",
-                "properties": {
-                  "page": {
-                    "type": "integer"
-                  },
-                  "pageSize": {
-                    "type": "integer",
-                    "minimum": 25
-                  },
-                  "pageCount": {
-                    "type": "integer",
-                    "maximum": 1
-                  },
-                  "total": {
-                    "type": "integer"
-                  }
+              "translations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TranslationsRangelandTranslationComponent"
                 }
               }
             }
@@ -2427,6 +2094,27 @@
                                                 "properties": {}
                                               }
                                             }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "translations": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "number"
+                                          },
+                                          "title": {
+                                            "type": "string"
+                                          },
+                                          "locale": {
+                                            "type": "string",
+                                            "enum": [
+                                              "es",
+                                              "fr"
+                                            ]
                                           }
                                         }
                                       }
@@ -2728,18 +2416,6 @@
                                           }
                                         }
                                       }
-                                    },
-                                    "localizations": {
-                                      "type": "object",
-                                      "properties": {
-                                        "data": {
-                                          "type": "array",
-                                          "items": {}
-                                        }
-                                      }
-                                    },
-                                    "locale": {
-                                      "type": "string"
                                     }
                                   }
                                 }
@@ -2749,6 +2425,27 @@
                         },
                         "color": {
                           "type": "string"
+                        },
+                        "translations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "locale": {
+                                "type": "string",
+                                "enum": [
+                                  "es",
+                                  "fr"
+                                ]
+                              }
+                            }
+                          }
                         },
                         "createdAt": {
                           "type": "string",
@@ -2795,24 +2492,18 @@
                               }
                             }
                           }
-                        },
-                        "localizations": {
-                          "type": "object",
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {}
-                            }
-                          }
-                        },
-                        "locale": {
-                          "type": "string"
                         }
                       }
                     }
                   }
                 }
               }
+            }
+          },
+          "translations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TranslationsRangelandTranslationComponent"
             }
           },
           "createdAt": {
@@ -2860,20 +2551,6 @@
                 }
               }
             }
-          },
-          "localizations": {
-            "type": "object",
-            "properties": {
-              "data": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/RangelandListResponseDataItemLocalized"
-                }
-              }
-            }
-          },
-          "locale": {
-            "type": "string"
           }
         }
       },
@@ -2896,6 +2573,24 @@
           },
           "meta": {
             "type": "object"
+          }
+        }
+      },
+      "TranslationsRangelandTranslationComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "es",
+              "fr"
+            ]
           }
         }
       },
@@ -3639,98 +3334,6 @@
         "operationId": "delete/datasets/{id}"
       }
     },
-    "/datasets/{id}/localizations": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DatasetLocalizationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Dataset"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "deprecated": false,
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "operationId": "post/datasets/{id}/localizations",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DatasetLocalizationRequest"
-              }
-            }
-          }
-        }
-      }
-    },
     "/ecoregions": {
       "get": {
         "responses": {
@@ -4261,98 +3864,6 @@
           }
         ],
         "operationId": "delete/ecoregions/{id}"
-      }
-    },
-    "/ecoregions/{id}/localizations": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EcoregionLocalizationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Ecoregion"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "deprecated": false,
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "operationId": "post/ecoregions/{id}/localizations",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EcoregionLocalizationRequest"
-              }
-            }
-          }
-        }
       }
     },
     "/layers": {
@@ -4887,98 +4398,6 @@
         "operationId": "delete/layers/{id}"
       }
     },
-    "/layers/{id}/localizations": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LayerLocalizationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Layer"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "deprecated": false,
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "operationId": "post/layers/{id}/localizations",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LayerLocalizationRequest"
-              }
-            }
-          }
-        }
-      }
-    },
     "/rangelands": {
       "get": {
         "responses": {
@@ -5509,98 +4928,6 @@
           }
         ],
         "operationId": "delete/rangelands/{id}"
-      }
-    },
-    "/rangelands/{id}/localizations": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RangelandLocalizationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Rangeland"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "",
-            "deprecated": false,
-            "required": true,
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "operationId": "post/rangelands/{id}/localizations",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RangelandLocalizationRequest"
-              }
-            }
-          }
-        }
       }
     },
     "/upload": {

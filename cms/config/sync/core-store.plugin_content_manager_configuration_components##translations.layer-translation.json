@@ -1,13 +1,13 @@
 {
-  "key": "plugin_content_manager_configuration_components::default.citations",
+  "key": "plugin_content_manager_configuration_components::translations.layer-translation",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "url",
-      "defaultSortBy": "url",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,30 +19,44 @@
           "sortable": false
         }
       },
-      "content": {
+      "title": {
         "edit": {
-          "label": "content",
+          "label": "title",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "content",
+          "label": "title",
           "searchable": true,
           "sortable": true
         }
       },
-      "url": {
+      "description": {
         "edit": {
-          "label": "url",
+          "label": "description",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "url",
+          "label": "description",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "locale": {
+        "edit": {
+          "label": "locale",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "locale",
           "searchable": true,
           "sortable": true
         }
@@ -51,23 +65,30 @@
     "layouts": {
       "list": [
         "id",
-        "url",
-        "content"
+        "title",
+        "description",
+        "locale"
       ],
       "edit": [
         [
           {
-            "name": "url",
+            "name": "title",
             "size": 6
           },
           {
-            "name": "content",
+            "name": "description",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "locale",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "default.citations",
+    "uid": "translations.layer-translation",
     "isComponent": true
   },
   "type": "object",

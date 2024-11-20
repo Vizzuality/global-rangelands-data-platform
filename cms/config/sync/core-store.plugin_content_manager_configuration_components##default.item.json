@@ -46,13 +46,42 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "name_es": {
+        "edit": {
+          "label": "name_es",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "name_es",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "name_fr": {
+        "edit": {
+          "label": "name_fr",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "name_fr",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
       "list": [
         "id",
         "name",
-        "color"
+        "color",
+        "name_es"
       ],
       "edit": [
         [
@@ -62,6 +91,16 @@
           },
           {
             "name": "color",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "name_es",
+            "size": 6
+          },
+          {
+            "name": "name_fr",
             "size": 6
           }
         ]
