@@ -18,7 +18,8 @@
       "enum": [
         "es",
         "fr"
-      ]
+      ],
+      "required": true
     }
   }
 }
