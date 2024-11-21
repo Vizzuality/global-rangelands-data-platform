@@ -13,6 +13,8 @@ import { useSyncRangelandType } from "@/store/map";
 import { useMemo } from "react";
 import { MapTooltipProps } from "../../types";
 import { useGetRangelands } from "@/types/generated/rangeland";
+import { useGetLocalizedList } from "@/lib/localized-query";
+import { useGetEcoregions } from "@/types/generated/ecoregion";
 
 type RangelandsTooltipProps = {
   ecoregion_code?: number;
@@ -26,10 +28,13 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
   const t = useTranslations();
   const [rangelandType] = useSyncRangelandType();
 
-  const { data: rangelandsData } = useGetRangelands(
+  const biomesDataQuery = useGetRangelands(
     {
-      populate: "*",
+      populate: ["translations"],
       sort: "title:asc",
+      filters: {
+        code: `${biome_code}`,
+      },
     },
     {
       query: {
@@ -37,6 +42,25 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
       },
     },
   );
+
+  const { data: biomesData } = useGetLocalizedList(biomesDataQuery);
+
+  const ecoregionsDataQuery = useGetEcoregions(
+    {
+      populate: ["translations"],
+      sort: "title:asc",
+      filters: {
+        code: `${ecoregion_code}`,
+      },
+    },
+    {
+      query: {
+        enabled: rangelandType === RANGELAND_ECOREGIONS,
+      },
+    },
+  );
+
+  const { data: ecoregionsData } = useGetLocalizedList(ecoregionsDataQuery);
 
   const content = useMemo(() => {
     if (rangelandType === RANGELAND_SYSTEM) {
@@ -46,12 +70,7 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
         color: RANGELAND_SISTEM_COLOR,
       };
     }
-    const biome = rangelandsData?.data?.find(
-      (e) =>
-        e?.attributes?.code &&
-        isFinite(+e?.attributes?.code) &&
-        +e?.attributes?.code === biome_code,
-    );
+    const biome = biomesData?.data?.[0];
     if (rangelandType === RANGELAND_BIOMES) {
       return {
         comparisonArea: t("Rangeland types"),
@@ -60,12 +79,7 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
       };
     }
     if (rangelandType === RANGELAND_ECOREGIONS) {
-      const ecoregion = biome?.attributes?.ecoregions?.data?.find(
-        (e) =>
-          e?.attributes?.code &&
-          isFinite(+e?.attributes?.code) &&
-          +e?.attributes?.code === ecoregion_code,
-      );
+      const ecoregion = ecoregionsData?.data?.[0];
       return {
         comparisonArea: biome?.attributes?.title,
         title: ecoregion?.attributes?.title,
@@ -74,7 +88,7 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
       };
     }
     return {};
-  }, []);
+  }, [rangelandType, biomesData, ecoregionsData]);
 
   return (
     <div className="overflow-hidden rounded-lg bg-background drop-shadow-2xl">

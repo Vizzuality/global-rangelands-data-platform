@@ -23,7 +23,7 @@ const Item = ({ slug }: PopupItemProps) => {
   const info = deckInteractiveLayers[slug];
 
   const { data: layerData } = useGetBySlug<LayerResponse>(`layer/${slug}`, {
-    populate: "dataset,metadata",
+    populate: "dataset,metadata,translations",
     locale,
   });
 
