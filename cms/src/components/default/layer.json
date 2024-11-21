@@ -10,6 +10,9 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::layer.layer"
+    },
+    "type": {
+      "type": "string"
     }
   }
 }

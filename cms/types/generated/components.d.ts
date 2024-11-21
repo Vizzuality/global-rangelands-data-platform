@@ -36,6 +36,7 @@ export interface DefaultLayer extends Schema.Component {
   };
   attributes: {
     layer: Attribute.Relation<'default.layer', 'oneToOne', 'api::layer.layer'>;
+    type: Attribute.String;
   };
 }
 
@@ -101,7 +102,7 @@ export interface TranslationsLayerTranslation extends Schema.Component {
   attributes: {
     title: Attribute.String & Attribute.Required;
     description: Attribute.Text;
-    locale: Attribute.Enumeration<['es', 'fr']>;
+    locale: Attribute.Enumeration<['es', 'fr']> & Attribute.Required;
   };
 }
 
