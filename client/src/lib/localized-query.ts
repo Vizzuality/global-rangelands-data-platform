@@ -11,6 +11,10 @@ import { DEFAULT_LOCALE } from "@/middleware";
 
 import API, { ErrorType } from "@/services/api";
 import { useMemo } from "react";
+import {
+  DefaultLegendComponent,
+  DefaultLegendComponentItemsItem,
+} from "@/types/generated/strapi.schemas";
 
 type StrapiDATA = {
   data?: {
@@ -24,7 +28,7 @@ type Params = {
   /**
    * Relations to return
    */
-  populate?: string;
+  populate?: string | string[];
 
   locale?: string;
 };
@@ -63,16 +67,22 @@ export const getBySlugIdQueryOptions = <
   return { queryKey, queryFn, enabled: !!id, ...queryOptions };
 };
 
-const _isNotFoundError = (error: unknown) => {
-  return !!(
-    error &&
-    typeof error === "object" &&
-    "response" in error &&
-    !!error.response &&
-    typeof error.response === "object" &&
-    "status" in error.response &&
-    error?.response?.status === 404
-  );
+type Translation = {
+  locale: string;
+  id: number;
+} & Record<string, string>;
+
+type AttributesWithTranslations =
+  | ({
+      translations?: Translation[];
+    } & Record<string, unknown>)
+  | undefined;
+
+type ResponseData = {
+  data?: {
+    id: number;
+    attributes?: AttributesWithTranslations;
+  };
 };
 
 export const useGetBySlug = <
@@ -85,15 +95,30 @@ export const useGetBySlug = <
     query?: UseQueryOptions<Awaited<ReturnType<typeof getBySlugId>>, TError, TData>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const { locale, ...restParams } = params ?? {};
   const queryOptions = useMemo(
     () =>
-      getBySlugIdQueryOptions(id, params, {
+      getBySlugIdQueryOptions(id, restParams, {
         query: {
-          retry: (failureCount: number, error) => {
-            if (_isNotFoundError(error)) {
-              return false;
-            }
-            return failureCount < 3;
+          // @ts-ignore: select is not well typed
+          select: (response) => {
+            const data = response as ResponseData;
+            const attributes = data?.data?.attributes;
+            const translated = attributes?.translations?.find(
+              (t: Record<string, string>) => t.locale === locale,
+            );
+            const { id, ...translatedAtt } = translated || {};
+
+            return {
+              ...data,
+              data: {
+                ...data.data,
+                attributes: {
+                  ...attributes,
+                  ...translatedAtt,
+                },
+              },
+            };
           },
           ...(options?.query as UseQueryOptions<
             Awaited<ReturnType<typeof getBySlugId>>,
@@ -104,36 +129,8 @@ export const useGetBySlug = <
       }),
     [id, params, options],
   );
+
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  const queryDefaultOptions = getBySlugIdQueryOptions(
-    id,
-    {
-      ...params,
-      locale: DEFAULT_LOCALE,
-    },
-    {
-      query: {
-        enabled: _isNotFoundError(query.error),
-        ...(options?.query as UseQueryOptions<
-          Awaited<ReturnType<typeof getBySlugId>>,
-          TError,
-          TData
-        >),
-      },
-    },
-  );
-
-  const queryDefault = useQuery(queryDefaultOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-  queryDefault.queryKey = queryDefaultOptions.queryKey;
-
-  if (_isNotFoundError(query.error)) {
-    return queryDefault;
-  }
 
   return query;
 };
@@ -149,30 +146,41 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
   const { data } = query as UseQueryResult<StrapiDATA, E>;
 
   if (Array.isArray(data?.data)) {
-    const LOCALE_DATA =
-      data?.data?.filter((item) => {
-        return item?.attributes?.locale === locale;
-      }) ?? [];
-
-    const DEFAULT_DATA =
-      data?.data?.filter((item) => {
-        return item?.attributes?.locale === DEFAULT_LOCALE;
-      }) ?? [];
-
-    const DATA = DEFAULT_DATA.map((item) => {
-      const LOCALE_ITEM = LOCALE_DATA.find((localeItem) => {
-        return (
-          localeItem.attributes?.slug &&
-          item.attributes?.slug &&
-          localeItem.attributes.slug === item.attributes.slug
-        );
+    const LOCALE_DATA = data.data.map((item) => {
+      const { translations, ...attributes } =
+        (item?.attributes as AttributesWithTranslations) || {};
+      const localeTranslation = translations?.find((translation) => {
+        return translation.locale === locale;
       });
+      const { id, ...translatedAtt } = localeTranslation || {};
+
+      const legendItems = (attributes?.legend as DefaultLegendComponent)?.items?.map((i) => {
+        const localeName = i[`name_${locale}` as keyof DefaultLegendComponentItemsItem];
+        const legendItemName =
+          locale === DEFAULT_LOCALE || !localeName
+            ? i.name
+            : i[`name_${locale}` as keyof DefaultLegendComponentItemsItem];
+
+        return {
+          color: i.color,
+          id: i.id,
+          name: legendItemName,
+        };
+      });
+
+      const legend = attributes.legend
+        ? {
+            ...attributes.legend,
+            items: legendItems,
+          }
+        : {};
 
       return {
         ...item,
         attributes: {
-          ...item.attributes,
-          ...LOCALE_ITEM?.attributes,
+          ...attributes,
+          ...translatedAtt,
+          ...(legend ? { legend } : {}),
         },
       };
     });
@@ -181,7 +189,7 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
       ...query,
       data: {
         ...query.data,
-        data: DATA,
+        data: locale === DEFAULT_LOCALE ? data.data : LOCALE_DATA,
       },
     } as unknown as UseQueryResult<T, E>;
   }

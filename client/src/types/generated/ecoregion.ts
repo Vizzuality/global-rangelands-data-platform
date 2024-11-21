@@ -16,8 +16,6 @@ import type {
 } from "@tanstack/react-query";
 import type {
   EcoregionListResponse,
-  EcoregionLocalizationRequest,
-  EcoregionLocalizationResponse,
   EcoregionRequest,
   EcoregionResponse,
   Error,
@@ -346,80 +344,6 @@ export const useDeleteEcoregionsId = <TError = ErrorType<Error>, TContext = unkn
   TContext
 > => {
   const mutationOptions = getDeleteEcoregionsIdMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-export const postEcoregionsIdLocalizations = (
-  id: number,
-  ecoregionLocalizationRequest: EcoregionLocalizationRequest,
-  options?: SecondParameter<typeof API>,
-) => {
-  return API<EcoregionLocalizationResponse>(
-    {
-      url: `/ecoregions/${id}/localizations`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: ecoregionLocalizationRequest,
-    },
-    options,
-  );
-};
-
-export const getPostEcoregionsIdLocalizationsMutationOptions = <
-  TError = ErrorType<Error>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postEcoregionsIdLocalizations>>,
-    TError,
-    { id: number; data: EcoregionLocalizationRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof API>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postEcoregionsIdLocalizations>>,
-  TError,
-  { id: number; data: EcoregionLocalizationRequest },
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postEcoregionsIdLocalizations>>,
-    { id: number; data: EcoregionLocalizationRequest }
-  > = (props) => {
-    const { id, data } = props ?? {};
-
-    return postEcoregionsIdLocalizations(id, data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PostEcoregionsIdLocalizationsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postEcoregionsIdLocalizations>>
->;
-export type PostEcoregionsIdLocalizationsMutationBody = EcoregionLocalizationRequest;
-export type PostEcoregionsIdLocalizationsMutationError = ErrorType<Error>;
-
-export const usePostEcoregionsIdLocalizations = <
-  TError = ErrorType<Error>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postEcoregionsIdLocalizations>>,
-    TError,
-    { id: number; data: EcoregionLocalizationRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof API>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof postEcoregionsIdLocalizations>>,
-  TError,
-  { id: number; data: EcoregionLocalizationRequest },
-  TContext
-> => {
-  const mutationOptions = getPostEcoregionsIdLocalizationsMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

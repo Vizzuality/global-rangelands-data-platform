@@ -13,6 +13,8 @@ import { LayerVisibility } from "@/components/map/legends/header/buttons";
 import GroupDataset from "./components/group";
 import DatasetInfo from "./info";
 import TemporalChangesDataset from "./components/temporal";
+import { useGetLayers } from "@/types/generated/layer";
+import { useGetLocalizedList } from "@/lib/localized-query";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -25,6 +27,36 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   const [layers, setLayers] = useSyncLayers();
   const id = attributes?.slug;
 
+  const datasetLayers =
+    useMemo(() => attributes?.layers.map((l) => l.layer?.data?.id), [attributes?.layers])?.filter(
+      (l) => !!l,
+    ) || [];
+
+  const layersQuery = useGetLayers(
+    {
+      filters: !!datasetLayers.length
+        ? {
+            id: {
+              $in: datasetLayers,
+            },
+          }
+        : undefined,
+      populate: ["translations"],
+    },
+    {
+      query: {
+        enabled: !!datasetLayers.length,
+      },
+    },
+  );
+
+  const { data: localizedLayersData } = useGetLocalizedList(layersQuery);
+
+  const layersData = useMemo(
+    () => (datasetLayers?.length ? localizedLayersData?.data : []),
+    [datasetLayers],
+  );
+
   const handleToggleDataset = (checked: boolean) => {
     if (!id) return;
     setDatasets((prev) => {
@@ -36,13 +68,11 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
 
     if (!checked) {
       setLayers((prev) =>
-        prev.filter(
-          (l) => !attributes?.layers?.map((l) => l.layer?.data?.attributes?.slug)?.includes(l),
-        ),
+        prev.filter((l) => !layersData?.map((l) => l.attributes?.slug)?.includes(l)),
       );
     }
     if (checked) {
-      const firstDatasetLayer = attributes?.layers?.[0]?.layer?.data?.attributes?.slug;
+      const firstDatasetLayer = layersData?.[0]?.attributes?.slug;
       if (firstDatasetLayer) {
         setLayers((prev) => [...prev, firstDatasetLayer]);
       }
@@ -51,11 +81,9 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
 
   const datasetLayer = useMemo(
     () =>
-      attributes?.layers?.find(
-        (layer) =>
-          !!layer.layer?.data?.attributes?.slug &&
-          layers.includes(layer.layer.data.attributes.slug),
-      )?.layer?.data?.attributes,
+      layersData?.find(
+        (layer) => !!layer.attributes?.slug && layers.includes(layer.attributes.slug),
+      )?.attributes,
     [attributes, layers],
   );
 
@@ -79,13 +107,23 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
   const COMPONENT = useMemo(() => {
     switch (attributes?.type) {
       case "Group":
-        return <GroupDataset layers={attributes?.layers} slug={attributes?.slug} />;
+        return <GroupDataset layers={layersData} slug={attributes?.slug} />;
       case "Temporal":
-        return <TemporalChangesDataset layers={attributes?.layers} />;
+        return (
+          <TemporalChangesDataset
+            layers={layersData?.map((l) => {
+              const layerType = attributes?.layers.find((dl) => dl.layer?.data?.id === l.id)?.type;
+              return {
+                ...l,
+                type: layerType,
+              };
+            })}
+          />
+        );
       default:
         return null;
     }
-  }, [attributes?.type, attributes?.layers, attributes?.slug]);
+  }, [attributes?.type, attributes?.layers, attributes?.slug, layersData]);
 
   return (
     <div className={cn("space-y-6", className)}>

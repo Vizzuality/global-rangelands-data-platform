@@ -1,5 +1,5 @@
 "use client";
-import { useGetBySlug } from "@/lib/localized-query";
+import { useGetBySlug, useGetLocalizedList } from "@/lib/localized-query";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { DatasetResponse } from "@/types/generated/strapi.schemas";
 import { useLocale } from "next-intl";
@@ -12,6 +12,7 @@ import { LegendComponent } from "@/components/map/types";
 import { getLayerSettings } from "@/lib/utils";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import LegendChoropleth from "@/components/map/legends/content/choropleth";
+import { useGetLayers } from "@/types/generated/layer";
 
 const LEGEND_CONTENT = {
   Basic: BasicLegend,
@@ -31,39 +32,63 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const { data: datasetData } = useGetBySlug<DatasetResponse>(`dataset/${dataset}`, {
-    populate: "layers,layers.layer,layers.layer.legend,layers.layer.legend.items",
+    populate: ["layers", "translations", "layers.layer"],
     locale,
   });
 
+  const datasetLayers =
+    useMemo(
+      () => datasetData?.data?.attributes?.layers.map((l) => l.layer?.data?.id),
+      [datasetData?.data?.attributes?.layers],
+    )?.filter((l) => !!l) || [];
+
+  const layersQuery = useGetLayers(
+    {
+      filters: !!datasetLayers.length
+        ? {
+            id: {
+              $in: datasetLayers,
+            },
+          }
+        : undefined,
+      populate: ["translations", "legend", "legend.items"],
+    },
+    {
+      query: {
+        enabled: !!datasetLayers.length,
+      },
+    },
+  );
+
+  const { data: localizedLayersData } = useGetLocalizedList(layersQuery);
+
   const datasetLayer = useMemo(() => {
-    return datasetData?.data?.attributes?.layers?.find((layer) => {
-      return (
-        !!layer.layer?.data?.attributes?.slug && layers.includes(layer.layer.data.attributes.slug)
-      );
+    return localizedLayersData?.data?.find((layer) => {
+      return !!layer?.attributes?.slug && layers.includes(layer?.attributes?.slug);
     });
-  }, [datasetData, layers]);
+  }, [localizedLayersData, layers]);
 
   const _isLegendType = (legendType?: string): legendType is keyof typeof LEGEND_CONTENT => {
     return !!legendType && legendType in LEGEND_CONTENT;
   };
 
   const LEGEND = useMemo(() => {
-    const legendType = datasetLayer?.layer?.data?.attributes?.legend?.type;
+    const legendType = datasetLayer?.attributes?.legend?.type;
 
     if (_isLegendType(legendType)) {
       const props = {
-        items: datasetLayer?.layer?.data?.attributes?.legend?.items as LegendComponent["items"],
+        items: datasetLayer?.attributes?.legend?.items as LegendComponent["items"],
       };
       return createElement(LEGEND_CONTENT[legendType], props);
     }
   }, [datasetLayer]);
 
   const settings = useMemo(() => {
-    return getLayerSettings(datasetLayer?.layer?.data?.attributes, layersSettings);
+    return getLayerSettings(datasetLayer?.attributes, layersSettings);
   }, [layersSettings, datasetLayer]);
 
   const setLayerSettings = (key: string, value: boolean | number) => {
-    const layer = datasetLayer?.layer?.data?.attributes;
+    const layer = datasetLayer?.attributes;
     if (!!layer?.slug) {
       const layerSlug = layer.slug;
       setLayersSettings((prev) => ({
@@ -84,7 +109,7 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
           opacity={settings.opacity}
           title={datasetData?.data?.attributes?.title}
           handleChangeIsOpen={() => setIsOpen((prev) => !prev)}
-          info={datasetLayer?.layer?.data?.attributes?.description}
+          info={datasetLayer?.attributes?.description}
           setOpacity={(o) => setLayerSettings("opacity", o)}
           setVisibility={(v) => setLayerSettings("visibility", v)}
         />

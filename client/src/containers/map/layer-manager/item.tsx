@@ -26,7 +26,7 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   const ecoregions = useEcoregions();
 
   const { data } = useGetBySlug<LayerResponse>(`layer/${id}`, {
-    populate: "dataset,metadata",
+    populate: "dataset,metadata,translations",
     locale,
   });
 
