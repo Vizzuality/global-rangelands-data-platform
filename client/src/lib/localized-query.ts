@@ -100,7 +100,7 @@ export const useGetBySlug = <
     () =>
       getBySlugIdQueryOptions(id, restParams, {
         query: {
-          // @ts-ignore: select is not well typed
+          // @ts-expect-error: select is not well typed
           select: (response) => {
             const data = response as ResponseData;
             const attributes = data?.data?.attributes;
