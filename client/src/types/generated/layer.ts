@@ -19,8 +19,6 @@ import type {
   GetLayersIdParams,
   GetLayersParams,
   LayerListResponse,
-  LayerLocalizationRequest,
-  LayerLocalizationResponse,
   LayerRequest,
   LayerResponse,
 } from "./strapi.schemas";
@@ -335,80 +333,6 @@ export const useDeleteLayersId = <TError = ErrorType<Error>, TContext = unknown>
   TContext
 > => {
   const mutationOptions = getDeleteLayersIdMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-export const postLayersIdLocalizations = (
-  id: number,
-  layerLocalizationRequest: LayerLocalizationRequest,
-  options?: SecondParameter<typeof API>,
-) => {
-  return API<LayerLocalizationResponse>(
-    {
-      url: `/layers/${id}/localizations`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: layerLocalizationRequest,
-    },
-    options,
-  );
-};
-
-export const getPostLayersIdLocalizationsMutationOptions = <
-  TError = ErrorType<Error>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postLayersIdLocalizations>>,
-    TError,
-    { id: number; data: LayerLocalizationRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof API>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postLayersIdLocalizations>>,
-  TError,
-  { id: number; data: LayerLocalizationRequest },
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postLayersIdLocalizations>>,
-    { id: number; data: LayerLocalizationRequest }
-  > = (props) => {
-    const { id, data } = props ?? {};
-
-    return postLayersIdLocalizations(id, data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PostLayersIdLocalizationsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postLayersIdLocalizations>>
->;
-export type PostLayersIdLocalizationsMutationBody = LayerLocalizationRequest;
-export type PostLayersIdLocalizationsMutationError = ErrorType<Error>;
-
-export const usePostLayersIdLocalizations = <
-  TError = ErrorType<Error>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postLayersIdLocalizations>>,
-    TError,
-    { id: number; data: LayerLocalizationRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof API>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof postLayersIdLocalizations>>,
-  TError,
-  { id: number; data: LayerLocalizationRequest },
-  TContext
-> => {
-  const mutationOptions = getPostLayersIdLocalizationsMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

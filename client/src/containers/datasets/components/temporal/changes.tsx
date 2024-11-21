@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
-import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
+import { DefaultLayerComponent, LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
 import { CalendarDaysIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo } from "react";
@@ -78,7 +78,11 @@ const selectTypes = ["absolute", "changes"] as const;
 type SelectType = (typeof selectTypes)[number];
 
 type TemporalDatasetItemProps = {
-  layer: DefaultLayerComponent;
+  layer:
+    | (LayerListResponseDataItem & {
+        type?: string;
+      })
+    | undefined;
   selectType: SelectType;
 };
 export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatasetItemProps) => {
@@ -88,13 +92,13 @@ export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatase
   const [layers] = useSyncLayers();
 
   const { defaultStartYear, layerSlug } = useMemo(() => {
-    const defaultStartYear = (
-      layer?.layer?.data?.attributes?.params_config as Record<string, unknown>[]
-    )?.find((p) => p.key === "startYear")?.default as number | undefined;
+    const defaultStartYear = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
+      (p) => p.key === "startYear",
+    )?.default as number | undefined;
 
-    const layerSlug = layer?.layer?.data?.attributes?.slug;
+    const layerSlug = layer?.attributes?.slug;
     return { defaultStartYear, layerSlug };
-  }, [layer?.layer?.data?.attributes]);
+  }, [layer?.attributes]);
 
   const { startYear, endYear, isDisabled } = useMemo(() => {
     const startYear = !!layerSlug
@@ -110,11 +114,11 @@ export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatase
   }, [layerSlug, layers, layersSettings]);
 
   const startYearOptions = useMemo(
-    () => _getOptions(layer?.layer?.data?.attributes?.params_config, undefined, endYear),
+    () => _getOptions(layer?.attributes?.params_config, undefined, endYear),
     [layer, endYear],
   );
   const endYearOptions = useMemo(
-    () => _getOptions(layer?.layer?.data?.attributes?.params_config, startYear),
+    () => _getOptions(layer?.attributes?.params_config, startYear),
     [layer, startYear],
   );
 

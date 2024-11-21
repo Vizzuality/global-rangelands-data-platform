@@ -19,8 +19,6 @@ import type {
   GetRangelandsIdParams,
   GetRangelandsParams,
   RangelandListResponse,
-  RangelandLocalizationRequest,
-  RangelandLocalizationResponse,
   RangelandRequest,
   RangelandResponse,
 } from "./strapi.schemas";
@@ -346,80 +344,6 @@ export const useDeleteRangelandsId = <TError = ErrorType<Error>, TContext = unkn
   TContext
 > => {
   const mutationOptions = getDeleteRangelandsIdMutationOptions(options);
-
-  return useMutation(mutationOptions);
-};
-export const postRangelandsIdLocalizations = (
-  id: number,
-  rangelandLocalizationRequest: RangelandLocalizationRequest,
-  options?: SecondParameter<typeof API>,
-) => {
-  return API<RangelandLocalizationResponse>(
-    {
-      url: `/rangelands/${id}/localizations`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: rangelandLocalizationRequest,
-    },
-    options,
-  );
-};
-
-export const getPostRangelandsIdLocalizationsMutationOptions = <
-  TError = ErrorType<Error>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postRangelandsIdLocalizations>>,
-    TError,
-    { id: number; data: RangelandLocalizationRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof API>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof postRangelandsIdLocalizations>>,
-  TError,
-  { id: number; data: RangelandLocalizationRequest },
-  TContext
-> => {
-  const { mutation: mutationOptions, request: requestOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof postRangelandsIdLocalizations>>,
-    { id: number; data: RangelandLocalizationRequest }
-  > = (props) => {
-    const { id, data } = props ?? {};
-
-    return postRangelandsIdLocalizations(id, data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type PostRangelandsIdLocalizationsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof postRangelandsIdLocalizations>>
->;
-export type PostRangelandsIdLocalizationsMutationBody = RangelandLocalizationRequest;
-export type PostRangelandsIdLocalizationsMutationError = ErrorType<Error>;
-
-export const usePostRangelandsIdLocalizations = <
-  TError = ErrorType<Error>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof postRangelandsIdLocalizations>>,
-    TError,
-    { id: number; data: RangelandLocalizationRequest },
-    TContext
-  >;
-  request?: SecondParameter<typeof API>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof postRangelandsIdLocalizations>>,
-  TError,
-  { id: number; data: RangelandLocalizationRequest },
-  TContext
-> => {
-  const mutationOptions = getPostRangelandsIdLocalizationsMutationOptions(options);
 
   return useMutation(mutationOptions);
 };

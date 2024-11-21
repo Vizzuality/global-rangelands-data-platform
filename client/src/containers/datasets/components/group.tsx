@@ -16,7 +16,7 @@ import {
 } from "../constants";
 import ColorSwatchIcon from "@/svgs/color-swatch.svg";
 
-import { DefaultLayerComponent } from "@/types/generated/strapi.schemas";
+import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
 import {
   deckLayersInteractiveAtom,
   useSyncDatasets,
@@ -35,7 +35,7 @@ import { useSetAtom } from "jotai";
 import { useGetLocalizedList } from "@/lib/localized-query";
 
 type GroupDatasetProps = {
-  layers: DefaultLayerComponent[];
+  layers?: LayerListResponseDataItem[];
   slug?: string;
 };
 
@@ -46,11 +46,7 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
   const [rangelandType, setRangelandType] = useSyncRangelandType();
   const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
   const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
-
-  const datasetLayers = useMemo(
-    () => layers?.map((l) => l.layer?.data?.attributes?.slug),
-    [layers],
-  );
+  const datasetLayers = useMemo(() => layers?.map((l) => l?.attributes?.slug), [layers]);
 
   const handleSelectLayerType = (layerSlug: string) => {
     setSyncLayers((prev) => {
@@ -74,7 +70,7 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
 
   const selectedLayer = useMemo(() => {
     const selectedLayerId = datasetLayers?.find((l) => !!l && syncLayers?.includes(l));
-    return layers?.find((l) => l.layer?.data?.attributes?.slug === selectedLayerId);
+    return layers?.find((l) => l.attributes?.slug === selectedLayerId);
   }, [layers, datasetLayers, syncLayers]);
 
   const isRangelandDataset = datasetSlug === RANGELAND_DATASET_SLUG;
@@ -147,22 +143,22 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
       <Select
         onValueChange={handleSelectLayerType}
         disabled={!datasetSlug || !syncDatasets?.includes(datasetSlug)}
-        defaultValue={selectedLayer?.layer?.data?.attributes?.slug}
-        value={selectedLayer?.layer?.data?.attributes?.slug}
+        defaultValue={selectedLayer?.attributes?.slug}
+        value={selectedLayer?.attributes?.slug}
       >
         <SelectTrigger>
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <ColorSwatchIcon />
               <span className="line-clamp-1 max-w-[250px]">
-                {selectedLayer?.name || t("Types")}
+                {selectedLayer?.attributes?.title || t("Types")}
               </span>
             </div>
-            {isRangelandDataset && selectedLayer?.layer?.data?.attributes?.slug && (
+            {isRangelandDataset && selectedLayer?.attributes?.slug && (
               <CircleLegend
                 selected
                 removable={false}
-                colors={getLegendColors(selectedLayer.layer.data.attributes.slug)}
+                colors={getLegendColors(selectedLayer.attributes.slug)}
               />
             )}
           </div>
@@ -170,12 +166,12 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
         <SelectContent>
           <SelectGroup>
             {layers?.map((layer) => {
-              const layerSlug = layer?.layer?.data?.attributes?.slug;
+              const layerSlug = layer?.attributes?.slug;
               if (!layer.id || !layerSlug) return null;
               const colors = getLegendColors(layerSlug);
               return (
                 <SelectItem value={layerSlug} key={layer.id} className="justify-between">
-                  <p>{layer.name}</p>
+                  <p>{layer.attributes?.title}</p>
                   {isRangelandDataset && <CircleLegend colors={colors} />}
                 </SelectItem>
               );
