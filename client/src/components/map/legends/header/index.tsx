@@ -31,7 +31,7 @@ const LegendHeader = ({
         {!!info && <LayerInfo info={info} title={title} />}
         <LayerVisibility onChangeVisibility={setVisibility} visible={visible} />
         <Button onClick={handleChangeIsOpen} variant="link" className="h-fit px-0 py-0">
-          <ChevronDown className="h-5 w-5 shrink-0 group-data-[state=open]:rotate-180" />
+          <ChevronDown className="h-5 w-5 shrink-0 group-data-[state=closed]:rotate-180" />
         </Button>
       </div>
       {subtitle && <span className="text-xs">{subtitle}</span>}

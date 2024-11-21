@@ -17,6 +17,8 @@ const Legends = () => {
   const [datasets] = useSyncDatasets();
   const [open, setOpen] = useState(true);
 
+  const legendItems = Array.from(datasets).reverse();
+
   return (
     <div>
       <Popover open={open}>
@@ -39,7 +41,7 @@ const Legends = () => {
           <ScrollArea type="scroll" className="relative overflow-hidden">
             <ScrollAreaViewport className="max-h-[70vh] w-full">
               <div className="my-6 space-y-4 px-6">
-                {datasets?.map((d) => <LegendItem key={d} dataset={d} />)}
+                {legendItems?.map((d) => <LegendItem key={d} dataset={d} />)}
               </div>
               <div className="absolute bottom-0 z-50 h-7 w-[calc(100%-8px)] translate-y-2 bg-background blur-sm"></div>
             </ScrollAreaViewport>
