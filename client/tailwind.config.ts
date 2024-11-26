@@ -8,13 +8,14 @@ const config: Config = {
         global: "rgb(var(--global-rgb) / <alpha-value>)",
         foreground: "rgb(var(--foreground-rgb) / <alpha-value>)",
         background: "rgb(var(--background-rgb) / <alpha-value>)",
+        "popover-foreground": "rgb(var(--popover-foreground-rgb) / <alpha-value>)",
       },
       lineHeight: {
         relaxed: "185%",
       },
     },
     container: {
-      padding: '2rem',
+      padding: "2rem",
     },
   },
 };

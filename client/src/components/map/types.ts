@@ -35,3 +35,5 @@ export type LegendComponent = {
 };
 
 export type MapTooltipProps = Record<string, unknown>;
+
+export type Bbox = [number, number, number, number];

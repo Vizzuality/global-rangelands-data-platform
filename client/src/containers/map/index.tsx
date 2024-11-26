@@ -9,6 +9,7 @@ import Controls from "./controls";
 import MapLayers from "@/containers/navigation/map-layers";
 import { useSyncMapStyle } from "@/store/map";
 import MapTooltip from "./popups";
+import OpenStreetMapAttribution from "@/components/ui/openstreetmap-attribution";
 
 const Map = () => {
   const [mapStyle] = useSyncMapStyle();
@@ -34,6 +35,7 @@ const Map = () => {
         <MapStyles />
         <MapLayers />
       </Navigation>
+      <OpenStreetMapAttribution />
     </div>
   );
 };
