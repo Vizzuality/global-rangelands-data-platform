@@ -1,3 +1,4 @@
+import { useTranslations } from "@/i18n";
 import { PropsWithChildren } from "react";
 
 type SearchResultListProps = PropsWithChildren & {
@@ -43,16 +44,19 @@ const SearchResultItem = <T,>({ option, onOptionClick, children }: SearchResultI
   );
 };
 
-const SearchResultItemNotFound = ({ children }: PropsWithChildren) => (
-  <li
-    role="option"
-    aria-selected="false"
-    tabIndex={0}
-    className="flex gap-2 rounded px-2 py-2 text-sm opacity-70"
-  >
-    {children}
-    <span className="line-clamp-2">No results</span>
-  </li>
-);
+const SearchResultItemNotFound = ({ children }: PropsWithChildren) => {
+  const t = useTranslations();
+  return (
+    <li
+      role="option"
+      aria-selected="false"
+      tabIndex={0}
+      className="flex gap-2 rounded px-2 py-2 text-sm opacity-70"
+    >
+      {children}
+      <span className="line-clamp-2">{t("No results")}</span>
+    </li>
+  );
+};
 
 export { SearchResultList, SearchResultItem, SearchResultItemNotFound };
