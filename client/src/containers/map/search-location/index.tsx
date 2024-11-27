@@ -8,6 +8,7 @@ import {
   SearchResultList,
 } from "@/components/ui/search-location";
 import { useOpenStreetMapsLocations } from "@/hooks/openstreetmaps";
+import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { ChevronRightIcon, MapIcon, MapPinIcon, SearchIcon, XIcon } from "lucide-react";
@@ -27,6 +28,8 @@ type SearchLocationProps = {
   onOpenChange: (open: boolean) => void;
 };
 const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
+  const t = useTranslations();
+
   const [open, setOpen] = useState(true);
   const [locationSearch, setLocationSearch] = useState("");
 
@@ -118,7 +121,6 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
         </PopoverTrigger>
         <PopoverContent
           align={!debouncedSearch.length ? "center" : "start"}
-          // alignOffset={20}
           sideOffset={20}
           side="left"
           className={cn(
@@ -133,7 +135,7 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
                 onChange={handleSearchChange}
                 type="text"
                 value={locationSearch}
-                placeholder="Search"
+                placeholder={t("Search")}
                 className="w-full border-2 border-background bg-background p-2 px-9 text-sm leading-none text-foreground placeholder:text-sm placeholder:font-light placeholder:text-popover-foreground/50 focus-visible:outline-global"
               />
               {locationSearch.length >= 1 && (
@@ -152,7 +154,7 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
             </div>
 
             {!!debouncedSearch.length && (
-              <SearchResultList title="Locations">
+              <SearchResultList title={t("Locations")}>
                 {!!locationOptions?.length ? (
                   locationOptions.map((option) => (
                     <SearchResultItem
@@ -172,7 +174,7 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
             )}
 
             {!!debouncedSearch?.length && (
-              <SearchResultList title="Rangelands stories">
+              <SearchResultList title={t("Rangelands stories")}>
                 {storiesOptions?.length ? (
                   storiesOptions.map((option) => (
                     <SearchResultItem
