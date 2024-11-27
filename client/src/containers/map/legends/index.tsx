@@ -4,7 +4,6 @@ import { useSyncDatasets } from "@/store/map";
 import { Layers3Icon } from "lucide-react";
 import LegendItem from "./item";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import {
   ScrollArea,
   ScrollAreaCorner,
@@ -13,10 +12,12 @@ import {
   Scrollbar,
 } from "@radix-ui/react-scroll-area";
 
-const Legends = () => {
+type LegendsProps = {
+  open: boolean;
+  onOpenChange: (o: boolean) => void;
+};
+const Legends = ({ open, onOpenChange }: LegendsProps) => {
   const [datasets] = useSyncDatasets();
-  const [open, setOpen] = useState(true);
-
   const legendItems = Array.from(datasets).reverse();
 
   return (
@@ -24,7 +25,7 @@ const Legends = () => {
       <Popover open={open}>
         <PopoverTrigger asChild>
           <Button
-            onClick={() => setOpen(!open)}
+            onClick={() => onOpenChange(!open)}
             variant="ghost"
             className="transition-color block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 hover:bg-orange-100 focus-visible:bg-global data-[state=open]:bg-global"
           >
@@ -32,11 +33,10 @@ const Legends = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          align="start"
-          alignOffset={20}
+          align="end"
           sideOffset={20}
           side="left"
-          className="w-[348px] -translate-y-10 rounded-lg bg-background px-0 py-0 shadow-lg drop-shadow-2xl"
+          className="w-[348px] rounded-lg bg-background px-0 py-0 shadow-lg drop-shadow-2xl"
         >
           <ScrollArea type="scroll" className="relative overflow-hidden">
             <ScrollAreaViewport className="max-h-[70vh] w-full">
