@@ -2,8 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { SearchResultItem, SearchResultList } from "@/components/ui/search-location";
+import {
+  SearchResultItem,
+  SearchResultItemNotFound,
+  SearchResultList,
+} from "@/components/ui/search-location";
 import { useOpenStreetMapsLocations } from "@/hooks/openstreetmaps";
+import { cn } from "@/lib/utils";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { ChevronRightIcon, MapIcon, MapPinIcon, SearchIcon, XIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
@@ -18,7 +23,10 @@ type LocationOption = {
 
 type StoryOption = Omit<LocationOption, "bbox">;
 
-const SearchLocation = () => {
+type SearchLocationProps = {
+  onOpenChange: (open: boolean) => void;
+};
+const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
   const [open, setOpen] = useState(true);
   const [locationSearch, setLocationSearch] = useState("");
 
@@ -78,9 +86,9 @@ const SearchLocation = () => {
           duration: 1000,
           padding: { top: 50, bottom: 50, left: 350, right: 50 },
         });
-
         setLocationSearch("");
         setOpen(false);
+        onOpenChange(false);
       }
     },
     [map],
@@ -93,6 +101,7 @@ const SearchLocation = () => {
   const handleOpenChange = useCallback((open: boolean) => {
     setLocationSearch("");
     setOpen(open);
+    onOpenChange(open);
   }, []);
 
   return (
@@ -108,11 +117,14 @@ const SearchLocation = () => {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          align="start"
-          alignOffset={20}
+          align={!debouncedSearch.length ? "center" : "start"}
+          // alignOffset={20}
           sideOffset={20}
           side="left"
-          className="relative z-50 w-[348px] -translate-y-10 overflow-hidden rounded-lg bg-background px-0 py-0 shadow-lg drop-shadow-2xl"
+          className={cn(
+            "relative z-50 w-[348px] overflow-hidden rounded-lg bg-background px-0 py-0 shadow-lg drop-shadow-2xl",
+            !!debouncedSearch.length && "mb-5",
+          )}
         >
           <div>
             <div className="relative flex items-center justify-between p-1">
@@ -122,7 +134,7 @@ const SearchLocation = () => {
                 type="text"
                 value={locationSearch}
                 placeholder="Search"
-                className="placeholder:text-popover-foreground/50 w-full border-2 border-background bg-background p-2 px-9 text-sm leading-none text-foreground placeholder:text-sm placeholder:font-light focus-visible:outline-global"
+                className="w-full border-2 border-background bg-background p-2 px-9 text-sm leading-none text-foreground placeholder:text-sm placeholder:font-light placeholder:text-popover-foreground/50 focus-visible:outline-global"
               />
               {locationSearch.length >= 1 && (
                 <Button
@@ -139,31 +151,43 @@ const SearchLocation = () => {
               </PopoverClose>
             </div>
 
-            {!!locationOptions.length && (
+            {!!debouncedSearch.length && (
               <SearchResultList title="Locations">
-                {locationOptions.map((option) => (
-                  <SearchResultItem
-                    key={option.value}
-                    option={option}
-                    onOptionClick={handleOptionClick}
-                  >
+                {!!locationOptions?.length ? (
+                  locationOptions.map((option) => (
+                    <SearchResultItem
+                      key={option.value}
+                      option={option}
+                      onOptionClick={handleOptionClick}
+                    >
+                      <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0" />
+                    </SearchResultItem>
+                  ))
+                ) : (
+                  <SearchResultItemNotFound>
                     <MapPinIcon className="mt-0.5 h-4 w-4 shrink-0" />
-                  </SearchResultItem>
-                ))}
+                  </SearchResultItemNotFound>
+                )}
               </SearchResultList>
             )}
 
-            {!!storiesOptions?.length && (
+            {!!debouncedSearch?.length && (
               <SearchResultList title="Rangelands stories">
-                {storiesOptions.map((option) => (
-                  <SearchResultItem
-                    key={option.value}
-                    option={option}
-                    onOptionClick={handleStoryOptionClick}
-                  >
+                {storiesOptions?.length ? (
+                  storiesOptions.map((option) => (
+                    <SearchResultItem
+                      key={option.value}
+                      option={option}
+                      onOptionClick={handleStoryOptionClick}
+                    >
+                      <MapIcon className="mt-0.5 h-4 w-4 shrink-0" />
+                    </SearchResultItem>
+                  ))
+                ) : (
+                  <SearchResultItemNotFound>
                     <MapIcon className="mt-0.5 h-4 w-4 shrink-0" />
-                  </SearchResultItem>
-                ))}
+                  </SearchResultItemNotFound>
+                )}
               </SearchResultList>
             )}
           </div>
