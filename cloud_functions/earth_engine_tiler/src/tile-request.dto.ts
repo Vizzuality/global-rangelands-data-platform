@@ -15,7 +15,10 @@ export enum Tilesets {
   gridded_livestock_goat = "gridded_livestock_goat",
   gridded_livestock_horse = "gridded_livestock_horse",
   gridded_livestock_pig = "gridded_livestock_pig",
-  gridded_livestock_sheep = "gridded_livestock_sheep"
+  gridded_livestock_sheep = "gridded_livestock_sheep",
+  surface_water = "surface_water",
+  forest_gain = "forest_gain",
+  population_count = "population_count"
 }
 
 
