@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
-import { DefaultLayerComponent, LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
 import { CalendarDaysIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo } from "react";
@@ -18,6 +18,10 @@ const isCorrectTimeSelect = (timeSelect: unknown): timeSelect is [number, number
     timeSelect.length === 2 &&
     timeSelect.every((t) => typeof t === "number")
   );
+};
+
+const isCorrectTimeValues = (timeValues: unknown): timeValues is number[] => {
+  return Array.isArray(timeValues) && timeValues.every((t) => typeof t === "number");
 };
 
 type TemporalDatasetItemSelectProps = {
@@ -59,19 +63,27 @@ const TemporalDatasetItemSelect = ({
 };
 
 const _getOptions = (params_config: unknown, start?: number, end?: number) => {
+  const timeValues = (params_config as Record<string, unknown>[])?.find(
+    (p) => p.key === "time-values",
+  )?.default;
   const timeSelect = (params_config as Record<string, unknown>[])?.find(
     (p) => p.key === "time-select",
   )?.default;
 
-  return isCorrectTimeSelect(timeSelect)
-    ? Array.from({ length: timeSelect[1] - timeSelect[0] + 1 }, (_, i) => {
-        const value = timeSelect[0] + i;
-        return {
-          value,
-          disabled: (!!start && value <= Number(start)) || (!!end && value >= Number(end)),
-        };
-      })
-    : [];
+  return timeValues && isCorrectTimeValues(timeValues)
+    ? timeValues.map((value) => ({
+        value,
+        disabled: (!!start && value <= Number(start)) || (!!end && value >= Number(end)),
+      }))
+    : isCorrectTimeSelect(timeSelect)
+      ? Array.from({ length: timeSelect[1] - timeSelect[0] + 1 }, (_, i) => {
+          const value = timeSelect[0] + i;
+          return {
+            value,
+            disabled: (!!start && value <= Number(start)) || (!!end && value >= Number(end)),
+          };
+        })
+      : [];
 };
 
 const selectTypes = ["absolute", "changes"] as const;
