@@ -24,20 +24,30 @@ const isCorrectTimeSelect = (timeSelect: unknown): timeSelect is [number, number
     timeSelect.every((t) => typeof t === "number")
   );
 };
+
+const isCorrectTimeValues = (timeValues: unknown): timeValues is number[] => {
+  return Array.isArray(timeValues) && timeValues.every((t) => typeof t === "number");
+};
 export const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
   const timeSelect = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
     (p) => p.key === "time-select",
   )?.default;
+  const timeValues = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
+    (p) => p.key === "time-values",
+  )?.default;
   const defaultSelected = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
-    (p) => p.key === "year",
+    (p) => p.key === "startYear",
   )?.default;
 
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
   const [layers] = useSyncLayers();
 
-  const options = isCorrectTimeSelect(timeSelect)
-    ? Array.from({ length: timeSelect[1] - timeSelect[0] + 1 }, (_, i) => timeSelect[0] + i)
-    : undefined;
+  const options =
+    timeValues && isCorrectTimeValues(timeValues)
+      ? timeValues
+      : isCorrectTimeSelect(timeSelect)
+        ? Array.from({ length: timeSelect[1] - timeSelect[0] + 1 }, (_, i) => timeSelect[0] + i)
+        : undefined;
 
   const layerSlug = layer?.attributes?.slug;
 
@@ -48,13 +58,13 @@ export const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
         ...prev,
         [layerSlug]: {
           ...(prev ? prev[layerSlug] : {}),
-          year: parseInt(value),
+          startYear: parseInt(value),
         },
       };
     });
   };
 
-  const value = layerSlug && (layersSettings?.[layerSlug]?.year as string | undefined);
+  const value = layerSlug && (layersSettings?.[layerSlug]?.startYear as string | undefined);
   const defaultValue = typeof defaultSelected === "number" ? `${defaultSelected}` : undefined;
   const isDisabled = !layerSlug || !layers?.includes(layerSlug);
 
