@@ -46,6 +46,12 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
     {
       query: {
         enabled: !!datasetLayers.length,
+        select: (data) => ({
+          ...data,
+          data: data.data?.sort(
+            (a, b) => datasetLayers.indexOf(a.id) - datasetLayers.indexOf(b.id),
+          ),
+        }),
       },
     },
   );

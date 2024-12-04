@@ -84,7 +84,7 @@ const LayerManager = () => {
         */}
         {LAYERS.map((l, i) => {
           const beforeId = i === 0 ? baseLayer : `${LAYERS[i - 1]}-layer`;
-          console.log(layersSettings?.[l]);
+
           return (
             <LayerManagerItem
               key={l}
