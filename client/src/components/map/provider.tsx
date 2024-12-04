@@ -144,7 +144,6 @@ export const useDeckMapboxOverlay = ({
   useEffect(() => {
     if (!layer) return;
     return () => {
-      console.log("removeLayer", i);
       removeLayer(i);
     };
   }, [i, removeLayer]); // eslint-disable-line react-hooks/exhaustive-deps
