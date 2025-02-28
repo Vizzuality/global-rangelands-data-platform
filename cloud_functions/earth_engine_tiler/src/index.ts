@@ -19,12 +19,15 @@ import {GriddedLivestockPig} from './geeAssets/gridded-livestock-pig';
 import {GriddedLivestockSheep} from './geeAssets/gridded-livestock-sheep'; 
 import {SurfaceWater} from './geeAssets/surface-water';
 import {ForestGain} from './geeAssets/forest-gain';
-import { PopulationCount } from './geeAssets/population-count';
+import {PopulationCount} from './geeAssets/population-count';
+import {LandCover} from './geeAssets/land-cover';
+import {SocStock} from './geeAssets/soc-stock';
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
 import {default as fetch , Response as FetchResponse} from "node-fetch";
 import {pipeline} from "stream/promises";
 import * as crypto from "crypto";
+
 
 //Asset Mapping
 const assets: Record<Tilesets, EarthEngineDataset> = {
@@ -44,7 +47,9 @@ const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.gridded_livestock_sheep]: GriddedLivestockSheep,
   [Tilesets.surface_water]: SurfaceWater,
   [Tilesets.forest_gain]: ForestGain,
-  [Tilesets.population_count]: PopulationCount
+  [Tilesets.population_count]: PopulationCount,
+  [Tilesets.land_cover]: LandCover,
+  [Tilesets.soc_stock]: SocStock,
 }
 
 //We're using express to simplify path parameter parsing for the Tiles endpoint
