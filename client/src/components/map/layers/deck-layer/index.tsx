@@ -13,7 +13,7 @@ export type DeckLayerProps<T> = LayerProps &
   };
 
 const DeckJsonLayer = <T,>({ id, config }: DeckLayerProps<T>) => {
-  const i = `${id}-deck`;
+  // const i = `${id}-deck`;
   const { addLayer, removeLayer } = useDeckMapboxOverlayContext();
 
   useEffect(() => {
@@ -24,12 +24,12 @@ const DeckJsonLayer = <T,>({ id, config }: DeckLayerProps<T>) => {
 
       addLayer(config);
     }, 10);
-  }, [i, id, config, addLayer]);
+  }, [id, config, addLayer]);
 
   useEffect(() => {
     if (!config) return;
     return () => {
-      removeLayer(i);
+      removeLayer(id || "");
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

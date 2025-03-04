@@ -5,10 +5,12 @@ import { InteractionConfig } from "@/types/layers";
 import { useAtomValue } from "jotai";
 import { createElement, useMemo } from "react";
 import RangelandsTooltip from "@/components/map/tooltip/components/rangelands";
+import PastoralistTooltip from "@/components/map/tooltip/components/postoralists";
 import { useLocale } from "next-intl";
 
 const PopupItemComponent = {
   RangelandsTooltip,
+  PastoralistTooltip,
 };
 
 type PopupItemComponentType = keyof typeof PopupItemComponent;
@@ -45,7 +47,7 @@ const Item = ({ slug }: PopupItemProps) => {
       const props = popupConfig?.values?.reduce<Record<string, unknown>>((acc, curr) => {
         return {
           ...acc,
-          [curr.key]: info?.object.properties?.[curr.value],
+          [curr.key]: info?.object?.properties?.[curr.value],
         };
       }, {});
       return createElement(PopupItemComponent[type], props);

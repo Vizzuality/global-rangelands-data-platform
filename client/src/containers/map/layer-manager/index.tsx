@@ -66,11 +66,12 @@ const LayerManager = () => {
           - https://github.com/visgl/react-map-gl/issues/939#issuecomment-625290200
         */}
         {LAYERS.map((l, i) => {
-          const beforeId = i === 0 ? baseLayer : `${LAYERS[i - 1]}-layer`;
+          const id = `${l}-background-layer`;
+          const beforeId = i === 0 ? baseLayer : `${LAYERS[i - 1]}-background-layer`;
           return (
             <Layer
-              id={`${l}-layer`}
-              key={l}
+              id={id}
+              key={id}
               type="background"
               layout={{ visibility: "none" }}
               beforeId={beforeId}
@@ -83,12 +84,12 @@ const LayerManager = () => {
           The first item will always be at the top of the layers stack
         */}
         {LAYERS.map((l, i) => {
-          const beforeId = i === 0 ? baseLayer : `${LAYERS[i - 1]}-layer`;
-
+          const id = l;
+          const beforeId = `${l}-background-layer`;
           return (
             <LayerManagerItem
-              key={l}
-              id={l}
+              key={id}
+              id={id}
               beforeId={beforeId}
               settings={{
                 // ...{ opacity: 1, visibility: true },

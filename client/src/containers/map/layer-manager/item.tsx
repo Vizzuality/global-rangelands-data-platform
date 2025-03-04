@@ -36,9 +36,9 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   const c = parseConfig<Layer>({
     config: {
       ...config,
-      id: `${id}-layer-deck`,
+      id,
       slug: id,
-      beforeId: `${id}-layer`,
+      beforeId,
     },
     params_config,
     settings: {
@@ -49,10 +49,10 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   });
 
   if (isValidElement(c)) {
-    return cloneElement(c, { id: `${id}-layer`, key: `${id}-layer` });
+    return cloneElement(c, { id, key: `${id}-layer` });
   }
 
-  return <DeckLayer key={`${id}-layer`} id={`${id}-layer`} beforeId={beforeId} config={c} />;
+  return <DeckLayer key={`${id}-layer`} id={id} beforeId={beforeId} config={c} />;
 };
 
 export default LayerManagerItem;

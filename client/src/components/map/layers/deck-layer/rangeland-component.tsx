@@ -2,6 +2,13 @@ import { MVTLayer } from "@deck.gl/geo-layers";
 import { useDeckMapboxOverlayContext } from "../../provider";
 import { env } from "@/env.mjs";
 import { useEffect, useMemo, useState } from "react";
+import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
+import { useGetLayers } from "@/types/generated/layer";
+import {
+  RANGELAND_BIOMES,
+  RANGELAND_ECOREGIONS,
+  RANGELAND_SYSTEM,
+} from "@/containers/datasets/constants";
 
 export interface RangelandsLayerComponentProps {
   id: string;
@@ -10,7 +17,58 @@ export interface RangelandsLayerComponentProps {
   visibility?: boolean;
   colorProperty: string;
   lineWidth?: number;
+  beforeId?: string;
 }
+
+const RANGELANDS_LAYERS_SLUGS = [RANGELAND_SYSTEM, RANGELAND_BIOMES, RANGELAND_ECOREGIONS];
+
+const useIsPickable = () => {
+  const [layers] = useSyncLayers();
+  const [layerSettings] = useSyncLayersSettings();
+
+  const { data: layersData } = useGetLayers(
+    {
+      filters: {
+        slug: {
+          $in: layers,
+        },
+      },
+    },
+    {
+      query: {
+        enabled: layers.length > 1,
+      },
+    },
+  );
+
+  // This is a fix to a bug with the deckgl layers interaction order. The Rangelands layer is always picked, regardless of the layers order. For that reason if there is a layer on top of the rangelands that is pickable, the Rangelands layer should NOT be pickable, so that the top layer can be interactive.
+  const isPickable = useMemo(() => {
+    if (!layersData?.data || (layers.length === 1 && RANGELANDS_LAYERS_SLUGS.includes(layers[0]))) {
+      return true;
+    }
+    const rangelandsLayerIndex = layers.findIndex((layer) =>
+      RANGELANDS_LAYERS_SLUGS.includes(layer),
+    );
+
+    const firstPickableLayerIndex = layers?.findIndex((layer) => {
+      const layerData = layersData?.data?.find((l) => l.attributes?.slug === layer);
+
+      if (!layerData?.attributes?.slug) return -1;
+
+      const layerSetting: Record<string, unknown> | undefined =
+        layerSettings?.[layerData.attributes?.slug];
+
+      return (
+        (layerData?.attributes?.config as Record<string, unknown>)?.pickable &&
+        (!layerSetting || layerSetting?.visibility)
+      );
+    });
+
+    return rangelandsLayerIndex > firstPickableLayerIndex;
+  }, [layersData, layers]);
+
+  return isPickable;
+};
 
 const RangelandsLayerComponent = ({
   id,
@@ -19,20 +77,24 @@ const RangelandsLayerComponent = ({
   visibility,
   colorProperty,
   lineWidth = 1,
+  beforeId,
   ...props
 }: RangelandsLayerComponentProps) => {
   const dataWithMapboxToken = data + `?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
   const [hoveredProperty, setHoveredProperty] = useState(null);
   const i = `${id}-deck`;
   const { addLayer, removeLayer } = useDeckMapboxOverlayContext();
+  const isPickable = useIsPickable();
+
   const config = useMemo(
     () =>
       new MVTLayer({
         id: i,
         data: dataWithMapboxToken,
+        beforeId,
         opacity: opacity ?? 1,
         visible: visibility ?? true,
-        pickable: true,
+        pickable: isPickable,
         onHover: (info) => {
           setHoveredProperty(info?.object?.properties?.[colorProperty]);
         },
@@ -46,7 +108,7 @@ const RangelandsLayerComponent = ({
         },
         ...props,
       }),
-    [id, dataWithMapboxToken, opacity, visibility, props],
+    [id, dataWithMapboxToken, opacity, visibility, props, isPickable],
   );
 
   useEffect(() => {

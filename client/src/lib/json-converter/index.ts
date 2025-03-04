@@ -15,6 +15,7 @@ import RasterLayer from "@/components/map/layers/deck-layer/raster";
 import BasicLegend from "@/components/map/legends/content/basic";
 import RangelandLegend from "@/components/map/legends/content/rangeland";
 import RangelandsLayerComponent from "@/components/map/layers/deck-layer/rangeland-component";
+import PastoralistLayerComponent from "@/components/map/layers/deck-layer/pastoralist-component";
 
 export const JSON_CONFIGURATION = new JSONConfiguration({
   React,
@@ -32,6 +33,7 @@ export const JSON_CONFIGURATION = new JSONConfiguration({
     BasicLegend,
     RangelandLegend,
     RangelandsLayerComponent,
+    PastoralistLayerComponent,
   },
 });
 
