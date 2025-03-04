@@ -17,7 +17,8 @@ const MapTooltip = ({ latitude, longitude, onClose, children }: MapTooltipProps)
       longitude={longitude}
       latitude={latitude}
       closeOnClick={false}
-      className="w-[300px] rounded-lg"
+      maxWidth="308px"
+      className="z-[60] rounded-lg"
       closeButton={false}
     >
       <Button

@@ -44,14 +44,13 @@ function useMapboxOverlay(
     () =>
       new MapboxOverlay({
         ...props,
-
         onClick: (info) => {
-          setDeckInteractiveLayers((prev) => {
+          setDeckInteractiveLayers(() => {
             const slug =
               info?.layer?.props &&
               "slug" in info?.layer?.props &&
               (info?.layer?.props?.slug as string);
-            if (!slug) return prev;
+            if (!slug) return {};
             return {
               [slug]: info,
             };

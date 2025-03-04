@@ -95,7 +95,7 @@ const PastoralistLayerComponent = ({
         beforeId,
         opacity,
         visible: visibility,
-        // pickable: false,
+        pickable: true,
         onClick: (info) => {
           if (!info?.object) return;
           setHoveredProperty(`${info?.object?.properties.name}-${info?.object?.id}`);
