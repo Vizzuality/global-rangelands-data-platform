@@ -10,6 +10,7 @@ export interface RangelandsLayerComponentProps {
   visibility?: boolean;
   colorProperty: string;
   lineWidth?: number;
+  beforeId?: string;
 }
 
 const RangelandsLayerComponent = ({
@@ -19,6 +20,7 @@ const RangelandsLayerComponent = ({
   visibility,
   colorProperty,
   lineWidth = 1,
+  beforeId,
   ...props
 }: RangelandsLayerComponentProps) => {
   const dataWithMapboxToken = data + `?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
@@ -30,8 +32,10 @@ const RangelandsLayerComponent = ({
       new MVTLayer({
         id: i,
         data: dataWithMapboxToken,
+        beforeId,
         opacity: opacity ?? 1,
         visible: visibility ?? true,
+
         pickable: true,
         onHover: (info) => {
           setHoveredProperty(info?.object?.properties?.[colorProperty]);
