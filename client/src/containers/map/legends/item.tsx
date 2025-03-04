@@ -101,6 +101,17 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
     }
   };
 
+  const subtitle = useMemo(() => {
+    if (datasetData?.data?.attributes?.type === "Group") {
+      const layerName = datasetLayer?.attributes?.title;
+      const items = datasetLayer?.attributes?.legend?.items;
+      if (items?.[0]?.name !== layerName) {
+        return layerName;
+      }
+    }
+    return;
+  }, [datasetData?.data?.attributes?.type, datasetLayer?.attributes]);
+
   return (
     <Collapsible open={isOpen} defaultOpen asChild>
       <div className="group space-y-2 border-b border-b-gray-300 pb-4 last-of-type:border-b-0 last-of-type:pb-0">
@@ -108,6 +119,7 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
           visible={settings.visibility}
           opacity={settings.opacity}
           title={datasetData?.data?.attributes?.title}
+          subtitle={subtitle}
           handleChangeIsOpen={() => setIsOpen((prev) => !prev)}
           info={datasetLayer?.attributes?.description}
           setOpacity={(o) => setLayerSettings("opacity", o)}
