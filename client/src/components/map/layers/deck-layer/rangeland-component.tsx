@@ -65,7 +65,7 @@ const useIsPickable = () => {
       );
     });
 
-    return firstPickableLayerIndex === -1 || rangelandsLayerIndex > firstPickableLayerIndex;
+    return rangelandsLayerIndex > firstPickableLayerIndex;
   }, [layersData, layers]);
 
   return isPickable;
