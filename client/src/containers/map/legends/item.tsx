@@ -125,7 +125,14 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
           setOpacity={(o) => setLayerSettings("opacity", o)}
           setVisibility={(v) => setLayerSettings("visibility", v)}
         />
-        <CollapsibleContent>{LEGEND}</CollapsibleContent>
+        <CollapsibleContent>
+          {datasetLayer?.attributes?.legend?.unit && (
+            <div className="mb-1.5 flex items-end justify-end">
+              <span className="text-xs">{datasetLayer?.attributes?.legend?.unit}</span>
+            </div>
+          )}
+          {LEGEND}
+        </CollapsibleContent>
       </div>
     </Collapsible>
   );

@@ -19,9 +19,10 @@ export type ParamsConfig = ParamsConfigValue[];
 export type LegendConfig = {
   type: "basic" | "gradient" | "choropleth";
   items: {
-    value: string;
-    color: string;
+    value?: string;
+    color?: string;
   }[];
+  unit?: string;
 };
 
 export type InteractionConfig = {

@@ -743,6 +743,7 @@ export interface DefaultLegendComponent {
   id?: number;
   items?: DefaultLegendComponentItemsItem[];
   type?: DefaultLegendComponentType;
+  unit?: string;
 }
 
 export type LayerResponseMeta = { [key: string]: any };
@@ -1500,6 +1501,7 @@ export type DefaultLayerComponentLayerDataAttributesLegend = {
   id?: number;
   items?: DefaultLayerComponentLayerDataAttributesLegendItemsItem[];
   type?: DefaultLayerComponentLayerDataAttributesLegendType;
+  unit?: string;
 };
 
 export type DefaultLayerComponentLayerDataAttributesCreatedBy = {
