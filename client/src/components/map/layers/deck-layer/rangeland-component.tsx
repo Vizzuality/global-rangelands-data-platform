@@ -22,6 +22,7 @@ export interface RangelandsLayerComponentProps {
 
 const RANGELANDS_LAYERS_SLUGS = [RANGELAND_SYSTEM, RANGELAND_BIOMES, RANGELAND_ECOREGIONS];
 
+// This is a fix to a bug with the deckgl layers interaction order. The Rangelands layer is always picked, regardless of the layers order. For that reason if there is a layer on top of the rangelands that is pickable, the Rangelands layer should NOT be pickable, so that the top layer can be interactive.
 const useIsPickable = () => {
   const [layers] = useSyncLayers();
   const [layerSettings] = useSyncLayersSettings();
@@ -41,11 +42,11 @@ const useIsPickable = () => {
     },
   );
 
-  // This is a fix to a bug with the deckgl layers interaction order. The Rangelands layer is always picked, regardless of the layers order. For that reason if there is a layer on top of the rangelands that is pickable, the Rangelands layer should NOT be pickable, so that the top layer can be interactive.
   const isPickable = useMemo(() => {
     if (!layersData?.data || (layers.length === 1 && RANGELANDS_LAYERS_SLUGS.includes(layers[0]))) {
       return true;
     }
+
     const rangelandsLayerIndex = layers.findIndex((layer) =>
       RANGELANDS_LAYERS_SLUGS.includes(layer),
     );
@@ -53,7 +54,7 @@ const useIsPickable = () => {
     const firstPickableLayerIndex = layers?.findIndex((layer) => {
       const layerData = layersData?.data?.find((l) => l.attributes?.slug === layer);
 
-      if (!layerData?.attributes?.slug) return -1;
+      if (!layerData?.attributes?.slug) return false;
 
       const layerSetting: Record<string, unknown> | undefined =
         layerSettings?.[layerData.attributes?.slug];

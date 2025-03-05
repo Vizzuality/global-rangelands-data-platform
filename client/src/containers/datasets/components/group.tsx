@@ -52,12 +52,8 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
     setSyncLayers((prev) => {
       // If there is already a layer from the same dataset, remove the old layer and add the selected one
       if (datasetLayers?.includes(layerSlug)) {
-        return [
-          ...prev.filter((id) => {
-            return !datasetLayers?.includes(id);
-          }),
-          layerSlug,
-        ];
+        const existingLayerInGroup = prev.find((id) => datasetLayers?.includes(id));
+        return prev.map((id) => (id === existingLayerInGroup ? layerSlug : id));
       }
       return [...prev, layerSlug];
     });
