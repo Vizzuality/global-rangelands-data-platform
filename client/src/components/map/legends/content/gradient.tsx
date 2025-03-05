@@ -8,7 +8,9 @@ type LegendComponentProps = {
 const GradientLegend = ({ items }: LegendComponentProps) => {
   const gradient = useMemo(
     () =>
-      items?.reduce<string[]>((acc, { color }) => (color ? [...acc, color] : acc), [])?.join(", "),
+      items
+        ?.reduce<string[]>((acc, { color }) => (color ? [...acc, color] : acc), [])
+        ?.join(", " || ""),
     [items],
   );
 

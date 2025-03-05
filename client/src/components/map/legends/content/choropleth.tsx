@@ -7,7 +7,7 @@ type LegendComponentProps = {
 };
 
 export const LegendChoropleth: React.FC<LegendComponentProps> = ({ items }) => {
-  const validItems = useMemo(() => items?.filter(({ color }) => color), [items]);
+  const validItems = useMemo(() => items?.filter(({ color }) => color) || [], [items]);
   return (
     <div>
       <ul className="flex w-full overflow-hidden rounded-full">
@@ -16,7 +16,7 @@ export const LegendChoropleth: React.FC<LegendComponentProps> = ({ items }) => {
             key={`${color}`}
             className="h-2 flex-shrink-0"
             style={{
-              width: `${100 / validItems.length}%`,
+              width: `${100 / validItems?.length || 1}%`,
               backgroundColor: color,
             }}
           />
@@ -29,7 +29,7 @@ export const LegendChoropleth: React.FC<LegendComponentProps> = ({ items }) => {
             key={`${name}`}
             className="flex-shrink-0 text-center text-xs"
             style={{
-              width: `${100 / validItems.length}%`,
+              width: `${100 / validItems?.length || 1}%`,
             }}
           >
             {name}
