@@ -46,6 +46,7 @@ const useIsPickable = () => {
     if (!layersData?.data || (layers.length === 1 && RANGELANDS_LAYERS_SLUGS.includes(layers[0]))) {
       return true;
     }
+
     const rangelandsLayerIndex = layers.findIndex((layer) =>
       RANGELANDS_LAYERS_SLUGS.includes(layer),
     );
@@ -53,7 +54,7 @@ const useIsPickable = () => {
     const firstPickableLayerIndex = layers?.findIndex((layer) => {
       const layerData = layersData?.data?.find((l) => l.attributes?.slug === layer);
 
-      if (!layerData?.attributes?.slug) return -1;
+      if (!layerData?.attributes?.slug) return;
 
       const layerSetting: Record<string, unknown> | undefined =
         layerSettings?.[layerData.attributes?.slug];
@@ -64,7 +65,7 @@ const useIsPickable = () => {
       );
     });
 
-    return rangelandsLayerIndex > firstPickableLayerIndex;
+    return firstPickableLayerIndex === -1 || rangelandsLayerIndex > firstPickableLayerIndex;
   }, [layersData, layers]);
 
   return isPickable;

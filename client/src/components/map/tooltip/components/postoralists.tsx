@@ -43,7 +43,7 @@ const SpeciesIcons = {
 const SpeciesCategories = {
   "Camelids (dromedaries, bactrians, llamas, alpacas)": "rgba(29, 39, 117, 1)",
   "Large ruminants (cattle, buffaloes)": "rgba(178, 35, 141, 1)",
-  "Small ruminants (sheep, goats)": "rgba(141, 229, 228, 1)",
+  "Small ruminants (sheep, goats)": "#45C1C0",
   "Other (reindeer, yaks, horses, donkeys)": "rgba(23, 160, 13, 1)",
 };
 
@@ -131,7 +131,7 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
           </ul>
           <p className="mt-2 text-xs text-foreground">
             {content.species?.map((s, i) => (
-              <>
+              <span key={s}>
                 {s}
                 <span className="text-foreground/60">
                   {content.breeds?.[s]?.[0] ? ` (${content.breeds?.[s]})` : ""}
@@ -141,7 +141,7 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
                   : i < (content.species?.length || 0) - 1
                     ? ", "
                     : ""}
-              </>
+              </span>
             ))}
           </p>
         </div>
