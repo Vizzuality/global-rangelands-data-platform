@@ -52,6 +52,8 @@ export interface DefaultLegend extends Schema.Component {
       Attribute.DefaultTo<'Basic'>;
     items: Attribute.Component<'default.item', true>;
     unit: Attribute.String;
+    unit_es: Attribute.String;
+    unit_fr: Attribute.String;
   };
 }
 

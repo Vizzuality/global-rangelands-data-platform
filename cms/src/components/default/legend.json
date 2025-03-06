@@ -25,6 +25,12 @@
     },
     "unit": {
       "type": "string"
+    },
+    "unit_es": {
+      "type": "string"
+    },
+    "unit_fr": {
+      "type": "string"
     }
   }
 }
