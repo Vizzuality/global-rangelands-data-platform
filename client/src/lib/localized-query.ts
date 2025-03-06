@@ -154,6 +154,13 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
       });
       const { id, ...translatedAtt } = localeTranslation || {};
 
+      const legendUnit =
+        (attributes?.legend &&
+          (attributes?.legend as DefaultLegendComponent)?.[
+            `unit_${locale}` as keyof DefaultLegendComponent
+          ]) ||
+        (attributes?.legend as DefaultLegendComponent)?.unit;
+
       const legendItems = (attributes?.legend as DefaultLegendComponent)?.items?.map((i) => {
         const localeName = i[`name_${locale}` as keyof DefaultLegendComponentItemsItem];
         const legendItemName =
@@ -171,6 +178,7 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
       const legend = attributes.legend
         ? {
             ...attributes.legend,
+            unit: legendUnit,
             items: legendItems,
           }
         : {};
