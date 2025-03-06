@@ -28,10 +28,10 @@ const GradientLegend = ({ items }: LegendComponentProps) => {
         }}
       />
       <ul className="mt-1 flex w-full justify-between">
-        {labels?.map(({ name }) => (
+        {labels?.map(({ name }, i) => (
           <li
             key={`${name}`}
-            className="flex-1 flex-shrink-0 text-center text-xs font-light text-foreground first-of-type:text-start last-of-type:text-end"
+            className="flex-[2] flex-shrink-0 text-center text-xs font-light text-foreground first:flex-1 first:text-left last:flex-1 last:text-right first-of-type:w-0 first-of-type:text-start last-of-type:text-end"
           >
             {name}
           </li>
