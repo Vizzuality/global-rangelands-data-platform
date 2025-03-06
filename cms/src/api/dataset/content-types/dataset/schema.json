@@ -67,6 +67,12 @@
       "pluginOptions": {},
       "component": "translations.dataset-translation",
       "max": 2
+    },
+    "story": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::story.story",
+      "inversedBy": "datasets"
     }
   }
 }

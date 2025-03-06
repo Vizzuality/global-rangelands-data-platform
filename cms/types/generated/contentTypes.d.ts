@@ -362,203 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiDatasetDataset extends Schema.CollectionType {
-  collectionName: 'datasets';
-  info: {
-    singularName: 'dataset';
-    pluralName: 'datasets';
-    displayName: 'Dataset';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required & Attribute.Unique;
-    type: Attribute.Enumeration<['Group', 'Temporal', 'Simple']> &
-      Attribute.Required &
-      Attribute.DefaultTo<'Group'>;
-    layers: Attribute.Component<'default.layer', true> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    citations: Attribute.Component<'default.citations', true>;
-    sources: Attribute.Component<'default.source'>;
-    slug: Attribute.String;
-    description: Attribute.RichText;
-    translations: Attribute.Component<
-      'translations.dataset-translation',
-      true
-    > &
-      Attribute.SetMinMax<
-        {
-          max: 2;
-        },
-        number
-      >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::dataset.dataset',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::dataset.dataset',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiEcoregionEcoregion extends Schema.CollectionType {
-  collectionName: 'ecoregions';
-  info: {
-    singularName: 'ecoregion';
-    pluralName: 'ecoregions';
-    displayName: 'Ecoregion';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    slug: Attribute.String;
-    code: Attribute.String;
-    rangeland: Attribute.Relation<
-      'api::ecoregion.ecoregion',
-      'manyToOne',
-      'api::rangeland.rangeland'
-    >;
-    color: Attribute.String;
-    translations: Attribute.Component<
-      'translations.ecoregion-translation',
-      true
-    > &
-      Attribute.SetMinMax<
-        {
-          max: 2;
-        },
-        number
-      >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::ecoregion.ecoregion',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::ecoregion.ecoregion',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiLayerLayer extends Schema.CollectionType {
-  collectionName: 'layers';
-  info: {
-    singularName: 'layer';
-    pluralName: 'layers';
-    displayName: 'Layer';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required & Attribute.Unique;
-    description: Attribute.Text;
-    config: Attribute.JSON & Attribute.Required;
-    params_config: Attribute.JSON;
-    legend: Attribute.Component<'default.legend'> & Attribute.Required;
-    interaction_config: Attribute.JSON;
-    slug: Attribute.String;
-    translations: Attribute.Component<'translations.layer-translation', true> &
-      Attribute.SetMinMax<
-        {
-          max: 2;
-        },
-        number
-      >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::layer.layer',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::layer.layer',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRangelandRangeland extends Schema.CollectionType {
-  collectionName: 'rangelands';
-  info: {
-    singularName: 'rangeland';
-    pluralName: 'rangelands';
-    displayName: 'Rangeland';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required;
-    slug: Attribute.String;
-    code: Attribute.String;
-    color: Attribute.String;
-    ecoregions: Attribute.Relation<
-      'api::rangeland.rangeland',
-      'oneToMany',
-      'api::ecoregion.ecoregion'
-    >;
-    translations: Attribute.Component<
-      'translations.rangeland-translation',
-      true
-    > &
-      Attribute.SetMinMax<
-        {
-          max: 2;
-        },
-        number
-      >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::rangeland.rangeland',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::rangeland.rangeland',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -1024,6 +827,250 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiDatasetDataset extends Schema.CollectionType {
+  collectionName: 'datasets';
+  info: {
+    singularName: 'dataset';
+    pluralName: 'datasets';
+    displayName: 'Dataset';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    type: Attribute.Enumeration<['Group', 'Temporal', 'Simple']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'Group'>;
+    layers: Attribute.Component<'default.layer', true> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    citations: Attribute.Component<'default.citations', true>;
+    sources: Attribute.Component<'default.source'>;
+    slug: Attribute.String;
+    description: Attribute.RichText;
+    translations: Attribute.Component<
+      'translations.dataset-translation',
+      true
+    > &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
+    story: Attribute.Relation<
+      'api::dataset.dataset',
+      'manyToOne',
+      'api::story.story'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::dataset.dataset',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::dataset.dataset',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiEcoregionEcoregion extends Schema.CollectionType {
+  collectionName: 'ecoregions';
+  info: {
+    singularName: 'ecoregion';
+    pluralName: 'ecoregions';
+    displayName: 'Ecoregion';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    slug: Attribute.String;
+    code: Attribute.String;
+    rangeland: Attribute.Relation<
+      'api::ecoregion.ecoregion',
+      'manyToOne',
+      'api::rangeland.rangeland'
+    >;
+    color: Attribute.String;
+    translations: Attribute.Component<
+      'translations.ecoregion-translation',
+      true
+    > &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::ecoregion.ecoregion',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::ecoregion.ecoregion',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiLayerLayer extends Schema.CollectionType {
+  collectionName: 'layers';
+  info: {
+    singularName: 'layer';
+    pluralName: 'layers';
+    displayName: 'Layer';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    description: Attribute.Text;
+    config: Attribute.JSON & Attribute.Required;
+    params_config: Attribute.JSON;
+    legend: Attribute.Component<'default.legend'> & Attribute.Required;
+    interaction_config: Attribute.JSON;
+    slug: Attribute.String;
+    translations: Attribute.Component<'translations.layer-translation', true> &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::layer.layer',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::layer.layer',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiRangelandRangeland extends Schema.CollectionType {
+  collectionName: 'rangelands';
+  info: {
+    singularName: 'rangeland';
+    pluralName: 'rangelands';
+    displayName: 'Rangeland';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    slug: Attribute.String;
+    code: Attribute.String;
+    color: Attribute.String;
+    ecoregions: Attribute.Relation<
+      'api::rangeland.rangeland',
+      'oneToMany',
+      'api::ecoregion.ecoregion'
+    >;
+    translations: Attribute.Component<
+      'translations.rangeland-translation',
+      true
+    > &
+      Attribute.SetMinMax<
+        {
+          max: 2;
+        },
+        number
+      >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::rangeland.rangeland',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::rangeland.rangeland',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiStoryStory extends Schema.CollectionType {
+  collectionName: 'stories';
+  info: {
+    singularName: 'story';
+    pluralName: 'stories';
+    displayName: 'Story';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    description: Attribute.RichText;
+    further_information: Attribute.RichText;
+    notes: Attribute.RichText;
+    location: Attribute.String;
+    datasets: Attribute.Relation<
+      'api::story.story',
+      'oneToMany',
+      'api::dataset.dataset'
+    >;
+    image: Attribute.Media;
+    translations: Attribute.Component<'translations.story-translation', true>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::story.story',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::story.story',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1034,10 +1081,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::dataset.dataset': ApiDatasetDataset;
-      'api::ecoregion.ecoregion': ApiEcoregionEcoregion;
-      'api::layer.layer': ApiLayerLayer;
-      'api::rangeland.rangeland': ApiRangelandRangeland;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -1047,6 +1090,11 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::dataset.dataset': ApiDatasetDataset;
+      'api::ecoregion.ecoregion': ApiEcoregionEcoregion;
+      'api::layer.layer': ApiLayerLayer;
+      'api::rangeland.rangeland': ApiRangelandRangeland;
+      'api::story.story': ApiStoryStory;
     }
   }
 }
