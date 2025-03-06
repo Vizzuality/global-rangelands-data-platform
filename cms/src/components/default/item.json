@@ -11,7 +11,7 @@
     },
     "color": {
       "type": "string",
-      "required": true,
+      "required": false,
       "default": "#000000"
     },
     "name_es": {
