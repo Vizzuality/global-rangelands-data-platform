@@ -131,6 +131,21 @@
           "sortable": false
         }
       },
+      "story": {
+        "edit": {
+          "label": "story",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "title"
+        },
+        "list": {
+          "label": "story",
+          "searchable": true,
+          "sortable": true
+        }
+      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -244,6 +259,12 @@
           {
             "name": "translations",
             "size": 12
+          }
+        ],
+        [
+          {
+            "name": "story",
+            "size": 6
           }
         ]
       ]
