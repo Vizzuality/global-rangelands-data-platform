@@ -12,6 +12,7 @@
           "title",
           "type",
           "layers.layer",
+          "layers.type",
           "citations.content",
           "citations.url",
           "sources.name",
@@ -20,7 +21,8 @@
           "description",
           "translations.title",
           "translations.description",
-          "translations.locale"
+          "translations.locale",
+          "story"
         ]
       },
       "conditions": []
@@ -48,6 +50,7 @@
           "title",
           "type",
           "layers.layer",
+          "layers.type",
           "citations.content",
           "citations.url",
           "sources.name",
@@ -56,7 +59,8 @@
           "description",
           "translations.title",
           "translations.description",
-          "translations.locale"
+          "translations.locale",
+          "story"
         ]
       },
       "conditions": []
@@ -70,6 +74,7 @@
           "title",
           "type",
           "layers.layer",
+          "layers.type",
           "citations.content",
           "citations.url",
           "sources.name",
@@ -78,7 +83,8 @@
           "description",
           "translations.title",
           "translations.description",
-          "translations.locale"
+          "translations.locale",
+          "story"
         ]
       },
       "conditions": []
@@ -163,6 +169,7 @@
           "legend.items.color",
           "legend.items.name_es",
           "legend.items.name_fr",
+          "legend.unit",
           "interaction_config",
           "slug",
           "translations.title",
@@ -201,6 +208,7 @@
           "legend.items.color",
           "legend.items.name_es",
           "legend.items.name_fr",
+          "legend.unit",
           "interaction_config",
           "slug",
           "translations.title",
@@ -225,6 +233,7 @@
           "legend.items.color",
           "legend.items.name_es",
           "legend.items.name_fr",
+          "legend.unit",
           "interaction_config",
           "slug",
           "translations.title",
@@ -294,6 +303,86 @@
           "color",
           "ecoregions",
           "translations.title",
+          "translations.locale"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::story.story",
+      "properties": {
+        "fields": [
+          "title",
+          "description",
+          "further_information",
+          "notes",
+          "location",
+          "datasets",
+          "image",
+          "translations.title",
+          "translations.description",
+          "translations.further_information",
+          "translations.notes",
+          "translations.locale"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::story.story",
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::story.story",
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::story.story",
+      "properties": {
+        "fields": [
+          "title",
+          "description",
+          "further_information",
+          "notes",
+          "location",
+          "datasets",
+          "image",
+          "translations.title",
+          "translations.description",
+          "translations.further_information",
+          "translations.notes",
+          "translations.locale"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::story.story",
+      "properties": {
+        "fields": [
+          "title",
+          "description",
+          "further_information",
+          "notes",
+          "location",
+          "datasets",
+          "image",
+          "translations.title",
+          "translations.description",
+          "translations.further_information",
+          "translations.notes",
           "translations.locale"
         ]
       },

@@ -6,7 +6,7 @@
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "id",
+      "mainField": "unit",
       "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
@@ -46,13 +46,28 @@
           "searchable": false,
           "sortable": false
         }
+      },
+      "unit": {
+        "edit": {
+          "label": "unit",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "unit",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
       "list": [
         "id",
         "type",
-        "items"
+        "items",
+        "unit"
       ],
       "edit": [
         [
@@ -65,6 +80,12 @@
           {
             "name": "items",
             "size": 12
+          }
+        ],
+        [
+          {
+            "name": "unit",
+            "size": 6
           }
         ]
       ]

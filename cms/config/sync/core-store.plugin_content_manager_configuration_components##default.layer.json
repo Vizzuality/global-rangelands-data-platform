@@ -6,7 +6,7 @@
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "id",
+      "mainField": "type",
       "defaultSortBy": "id",
       "defaultSortOrder": "ASC"
     },
@@ -33,17 +33,36 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "type": {
+        "edit": {
+          "label": "type",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "type",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
       "list": [
         "id",
-        "layer"
+        "layer",
+        "type"
       ],
       "edit": [
         [
           {
             "name": "layer",
+            "size": 6
+          },
+          {
+            "name": "type",
             "size": 6
           }
         ]
