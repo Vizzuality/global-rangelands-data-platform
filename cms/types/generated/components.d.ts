@@ -20,9 +20,7 @@ export interface DefaultItem extends Schema.Component {
   };
   attributes: {
     name: Attribute.String;
-    color: Attribute.String &
-      Attribute.Required &
-      Attribute.DefaultTo<'#000000'>;
+    color: Attribute.String & Attribute.DefaultTo<'#000000'>;
     name_es: Attribute.String;
     name_fr: Attribute.String;
   };
@@ -53,6 +51,7 @@ export interface DefaultLegend extends Schema.Component {
       Attribute.Required &
       Attribute.DefaultTo<'Basic'>;
     items: Attribute.Component<'default.item', true>;
+    unit: Attribute.String;
   };
 }
 
