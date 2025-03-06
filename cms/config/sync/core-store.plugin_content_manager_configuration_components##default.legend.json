@@ -60,6 +60,34 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "unit_es": {
+        "edit": {
+          "label": "unit_es",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "unit_es",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "unit_fr": {
+        "edit": {
+          "label": "unit_fr",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "unit_fr",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
@@ -85,6 +113,16 @@
         [
           {
             "name": "unit",
+            "size": 6
+          },
+          {
+            "name": "unit_es",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "unit_fr",
             "size": 6
           }
         ]
