@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stories",
+  "info": {
+    "singularName": "story",
+    "pluralName": "stories",
+    "displayName": "Story",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "further_information": {
+      "type": "richtext"
+    },
+    "notes": {
+      "type": "richtext"
+    },
+    "location": {
+      "type": "string",
+      "required": false,
+      "regex": "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?) [-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$"
+    },
+    "datasets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dataset.dataset",
+      "mappedBy": "story"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "translations": {
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.story-translation"
+    }
+  }
+}

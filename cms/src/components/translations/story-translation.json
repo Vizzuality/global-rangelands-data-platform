@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_translations_story_translations",
+  "info": {
+    "displayName": "Story Translation"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "further_information": {
+      "type": "richtext"
+    },
+    "notes": {
+      "type": "richtext"
+    },
+    "locale": {
+      "type": "enumeration",
+      "enum": [
+        "es",
+        "fr"
+      ]
+    }
+  }
+}
