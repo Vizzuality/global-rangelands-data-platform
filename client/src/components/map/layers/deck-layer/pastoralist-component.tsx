@@ -112,7 +112,7 @@ const PastoralistLayerComponent = ({
         renderSubLayers: (props) => {
           const data = filterOverlappingIcons(
             props.data as unknown as Feature<Geometry>[],
-            OVERLAPPING_RADIUS * (1 + zoom / 10),
+            OVERLAPPING_RADIUS * (1 + zoom / 10), // Adjust radius based on zoom level
           );
 
           return [
@@ -133,7 +133,7 @@ const PastoralistLayerComponent = ({
               getPosition: (f) => {
                 return f.geometry.coordinates;
               },
-              getSize: () => (0.01 + zoom) * 8,
+              getSize: () => (0.01 + zoom) * 8, // Scale icon size based on zoom level
               updateTriggers: {
                 getSize: [zoom],
               },
