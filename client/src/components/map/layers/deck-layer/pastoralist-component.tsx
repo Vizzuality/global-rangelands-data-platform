@@ -22,6 +22,9 @@ export interface PastoralistLayerComponentProps {
 
 const VARIANT_PROPERTY = "variantname";
 const OVERLAPPING_RADIUS = 0.025;
+const ICON_RADIUS_BASE = 8;
+
+const getIconSize = (zoom: number) => Math.min(Math.max(20, zoom * ICON_RADIUS_BASE), 80);
 
 const getId = (f: Feature) => `${f?.properties?.name}-${f?.id}`;
 
@@ -133,7 +136,9 @@ const PastoralistLayerComponent = ({
               getPosition: (f) => {
                 return f.geometry.coordinates;
               },
-              getSize: () => (0.01 + zoom) * 8, // Scale icon size based on zoom level
+              getSize: () => {
+                return getIconSize(zoom);
+              }, // Scale icon size based on zoom level
               updateTriggers: {
                 getSize: [zoom],
               },
@@ -151,7 +156,7 @@ const PastoralistLayerComponent = ({
               },
               getRadius: (f) => {
                 if (getId(f) === hoveredProperty) {
-                  return (0.01 + zoom) * 8;
+                  return getIconSize(zoom);
                 }
                 return 0;
               },
