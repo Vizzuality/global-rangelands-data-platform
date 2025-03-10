@@ -21,30 +21,61 @@ import Pig from "@/svgs/pastoralist-species/Pig.svg";
 import Reindeer from "@/svgs/pastoralist-species/Reindeer.svg";
 import Sheep from "@/svgs/pastoralist-species/Sheep.svg";
 import Yak from "@/svgs/pastoralist-species/Yak.svg";
+import Vicuna from "@/svgs/pastoralist-species/Vicuna.svg";
+import Dog from "@/svgs/pastoralist-species/Dog.svg";
+import Chicken from "@/svgs/pastoralist-species/Chicken.svg";
 
 const SpeciesIcons = {
   Alpaca: Alpaca,
-  "Bactrian camel": Bactrian_camel,
+  Bactrian: Bactrian_camel,
   Bison: Buffalo_and_Bison,
   Buffalo: Buffalo_and_Bison,
-  Cattle: Cattle,
+  Cattle,
   Dromedary: Domedary_Camel,
-  Donkey: Donkey,
-  Duck: Duck,
-  Goat: Goat,
-  Horse: Horse,
-  Llama: Llama,
-  Pig: Pig,
-  Reindeer: Reindeer,
-  Sheep: Sheep,
-  Yak: Yak,
+  Donkey,
+  Duck,
+  Goat,
+  Horse,
+  Llama,
+  Pig,
+  Reindeer,
+  Sheep,
+  Yak,
+  Vicuna,
+  Dog,
+  Chicken,
 };
 
-const SpeciesCategories = {
-  "Camelids (dromedaries, bactrians, llamas, alpacas)": "rgba(29, 39, 117, 1)",
-  "Large ruminants (cattle, buffaloes)": "rgba(178, 35, 141, 1)",
-  "Small ruminants (sheep, goats)": "#45C1C0",
-  "Other (reindeer, yaks, horses, donkeys)": "rgba(23, 160, 13, 1)",
+const SpeciesCategories = ["Camelids", "Large ruminants", "Small ruminants", "Other"];
+const SpeciesCategoriesColors = {
+  Camelids: "#1D2775",
+  "Large ruminants": "#B2238D",
+  "Small ruminants": "#45C1C0",
+  Other: "#17A00D",
+};
+
+const useSpeciesNames = () => {
+  const t = useTranslations();
+  return {
+    Alpaca: t("Alpaca"),
+    Bactrian: t("Bactrian"),
+    Bison: t("Bison"),
+    Buffalo: t("Buffalo"),
+    Cattle: t("Cattle"),
+    Dromedary: t("Domedary"),
+    Donkey: t("Donkey"),
+    Duck: t("Duck"),
+    Goat: t("Goat"),
+    Horse: t("Horse"),
+    Llama: t("Llama"),
+    Pig: t("Pig"),
+    Reindeer: t("Reindeer"),
+    Sheep: t("Sheep"),
+    Yak: t("Yak"),
+    Vicuna: t("Vicuna"),
+    Dog: t("Dog"),
+    Chicken: t("Chicken"),
+  };
 };
 
 type SpeciesIconsComponentProps = {
@@ -54,10 +85,8 @@ type SpeciesIconsComponentProps = {
 
 const SpeciesIconsComponent = ({ specie, category }: SpeciesIconsComponentProps) => {
   const Icon = SpeciesIcons[specie as keyof typeof SpeciesIcons];
-  const color = Object.entries(SpeciesCategories).find(
-    ([key]) => category && key.toLowerCase().includes(category.toLowerCase()),
-  )?.[1];
-  return Icon ? <Icon className="h-6 w-6" style={{ color: color || "rgba(0, 0, 0, 0)" }} /> : null;
+  const color = SpeciesCategoriesColors[category as keyof typeof SpeciesCategoriesColors];
+  return Icon ? <Icon className="h-8 w-8" style={{ color: color || "rgba(0, 0, 0, 0)" }} /> : null;
 };
 
 type PastoralistTooltipProps = {
@@ -83,6 +112,8 @@ const parseProperties = <T,>(properties: unknown): T | null => {
 const PastoralistTooltip = (props: MapTooltipProps) => {
   const t = useTranslations();
 
+  const speciesNames = useSpeciesNames();
+
   const { country, name, species, othernames, breeds, species_categories } =
     (props as PastoralistTooltipProps) || {};
 
@@ -107,34 +138,55 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
     })?.[0];
   };
 
+  const speciesOrdered = useMemo(
+    () =>
+      content.species?.sort((a, b) => {
+        const categoryA = getCategory(a);
+        const categoryAIndex = SpeciesCategories.indexOf(categoryA || "");
+        const categoryB = getCategory(b);
+        const categoryBIndex = SpeciesCategories.indexOf(categoryB || "");
+        if (!categoryA || !categoryB) return 0;
+        return categoryAIndex - categoryBIndex;
+      }),
+    [content.species],
+  );
+
   return (
     <div className="w-[308px] overflow-hidden rounded-lg bg-background drop-shadow-2xl">
       <div className="border-t-[12px] border-t-foreground"></div>
       <div className="space-y-4 p-6 pt-3">
         <div className="space-y-2">
-          <p className="text-base font-bold leading-tight">{content.title}</p>
-          <p>{content.otherNames}</p>
+          <h2 className="text-base font-bold leading-tight">{content.title}</h2>
         </div>
+
+        {!!content.otherNames && (
+          <div>
+            <h3 className="text-xs font-semibold">{t("Other names")}</h3>
+            <p>{content.otherNames}</p>
+          </div>
+        )}
+
         <div className="space-y-2">
-          <p className="text-sm font-semibold">{t("Country")}</p>
+          <h3 className="text-xs font-semibold">{t("Other locations")}</h3>
           <p className="text-xs leading-tight">{content.countries}</p>
         </div>
-        <div className="">
-          <p className="text-sm font-semibold">{t("Species and breeds")}</p>
+
+        <div>
+          <p className="text-xs font-semibold">{t("Species and breeds")}</p>
 
           <ul className="flex">
-            {content.species?.map((specie) => (
+            {speciesOrdered?.map((specie) => (
               <li key={specie}>
                 <SpeciesIconsComponent category={getCategory(specie)} specie={specie} />
               </li>
             ))}
           </ul>
           <p className="mt-2 text-xs text-foreground">
-            {content.species?.map((s, i) => (
-              <span key={s}>
-                {s}
+            {speciesOrdered?.map((specie, i) => (
+              <span key={specie}>
+                {speciesNames[specie as keyof typeof speciesNames]}
                 <span className="text-foreground/60">
-                  {content.breeds?.[s]?.[0] ? ` (${content.breeds?.[s]})` : ""}
+                  {content.breeds?.[specie]?.[0] ? ` (${content.breeds?.[specie]})` : ""}
                 </span>
                 {i === (content.species?.length || 0) - 2
                   ? ` ${t("and")} `
@@ -149,7 +201,7 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
         <div className="text-[10px] leading-normal">
           {t(
             "Note: The presented information is a subset of the content available in the original source ",
-          )}
+          )}{" "}
           (
           <a
             href="https://www.pastoralpeoples.org/pastoralist-map/"
