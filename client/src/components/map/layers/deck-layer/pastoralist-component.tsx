@@ -8,6 +8,7 @@ import { useAtomValue } from "jotai";
 import { deckLayersInteractiveAtom } from "@/store/map";
 
 import RBush from "rbush";
+import useMapZoom from "@/hooks/use-map-zoom";
 
 export interface PastoralistLayerComponentProps {
   id: string;
@@ -80,6 +81,8 @@ const PastoralistLayerComponent = ({
   const { addLayer, removeLayer } = useDeckMapboxOverlayContext();
   const interactiveLayers = useAtomValue(deckLayersInteractiveAtom);
 
+  const zoom = useMapZoom();
+
   useMemo(() => {
     const pastoralistInteractiveLayer = interactiveLayers["pastoralists"];
     if (!pastoralistInteractiveLayer) {
@@ -100,19 +103,16 @@ const PastoralistLayerComponent = ({
           if (!info?.object) return;
           setHoveredProperty(`${info?.object?.properties.name}-${info?.object?.id}`);
         },
-        onTileError: (error) => {},
-        getFillColor: (f) => {
-          return [255, 0, 0];
-        },
+        onTileError: () => {},
         updateTriggers: {
           getLineWidth: [hoveredProperty],
-          getPosition: [hoveredProperty],
+          getRadius: [hoveredProperty, zoom],
         },
         binary: false,
         renderSubLayers: (props) => {
           const data = filterOverlappingIcons(
             props.data as unknown as Feature<Geometry>[],
-            OVERLAPPING_RADIUS,
+            OVERLAPPING_RADIUS * (1 + zoom / 10), // Adjust radius based on zoom level
           );
 
           return [
@@ -125,15 +125,18 @@ const PastoralistLayerComponent = ({
                 const iconPath = `/images/pastoralist-icons/${f?.properties?.[VARIANT_PROPERTY]}.png`;
                 return {
                   url: iconPath,
-                  height: 20,
-                  width: 20,
+                  height: 40,
+                  width: 40,
                   mask: false,
                 };
               },
               getPosition: (f) => {
                 return f.geometry.coordinates;
               },
-              getSize: 20,
+              getSize: () => (0.01 + zoom) * 8, // Scale icon size based on zoom level
+              updateTriggers: {
+                getSize: [zoom],
+              },
             }),
             new ScatterplotLayer(props, {
               id: `${props.id}-line`,
@@ -148,7 +151,7 @@ const PastoralistLayerComponent = ({
               },
               getRadius: (f) => {
                 if (getId(f) === hoveredProperty) {
-                  return 15;
+                  return (0.01 + zoom) * 8;
                 }
                 return 0;
               },
@@ -162,7 +165,7 @@ const PastoralistLayerComponent = ({
                 return f.geometry.coordinates;
               },
               updateTriggers: {
-                getRadius: [hoveredProperty],
+                getRadius: [hoveredProperty, zoom],
                 getLineWidth: [hoveredProperty],
               },
             }),
@@ -171,7 +174,7 @@ const PastoralistLayerComponent = ({
         ...props,
       }),
 
-    [id, opacity, visibility, props],
+    [id, opacity, visibility, props, zoom],
   );
 
   useEffect(() => {
