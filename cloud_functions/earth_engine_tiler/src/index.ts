@@ -22,6 +22,8 @@ import {ForestGain} from './geeAssets/forest-gain';
 import {PopulationCount} from './geeAssets/population-count';
 import {LandCover} from './geeAssets/land-cover';
 import {SocStock} from './geeAssets/soc-stock';
+import {IntactnessQPrime} from './geeAssets/intactness_qprime';
+import {IntactnessQSlope} from './geeAssets/intactness_qslope';
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
 import {default as fetch , Response as FetchResponse} from "node-fetch";
@@ -50,6 +52,8 @@ const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.population_count]: PopulationCount,
   [Tilesets.land_cover]: LandCover,
   [Tilesets.soc_stock]: SocStock,
+  [Tilesets.intactness_qprime]: IntactnessQPrime,
+  [Tilesets.intactness_qslope]: IntactnessQSlope,
 }
 
 //We're using express to simplify path parameter parsing for the Tiles endpoint

@@ -21,6 +21,8 @@ export enum Tilesets {
   population_count = "population_count",
   land_cover = "land_cover",
   soc_stock = "soc_stock",
+  intactness_qprime = "intactness_qprime",
+  intactness_qslope = "intactness_qslope",
 }
 
 
