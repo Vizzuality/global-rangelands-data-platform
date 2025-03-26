@@ -68,6 +68,18 @@ export interface DefaultSource extends Schema.Component {
   };
 }
 
+export interface TranslationsDatasetCategoryTranslation
+  extends Schema.Component {
+  collectionName: 'components_translations_dataset_category_translations';
+  info: {
+    displayName: 'dataset-category translation';
+  };
+  attributes: {
+    title: Attribute.String;
+    locale: Attribute.Enumeration<['en', 'es', 'fr']>;
+  };
+}
+
 export interface TranslationsDatasetTranslation extends Schema.Component {
   collectionName: 'components_translations_dataset_translations';
   info: {
@@ -133,6 +145,14 @@ export interface TranslationsStoryTranslation extends Schema.Component {
   };
 }
 
+export interface TranslationsTranslations extends Schema.Component {
+  collectionName: 'components_translations_translations';
+  info: {
+    displayName: 'translations';
+  };
+  attributes: {};
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
@@ -141,11 +161,13 @@ declare module '@strapi/types' {
       'default.layer': DefaultLayer;
       'default.legend': DefaultLegend;
       'default.source': DefaultSource;
+      'translations.dataset-category-translation': TranslationsDatasetCategoryTranslation;
       'translations.dataset-translation': TranslationsDatasetTranslation;
       'translations.ecoregion-translation': TranslationsEcoregionTranslation;
       'translations.layer-translation': TranslationsLayerTranslation;
       'translations.rangeland-translation': TranslationsRangelandTranslation;
       'translations.story-translation': TranslationsStoryTranslation;
+      'translations.translations': TranslationsTranslations;
     }
   }
 }

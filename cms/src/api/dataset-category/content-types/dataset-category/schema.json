@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "dataset_categories",
+  "info": {
+    "singularName": "dataset-category",
+    "pluralName": "dataset-categories",
+    "displayName": "Dataset Category",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "datasets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dataset.dataset"
+    },
+    "translations": {
+      "displayName": "dataset-category translation",
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.dataset-category-translation"
+    }
+  }
+}
