@@ -15,10 +15,7 @@
           "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url",
-          "translations.title",
-          "translations.description",
-          "translations.locale"
+          "sources.url"
         ]
       },
       "conditions": []
@@ -35,10 +32,7 @@
           "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url",
-          "translations.title",
-          "translations.description",
-          "translations.locale"
+          "sources.url"
         ]
       },
       "conditions": []
@@ -55,10 +49,7 @@
           "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url",
-          "translations.title",
-          "translations.description",
-          "translations.locale"
+          "sources.url"
         ]
       },
       "conditions": []
@@ -76,10 +67,7 @@
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config",
-          "translations.title",
-          "translations.description",
-          "translations.locale"
+          "interaction_config"
         ]
       },
       "conditions": []
@@ -97,10 +85,7 @@
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config",
-          "translations.title",
-          "translations.description",
-          "translations.locale"
+          "interaction_config"
         ]
       },
       "conditions": []
@@ -118,10 +103,7 @@
           "legend.type",
           "legend.items.name",
           "legend.items.color",
-          "interaction_config",
-          "translations.title",
-          "translations.description",
-          "translations.locale"
+          "interaction_config"
         ]
       },
       "conditions": []

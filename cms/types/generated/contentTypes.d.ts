@@ -887,6 +887,48 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
   };
 }
 
+export interface ApiDatasetCategoryDatasetCategory
+  extends Schema.CollectionType {
+  collectionName: 'dataset_categories';
+  info: {
+    singularName: 'dataset-category';
+    pluralName: 'dataset-categories';
+    displayName: 'Dataset Category';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    datasets: Attribute.Relation<
+      'api::dataset-category.dataset-category',
+      'oneToMany',
+      'api::dataset.dataset'
+    >;
+    translations: Attribute.Component<
+      'translations.dataset-category-translation',
+      true
+    >;
+    slug: Attribute.String & Attribute.Required & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::dataset-category.dataset-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::dataset-category.dataset-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiEcoregionEcoregion extends Schema.CollectionType {
   collectionName: 'ecoregions';
   info: {
@@ -1091,6 +1133,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::dataset.dataset': ApiDatasetDataset;
+      'api::dataset-category.dataset-category': ApiDatasetCategoryDatasetCategory;
       'api::ecoregion.ecoregion': ApiEcoregionEcoregion;
       'api::layer.layer': ApiLayerLayer;
       'api::rangeland.rangeland': ApiRangelandRangeland;

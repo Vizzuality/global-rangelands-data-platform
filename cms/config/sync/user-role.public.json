@@ -4,6 +4,12 @@
   "type": "public",
   "permissions": [
     {
+      "action": "api::dataset-category.dataset-category.find"
+    },
+    {
+      "action": "api::dataset-category.dataset-category.findOne"
+    },
+    {
       "action": "api::dataset.dataset.find"
     },
     {

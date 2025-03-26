@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_translations_dataset_category_translations",
+  "info": {
+    "displayName": "dataset-category translation"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "locale": {
+      "type": "enumeration",
+      "enum": [
+        "en",
+        "es",
+        "fr"
+      ]
+    }
+  }
+}

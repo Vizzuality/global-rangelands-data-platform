@@ -2,14 +2,13 @@
 
 import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 
-import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
+import { useSyncDatasets, useSyncLayers } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
 import CitationsIcon from "@/svgs/citations.svg";
-import { cn, getLayerSettings } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
 import { useMemo } from "react";
-import { LayerVisibility } from "@/components/map/legends/header/buttons";
 import GroupDataset from "./components/group";
 import DatasetInfo from "./info";
 import TemporalChangesDataset from "./components/temporal";
@@ -18,13 +17,14 @@ import { useGetLocalizedList } from "@/lib/localized-query";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
+  showTitle?: boolean;
 };
 
-const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
+const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) => {
   const t = useTranslations();
   const [datasets, setDatasets] = useSyncDatasets();
-  const [layersSettings, setLayersSettings] = useSyncLayersSettings();
-  const [layers, setLayers] = useSyncLayers();
+  // const [layersSettings, setLayersSettings] = useSyncLayersSettings();
+  const [, setLayers] = useSyncLayers();
   const id = attributes?.slug;
 
   const datasetLayers =
@@ -85,30 +85,30 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
     }
   };
 
-  const datasetLayer = useMemo(
-    () =>
-      layersData?.find(
-        (layer) => !!layer.attributes?.slug && layers.includes(layer.attributes.slug),
-      )?.attributes,
-    [attributes, layers],
-  );
+  // const datasetLayer = useMemo(
+  //   () =>
+  //     layersData?.find(
+  //       (layer) => !!layer.attributes?.slug && layers.includes(layer.attributes.slug),
+  //     )?.attributes,
+  //   [attributes, layers],
+  // );
 
-  const handleChangeVisibility = (visible: boolean) => {
-    const datasetLayerSlug = datasetLayer?.slug;
-    if (datasetLayerSlug) {
-      setLayersSettings((prev) => ({
-        ...prev,
-        [datasetLayerSlug]: {
-          ...(prev?.[datasetLayerSlug] || {}),
-          visibility: visible,
-        },
-      }));
-    }
-  };
+  // const handleChangeVisibility = (visible: boolean) => {
+  //   const datasetLayerSlug = datasetLayer?.slug;
+  //   if (datasetLayerSlug) {
+  //     setLayersSettings((prev) => ({
+  //       ...prev,
+  //       [datasetLayerSlug]: {
+  //         ...(prev?.[datasetLayerSlug] || {}),
+  //         visibility: visible,
+  //       },
+  //     }));
+  //   }
+  // };
 
-  const datasetVisibility = useMemo(() => {
-    return getLayerSettings(datasetLayer, layersSettings)?.visibility;
-  }, [datasetLayer, layersSettings]);
+  // const datasetVisibility = useMemo(() => {
+  //   return getLayerSettings(datasetLayer, layersSettings)?.visibility;
+  // }, [datasetLayer, layersSettings]);
 
   const COMPONENT = useMemo(() => {
     switch (attributes?.type) {
@@ -133,31 +133,31 @@ const DatasetsItem = ({ attributes, className }: DatasetsItemProps) => {
 
   return (
     <div className={cn("space-y-6", className)}>
-      <div className="space-y-2">
-        <div className="flex justify-between gap-3 font-medium">
-          <div className="flex justify-between gap-3">
-            {attributes?.slug !== RANGELAND_DATASET_SLUG && (
-              <Switch
-                id={`toggle-${id}`}
-                checked={datasets?.includes(id!)}
-                onCheckedChange={handleToggleDataset}
-                className="my-1"
-              />
-            )}
-            <label className="leading-tight" htmlFor={`toggle-${id}`}>
-              {attributes?.title}
-            </label>
-          </div>
+      <div className="space-y-4">
+        <div className="flex w-full justify-between gap-3 font-medium">
+          {/* <div className="flex justify-between gap-3"> */}
+          <label className="leading-tight" htmlFor={`toggle-${id}`}>
+            {showTitle && attributes?.title}
+          </label>
+          {attributes?.slug !== RANGELAND_DATASET_SLUG && (
+            <Switch
+              id={`toggle-${id}`}
+              checked={datasets?.includes(id!)}
+              onCheckedChange={handleToggleDataset}
+              className="my-1"
+            />
+          )}
+          {/* </div> */}
 
-          <div className="mt-px flex gap-2">
+          {/* <div className="mt-px flex gap-2">
             <LayerVisibility
               visible={datasetVisibility}
               onChangeVisibility={handleChangeVisibility}
             />
-          </div>
+          </div> */}
         </div>
         <div className="space-y-5">
-          <p className="line-clamp-3 max-w-[336px] text-xs">{attributes?.description}</p>
+          <p className="line-clamp-2 max-w-[336px] text-xs">{attributes?.description}</p>
           <div className="flex gap-2">
             <DatasetInfo
               title={attributes?.title}

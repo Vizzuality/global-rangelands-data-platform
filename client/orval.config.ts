@@ -22,12 +22,7 @@ module.exports = {
     input: {
       target: "../cms/src/extensions/documentation/documentation/1.0.0/full_documentation.json",
       filters: {
-        tags: [
-          "Dataset",
-          "Layer",
-          "Rangeland",
-          "Ecoregion"
-        ],
+        tags: ["Dataset", "Layer", "Rangeland", "Ecoregion", "Dataset-category"],
       },
     },
   },

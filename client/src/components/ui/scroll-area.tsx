@@ -14,7 +14,7 @@ const ScrollArea = React.forwardRef<
     className={cn("relative overflow-hidden", className)}
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+    <ScrollAreaPrimitive.Viewport className="h-full w-full !scroll-smooth rounded-[inherit]">
       {children}
     </ScrollAreaPrimitive.Viewport>
     <ScrollBar className="w-1.5">
@@ -51,10 +51,10 @@ type ScrollAreaWithThumbProps = React.PropsWithChildren & {
 const ScrollAreaWithThumb = ({ children, className }: ScrollAreaWithThumbProps) => {
   return (
     <ScrollArea className={cn("relative", className)}>
-      <ScrollAreaPrimitive.ScrollAreaViewport className="h-full w-full">
+      <>
         {children}
         <div className="absolute bottom-0 z-50 h-12 w-[calc(100%-8px)] bg-gradient-to-b from-background/10 via-background/70 to-background"></div>
-      </ScrollAreaPrimitive.ScrollAreaViewport>
+      </>
       <ScrollAreaPrimitive.ScrollAreaScrollbar className="w-1.5">
         <ScrollAreaPrimitive.ScrollAreaThumb className="rounded-md bg-gray-300" />
       </ScrollAreaPrimitive.ScrollAreaScrollbar>
