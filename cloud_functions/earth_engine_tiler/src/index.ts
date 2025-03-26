@@ -24,6 +24,11 @@ import {LandCover} from './geeAssets/land-cover';
 import {SocStock} from './geeAssets/soc-stock';
 import {IntactnessQPrime} from './geeAssets/intactness_qprime';
 import {IntactnessQSlope} from './geeAssets/intactness_qslope';
+import {GrasslandCultivatedAbsolute} from './geeAssets/grassland-cultivated-absolute';
+import {GrasslandNaturalAbsolute} from './geeAssets/grassland-natural-absolute';
+import {GrasslandDominantAbsolute} from './geeAssets/grassland-dominant-absolute';
+import {GrasslandCultivatedChange} from './geeAssets/grassland-cultivated-change';  
+import {GrasslandNaturalChange} from './geeAssets/grassland-natural-change'; 
 import {EarthEngineDataset} from "./geeAssets/earth-engine-dataset";
 import {TileRequestDTO, Tilesets} from "./tile-request.dto";
 import {default as fetch , Response as FetchResponse} from "node-fetch";
@@ -54,6 +59,12 @@ const assets: Record<Tilesets, EarthEngineDataset> = {
   [Tilesets.soc_stock]: SocStock,
   [Tilesets.intactness_qprime]: IntactnessQPrime,
   [Tilesets.intactness_qslope]: IntactnessQSlope,
+  [Tilesets.grassland_cultivated_absolute]: GrasslandCultivatedAbsolute,
+  [Tilesets.grassland_natural_absolute]: GrasslandNaturalAbsolute,
+  [Tilesets.grassland_dominant_absolute]: GrasslandDominantAbsolute,
+  [Tilesets.grassland_cultivated_change]: GrasslandCultivatedChange,
+  [Tilesets.grassland_natural_change]: GrasslandNaturalChange,
+  
 }
 
 //We're using express to simplify path parameter parsing for the Tiles endpoint
