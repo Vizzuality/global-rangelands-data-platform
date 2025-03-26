@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-03-26T12:35:53.430Z"
+    "x-generation-date": "2025-03-26T16:06:31.148Z"
   },
   "servers": [
     {
@@ -1450,7 +1450,8 @@
         "properties": {
           "data": {
             "required": [
-              "title"
+              "title",
+              "slug"
             ],
             "type": "object",
             "properties": {
@@ -1476,6 +1477,9 @@
                 "items": {
                   "$ref": "#/components/schemas/TranslationsDatasetCategoryTranslationComponent"
                 }
+              },
+              "slug": {
+                "type": "string"
               }
             }
           }
@@ -1530,7 +1534,8 @@
       "DatasetCategory": {
         "type": "object",
         "required": [
-          "title"
+          "title",
+          "slug"
         ],
         "properties": {
           "title": {
@@ -2594,6 +2599,9 @@
             "items": {
               "$ref": "#/components/schemas/TranslationsDatasetCategoryTranslationComponent"
             }
+          },
+          "slug": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",

@@ -2,16 +2,23 @@ import Datasets from "@/containers/datasets";
 import Map from "@/containers/map";
 import Sidebar from "@/containers/sidebar";
 import getQueryClient from "@/lib/react-query/getQueryClient";
-import { getGetDatasetsQueryOptions } from "@/types/generated/dataset";
+import { getGetDatasetCategoriesQueryOptions } from "@/types/generated/dataset-category";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 async function prefetchQueries() {
   const queryClient = getQueryClient();
   try {
-    const { queryKey, queryFn } = getGetDatasetsQueryOptions({
-      populate: ["layers", "layers.layer", "sources", "citations"],
+    const { queryKey, queryFn } = getGetDatasetCategoriesQueryOptions({
+      populate: [
+        "translations",
+        "datasets",
+        "datasets.layers",
+        "datasets.layers.layer",
+        "datasets.sources",
+        "datasets.citations",
+        "datasets.translations",
+      ],
       sort: "id:asc",
-      locale: "all",
     });
 
     await queryClient.prefetchQuery({

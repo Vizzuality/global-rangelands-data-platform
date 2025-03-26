@@ -26,6 +26,11 @@
       "type": "component",
       "repeatable": true,
       "component": "translations.dataset-category-translation"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
     }
   }
 }

@@ -910,6 +910,7 @@ export interface ApiDatasetCategoryDatasetCategory
       'translations.dataset-category-translation',
       true
     >;
+    slug: Attribute.String & Attribute.Required & Attribute.Unique;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

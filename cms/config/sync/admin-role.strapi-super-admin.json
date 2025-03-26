@@ -6,6 +6,65 @@
     {
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
+      "subject": "api::dataset-category.dataset-category",
+      "properties": {
+        "fields": [
+          "title",
+          "datasets",
+          "translations.title",
+          "translations.locale",
+          "slug"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::dataset-category.dataset-category",
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::dataset-category.dataset-category",
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::dataset-category.dataset-category",
+      "properties": {
+        "fields": [
+          "title",
+          "datasets",
+          "translations.title",
+          "translations.locale",
+          "slug"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::dataset-category.dataset-category",
+      "properties": {
+        "fields": [
+          "title",
+          "datasets",
+          "translations.title",
+          "translations.locale",
+          "slug"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
       "subject": "api::dataset.dataset",
       "properties": {
         "fields": [

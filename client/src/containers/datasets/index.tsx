@@ -2,25 +2,65 @@
 
 import { useGetDatasets } from "@/types/generated/dataset";
 import DatasetsItem from "@/containers/datasets/item";
-import DatasetsHeader from "./header";
+import DatasetsHeader, { CategoryButtonProps } from "./header";
 import { useGetLocalizedList } from "@/lib/localized-query";
+import { useGetDatasetCategories } from "@/types/generated/dataset-category";
+import { RANGELAND_DATASET_SLUG } from "./constants";
+import { useMemo } from "react";
+import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 
 const Datasets = () => {
-  const datasetsListQuery = useGetDatasets({
-    populate: ["layers", "layers.layer", "sources", "citations", "translations"],
+  const datasetCategoriesQuery = useGetDatasetCategories({
+    populate: [
+      "translations",
+      "datasets",
+      "datasets.layers",
+      "datasets.layers.layer",
+      "datasets.sources",
+      "datasets.citations",
+      "datasets.translations",
+    ],
     sort: "id:asc",
   });
 
-  const { data: datasetsData } = useGetLocalizedList(datasetsListQuery);
+  const { data: datasetCategoriesData } = useGetLocalizedList(datasetCategoriesQuery);
+
+  const categories = useMemo(
+    () =>
+      datasetCategoriesData?.data?.reduce<CategoryButtonProps[]>(
+        (acc, category) =>
+          category.attributes?.title && category.attributes?.slug
+            ? [...acc, { slug: category.attributes.slug, title: category.attributes.title }]
+            : acc,
+        [],
+      ),
+    [datasetCategoriesData],
+  );
 
   return (
-    <div className="mb-10 space-y-7">
-      <DatasetsHeader />
-      <div className="space-y-7">
-        {datasetsData?.data?.map((dataset) => (
-          <div key={dataset?.id} className="group space-y-7">
-            <DatasetsItem {...dataset} className="px-6" />
-            <div className="w-full border-b border-slate-200 group-last-of-type:hidden" />
+    <div className="mb-10">
+      <DatasetsHeader categories={categories} />
+      <div className="">
+        {datasetCategoriesData?.data?.map((category) => (
+          <div
+            key={category.id}
+            className="space-y-5 border-b border-b-foreground pb-6 last-of-type:border-b-0"
+          >
+            <h2 id={category?.attributes?.slug} className="px-6 pt-6 text-2xl font-bold">
+              {category?.attributes?.title}
+            </h2>
+            <div className="">
+              {category?.attributes?.datasets?.data?.map((dataset) => (
+                <div key={dataset?.id} className="group space-y-7 pt-6 first-of-type:pt-0">
+                  <DatasetsItem
+                    {...(dataset as DatasetListResponseDataItem)}
+                    className="px-6"
+                    showTitle={dataset.attributes?.slug !== RANGELAND_DATASET_SLUG}
+                  />
+                  <div className="w-full border-b border-slate-200 group-last-of-type:hidden" />
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
