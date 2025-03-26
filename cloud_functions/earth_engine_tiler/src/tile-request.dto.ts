@@ -23,6 +23,11 @@ export enum Tilesets {
   soc_stock = "soc_stock",
   intactness_qprime = "intactness_qprime",
   intactness_qslope = "intactness_qslope",
+  grassland_cultivated_absolute = "grassland_cultivated_absolute",
+  grassland_natural_absolute = "grassland_natural_absolute",
+  grassland_dominant_absolute = "grassland_dominant_absolute",
+  grassland_cultivated_change = "grassland_cultivated_change",
+  grassland_natural_change = "grassland_natural_change",
 }
 
 
