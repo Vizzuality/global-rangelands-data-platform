@@ -14,6 +14,7 @@ import DatasetInfo from "./info";
 import TemporalChangesDataset from "./components/temporal";
 import { useGetLayers } from "@/types/generated/layer";
 import { useGetLocalizedList } from "@/lib/localized-query";
+import TemporalGroupDataset from "./components/temporal-group";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -62,7 +63,6 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
     () => (datasetLayers?.length ? localizedLayersData?.data : []),
     [datasetLayers],
   );
-
   const handleToggleDataset = (checked: boolean) => {
     if (!id) return;
     setDatasets((prev) => {
@@ -85,7 +85,6 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
     }
   };
 
-  // const datasetLayer = useMemo(
   //   () =>
   //     layersData?.find(
   //       (layer) => !!layer.attributes?.slug && layers.includes(layer.attributes.slug),
@@ -126,6 +125,22 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
             })}
           />
         );
+      case "Temporal-Group": {
+        return (
+          <TemporalGroupDataset
+            layers={layersData?.map((l) => {
+              const { type, group } =
+                attributes?.layers.find((dl) => dl.layer?.data?.id === l.id) || {};
+              return {
+                ...l,
+                type,
+                group,
+              };
+            })}
+            slug={attributes?.slug}
+          />
+        );
+      }
       default:
         return null;
     }

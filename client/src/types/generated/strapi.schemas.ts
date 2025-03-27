@@ -509,6 +509,7 @@ export const StoryDatasetsDataItemAttributesType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
+  "Temporal-Group": "Temporal-Group",
 } as const;
 
 export type StoryDatasetsDataItemAttributesTranslationsItemLocale =
@@ -882,6 +883,7 @@ export type StoryDatasetsDataItemAttributesLayersItemLayer = {
 };
 
 export type StoryDatasetsDataItemAttributesLayersItem = {
+  group?: string;
   id?: number;
   layer?: StoryDatasetsDataItemAttributesLayersItemLayer;
   type?: string;
@@ -2404,6 +2406,7 @@ export const DatasetCategoryDatasetsDataItemAttributesType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
+  "Temporal-Group": "Temporal-Group",
 } as const;
 
 export type DatasetCategoryDatasetsDataItemAttributes = {
@@ -2793,6 +2796,7 @@ export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayer = {
 };
 
 export type DatasetCategoryDatasetsDataItemAttributesLayersItem = {
+  group?: string;
   id?: number;
   layer?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayer;
   type?: string;
@@ -3165,6 +3169,7 @@ export type DefaultLayerComponentLayer = {
 };
 
 export interface DefaultLayerComponent {
+  group?: string;
   id?: number;
   layer?: DefaultLayerComponentLayer;
   type?: string;
@@ -3449,6 +3454,7 @@ export const DatasetType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
+  "Temporal-Group": "Temporal-Group",
 } as const;
 
 export type DatasetStoryData = {
@@ -3789,6 +3795,7 @@ export const DatasetStoryDataAttributesDatasetsDataItemAttributesType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
+  "Temporal-Group": "Temporal-Group",
 } as const;
 
 export type DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItemLocale =
@@ -3827,6 +3834,7 @@ export type DatasetStoryDataAttributesDatasetsDataItemAttributesSources = {
 };
 
 export type DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItem = {
+  group?: string;
   id?: number;
   layer?: DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayer;
   type?: string;
@@ -3934,6 +3942,7 @@ export const DatasetRequestDataType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
+  "Temporal-Group": "Temporal-Group",
 } as const;
 
 export type DatasetRequestDataStory = number | string;

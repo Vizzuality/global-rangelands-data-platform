@@ -37,9 +37,10 @@ import { useGetLocalizedList } from "@/lib/localized-query";
 type GroupDatasetProps = {
   layers?: LayerListResponseDataItem[];
   slug?: string;
+  onChange?: (value: string) => void;
 };
 
-const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
+const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps) => {
   const t = useTranslations();
   const [syncDatasets] = useSyncDatasets();
   const [syncLayers, setSyncLayers] = useSyncLayers();
@@ -47,6 +48,8 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
   const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
   const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
   const datasetLayers = useMemo(() => layers?.map((l) => l?.attributes?.slug), [layers]);
+
+  const isRangelandDataset = datasetSlug === RANGELAND_DATASET_SLUG;
 
   const handleSelectLayerType = (layerSlug: string) => {
     setSyncLayers((prev) => {
@@ -57,19 +60,18 @@ const GroupDataset = ({ layers, slug: datasetSlug }: GroupDatasetProps) => {
       }
       return [...prev, layerSlug];
     });
-    if (layerSlug !== rangelandType) {
+    if (isRangelandDataset && layerSlug !== rangelandType) {
       setRangelandType(layerSlug);
       setRangelandRegion([]);
     }
     setDeckInteractiveLayers({});
+    onChange?.(layerSlug);
   };
-
   const selectedLayer = useMemo(() => {
     const selectedLayerId = datasetLayers?.find((l) => !!l && syncLayers?.includes(l));
+
     return layers?.find((l) => l.attributes?.slug === selectedLayerId);
   }, [layers, datasetLayers, syncLayers]);
-
-  const isRangelandDataset = datasetSlug === RANGELAND_DATASET_SLUG;
 
   const getLegendColors = (layerSlug?: string) => {
     if (!layerSlug) return;
