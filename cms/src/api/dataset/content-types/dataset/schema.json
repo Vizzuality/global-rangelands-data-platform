@@ -24,7 +24,8 @@
       "enum": [
         "Group",
         "Temporal",
-        "Simple"
+        "Simple",
+        "Temporal-Group"
       ],
       "default": "Group",
       "required": true
