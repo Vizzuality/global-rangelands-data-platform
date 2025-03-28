@@ -884,6 +884,8 @@ export type StoryDatasetsDataItemAttributesLayersItemLayer = {
 
 export type StoryDatasetsDataItemAttributesLayersItem = {
   group?: string;
+  group_es?: string;
+  group_fr?: string;
   id?: number;
   layer?: StoryDatasetsDataItemAttributesLayersItemLayer;
   type?: string;
@@ -2797,6 +2799,8 @@ export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayer = {
 
 export type DatasetCategoryDatasetsDataItemAttributesLayersItem = {
   group?: string;
+  group_es?: string;
+  group_fr?: string;
   id?: number;
   layer?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayer;
   type?: string;
@@ -3170,6 +3174,8 @@ export type DefaultLayerComponentLayer = {
 
 export interface DefaultLayerComponent {
   group?: string;
+  group_es?: string;
+  group_fr?: string;
   id?: number;
   layer?: DefaultLayerComponentLayer;
   type?: string;
@@ -3835,6 +3841,8 @@ export type DatasetStoryDataAttributesDatasetsDataItemAttributesSources = {
 
 export type DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItem = {
   group?: string;
+  group_es?: string;
+  group_fr?: string;
   id?: number;
   layer?: DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayer;
   type?: string;

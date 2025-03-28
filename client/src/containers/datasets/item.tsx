@@ -6,7 +6,7 @@ import { useSyncDatasets, useSyncLayers } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
 import CitationsIcon from "@/svgs/citations.svg";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { RANGELAND_DATASET_SLUG } from "./constants";
 import { useMemo } from "react";
 import GroupDataset from "./components/group";
@@ -21,12 +21,16 @@ type DatasetsItemProps = DatasetListResponseDataItem & {
   showTitle?: boolean;
 };
 
+type LocalizedGroupProps = "group_es" | "group_fr";
+
 const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) => {
   const t = useTranslations();
   const [datasets, setDatasets] = useSyncDatasets();
   // const [layersSettings, setLayersSettings] = useSyncLayersSettings();
   const [, setLayers] = useSyncLayers();
   const id = attributes?.slug;
+
+  const locale = useLocale();
 
   const datasetLayers =
     useMemo(() => attributes?.layers.map((l) => l.layer?.data?.id), [attributes?.layers])?.filter(
@@ -129,12 +133,17 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
         return (
           <TemporalGroupDataset
             layers={layersData?.map((l) => {
-              const { type, group } =
+              const { type, group, ...props } =
                 attributes?.layers.find((dl) => dl.layer?.data?.id === l.id) || {};
+              const localizedGroup =
+                !locale || locale === "en"
+                  ? group
+                  : props[`group_${locale}` as LocalizedGroupProps];
               return {
                 ...l,
                 type,
                 group,
+                groupName: localizedGroup,
               };
             })}
             slug={attributes?.slug}

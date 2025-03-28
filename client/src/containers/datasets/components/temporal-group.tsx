@@ -7,6 +7,7 @@ import { useSyncLayers } from "@/store/map";
 type LayerWithType = LayerListResponseDataItem & {
   type?: string;
   group?: string;
+  groupName?: string;
 };
 type TemporalGroupDatasetProps = {
   layers?: LayerWithType[] | undefined;
@@ -27,7 +28,7 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
     );
 
     return { type: selectedLayer?.type || DEFAULT_TYPE, group: selectedLayer?.group };
-  }, [layers, layers, syncLayers]);
+  }, [layers, syncLayers]);
 
   const [selectedType, setSelectedType] = useState(selectedLayer.type || DEFAULT_TYPE);
 
@@ -44,7 +45,7 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
               ? {
                   attributes: {
                     ...layer.attributes,
-                    title: layer.group,
+                    title: layer.groupName || layer.group,
                   },
                 }
               : {}),

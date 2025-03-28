@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-03-27T17:14:11.499Z"
+    "x-generation-date": "2025-03-28T08:13:16.304Z"
   },
   "servers": [
     {
@@ -329,6 +329,12 @@
                                             "type": "string"
                                           },
                                           "group": {
+                                            "type": "string"
+                                          },
+                                          "group_es": {
+                                            "type": "string"
+                                          },
+                                          "group_fr": {
                                             "type": "string"
                                           }
                                         }
@@ -1399,6 +1405,12 @@
           },
           "group": {
             "type": "string"
+          },
+          "group_es": {
+            "type": "string"
+          },
+          "group_fr": {
+            "type": "string"
           }
         }
       },
@@ -1989,6 +2001,12 @@
                                 "type": "string"
                               },
                               "group": {
+                                "type": "string"
+                              },
+                              "group_es": {
+                                "type": "string"
+                              },
+                              "group_fr": {
                                 "type": "string"
                               }
                             }
@@ -5123,6 +5141,12 @@
                                 "type": "string"
                               },
                               "group": {
+                                "type": "string"
+                              },
+                              "group_es": {
+                                "type": "string"
+                              },
+                              "group_fr": {
                                 "type": "string"
                               }
                             }
