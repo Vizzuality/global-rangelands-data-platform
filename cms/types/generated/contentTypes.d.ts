@@ -840,7 +840,9 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String & Attribute.Required & Attribute.Unique;
-    type: Attribute.Enumeration<['Group', 'Temporal', 'Simple']> &
+    type: Attribute.Enumeration<
+      ['Group', 'Temporal', 'Simple', 'Temporal-Group']
+    > &
       Attribute.Required &
       Attribute.DefaultTo<'Group'>;
     layers: Attribute.Component<'default.layer', true> &

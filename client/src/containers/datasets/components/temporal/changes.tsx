@@ -10,7 +10,7 @@ import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
 import { CalendarDaysIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const isCorrectTimeSelect = (timeSelect: unknown): timeSelect is [number, number] => {
   return (
@@ -89,6 +89,11 @@ const _getOptions = (params_config: unknown, start?: number, end?: number) => {
 const selectTypes = ["absolute", "changes"] as const;
 type SelectType = (typeof selectTypes)[number];
 
+type LastSelected = {
+  startYear: number;
+  endYear: number;
+};
+
 type TemporalDatasetItemProps = {
   layer:
     | (LayerListResponseDataItem & {
@@ -96,20 +101,32 @@ type TemporalDatasetItemProps = {
       })
     | undefined;
   selectType: SelectType;
+  isTemporalGroup?: boolean;
 };
-export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatasetItemProps) => {
+export const TemporalChangesDatasetItem = ({
+  layer,
+  selectType,
+  isTemporalGroup,
+}: TemporalDatasetItemProps) => {
   const t = useTranslations();
+
+  const [lastSelected, setLastSelected] = useState<LastSelected>({ startYear: 0, endYear: 0 });
 
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
   const [layers] = useSyncLayers();
 
   const { defaultStartYear, layerSlug } = useMemo(() => {
-    const defaultStartYear = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
-      (p) => p.key === "startYear",
-    )?.default as number | undefined;
+    let startYear;
+    if (isTemporalGroup && lastSelected.startYear) {
+      startYear = lastSelected.startYear;
+    } else {
+      startYear = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
+        (p) => p.key === "startYear",
+      )?.default as number | undefined;
+    }
 
     const layerSlug = layer?.attributes?.slug;
-    return { defaultStartYear, layerSlug };
+    return { defaultStartYear: startYear, layerSlug };
   }, [layer?.attributes]);
 
   const { startYear, endYear, isDisabled } = useMemo(() => {
@@ -130,7 +147,7 @@ export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatase
     [layer, endYear],
   );
   const endYearOptions = useMemo(
-    () => _getOptions(layer?.attributes?.params_config, startYear),
+    () => _getOptions(layer?.attributes?.params_config, startYear || defaultStartYear),
     [layer, startYear],
   );
 
@@ -149,6 +166,13 @@ export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatase
         },
       };
     });
+
+    if (isTemporalGroup) {
+      setLastSelected((prev) => ({
+        ...prev,
+        [key]: Number(value),
+      }));
+    }
   };
 
   useEffect(() => {
@@ -175,7 +199,7 @@ export const TemporalChangesDatasetItem = ({ layer, selectType }: TemporalDatase
         };
       });
     }
-  }, [selectType, layerSlug]);
+  }, [selectType, layerSlug, isTemporalGroup]);
 
   return (
     <div className="space-y-4">

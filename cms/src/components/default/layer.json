@@ -13,6 +13,15 @@
     },
     "type": {
       "type": "string"
+    },
+    "group": {
+      "type": "string"
+    },
+    "group_es": {
+      "type": "string"
+    },
+    "group_fr": {
+      "type": "string"
     }
   }
 }

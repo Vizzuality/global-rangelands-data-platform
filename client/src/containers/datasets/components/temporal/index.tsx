@@ -12,8 +12,16 @@ type SelectType = (typeof selectTypes)[number];
 
 type TemporalDatasetProps = {
   layers?: (LayerListResponseDataItem & { type?: string })[];
+  value?: string;
+  onChange?: (value: string) => void;
+  isTemporalGroup?: boolean;
 };
-const TemporalChangesDataset = ({ layers }: TemporalDatasetProps) => {
+const TemporalChangesDataset = ({
+  layers,
+  value,
+  onChange,
+  isTemporalGroup,
+}: TemporalDatasetProps) => {
   const t = useTranslations();
 
   const [syncLayers, setSyncLayers] = useSyncLayers();
@@ -25,8 +33,10 @@ const TemporalChangesDataset = ({ layers }: TemporalDatasetProps) => {
     () => layers?.find((l) => l.attributes?.slug && syncLayers.includes(l.attributes?.slug)),
     [layers, syncLayers],
   );
-  const selectedType =
-    useMemo(() => selectedLayer?.type as SelectType, [selectedLayer]) || "absolute";
+  const selectedType: SelectType = useMemo(
+    () => value || selectedLayer?.type,
+    [selectedLayer, value],
+  ) as SelectType;
 
   const handleSelectType = (value: SelectType) => {
     const absoluteLayerSlug = absoluteLayer?.attributes?.slug;
@@ -36,6 +46,7 @@ const TemporalChangesDataset = ({ layers }: TemporalDatasetProps) => {
     } else if (value === "changes" && changeLayerSlug) {
       setSyncLayers((prev) => [...prev?.filter((l) => l !== absoluteLayerSlug), changeLayerSlug]);
     }
+    onChange?.(value);
   };
 
   const isChangesDataset =
@@ -73,7 +84,11 @@ const TemporalChangesDataset = ({ layers }: TemporalDatasetProps) => {
           </label>
         </div>
       </RadioGroup>
-      <TemporalChangesDatasetItem selectType={selectedType} layer={selectedLayer || layers[0]} />
+      <TemporalChangesDatasetItem
+        isTemporalGroup={isTemporalGroup}
+        selectType={selectedType}
+        layer={selectedLayer || layers[0]}
+      />
     </div>
   ) : (
     <div>

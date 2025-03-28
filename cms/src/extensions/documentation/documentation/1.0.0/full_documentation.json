@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-03-26T16:06:31.148Z"
+    "x-generation-date": "2025-03-28T08:13:16.304Z"
   },
   "servers": [
     {
@@ -108,7 +108,8 @@
                 "enum": [
                   "Group",
                   "Temporal",
-                  "Simple"
+                  "Simple",
+                  "Temporal-Group"
                 ]
               },
               "layers": {
@@ -215,7 +216,8 @@
             "enum": [
               "Group",
               "Temporal",
-              "Simple"
+              "Simple",
+              "Temporal-Group"
             ]
           },
           "layers": {
@@ -294,7 +296,8 @@
                                       "enum": [
                                         "Group",
                                         "Temporal",
-                                        "Simple"
+                                        "Simple",
+                                        "Temporal-Group"
                                       ]
                                     },
                                     "layers": {
@@ -323,6 +326,15 @@
                                             }
                                           },
                                           "type": {
+                                            "type": "string"
+                                          },
+                                          "group": {
+                                            "type": "string"
+                                          },
+                                          "group_es": {
+                                            "type": "string"
+                                          },
+                                          "group_fr": {
                                             "type": "string"
                                           }
                                         }
@@ -1390,6 +1402,15 @@
           },
           "type": {
             "type": "string"
+          },
+          "group": {
+            "type": "string"
+          },
+          "group_es": {
+            "type": "string"
+          },
+          "group_fr": {
+            "type": "string"
           }
         }
       },
@@ -1563,7 +1584,8 @@
                           "enum": [
                             "Group",
                             "Temporal",
-                            "Simple"
+                            "Simple",
+                            "Temporal-Group"
                           ]
                         },
                         "layers": {
@@ -1976,6 +1998,15 @@
                                 }
                               },
                               "type": {
+                                "type": "string"
+                              },
+                              "group": {
+                                "type": "string"
+                              },
+                              "group_es": {
+                                "type": "string"
+                              },
+                              "group_fr": {
                                 "type": "string"
                               }
                             }
@@ -4693,7 +4724,8 @@
                           "enum": [
                             "Group",
                             "Temporal",
-                            "Simple"
+                            "Simple",
+                            "Temporal-Group"
                           ]
                         },
                         "layers": {
@@ -5106,6 +5138,15 @@
                                 }
                               },
                               "type": {
+                                "type": "string"
+                              },
+                              "group": {
+                                "type": "string"
+                              },
+                              "group_es": {
+                                "type": "string"
+                              },
+                              "group_fr": {
                                 "type": "string"
                               }
                             }
