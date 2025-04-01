@@ -53,11 +53,6 @@ const LayerManager = () => {
     });
   }, [layers, layersSettings, setLayersSettings]);
 
-  const LAYERS = layers.toSorted((a) => {
-    const bottomSlugs = ["rangeland-system", "rangeland-biomes", "rangeland-ecoregions"];
-    return bottomSlugs.includes(a) ? 1 : -1;
-  });
-
   return (
     <DeckMapboxOverlayProvider>
       <>
@@ -65,9 +60,9 @@ const LayerManager = () => {
           Generate all transparent backgrounds to be able to sort by layers without an error
           - https://github.com/visgl/react-map-gl/issues/939#issuecomment-625290200
         */}
-        {LAYERS.map((l, i) => {
+        {layers.map((l, i) => {
           const id = `${l}-background-layer`;
-          const beforeId = i === 0 ? baseLayer : `${LAYERS[i - 1]}-background-layer`;
+          const beforeId = i === 0 ? baseLayer : `${layers[i - 1]}-background-layer`;
           return (
             <Layer
               id={id}
@@ -83,7 +78,7 @@ const LayerManager = () => {
           Loop through active layers. The id is gonna be used to fetch the current layer and know how to order the layers.
           The first item will always be at the top of the layers stack
         */}
-        {LAYERS.map((l, i) => {
+        {layers.map((l, i) => {
           const id = l;
           const beforeId = `${l}-background-layer`;
           return (
