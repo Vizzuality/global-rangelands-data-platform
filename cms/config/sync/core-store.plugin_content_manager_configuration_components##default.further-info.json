@@ -1,13 +1,13 @@
 {
-  "key": "plugin_content_manager_configuration_components::default.layer",
+  "key": "plugin_content_manager_configuration_components::default.further-info",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "type",
-      "defaultSortBy": "id",
+      "mainField": "url",
+      "defaultSortBy": "url",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,19 +19,60 @@
           "sortable": false
         }
       },
-      "layer": {
+      "url": {
         "edit": {
-          "label": "layer",
+          "label": "url",
           "description": "",
           "placeholder": "",
           "visible": true,
-          "editable": true,
-          "mainField": "title"
+          "editable": true
         },
         "list": {
-          "label": "layer",
+          "label": "url",
           "searchable": true,
           "sortable": true
+        }
+      },
+      "content": {
+        "edit": {
+          "label": "content",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "content",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "content_es": {
+        "edit": {
+          "label": "content_es",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "content_es",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "content_fr": {
+        "edit": {
+          "label": "content_fr",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "content_fr",
+          "searchable": false,
+          "sortable": false
         }
       },
       "type": {
@@ -47,87 +88,48 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "group": {
-        "edit": {
-          "label": "group",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "group",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "group_es": {
-        "edit": {
-          "label": "group_es",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "group_es",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "group_fr": {
-        "edit": {
-          "label": "group_fr",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "group_fr",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
       "list": [
         "id",
-        "layer",
-        "type",
-        "group"
+        "url",
+        "type"
       ],
       "edit": [
         [
           {
-            "name": "layer",
+            "name": "url",
             "size": 6
-          },
+          }
+        ],
+        [
+          {
+            "name": "content",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "content_es",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "content_fr",
+            "size": 12
+          }
+        ],
+        [
           {
             "name": "type",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "group",
-            "size": 6
-          },
-          {
-            "name": "group_es",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "group_fr",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "default.layer",
+    "uid": "default.further-info",
     "isComponent": true
   },
   "type": "object",

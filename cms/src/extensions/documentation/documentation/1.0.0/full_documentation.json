@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-03-28T08:13:16.304Z"
+    "x-generation-date": "2025-04-02T10:53:56.894Z"
   },
   "servers": [
     {
@@ -263,9 +263,6 @@
                         "type": "string"
                       },
                       "description": {
-                        "type": "string"
-                      },
-                      "further_information": {
                         "type": "string"
                       },
                       "notes": {
@@ -855,9 +852,6 @@
                             "description": {
                               "type": "string"
                             },
-                            "further_information": {
-                              "type": "string"
-                            },
                             "notes": {
                               "type": "string"
                             },
@@ -866,6 +860,37 @@
                               "enum": [
                                 "es",
                                 "fr"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "further_information": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "string"
+                            },
+                            "content_es": {
+                              "type": "string"
+                            },
+                            "content_fr": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "link",
+                                "paper",
+                                "video"
                               ]
                             }
                           }
@@ -2091,9 +2116,6 @@
                                     "description": {
                                       "type": "string"
                                     },
-                                    "further_information": {
-                                      "type": "string"
-                                    },
                                     "notes": {
                                       "type": "string"
                                     },
@@ -2504,9 +2526,6 @@
                                           "description": {
                                             "type": "string"
                                           },
-                                          "further_information": {
-                                            "type": "string"
-                                          },
                                           "notes": {
                                             "type": "string"
                                           },
@@ -2515,6 +2534,37 @@
                                             "enum": [
                                               "es",
                                               "fr"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "further_information": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "number"
+                                          },
+                                          "url": {
+                                            "type": "string"
+                                          },
+                                          "content": {
+                                            "type": "string"
+                                          },
+                                          "content_es": {
+                                            "type": "string"
+                                          },
+                                          "content_fr": {
+                                            "type": "string"
+                                          },
+                                          "type": {
+                                            "type": "string",
+                                            "enum": [
+                                              "link",
+                                              "paper",
+                                              "video"
                                             ]
                                           }
                                         }
@@ -4591,9 +4641,6 @@
               "description": {
                 "type": "string"
               },
-              "further_information": {
-                "type": "string"
-              },
               "notes": {
                 "type": "string"
               },
@@ -4629,6 +4676,12 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/TranslationsStoryTranslationComponent"
+                }
+              },
+              "further_information": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DefaultFurtherInfoComponent"
                 }
               }
             }
@@ -4691,9 +4744,6 @@
             "type": "string"
           },
           "description": {
-            "type": "string"
-          },
-          "further_information": {
             "type": "string"
           },
           "notes": {
@@ -5231,9 +5281,6 @@
                                     "description": {
                                       "type": "string"
                                     },
-                                    "further_information": {
-                                      "type": "string"
-                                    },
                                     "notes": {
                                       "type": "string"
                                     },
@@ -5644,9 +5691,6 @@
                                           "description": {
                                             "type": "string"
                                           },
-                                          "further_information": {
-                                            "type": "string"
-                                          },
                                           "notes": {
                                             "type": "string"
                                           },
@@ -5655,6 +5699,37 @@
                                             "enum": [
                                               "es",
                                               "fr"
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "further_information": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "number"
+                                          },
+                                          "url": {
+                                            "type": "string"
+                                          },
+                                          "content": {
+                                            "type": "string"
+                                          },
+                                          "content_es": {
+                                            "type": "string"
+                                          },
+                                          "content_fr": {
+                                            "type": "string"
+                                          },
+                                          "type": {
+                                            "type": "string",
+                                            "enum": [
+                                              "link",
+                                              "paper",
+                                              "video"
                                             ]
                                           }
                                         }
@@ -5910,6 +5985,12 @@
               "$ref": "#/components/schemas/TranslationsStoryTranslationComponent"
             }
           },
+          "further_information": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefaultFurtherInfoComponent"
+            }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -5992,9 +6073,6 @@
           "description": {
             "type": "string"
           },
-          "further_information": {
-            "type": "string"
-          },
           "notes": {
             "type": "string"
           },
@@ -6003,6 +6081,34 @@
             "enum": [
               "es",
               "fr"
+            ]
+          }
+        }
+      },
+      "DefaultFurtherInfoComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "url": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "content_es": {
+            "type": "string"
+          },
+          "content_fr": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "link",
+              "paper",
+              "video"
             ]
           }
         }

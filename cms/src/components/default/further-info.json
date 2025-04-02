@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_default_further_infos",
+  "info": {
+    "displayName": "Further Info"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "content_es": {
+      "type": "richtext"
+    },
+    "content_fr": {
+      "type": "richtext"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "link",
+        "paper",
+        "video"
+      ],
+      "required": true,
+      "default": "link"
+    }
+  }
+}

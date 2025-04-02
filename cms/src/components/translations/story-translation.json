@@ -1,7 +1,8 @@
 {
   "collectionName": "components_translations_story_translations",
   "info": {
-    "displayName": "Story Translation"
+    "displayName": "Story Translation",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -11,9 +12,6 @@
       "unique": true
     },
     "description": {
-      "type": "richtext"
-    },
-    "further_information": {
       "type": "richtext"
     },
     "notes": {

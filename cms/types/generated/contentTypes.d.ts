@@ -1087,7 +1087,6 @@ export interface ApiStoryStory extends Schema.CollectionType {
   attributes: {
     title: Attribute.String & Attribute.Required & Attribute.Unique;
     description: Attribute.RichText;
-    further_information: Attribute.RichText;
     notes: Attribute.RichText;
     location: Attribute.String;
     datasets: Attribute.Relation<
@@ -1097,6 +1096,7 @@ export interface ApiStoryStory extends Schema.CollectionType {
     >;
     image: Attribute.Media;
     translations: Attribute.Component<'translations.story-translation', true>;
+    further_information: Attribute.Component<'default.further-info', true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

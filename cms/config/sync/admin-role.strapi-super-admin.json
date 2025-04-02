@@ -72,6 +72,9 @@
           "type",
           "layers.layer",
           "layers.type",
+          "layers.group",
+          "layers.group_es",
+          "layers.group_fr",
           "citations.content",
           "citations.url",
           "sources.name",
@@ -110,6 +113,9 @@
           "type",
           "layers.layer",
           "layers.type",
+          "layers.group",
+          "layers.group_es",
+          "layers.group_fr",
           "citations.content",
           "citations.url",
           "sources.name",
@@ -134,6 +140,9 @@
           "type",
           "layers.layer",
           "layers.type",
+          "layers.group",
+          "layers.group_es",
+          "layers.group_fr",
           "citations.content",
           "citations.url",
           "sources.name",
@@ -381,16 +390,19 @@
         "fields": [
           "title",
           "description",
-          "further_information",
           "notes",
           "location",
           "datasets",
           "image",
           "translations.title",
           "translations.description",
-          "translations.further_information",
           "translations.notes",
-          "translations.locale"
+          "translations.locale",
+          "further_information.url",
+          "further_information.content",
+          "further_information.content_es",
+          "further_information.content_fr",
+          "further_information.type"
         ]
       },
       "conditions": []
@@ -417,16 +429,19 @@
         "fields": [
           "title",
           "description",
-          "further_information",
           "notes",
           "location",
           "datasets",
           "image",
           "translations.title",
           "translations.description",
-          "translations.further_information",
           "translations.notes",
-          "translations.locale"
+          "translations.locale",
+          "further_information.url",
+          "further_information.content",
+          "further_information.content_es",
+          "further_information.content_fr",
+          "further_information.type"
         ]
       },
       "conditions": []
@@ -439,16 +454,19 @@
         "fields": [
           "title",
           "description",
-          "further_information",
           "notes",
           "location",
           "datasets",
           "image",
           "translations.title",
           "translations.description",
-          "translations.further_information",
           "translations.notes",
-          "translations.locale"
+          "translations.locale",
+          "further_information.url",
+          "further_information.content",
+          "further_information.content_es",
+          "further_information.content_fr",
+          "further_information.type"
         ]
       },
       "conditions": []
