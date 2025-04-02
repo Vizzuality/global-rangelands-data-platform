@@ -12,16 +12,9 @@ type SelectType = (typeof selectTypes)[number];
 
 type TemporalDatasetProps = {
   layers?: (LayerListResponseDataItem & { type?: string })[];
-  value?: string;
-  onChange?: (value: string) => void;
   isTemporalGroup?: boolean;
 };
-const TemporalChangesDataset = ({
-  layers,
-  value,
-  onChange,
-  isTemporalGroup,
-}: TemporalDatasetProps) => {
+const TemporalChangesDataset = ({ layers, isTemporalGroup }: TemporalDatasetProps) => {
   const t = useTranslations();
 
   const [syncLayers, setSyncLayers] = useSyncLayers();
@@ -34,8 +27,8 @@ const TemporalChangesDataset = ({
     [layers, syncLayers],
   );
   const selectedType: SelectType = useMemo(
-    () => selectedLayer?.type || value,
-    [selectedLayer, value],
+    () => selectedLayer?.type,
+    [selectedLayer],
   ) as SelectType;
 
   const handleSelectType = (value: SelectType) => {
@@ -52,7 +45,6 @@ const TemporalChangesDataset = ({
         changeLayerSlug,
       ]);
     }
-    onChange?.(value);
   };
 
   const isChangesDataset =

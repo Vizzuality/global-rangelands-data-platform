@@ -88,11 +88,7 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
   return (
     <div className="space-y-6">
       <GroupDataset layers={layerGroups} slug={slug} />
-      <TemporalChangesDataset
-        value={selectedLayer.type}
-        layers={layerTemporal}
-        isTemporalGroup={true}
-      />
+      <TemporalChangesDataset layers={layerTemporal} isTemporalGroup={true} />
     </div>
   );
 };
