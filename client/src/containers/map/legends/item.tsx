@@ -102,7 +102,10 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
   };
 
   const subtitle = useMemo(() => {
-    if (datasetData?.data?.attributes?.type === "Group") {
+    if (
+      datasetData?.data?.attributes?.type === "Group" ||
+      datasetData?.data?.attributes?.type === "Temporal-Group"
+    ) {
       const layerName = datasetLayer?.attributes?.title;
       const items = datasetLayer?.attributes?.legend?.items;
       if (items?.[0]?.name !== layerName) {

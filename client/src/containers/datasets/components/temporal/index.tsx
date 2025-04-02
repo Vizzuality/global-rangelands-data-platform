@@ -34,7 +34,7 @@ const TemporalChangesDataset = ({
     [layers, syncLayers],
   );
   const selectedType: SelectType = useMemo(
-    () => value || selectedLayer?.type,
+    () => selectedLayer?.type || value,
     [selectedLayer, value],
   ) as SelectType;
 
@@ -42,9 +42,15 @@ const TemporalChangesDataset = ({
     const absoluteLayerSlug = absoluteLayer?.attributes?.slug;
     const changeLayerSlug = changeLayer?.attributes?.slug;
     if (value === "absolute" && absoluteLayerSlug) {
-      setSyncLayers((prev) => [...prev?.filter((l) => l !== changeLayerSlug), absoluteLayerSlug]);
+      setSyncLayers((prev) => [
+        ...prev?.filter((l) => l !== changeLayerSlug && l !== absoluteLayerSlug),
+        absoluteLayerSlug,
+      ]);
     } else if (value === "changes" && changeLayerSlug) {
-      setSyncLayers((prev) => [...prev?.filter((l) => l !== absoluteLayerSlug), changeLayerSlug]);
+      setSyncLayers((prev) => [
+        ...prev?.filter((l) => l !== absoluteLayerSlug && l !== changeLayerSlug),
+        changeLayerSlug,
+      ]);
     }
     onChange?.(value);
   };
