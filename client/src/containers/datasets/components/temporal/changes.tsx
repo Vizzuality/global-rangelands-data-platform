@@ -176,7 +176,7 @@ export const TemporalChangesDatasetItem = ({
   };
 
   useEffect(() => {
-    if (selectType === "absolute") {
+    if (selectType === "absolute" && !isTemporalGroup) {
       setLayersSettings((prev) => {
         if (!layerSlug) return prev;
         return {

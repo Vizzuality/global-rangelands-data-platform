@@ -1,6 +1,6 @@
 import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
 import GroupDataset from "./group";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import TemporalChangesDataset from "./temporal";
 import { useSyncLayers } from "@/store/map";
 
@@ -30,12 +30,10 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
     return { type: selectedLayer?.type || DEFAULT_TYPE, group: selectedLayer?.group };
   }, [layers, syncLayers]);
 
-  const [selectedType, setSelectedType] = useState(selectedLayer.type || DEFAULT_TYPE);
-
   const layerGroups: LayerWithNameAndType[] = useMemo(
     () =>
       layers?.reduce<LayerWithNameAndType[]>((acc, layer) => {
-        if (!layer.group || layer.type !== selectedType) return acc;
+        if (!layer.group || layer.type !== selectedLayer.type) return acc;
 
         return [
           ...acc,
@@ -53,7 +51,7 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
           },
         ];
       }, []) || [],
-    [layers, selectedType],
+    [layers, selectedLayer.type],
   );
 
   const layerTemporal = useMemo(
@@ -87,19 +85,10 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
     [layers, selectedLayer.group],
   );
 
-  const handleChangeType = (value: string) => {
-    setSelectedType(value);
-  };
-
   return (
     <div className="space-y-6">
       <GroupDataset layers={layerGroups} slug={slug} />
-      <TemporalChangesDataset
-        value={selectedType}
-        onChange={handleChangeType}
-        layers={layerTemporal}
-        isTemporalGroup={true}
-      />
+      <TemporalChangesDataset layers={layerTemporal} isTemporalGroup={true} />
     </div>
   );
 };

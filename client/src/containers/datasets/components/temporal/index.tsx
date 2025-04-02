@@ -12,16 +12,9 @@ type SelectType = (typeof selectTypes)[number];
 
 type TemporalDatasetProps = {
   layers?: (LayerListResponseDataItem & { type?: string })[];
-  value?: string;
-  onChange?: (value: string) => void;
   isTemporalGroup?: boolean;
 };
-const TemporalChangesDataset = ({
-  layers,
-  value,
-  onChange,
-  isTemporalGroup,
-}: TemporalDatasetProps) => {
+const TemporalChangesDataset = ({ layers, isTemporalGroup }: TemporalDatasetProps) => {
   const t = useTranslations();
 
   const [syncLayers, setSyncLayers] = useSyncLayers();
@@ -34,19 +27,24 @@ const TemporalChangesDataset = ({
     [layers, syncLayers],
   );
   const selectedType: SelectType = useMemo(
-    () => value || selectedLayer?.type,
-    [selectedLayer, value],
+    () => selectedLayer?.type,
+    [selectedLayer],
   ) as SelectType;
 
   const handleSelectType = (value: SelectType) => {
     const absoluteLayerSlug = absoluteLayer?.attributes?.slug;
     const changeLayerSlug = changeLayer?.attributes?.slug;
     if (value === "absolute" && absoluteLayerSlug) {
-      setSyncLayers((prev) => [...prev?.filter((l) => l !== changeLayerSlug), absoluteLayerSlug]);
+      setSyncLayers((prev) => [
+        ...prev?.filter((l) => l !== changeLayerSlug && l !== absoluteLayerSlug),
+        absoluteLayerSlug,
+      ]);
     } else if (value === "changes" && changeLayerSlug) {
-      setSyncLayers((prev) => [...prev?.filter((l) => l !== absoluteLayerSlug), changeLayerSlug]);
+      setSyncLayers((prev) => [
+        ...prev?.filter((l) => l !== absoluteLayerSlug && l !== changeLayerSlug),
+        changeLayerSlug,
+      ]);
     }
-    onChange?.(value);
   };
 
   const isChangesDataset =
