@@ -20,9 +20,6 @@
     "description": {
       "type": "richtext"
     },
-    "further_information": {
-      "type": "richtext"
-    },
     "notes": {
       "type": "richtext"
     },
@@ -49,6 +46,11 @@
       "type": "component",
       "repeatable": true,
       "component": "translations.story-translation"
+    },
+    "further_information": {
+      "type": "component",
+      "repeatable": true,
+      "component": "default.further-info"
     }
   }
 }

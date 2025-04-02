@@ -12,6 +12,22 @@ export interface DefaultCitations extends Schema.Component {
   };
 }
 
+export interface DefaultFurtherInfo extends Schema.Component {
+  collectionName: 'components_default_further_infos';
+  info: {
+    displayName: 'Further Info';
+  };
+  attributes: {
+    url: Attribute.String & Attribute.Required;
+    content: Attribute.RichText;
+    content_es: Attribute.RichText;
+    content_fr: Attribute.RichText;
+    type: Attribute.Enumeration<['link', 'paper', 'video']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'link'>;
+  };
+}
+
 export interface DefaultItem extends Schema.Component {
   collectionName: 'components_default_items';
   info: {
@@ -138,11 +154,11 @@ export interface TranslationsStoryTranslation extends Schema.Component {
   collectionName: 'components_translations_story_translations';
   info: {
     displayName: 'Story Translation';
+    description: '';
   };
   attributes: {
     title: Attribute.String & Attribute.Required & Attribute.Unique;
     description: Attribute.RichText;
-    further_information: Attribute.RichText;
     notes: Attribute.RichText;
     locale: Attribute.Enumeration<['es', 'fr']>;
   };
@@ -160,6 +176,7 @@ declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'default.citations': DefaultCitations;
+      'default.further-info': DefaultFurtherInfo;
       'default.item': DefaultItem;
       'default.layer': DefaultLayer;
       'default.legend': DefaultLegend;

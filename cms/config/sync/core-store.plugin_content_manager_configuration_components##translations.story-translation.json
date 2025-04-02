@@ -47,20 +47,6 @@
           "sortable": false
         }
       },
-      "further_information": {
-        "edit": {
-          "label": "further_information",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "further_information",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "notes": {
         "edit": {
           "label": "notes",
@@ -106,12 +92,6 @@
         [
           {
             "name": "description",
-            "size": 12
-          }
-        ],
-        [
-          {
-            "name": "further_information",
             "size": 12
           }
         ],
