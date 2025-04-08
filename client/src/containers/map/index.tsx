@@ -10,9 +10,13 @@ import MapLayers from "@/containers/navigation/map-layers";
 import { useSyncMapStyle } from "@/store/map";
 import MapTooltip from "./popups";
 import OpenStreetMapAttribution from "@/components/ui/openstreetmap-attribution";
+import useSyncLayersOrder from "@/hooks/use-sync-layers-order";
 
 const Map = () => {
   const [mapStyle] = useSyncMapStyle();
+
+  useSyncLayersOrder();
+
   return (
     <div className="h-full w-full">
       <MapComponent

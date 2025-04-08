@@ -3,7 +3,7 @@ import { useGetBySlug, useGetLocalizedList } from "@/lib/localized-query";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { DatasetResponse } from "@/types/generated/strapi.schemas";
 import { useLocale } from "next-intl";
-import { createElement, useMemo, useState } from "react";
+import { createElement, useMemo } from "react";
 import LegendHeader from "@/components/map/legends/header";
 import BasicLegend from "@/components/map/legends/content/basic";
 import GradientLegend from "@/components/map/legends/content/gradient";
@@ -13,6 +13,8 @@ import { getLayerSettings } from "@/lib/utils";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import LegendChoropleth from "@/components/map/legends/content/choropleth";
 import { useGetLayers } from "@/types/generated/layer";
+import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
+import { DraggableAttributes } from "@dnd-kit/core";
 
 const LEGEND_CONTENT = {
   Basic: BasicLegend,
@@ -21,15 +23,30 @@ const LEGEND_CONTENT = {
   Rangeland: RangelandLegend,
 };
 
-type LegendItemProps = {
+export type LegendItemProps = {
   dataset: string;
+  listeners?: SyntheticListenerMap | undefined;
+  attributes?: DraggableAttributes;
+  sortable?: boolean;
+  isDragging?: boolean;
+  id?: string;
+  isOpen: boolean;
+  onOpenChange: () => void;
 };
 
-const LegendItem = ({ dataset }: LegendItemProps) => {
+const LegendItem = ({
+  dataset,
+  attributes,
+  listeners,
+  sortable,
+  isDragging,
+  id,
+  isOpen,
+  onOpenChange,
+}: LegendItemProps) => {
   const locale = useLocale();
   const [layers] = useSyncLayers();
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
-  const [isOpen, setIsOpen] = useState(true);
 
   const { data: datasetData } = useGetBySlug<DatasetResponse>(`dataset/${dataset}`, {
     populate: ["layers", "translations", "layers.layer"],
@@ -123,12 +140,15 @@ const LegendItem = ({ dataset }: LegendItemProps) => {
           opacity={settings.opacity}
           title={datasetData?.data?.attributes?.title}
           subtitle={subtitle}
-          handleChangeIsOpen={() => setIsOpen((prev) => !prev)}
+          handleChangeIsOpen={onOpenChange}
           info={datasetLayer?.attributes?.description}
           setOpacity={(o) => setLayerSettings("opacity", o)}
           setVisibility={(v) => setLayerSettings("visibility", v)}
+          listeners={listeners}
+          attributes={attributes}
+          sortable={sortable}
         />
-        <CollapsibleContent>
+        <CollapsibleContent className="px-4">
           {datasetLayer?.attributes?.legend?.unit && (
             <div className="mb-1.5 flex items-end justify-end">
               <span className="text-xs">{datasetLayer?.attributes?.legend?.unit}</span>

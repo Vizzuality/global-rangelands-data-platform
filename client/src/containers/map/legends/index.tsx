@@ -11,14 +11,23 @@ import {
   ScrollAreaViewport,
   Scrollbar,
 } from "@radix-ui/react-scroll-area";
+import SortableList from "@/components/map/legends/sortable";
+import { useState } from "react";
 
 type LegendsProps = {
   open: boolean;
   onOpenChange: (o: boolean) => void;
 };
 const Legends = ({ open, onOpenChange }: LegendsProps) => {
-  const [datasets] = useSyncDatasets();
-  const legendItems = Array.from(datasets).reverse();
+  const [datasets, setDatasets] = useSyncDatasets();
+
+  const legendItems = Array.from(datasets);
+
+  const handleSortChange = (newOrder: string[]) => {
+    setDatasets(newOrder);
+  };
+
+  const [openLegends, setOpenLegends] = useState<string[]>(legendItems);
 
   return (
     <div>
@@ -38,10 +47,27 @@ const Legends = ({ open, onOpenChange }: LegendsProps) => {
           side="left"
           className="w-[348px] rounded-lg bg-background px-0 py-0 shadow-lg drop-shadow-2xl"
         >
-          <ScrollArea type="scroll" className="relative overflow-hidden">
-            <ScrollAreaViewport className="max-h-[70vh] w-full">
-              <div className="my-6 space-y-4 px-6">
-                {legendItems?.map((d) => <LegendItem key={d} dataset={d} />)}
+          <ScrollArea type="always" className="relative overflow-hidden">
+            <ScrollAreaViewport className="max-h-[70vh] w-full overflow-hidden">
+              <div className="my-6 space-y-4 px-4">
+                <SortableList onChangeOrder={handleSortChange}>
+                  {legendItems?.map((d) => (
+                    <LegendItem
+                      sortable
+                      isOpen={openLegends.includes(d)}
+                      onOpenChange={() => {
+                        if (!openLegends.includes(d)) {
+                          setOpenLegends((prev) => [...prev, d]);
+                        } else {
+                          setOpenLegends((prev) => prev.filter((l) => l !== d));
+                        }
+                      }}
+                      id={d}
+                      key={d}
+                      dataset={d}
+                    />
+                  ))}
+                </SortableList>
               </div>
               <div className="absolute bottom-0 z-50 h-7 w-[calc(100%-8px)] translate-y-2 bg-background blur-sm"></div>
             </ScrollAreaViewport>

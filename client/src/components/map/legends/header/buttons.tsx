@@ -15,7 +15,11 @@ type LayerVisibilityProps = {
 };
 const LayerVisibility = ({ onChangeVisibility, visible }: LayerVisibilityProps) => {
   return (
-    <Toggle className="group h-min px-0" onPressedChange={onChangeVisibility} pressed={visible}>
+    <Toggle
+      className="group h-5 w-5 rounded-full px-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-0"
+      onPressedChange={onChangeVisibility}
+      pressed={visible}
+    >
       <EyeIcon className="h-5 w-5 fill-foreground group-data-[state=off]:hidden" />
       <EyeOffIcon className="h-5 w-5 fill-foreground group-data-[state=on]:hidden" />
     </Toggle>
@@ -28,7 +32,7 @@ type LayerOpacityProps = {
 };
 const LayerOpacity = ({ opacity = 1, onChangeOpacity }: LayerOpacityProps) => (
   <Popover>
-    <PopoverTrigger className="h-min">
+    <PopoverTrigger className="h-5 w-5 rounded-full pl-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300">
       <OpacityIcon
         style={{
           opacity: opacity + 0.2,
@@ -56,7 +60,10 @@ type LayerInfoProps = DialogProps & {
 
 const LayerInfo = ({ info, title, ...props }: LayerInfoProps) => (
   <Dialog {...props}>
-    <DialogTrigger disabled={!info} className="h-min">
+    <DialogTrigger
+      disabled={!info}
+      className="h-min rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+    >
       <CircleHelpIcon className="h-5 w-5 stroke-foreground" />
     </DialogTrigger>
     <DialogContent>
