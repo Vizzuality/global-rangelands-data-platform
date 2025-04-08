@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 const useSyncLayersOrder = () => {
   const [syncDatasets] = useSyncDatasets();
-  const [, setSyncLayers] = useSyncLayers();
+  const [layers, setSyncLayers] = useSyncLayers();
 
   const { data: datasetsData } = useGetDatasets({
     populate: ["layers", "layers.layer"],
@@ -24,9 +24,9 @@ const useSyncLayersOrder = () => {
           (layer) => layer.layer?.data?.attributes?.slug,
         );
 
-        const datasetLayerSlug = dataset?.attributes?.layers?.find((layer) => {
-          return datasetLayers?.includes(layer.layer?.data?.attributes?.slug);
-        })?.layer?.data?.attributes?.slug;
+        const datasetLayerSlug = layers?.find((layer) => {
+          return datasetLayers?.includes(layer);
+        });
 
         const index = !!dataset.attributes?.slug && syncDatasets?.indexOf(dataset.attributes?.slug);
 

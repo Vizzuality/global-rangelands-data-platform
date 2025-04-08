@@ -28,14 +28,14 @@ const Slider = React.forwardRef<
       <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full border border-foreground bg-background">
         <SliderPrimitive.Range className="absolute h-full bg-foreground/50" />
       </SliderPrimitive.Track>
-      <SliderPrimitive.Thumb>
+      <SliderPrimitive.Thumb className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400">
         <TooltipProvider>
           <Tooltip open={tooltipOpen}>
             <TooltipTrigger
               onMouseEnter={() => setTooltipOpen(true)}
               onMouseLeave={() => setTooltipOpen(false)}
             >
-              <div className="block h-3 w-3 rounded-full border-2 bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"></div>
+              <div className="block h-3 w-3 rounded-full border-2 bg-background ring-offset-background transition-colors disabled:pointer-events-none disabled:opacity-50"></div>
             </TooltipTrigger>
             <TooltipContent
               align="center"

@@ -33,13 +33,13 @@ const LegendHeader = ({
 }: LegendHeaderProps) => {
   return (
     <div>
-      <div className="aitems-center flex gap-2">
-        <div className="flex flex-1 items-start">
+      <div className="flex gap-2">
+        <div className="flex flex-1 items-start gap-0">
           {sortable && (
             <button
               aria-label="drag"
               type="button"
-              className="text-primary-foreground mt-1 cursor-grabbing transition-colors"
+              className="text-primary-foreground mt-0.5 flex h-5 w-5 -translate-x-1 cursor-grabbing items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
               {...listeners}
               {...attributes}
             >
@@ -52,7 +52,11 @@ const LegendHeader = ({
           <LayerOpacity onChangeOpacity={setOpacity} opacity={opacity} />
           {!!info && <LayerInfo info={info} title={title} />}
           <LayerVisibility onChangeVisibility={setVisibility} visible={visible} />
-          <Button onClick={handleChangeIsOpen} variant="link" className="h-fit px-0 py-0">
+          <Button
+            onClick={handleChangeIsOpen}
+            variant="link"
+            className="h-5 w-5 rounded-full px-0 py-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-0"
+          >
             <ChevronDown className="h-5 w-5 shrink-0 group-data-[state=closed]:rotate-180" />
           </Button>
         </div>

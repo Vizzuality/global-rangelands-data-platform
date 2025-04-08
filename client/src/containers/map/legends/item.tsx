@@ -47,9 +47,6 @@ const LegendItem = ({
   const locale = useLocale();
   const [layers] = useSyncLayers();
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
-  // const [isOpen, setIsOpen] = useState(true);
-
-  console.log({ id, isDragging, attributes });
 
   const { data: datasetData } = useGetBySlug<DatasetResponse>(`dataset/${dataset}`, {
     populate: ["layers", "translations", "layers.layer"],

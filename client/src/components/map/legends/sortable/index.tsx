@@ -62,8 +62,6 @@ export const SortableList = ({ children, onChangeOrder }: SortableListProps) => 
       return null;
     });
 
-    console.log("activeChildArray", activeChildArray?.[0]?.props);
-
     return activeChildArray?.length ? activeChildArray[0] : null;
   }, [children, activeId]);
 
@@ -136,9 +134,9 @@ export const SortableList = ({ children, onChangeOrder }: SortableListProps) => 
 
       {/* The portal is needed to avoid a style issue with the drag overlay   */}
       {createPortal(
-        <DragOverlay className="DragOverlay">
+        <DragOverlay>
           {isValidElement(ActiveItem) && (
-            <div className="OVERLAY_ITEM aamax-h-[50vh] overflow-hidden">
+            <div className="max-h-[200px] overflow-visible">
               {cloneElement(ActiveItem as ReactElement)}
             </div>
           )}
