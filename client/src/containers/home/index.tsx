@@ -40,7 +40,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-hidden scroll-smooth">
       <div className="relative">
         <motion.div className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern0.png)] bg-contain bg-repeat-y"></motion.div>
 
