@@ -49,6 +49,7 @@
     "d3-dsv": "^3.0.1",
     "deck.gl": "^9.0.17",
     "express": "^4.19.2",
+    "framer-motion": "^12.6.5",
     "jotai": "^2.8.2",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.378.0",

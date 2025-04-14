@@ -6,6 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import GMVLogo from "@/assets/images/gmv-logo.png";
 import VizzLogo from "@/assets/images/vizzuality-logo.png";
+import ILRILogo from "@/assets/images/collaborators/ilri.png";
+import GEFLogo from "@/assets/images/collaborators/gef.png";
+import IUCNLogo from "@/assets/images/collaborators/iucn.png";
 
 const Footer = () => {
   const t = useTranslations();
@@ -34,36 +37,63 @@ const Footer = () => {
   ];
 
   return (
-    <div className=" relative bg-foreground">
-      <div className="container z-50 mx-auto">
-        <div className="flex w-[55%] flex-col justify-between gap-10 py-10 pr-40">
-          <HomeLink className="text-white" />
-          <div className="space-y-3">
-            <p className="text-xs text-white">{t("Designed and developed by")}:</p>
-            <div className="flex items-center gap-4">
-              <Image
-                src={GMVLogo}
-                alt={t("gmv innovating solutions")}
-                className="h-6 w-16 object-contain"
-              />
-              <Image src={VizzLogo} alt={t("Vizzuality")} className="h-6 w-24 object-contain" />
-            </div>
+    <div className="container relative mx-auto bg-[#182219] px-[100px] text-white">
+      <div className="flex gap-[120px] py-20">
+        <div className="flex-1 space-y-6">
+          <div className="flex flex-col justify-between gap-10">
+            <HomeLink className="text-white" />
+            <p className="max-w-[360px] text-sm leading-[185%] text-white/80">
+              {t(
+                "We are proud to partner with a diverse group of visionary organizations who share our commitment to innovation, excellence, and creating meaningful impact",
+              )}
+              .
+            </p>
+          </div>
+          <div className="flex gap-6 pt-5">
+            <Image
+              src={GEFLogo}
+              alt={t("Global environment facility logo")}
+              className="w-[72px] object-contain"
+            />
+            <Image
+              src={ILRILogo}
+              alt={t("International Livestock Research Institute logo")}
+              className="w-[115px] object-contain"
+            />
+            <Image
+              src={IUCNLogo}
+              alt={t("International Union for Conservation of Nature logo")}
+              className="w-[34px] object-contain"
+            />
           </div>
         </div>
-      </div>
 
-      <div className="absolute top-0 h-full w-full">
-        <div className="mx-auto flex h-full justify-end">
-          <div className="flex w-[45vw] flex-col justify-center gap-2  border-l border-[#4D4C71] px-20 py-10 text-sm leading-loose text-white">
-            {LINKS.map((link) => (
-              <Link
-                href={link.href}
-                key={link.href}
-                className="underline-offset-2 transition-all duration-300 hover:underline"
-              >
-                {link.title}
-              </Link>
-            ))}
+        <div className="flex flex-1 flex-col  gap-2 py-10 text-sm leading-loose text-white">
+          {LINKS.map((link) => (
+            <Link
+              href={link.href}
+              key={link.href}
+              className="underline-offset-2 transition-all duration-300 hover:underline"
+            >
+              {link.title}
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div className="absolute left-0 h-px w-screen bg-white/10"></div>
+      <div className="flex items-center gap-10 py-6 ">
+        <p className="opacity-50">© Data Rangelands, 2025</p>
+        <div className="flex gap-4">
+          <p className="opacity-50">{t("Designed and developed by")}:</p>
+          <div className="flex gap-4">
+            <Image
+              src={GMVLogo}
+              width={45}
+              height={32}
+              alt={t("gmv innovating solutions")}
+              className="w-[40px] object-contain"
+            />
+            <Image src={VizzLogo} alt={t("Vizzuality")} className="w-[70px] object-contain" />
           </div>
         </div>
       </div>

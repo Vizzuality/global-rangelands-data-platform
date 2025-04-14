@@ -1,14 +1,13 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 
-import localFont from "next/font/local";
-
 import { getTranslations } from "@/i18n";
 import { getMessages } from "next-intl/server";
 import LayoutProviders from "./layout-providers";
 import NextIntlProvider from "@/components/next-intl-provider";
-import Header from "@/containers/header";
-// import { w } from "next/font/google"
+
+import { eyesForSerifs, wotfard } from "@/assets/fonts";
+
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale });
 
@@ -19,12 +18,6 @@ export async function generateMetadata({ params: { locale } }: { params: { local
     ),
   };
 }
-
-// Font files can be colocated inside of `app`
-const wotfard = localFont({
-  src: "../../assets/fonts/wotfard-regular-webfont.woff2",
-  display: "swap",
-});
 
 export default async function LocaleLayout({
   children,
@@ -37,10 +30,9 @@ export default async function LocaleLayout({
 
   return (
     <LayoutProviders>
-      <html lang={locale} className={wotfard.className}>
+      <html lang={locale} className={`${eyesForSerifs.variable} ${wotfard.variable}`}>
         <NextIntlProvider locale={locale} messages={messages}>
           <body className="flex flex-col">
-            <Header />
             <div className="flex-1">{children}</div>
           </body>
         </NextIntlProvider>
