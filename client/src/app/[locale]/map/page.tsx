@@ -4,6 +4,7 @@ import Sidebar from "@/containers/sidebar";
 import getQueryClient from "@/lib/react-query/getQueryClient";
 import { getGetDatasetCategoriesQueryOptions } from "@/types/generated/dataset-category";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import Header from "@/containers/header";
 
 async function prefetchQueries() {
   const queryClient = getQueryClient();
@@ -35,13 +36,16 @@ async function prefetchQueries() {
 export default async function Home() {
   const dehydratedState = await prefetchQueries();
   return (
-    <HydrationBoundary state={dehydratedState}>
-      <div className="flex h-[var(--content-height)] w-full overflow-y-hidden">
-        <Sidebar>
-          <Datasets />
-        </Sidebar>
-        <Map />
-      </div>
-    </HydrationBoundary>
+    <div>
+      <HydrationBoundary state={dehydratedState}>
+        <Header />
+        <div className="flex h-[var(--content-height)] w-full overflow-y-hidden">
+          <Sidebar>
+            <Datasets />
+          </Sidebar>
+          <Map />
+        </div>
+      </HydrationBoundary>
+    </div>
   );
 }
