@@ -175,9 +175,9 @@ const Home = () => {
       </div>
       <div className="mt-10 bg-[url(/images/home/pattern2.png)] py-[120px]">
         <div className="container mx-auto">
-          <div className="text-green-dark relative mx-auto max-w-[940px] ">
-            <div className="bg-green-medium absolute -left-[35px] top-[7.5%] z-0 h-[85%] w-[calc(100%+70px)]"></div>
-            <div className="bg-green-medium absolute left-[50%] top-[-10%] z-0 aspect-square h-[120%] -translate-x-[50%] rotate-45 p-8">
+          <div className="relative mx-auto max-w-[940px] text-green-dark ">
+            <div className="absolute -left-[35px] top-[7.5%] z-0 h-[85%] w-[calc(100%+70px)] bg-green-medium"></div>
+            <div className="absolute left-[50%] top-[-10%] z-0 aspect-square h-[120%] -translate-x-[50%] rotate-45 bg-green-medium p-8">
               <div className="h-full w-full border-[5px] border-[#B8B756]"></div>
             </div>
 
@@ -195,13 +195,13 @@ const Home = () => {
               <div className="flex justify-center gap-4 pt-[60px]">
                 <Link
                   href="#home-to-millions"
-                  className="hover:text-green-light text-green-medium border-green-medium hover:border-green-light flex h-12 items-center justify-center rounded-none border bg-white px-6 text-base transition-colors duration-300"
+                  className="flex h-12 items-center justify-center rounded-none border border-green-medium bg-white px-6 text-base text-green-medium transition-colors duration-300 hover:border-green-light hover:text-green-light"
                 >
                   {t("Keep reading")}
                 </Link>
                 <Link
                   href="/map"
-                  className="hover:bg-green-light bg-green-medium flex h-12 items-center justify-center rounded-none px-6 text-base text-white transition-colors duration-300"
+                  className="flex h-12 items-center justify-center rounded-none bg-green-medium px-6 text-base text-white transition-colors duration-300 hover:bg-green-light"
                 >
                   {t("Explore Data Rangelands platform")}
                 </Link>
@@ -210,7 +210,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="bg-green-light mt-[-1px] pt-[100px]">
+      <div className="mt-[-1px] bg-green-light pt-[100px]">
         <div
           id="home-to-millions"
           className="container mx-auto flex gap-[120px] space-y-2 p-[100px] text-white"
