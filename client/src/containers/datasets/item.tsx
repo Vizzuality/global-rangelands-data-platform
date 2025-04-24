@@ -73,7 +73,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
       if (!checked) {
         return prev.filter((d) => d !== id);
       }
-      return [...prev, id];
+      return [id, ...prev];
     });
 
     if (!checked) {
