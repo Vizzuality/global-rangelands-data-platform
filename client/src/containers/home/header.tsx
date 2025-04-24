@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 const Header = () => {
   const t = useTranslations();
   return (
-    <div className="HEADER flex items-end sm:justify-end sm:px-8 sm:pt-8">
-      <div className="flex w-full items-center gap-10 bg-white px-8 py-4 text-sm font-medium text-brown-dark sm:w-auto">
+    <div className="flex items-end sm:justify-end sm:px-8 sm:pt-8">
+      <div className="flex w-full justify-between bg-white px-8 py-4 text-sm font-medium text-brown-dark sm:w-auto sm:items-center sm:gap-10">
         <Link className="transition-colors duration-300 hover:text-brown-light" href="/map">
           {t("Explore map")}
         </Link>

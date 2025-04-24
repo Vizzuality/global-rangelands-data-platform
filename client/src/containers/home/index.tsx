@@ -75,7 +75,7 @@ const Home = () => {
             className="h-full"
           >
             {/* Title */}
-            <div className="mx-auto mt-10  max-w-[828px] space-y-2 px-2 text-white sm:px-0">
+            <div className="mx-auto mt-14 max-w-[828px]  space-y-2 px-2 text-white sm:mt-10 sm:px-0">
               <div className="mb-8 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
                 <Image src="/images/home/title-icon.png" alt="title-icon" width={123} height={58} />
                 <h1 className="font-serif text-5xl font-bold sm:text-[78px] ">
@@ -93,7 +93,7 @@ const Home = () => {
             </div>
 
             {/* App images */}
-            <div className="mx-auto mt-28 w-full overflow-x-hidden overflow-y-visible">
+            <div className="mx-auto mt-20 w-full overflow-x-hidden overflow-y-visible sm:mt-28">
               <div className="flex w-screen flex-col items-center justify-center sm:flex-row">
                 <div className="z-50 my-[20%] rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:my-0">
                   <Image
@@ -131,7 +131,7 @@ const Home = () => {
             </div>
 
             {/* CTA buttons */}
-            <div className="container mx-auto flex flex-col justify-center gap-4 pb-[160px] pt-20 sm:flex-row">
+            <div className="container mx-auto flex flex-col justify-center gap-4 pb-[140px] pt-20 sm:flex-row sm:pb-[160px]">
               <Link
                 href="#gallery"
                 className="flex h-12 items-center justify-center rounded-none bg-brown-dark px-6 text-base text-white transition-colors  duration-300 hover:bg-brown-light"
