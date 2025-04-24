@@ -75,10 +75,12 @@ const Home = () => {
             className="h-full"
           >
             {/* Title */}
-            <div className="mx-auto mt-10 max-w-[828px] space-y-2 text-white">
-              <div className="flex items-center justify-center gap-2.5 font-serif text-[78px] font-bold ">
+            <div className="mx-auto mt-14 max-w-[828px]  space-y-2 px-2 text-white sm:mt-10 sm:px-0">
+              <div className="mb-8 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
                 <Image src="/images/home/title-icon.png" alt="title-icon" width={123} height={58} />
-                <h1>{t("Data Rangelands")}</h1>
+                <h1 className="font-serif text-5xl font-bold sm:text-[78px] ">
+                  {t("Data Rangelands")}
+                </h1>
               </div>
               <div>
                 <p className="text-center font-serif text-3xl">
@@ -91,9 +93,9 @@ const Home = () => {
             </div>
 
             {/* App images */}
-            <div className="mx-auto mt-28 w-full overflow-x-hidden overflow-y-visible">
-              <div className="left-0 flex w-screen items-center justify-center">
-                <div className="z-50 rounded-[9.5px] border-[5px] border-brown-light opacity-100">
+            <div className="mx-auto mt-20 w-full overflow-x-hidden overflow-y-visible sm:mt-28">
+              <div className="flex w-screen flex-col items-center justify-center sm:flex-row">
+                <div className="z-50 my-[20%] rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:my-0">
                   <Image
                     src="/images/home/hero-app.png"
                     width={795.269}
@@ -104,7 +106,7 @@ const Home = () => {
                   />
                 </div>
 
-                <div className="absolute left-[-2%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light">
+                <div className="absolute -translate-y-[50%] scale-[0.8] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:left-[-2%] sm:translate-y-0 sm:scale-100">
                   <Image
                     priority
                     src="/images/home/hero-stories.png"
@@ -115,7 +117,7 @@ const Home = () => {
                   />
                 </div>
 
-                <div className="absolute right-[-2%] overflow-hidden  rounded-[9.5px] border-[5px] border-brown-light">
+                <div className="absolute translate-y-[50%] scale-[0.8] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light  sm:right-[-2%] sm:translate-y-0 sm:scale-100">
                   <Image
                     src="/images/home/hero-app-2.png"
                     width={653.204}
@@ -129,7 +131,7 @@ const Home = () => {
             </div>
 
             {/* CTA buttons */}
-            <div className="flex justify-center gap-4 pb-[160px] pt-20">
+            <div className="container mx-auto flex flex-col justify-center gap-4 pb-[140px] pt-20 sm:flex-row sm:pb-[160px]">
               <Link
                 href="#gallery"
                 className="flex h-12 items-center justify-center rounded-none bg-brown-dark px-6 text-base text-white transition-colors  duration-300 hover:bg-brown-light"
@@ -145,16 +147,19 @@ const Home = () => {
             </div>
 
             {/* Gallery */}
-            <div id="gallery" className="relative mt-[-135px] h-[440px]">
+            <div
+              id="gallery"
+              className="relative mt-[-135px] h-[80vw] translate-y-[20vw] sm:h-[440px] sm:translate-y-0"
+            >
               <HomeGallery />
             </div>
           </motion.div>
         </div>
       </div>
-      <div className="container mx-auto mb-[75px]  mt-[130px] flex gap-[120px] px-[100px] py-[100px]">
+      <div className="container mx-auto mb-[75px] mt-[130px] flex flex-col gap-12 py-10 sm:flex-row sm:gap-[120px] sm:px-[100px] sm:py-[100px]">
         <div className="flex-1 space-y-3">
           <Image src="/images/home/icon-color.png" alt={t("logo")} width={207} height={58} />
-          <h2 className="font-serif text-5xl font-light leading-tight">
+          <h2 className="font-serif text-4xl font-light leading-tight sm:text-5xl">
             {t("Unveiling rangelands landscapes")}
           </h2>
         </div>
@@ -173,16 +178,20 @@ const Home = () => {
           </p>
         </div>
       </div>
-      <div className="mt-10 bg-[url(/images/home/pattern2.png)] py-[120px]">
+      <div className="mt-10 bg-[url(/images/home/pattern2.png)] py-14 sm:py-[120px]">
         <div className="container mx-auto">
-          <div className="text-green-dark relative mx-auto max-w-[940px] ">
-            <div className="bg-green-medium absolute -left-[35px] top-[7.5%] z-0 h-[85%] w-[calc(100%+70px)]"></div>
-            <div className="bg-green-medium absolute left-[50%] top-[-10%] z-0 aspect-square h-[120%] -translate-x-[50%] rotate-45 p-8">
-              <div className="h-full w-full border-[5px] border-[#B8B756]"></div>
+          <div className="relative mx-auto max-w-[940px] text-green-dark">
+            <div className="absolute -left-[35px] top-[5%] z-0 hidden h-[90%] w-[calc(100%+70px)] bg-green-medium sm:top-[7.5%] sm:block sm:h-[85%]"></div>
+            <div className="absolute left-[50%] top-[-5%] z-0 aspect-square h-[120vw] -translate-x-[50%] rotate-45 bg-green-medium p-8 sm:left-[50%] sm:top-[-10%] sm:h-[120%]">
+              <div className="h-full w-full border-[5px] border-b-0 border-r-0 border-[#B8B756]"></div>
             </div>
 
-            <div className="relative z-10 flex flex-col items-center bg-white p-[100px] text-center">
-              <h2 className="max-w-[542px] font-serif text-5xl font-light  leading-tight">
+            <div className="absolute bottom-[-5%] left-[50%] z-0 aspect-square h-[120vw] -translate-x-[50%] rotate-45 bg-green-medium p-8 sm:left-[50%] sm:top-[-10%] sm:hidden sm:h-[120%]">
+              <div className="h-full w-full border-[5px] border-l-0 border-t-0 border-[#B8B756]"></div>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center bg-white p-6 text-center sm:p-[100px]">
+              <h2 className="max-w-[542px] font-serif text-4xl font-light leading-tight  sm:text-5xl">
                 {t("Supporting extensive livestock systems")}
               </h2>
               <p className="mt-6 text-[22px]">
@@ -192,16 +201,16 @@ const Home = () => {
                 .
               </p>
 
-              <div className="flex justify-center gap-4 pt-[60px]">
+              <div className="flex flex-col justify-center gap-4 pt-[60px] sm:flex-row">
                 <Link
                   href="#home-to-millions"
-                  className="hover:text-green-light text-green-medium border-green-medium hover:border-green-light flex h-12 items-center justify-center rounded-none border bg-white px-6 text-base transition-colors duration-300"
+                  className="flex h-12 items-center justify-center rounded-none border border-green-medium bg-white px-6 text-base text-green-medium transition-colors duration-300 hover:border-green-light hover:text-green-light"
                 >
                   {t("Keep reading")}
                 </Link>
                 <Link
                   href="/map"
-                  className="hover:bg-green-light bg-green-medium flex h-12 items-center justify-center rounded-none px-6 text-base text-white transition-colors duration-300"
+                  className="flex min-h-12 items-center justify-center rounded-none bg-green-medium px-6 py-2 text-base text-white transition-colors duration-300 hover:bg-green-light"
                 >
                   {t("Explore Data Rangelands platform")}
                 </Link>
@@ -210,12 +219,12 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="bg-green-light mt-[-1px] pt-[100px]">
+      <div className="mt-[-1px] bg-green-light pt-[100px]">
         <div
           id="home-to-millions"
-          className="container mx-auto flex gap-[120px] space-y-2 p-[100px] text-white"
+          className="container mx-auto flex flex-col gap-12 space-y-2 pb-14 text-white sm:flex-row sm:gap-[120px] sm:p-[100px]"
         >
-          <h2 className="max-w-[542px] flex-1 font-serif text-5xl font-light leading-tight">
+          <h2 className="max-w-[542px] flex-1 font-serif text-4xl font-light leading-tight sm:text-5xl">
             {t("Rangelands are home to millions")}...
           </h2>
           <div className="flex-1 space-y-4 text-[22px]">
@@ -252,11 +261,11 @@ const Home = () => {
             width={1280}
             height={400}
             alt={t("Cattle and goats in the field")}
-            className="h-full w-full object-cover"
+            className="h-full min-h-[300px] w-full object-cover sm:min-h-[400px]"
           />
         </motion.div>
       </div>
-      <div className="container mx-auto p-[100px]">
+      <div className="container mx-auto py-14 sm:p-[100px]">
         <div className="flex flex-col items-center justify-center gap-6">
           <Image
             src="/images/home/icon-color.png"
@@ -264,7 +273,9 @@ const Home = () => {
             width={207}
             height={58}
           />
-          <h2 className="font-serif text-5xl font-light leading-tight">{t("Unique resources")}</h2>
+          <h2 className="font-serif text-4xl font-light leading-tight sm:text-5xl">
+            {t("Unique resources")}
+          </h2>
           <p className="max-w-[688px] text-center text-[22px]">
             {t(
               "Our platform offers unique resources to support the preservation and sustainable management of rangelands worldwide",
@@ -272,15 +283,15 @@ const Home = () => {
             .
           </p>
         </div>
-        <div className="mt-[100px] grid grid-cols-3 items-center justify-center gap-8">
+        <div className="mt-14 grid items-center justify-center gap-8 sm:mt-[100px] xl:grid-cols-3">
           {resources.map((resource) => (
             <ResourcesBox key={resource.title} {...resource} />
           ))}
         </div>
       </div>
       <div className="bg-brown-light">
-        <div className="container mx-auto flex gap-[120px] space-y-2 p-[100px] text-white">
-          <h2 className="max-w-[542px] flex-1 font-serif text-5xl font-light leading-tight">
+        <div className="container mx-auto flex flex-col gap-12 space-y-2 py-14 text-white sm:flex-row sm:gap-[120px] sm:p-[100px]">
+          <h2 className="max-w-[542px] flex-1 font-serif text-4xl font-light leading-tight sm:text-5xl">
             {t("Rangelands and the people who depend upon them are under threat")}.
           </h2>
           <div className="flex-1 space-y-4 text-[22px]">

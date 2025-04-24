@@ -14,8 +14,8 @@ const HomeGalleryItem = ({ src, alt, isSelected }: HomeGalleryItemProps) => {
       height={300}
       alt={alt}
       className={cn(
-        "object-cover transition-all duration-500 ease-in-out",
-        isSelected ? "h-[440px] w-[440px]" : "h-[200px] w-[200px]",
+        "object-fill transition-all duration-500 ease-in-out",
+        isSelected ? "h-[80vw] w-[80vw] sm:h-[440px] sm:w-[440px]" : "h-[200px] w-[200px]",
       )}
     />
   );

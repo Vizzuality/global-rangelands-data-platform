@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import HomeGalleryItem from "./item";
 import { useInView } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 const HomeGallery = () => {
   const t = useTranslations();
@@ -49,21 +50,37 @@ const HomeGallery = () => {
   }, [isInView]);
 
   return (
-    <div
-      style={{
-        left: `${(selectedImage - 1) * -7 + 2.5}%`,
-      }}
-      ref={ref}
-      className="absolute top-0 flex h-full w-full translate-y-[30%] items-center transition-all duration-300"
-    >
-      {images.map((image, index) => (
-        <HomeGalleryItem
-          key={image.src}
-          src={image.src}
-          alt={image.alt}
-          isSelected={selectedImage === index}
-        />
-      ))}
+    <div ref={ref}>
+      <div
+        style={{
+          left: `${(selectedImage - 1) * -7 + 2.5}%`,
+        }}
+        className="absolute top-0 hidden h-full w-full translate-y-[30%] items-center transition-all duration-300 sm:flex"
+      >
+        {images.map((image, index) => (
+          <HomeGalleryItem
+            key={index}
+            src={image.src}
+            alt={image.alt}
+            isSelected={selectedImage === index}
+          />
+        ))}
+      </div>
+      <motion.div
+        style={{
+          x: `calc(${-selectedImage * 200}px + 10vw)`,
+        }}
+        className="absolute top-0 flex h-full w-auto items-center transition-all duration-300 sm:hidden"
+      >
+        {images.map((image, index) => (
+          <HomeGalleryItem
+            key={index}
+            src={image.src}
+            alt={image.alt}
+            isSelected={selectedImage === index}
+          />
+        ))}
+      </motion.div>
     </div>
   );
 };
