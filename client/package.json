@@ -69,6 +69,7 @@
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.0",
     "rooks": "^7.14.1",
+    "sharp": "^0.34.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
