@@ -1,6 +1,5 @@
 "use client";
 
-import HomeLink from "@/components/ui/home-link";
 import { useTranslations } from "@/i18n";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,7 +41,18 @@ const Footer = () => {
         <div className="flex flex-col pt-14 sm:flex-row sm:gap-[120px] sm:py-20">
           <div className="flex-1 space-y-6">
             <div className="flex flex-col justify-between gap-10">
-              <HomeLink className="text-white" />
+              <Link href="/" className="flex gap-4">
+                <Image
+                  src="/images/logo-footer.png"
+                  className="h-[48px] w-[17px]"
+                  height={17}
+                  width={48}
+                  alt="Rangelands"
+                />
+                <h1 className="w-36 text-balance font-serif text-[28px] leading-[24px]">
+                  {t("Data Rangelands")}
+                </h1>
+              </Link>
               <p className="max-w-[360px] text-sm leading-[185%] text-white/80">
                 {t(
                   "We are proud to partner with a diverse group of visionary organizations who share our commitment to innovation, excellence, and creating meaningful impact",
