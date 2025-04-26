@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { Link } from "@/navigation";
 import { motion, useInView } from "framer-motion";
