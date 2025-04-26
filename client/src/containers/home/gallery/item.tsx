@@ -8,16 +8,20 @@ type HomeGalleryItemProps = {
 };
 const HomeGalleryItem = ({ src, alt, isSelected }: HomeGalleryItemProps) => {
   return (
-    <Image
-      src={src}
-      width={300}
-      height={300}
-      alt={alt}
+    <div
       className={cn(
-        "object-fill transition-all duration-500 ease-in-out",
-        isSelected ? "h-[80vw] w-[80vw] sm:h-[440px] sm:w-[440px]" : "h-[200px] w-[200px]",
+        "aspect-square shrink-0 transition-all duration-500 ease-in-out",
+        isSelected ? "w-[80vw] sm:w-[24vw]" : "w-[40vw] sm:w-[12vw]",
       )}
-    />
+    >
+      <Image
+        src={src}
+        width={200}
+        height={200}
+        alt={alt}
+        className="h-full w-full object-cover transition-all duration-500 ease-in-out"
+      />
+    </div>
   );
 };
 

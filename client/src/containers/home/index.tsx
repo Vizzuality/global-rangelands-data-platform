@@ -54,7 +54,7 @@ const Home = () => {
           className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern1.png)] bg-contain bg-repeat-y"
         ></motion.div>
 
-        <div className=" relative mx-auto h-full opacity-100">
+        <div className="relative mx-auto h-full opacity-100">
           <motion.div
             animate={{ transform: "translateY(0)" }}
             initial={{ transform: "translateY(-200%)" }}
@@ -75,15 +75,15 @@ const Home = () => {
             className="h-full"
           >
             {/* Title */}
-            <div className="mx-auto mt-14 max-w-[828px]  space-y-2 px-2 text-white sm:mt-10 sm:px-0">
+            <div className="mx-auto mt-14 max-w-[828px] space-y-2 text-white sm:mt-10">
               <div className="mb-8 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
                 <Image src="/images/home/title-icon.png" alt="title-icon" width={123} height={58} />
-                <h1 className="font-serif text-5xl font-bold sm:text-[78px] ">
+                <h1 className="font-serif text-[40px] font-bold sm:text-[78px] ">
                   {t("Data Rangelands")}
                 </h1>
               </div>
               <div>
-                <p className="text-center font-serif text-3xl">
+                <p className="container text-center font-serif text-2xl sm:text-3xl">
                   {t(
                     "A global gateway to the rangelands data repository—powering smarter decisions for their use, management, and restoration",
                   )}
@@ -93,37 +93,37 @@ const Home = () => {
             </div>
 
             {/* App images */}
-            <div className="mx-auto mt-20 w-full overflow-x-hidden overflow-y-visible sm:mt-28">
-              <div className="flex w-screen flex-col items-center justify-center sm:flex-row">
-                <div className="z-50 my-[20%] rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:my-0">
+            <div className="mx-auto mt-12 w-full overflow-x-hidden overflow-y-visible sm:mt-28">
+              <div className="flex w-screen items-center justify-center">
+                <div className="z-50 w-[75%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:w-[795px]">
                   <Image
                     src="/images/home/hero-app.png"
                     width={795.269}
                     height={515.85}
                     alt={t("Map screenshot")}
                     priority
-                    className="w-[795px] object-contain"
+                    className="object-cover"
                   />
                 </div>
 
-                <div className="absolute -translate-y-[50%] scale-[0.8] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:left-[-2%] sm:translate-y-0 sm:scale-100">
+                <div className="absolute left-[-40%] w-[60%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:left-[-2%] sm:w-[653px]">
                   <Image
                     priority
                     src="/images/home/hero-stories.png"
                     width={653.204}
                     height={423.7}
                     alt={t("Stories screenshot")}
-                    className="object-contain"
+                    className="object-cover"
                   />
                 </div>
 
-                <div className="absolute translate-y-[50%] scale-[0.8] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light  sm:right-[-2%] sm:translate-y-0 sm:scale-100">
+                <div className="absolute right-[-40%] w-[60%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:right-[-2%] sm:w-[653px]">
                   <Image
                     src="/images/home/hero-app-2.png"
                     width={653.204}
                     height={423.7}
                     alt={t("Map screenshot 2")}
-                    className="object-contain"
+                    className="object-cover"
                     priority
                   />
                 </div>
@@ -131,26 +131,23 @@ const Home = () => {
             </div>
 
             {/* CTA buttons */}
-            <div className="container mx-auto flex flex-col justify-center gap-4 pb-[140px] pt-20 sm:flex-row sm:pb-[160px]">
+            <div className="container mx-auto flex flex-col justify-center gap-4 pb-[140px] pt-12 sm:flex-row sm:pb-[160px]">
               <Link
                 href="#gallery"
-                className="flex h-12 items-center justify-center rounded-none bg-brown-dark px-6 text-base text-white transition-colors  duration-300 hover:bg-brown-light"
+                className="flex h-10 items-center justify-center rounded-none bg-brown-dark px-6 text-base text-white transition-colors duration-300  hover:bg-brown-light sm:h-12"
               >
                 {t("Keep reading")}
               </Link>
               <Link
                 href="/map"
-                className="flex h-12 items-center justify-center rounded-none bg-white px-6 text-base text-brown-dark transition-colors  duration-300 hover:text-brown-light"
+                className="flex h-10 items-center justify-center rounded-none bg-white px-6 text-base text-brown-dark transition-colors duration-300  hover:text-brown-light sm:h-12"
               >
                 {t("Explore Data Rangelands platform")}
               </Link>
             </div>
 
             {/* Gallery */}
-            <div
-              id="gallery"
-              className="relative mt-[-135px] h-[80vw] translate-y-[20vw] sm:h-[440px] sm:translate-y-0"
-            >
+            <div id="gallery" className="relative mt-[-135px]">
               <HomeGallery />
             </div>
           </motion.div>
@@ -204,13 +201,13 @@ const Home = () => {
               <div className="flex flex-col justify-center gap-4 pt-[60px] sm:flex-row">
                 <Link
                   href="#home-to-millions"
-                  className="flex h-12 items-center justify-center rounded-none border border-green-medium bg-white px-6 text-base text-green-medium transition-colors duration-300 hover:border-green-light hover:text-green-light"
+                  className="flex h-10 items-center justify-center rounded-none border border-green-medium bg-white px-6 text-base text-green-medium transition-colors duration-300 hover:border-green-light hover:text-green-light sm:h-12"
                 >
                   {t("Keep reading")}
                 </Link>
                 <Link
                   href="/map"
-                  className="flex min-h-12 items-center justify-center rounded-none bg-green-medium px-6 py-2 text-base text-white transition-colors duration-300 hover:bg-green-light"
+                  className="flex min-h-10 items-center justify-center rounded-none bg-green-medium px-6 py-2 text-base text-white transition-colors duration-300 hover:bg-green-light sm:min-h-12"
                 >
                   {t("Explore Data Rangelands platform")}
                 </Link>
