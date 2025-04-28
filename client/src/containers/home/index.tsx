@@ -43,23 +43,7 @@ const Home = () => {
   return (
     <div className="w-full overflow-hidden scroll-smooth">
       <div className="relative">
-        <motion.div
-          className="absolute left-0 top-0 h-full w-full bg-orange-light"
-          animate={{ opacity: 0 }}
-          initial={{ opacity: 1 }}
-          transition={{
-            duration: 1,
-            delay: 0.5,
-          }}
-        >
-          <Image
-            src="/images/home/pattern0.png"
-            alt="pattern"
-            fill
-            priority
-            className="PATTERN bg-repeat-y object-contain object-top"
-          />
-        </motion.div>
+        <motion.div className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern0.png)] bg-contain bg-repeat"></motion.div>
 
         <motion.div
           animate={{ opacity: 1 }}
@@ -68,16 +52,8 @@ const Home = () => {
             duration: 1,
             delay: 0.5,
           }}
-          className="absolute left-0 top-0 h-full w-full bg-orange-light"
-        >
-          <Image
-            src="/images/home/pattern1.png"
-            alt="pattern"
-            fill
-            priority
-            className="PATTERN bg-repeat-y object-contain object-top"
-          />
-        </motion.div>
+          className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern1.png)] bg-contain bg-repeat"
+        ></motion.div>
 
         <div className="relative mx-auto h-full opacity-100">
           <motion.div
