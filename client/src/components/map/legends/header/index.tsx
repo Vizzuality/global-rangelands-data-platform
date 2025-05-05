@@ -1,4 +1,4 @@
-import { ChevronDown, GridIcon, GripVerticalIcon } from "lucide-react";
+import { ChevronDown, GripVerticalIcon } from "lucide-react";
 import { LayerInfo, LayerOpacity, LayerVisibility } from "./buttons";
 import { Button } from "@/components/ui/button";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
@@ -16,6 +16,7 @@ type LegendHeaderProps = {
   listeners?: SyntheticListenerMap | undefined;
   attributes?: DraggableAttributes;
   sortable?: boolean;
+  isOpen?: boolean;
 };
 
 const LegendHeader = ({
@@ -30,6 +31,7 @@ const LegendHeader = ({
   attributes,
   listeners,
   sortable,
+  isOpen,
 }: LegendHeaderProps) => {
   return (
     <div>
@@ -54,10 +56,12 @@ const LegendHeader = ({
           <LayerVisibility onChangeVisibility={setVisibility} visible={visible} />
           <Button
             onClick={handleChangeIsOpen}
+            aria-label="toggle legend visibility"
+            data-state={isOpen ? "open" : "closed"}
             variant="link"
-            className="h-5 w-5 rounded-full px-0 py-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-0"
+            className="group h-5 w-5 rounded-full px-0 py-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-0"
           >
-            <ChevronDown className="h-5 w-5 shrink-0 group-data-[state=closed]:rotate-180" />
+            <ChevronDown className="h-5 w-5 shrink-0 transition-all duration-300 hover:text-hunter-green-400 group-data-[state=closed]:-rotate-180" />
           </Button>
         </div>
       </div>

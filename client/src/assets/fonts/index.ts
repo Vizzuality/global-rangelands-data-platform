@@ -13,6 +13,11 @@ const wotfard = localFont({
       style: "normal",
     },
     {
+      path: "./wotfard/Wotfard-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
       path: "./wotfard/Wotfard-SemiBold.ttf",
       weight: "600",
       style: "normal",

@@ -53,7 +53,7 @@ const ScrollAreaWithThumb = ({ children, className }: ScrollAreaWithThumbProps) 
     <ScrollArea className={cn("relative", className)}>
       <>
         {children}
-        <div className="absolute bottom-0 z-50 h-12 w-[calc(100%-8px)] bg-gradient-to-b from-background/10 via-background/70 to-background"></div>
+        <div className="absolute bottom-0 z-50 h-10 w-[calc(100%-8px)] bg-gradient-to-b from-background/0  to-background"></div>
       </>
       <ScrollAreaPrimitive.ScrollAreaScrollbar className="w-1.5">
         <ScrollAreaPrimitive.ScrollAreaThumb className="rounded-md bg-gray-300" />

@@ -20,6 +20,9 @@ const config: Config = {
         "green-dark": "rgba(24, 34, 25, 1)",
         "green-medium": "rgba(5, 73, 38, 1)",
         "green-light": "rgba(64, 133, 64, 1)",
+        "hunter-green-200": "rgba(199, 212, 198, 1)",
+        "hunter-green-300": "rgba(160, 182, 159, 1)",
+        "hunter-green-400": "rgba(117, 147, 116, 1)",
       },
       lineHeight: {
         relaxed: "185%",

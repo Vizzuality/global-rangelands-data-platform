@@ -20,6 +20,10 @@ const HeaderNavigation = () => {
       title: t("Explore Map"),
       href: "/map",
     },
+    // {
+    //   title: t("About"),
+    //   href: "/about",
+    // },
   ];
 
   const isMap = pathname === "/map";
@@ -33,23 +37,30 @@ const HeaderNavigation = () => {
               <HomeLink className={isMap ? "text-white" : "text-global"} />
             </NavigationMenuLink>
           </NavigationMenuItem>
-          {NAVIGATION_ITEMS.map((item) => {
-            const isActive = item.href === pathname;
-            return (
-              <NavigationMenuItem
-                key={item.href}
-                className={cn(
-                  "flex h-[var(--header-height)] items-center border-t-4 border-t-transparent pb-1 text-sm transition-colors duration-300",
-                  isActive && "border-global text-global",
-                  isMap ? "text-white" : "text-foreground",
-                )}
-              >
-                <NavigationMenuLink active={isActive} asChild>
-                  <Link href={item.href}>{item.title}</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            );
-          })}
+          <div className="flex gap-10">
+            {NAVIGATION_ITEMS.map((item) => {
+              const isActive = item.href === pathname;
+              return (
+                <NavigationMenuItem
+                  key={item.href}
+                  className={cn(
+                    "flex h-[var(--header-height)] items-center border-t-4 border-t-transparent pb-1 text-sm transition-colors duration-300",
+                    isActive && "border-white text-global",
+                    isMap ? "text-white" : "text-foreground",
+                  )}
+                >
+                  <NavigationMenuLink active={isActive} asChild>
+                    <Link
+                      className="p-1 focus-visible:outline-none focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-1"
+                      href={item.href}
+                    >
+                      {item.title}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              );
+            })}
+          </div>
         </NavigationMenuList>
       </NavigationMenu>
     </div>

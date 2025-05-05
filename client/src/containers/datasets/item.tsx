@@ -158,28 +158,32 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
   return (
     <div className={cn("space-y-6", className)}>
       <div className="space-y-4">
-        <div className="flex w-full justify-between gap-3 font-medium">
-          {/* <div className="flex justify-between gap-3"> */}
-          <label className="leading-tight" htmlFor={`toggle-${id}`}>
-            {showTitle && attributes?.title}
-          </label>
-          {attributes?.slug !== RANGELAND_DATASET_SLUG && (
-            <Switch
-              id={`toggle-${id}`}
-              checked={datasets?.includes(id!)}
-              onCheckedChange={handleToggleDataset}
-              className="my-1"
-            />
-          )}
-          {/* </div> */}
+        {showTitle && (
+          <div className="flex w-full justify-between gap-3 font-medium">
+            {/* <div className="flex justify-between gap-3"> */}
+            {showTitle && (
+              <label className="leading-tight" htmlFor={`toggle-${id}`}>
+                {attributes?.title}
+              </label>
+            )}
+            {attributes?.slug !== RANGELAND_DATASET_SLUG && (
+              <Switch
+                id={`toggle-${id}`}
+                checked={datasets?.includes(id!)}
+                onCheckedChange={handleToggleDataset}
+                className="my-1"
+              />
+            )}
+            {/* </div> */}
 
-          {/* <div className="mt-px flex gap-2">
+            {/* <div className="mt-px flex gap-2">
             <LayerVisibility
               visible={datasetVisibility}
               onChangeVisibility={handleChangeVisibility}
             />
           </div> */}
-        </div>
+          </div>
+        )}
         <div className="space-y-5">
           <p className="line-clamp-2 max-w-[336px] text-xs">{attributes?.description}</p>
           <div className="flex gap-2">
@@ -194,7 +198,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
                   href={attributes?.sources?.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex gap-1 text-xs font-medium uppercase text-foreground underline underline-offset-2"
+                  className="flex gap-1 text-xs font-medium uppercase text-foreground underline underline-offset-2 hover:text-green-light"
                 >
                   {t("data source")}
                   <CitationsIcon className="h-5 w-5" />

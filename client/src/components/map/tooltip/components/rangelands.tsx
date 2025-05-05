@@ -91,18 +91,18 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
   }, [rangelandType, biomesData, ecoregionsData]);
 
   return (
-    <div className="overflow-hidden rounded-lg bg-background drop-shadow-2xl">
+    <div className="overflow-hidden bg-background drop-shadow-2xl">
       <div className="border-t-[12px]" style={{ borderColor: content.color }}></div>
       <div className="space-y-4 p-6 pt-3">
         <div className="space-y-2">
-          <p className="text-base font-bold leading-tight">{content.title}</p>
-          <p className="text-xs uppercase leading-tight">{content.subtitle}</p>
+          <p className="font-serif text-base leading-tight">{content.title}</p>
+          <p className="font-sans text-xs uppercase leading-tight">{content.subtitle}</p>
         </div>
 
         <p className="text-xs">
-          <span className="font-bold">{(percentage || 0).toFixed(2)}%</span> {t("of the")}{" "}
+          <span className="text-sm font-bold">{(percentage || 0).toFixed(2)}%</span> {t("of the")}{" "}
           <span className="font-bold">{content.comparisonArea}</span> {t("is attributed to the ")}{" "}
-          {content.title}. ({formatNumber(area)} km²)
+          {content.title}. <span className="text-[10px]">({formatNumber(area)} km²)</span>
         </p>
         <div className="h-2 w-full overflow-hidden rounded-sm bg-gray-300">
           <div
