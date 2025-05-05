@@ -46,8 +46,8 @@ const MultiSelectItem = ({ option, toggleOption, isSelected }: MultiSelectItemPr
       <div className="flex items-center gap-1">
         <span
           className={cn(
-            "text-xs underline-offset-2 hover:underline",
-            isSelected && "font-semibold",
+            "text-xs font-medium hover:text-green-light",
+            isSelected && "text-green-light underline underline-offset-2",
           )}
         >
           {option.label}
@@ -94,18 +94,18 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           ref={ref}
           disabled={!options.length}
           className={cn(
-            "border-input placeholder:text-muted-foreground group flex h-10 w-full items-center justify-between gap-2 rounded-md border bg-background px-3 py-2 text-sm ring-offset-background hover:bg-orange-100 focus:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-100 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-background data-[state=open]:rounded-b-none [&>span]:line-clamp-1",
+            "border-hunter-green-300 placeholder:text-muted-foreground disabled:text-hunter-green-300 group flex h-10 w-full items-center justify-between gap-2 border bg-background px-3 py-2 text-sm ring-offset-background transition-all duration-300 hover:bg-green-light hover:text-white focus:bg-green-light focus:text-white focus:outline-none focus:ring-2 focus:ring-green-light disabled:cursor-not-allowed disabled:hover:bg-background data-[state=open]:rounded-b-none [&>span]:line-clamp-1",
           )}
         >
           <FilterIcon className="h-5 w-5" />
           <div className="flex-1">{triggerLabel}</div>
-          <ChevronDown className="h-5 w-5 shrink-0 opacity-50 group-data-[state=open]:rotate-180" />
+          <ChevronDown className="h-5 w-5 shrink-0 group-data-[state=open]:rotate-180" />
         </PopoverTrigger>
         <PopoverContent
           side="bottom"
           sideOffset={0}
           className={cn(
-            "border-input peer w-[--radix-popover-trigger-width] -translate-y-px rounded-md border bg-background p-0 shadow-lg data-[side=bottom]:rounded-t-none",
+            "border-input border-hunter-green-300 peer w-[--radix-popover-trigger-width]  -translate-y-px border border-t-0 bg-background p-0",
             className,
           )}
         >

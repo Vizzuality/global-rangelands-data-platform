@@ -1,18 +1,19 @@
-"use client";
 import { cn } from "@/lib/utils";
-import LanguageSelector from "./language-selector";
+// import LanguageSelector from "./language-selector";
 import HeaderNavigation from "./navigation";
-import { usePathname } from "@/navigation";
+import LanguageSelector from "../language-selector";
 
 const Header = () => {
-  const pathname = usePathname();
-
-  const isMap = pathname === "/map";
   return (
-    <div className={cn("z-50 ", isMap ? "bg-foreground" : "bg-background")}>
-      <div className="container mx-auto flex items-center justify-between gap-7">
+    <div
+      className={cn(
+        "z-50 bg-brown-light bg-[url(/images/header-pattern.png)] bg-contain bg-repeat-x",
+      )}
+    >
+      <div className="mx-6 flex items-center justify-between gap-7">
         <HeaderNavigation />
-        <LanguageSelector />
+        <div className="h-5 w-px bg-white"></div>
+        <LanguageSelector variant="dark" />
       </div>
     </div>
   );

@@ -27,11 +27,13 @@ const CategoryButton = ({ title, slug }: CategoryButtonProps) => {
       key={title}
       variant="ghost"
       size="icon"
-      className="h-auto w-20 rounded-md py-2 text-foreground hover:bg-orange-100"
+      className="h-auto w-20 rounded-md py-2 text-foreground hover:text-green-light"
     >
       <Link className="flex flex-col items-center gap-1 text-sm" href={`#${slug}`}>
         <Icon className="shrink-0" />
-        <span className="text-wrap text-xs">{title}</span>
+        <span className="text-wrap text-xs font-medium uppercase underline underline-offset-2">
+          {title}
+        </span>
       </Link>
     </Button>
   );
@@ -46,8 +48,8 @@ const DatasetsHeader = ({ categories }: DatasetsHeaderProps) => {
 
   return (
     <header className="space-y-4 border-b border-foreground p-6 pt-10">
-      <h1 className="text-[54px] font-bold">{t("Rangelands")}</h1>
-      <h2 className="text-xl font-medium">{t("Grasslands vital for biodiversity")}.</h2>
+      <h1 className="font-serif text-[50px] font-light leading-[90%]">{t("Rangelands Layers")}</h1>
+      <h2 className="font-serif text-xl font-medium">{t("Grasslands vital for biodiversity")}.</h2>
       <p className="text-sm leading-relaxed">
         {t(
           "Rangelands are expansive areas characterized by a variety of vegetation, including grasses, shrubs, and occasional trees",

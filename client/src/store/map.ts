@@ -76,3 +76,4 @@ export const sidebarOpenAtom = atom(true);
 export const layersInteractiveAtom = atom<(number | string)[]>([]);
 export const deckLayersInteractiveAtom = atom<Record<string, PickingInfo>>({});
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);
+export const sidebarModeAtom = atom<"layers" | "stories">("layers");

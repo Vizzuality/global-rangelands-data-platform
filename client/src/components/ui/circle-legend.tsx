@@ -26,12 +26,13 @@ const CircleLegend = ({ colors, selected, className, removable = true }: CircleL
     <div
       style={style}
       className={cn(
-        "flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full",
-        selected && "border-[1.5px] border-foreground",
+        "flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full transition-all duration-300",
+        selected &&
+          "border-[1.5px] border-foreground group-hover:border-white group-disabled:hover:border-red-500",
         className,
       )}
     >
-      {selected && removable && <XIcon className="h-3 w-3 flex-shrink-0" />}
+      {/* {selected && removable && <XIcon className="h-3 w-3 flex-shrink-0" />} */}
     </div>
   );
 };

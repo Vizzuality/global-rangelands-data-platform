@@ -43,9 +43,9 @@ const useIsPickable = () => {
   );
 
   const isPickable = useMemo(() => {
-    if (!layersData?.data || (layers.length === 1 && RANGELANDS_LAYERS_SLUGS.includes(layers[0]))) {
-      return true;
-    }
+    // if (!layersData?.data || (layers.length === 1 && RANGELANDS_LAYERS_SLUGS.includes(layers[0]))) {
+    //   return true;
+    // }
 
     const rangelandsLayerIndex = layers.findIndex((layer) =>
       RANGELANDS_LAYERS_SLUGS.includes(layer),
@@ -65,7 +65,7 @@ const useIsPickable = () => {
       );
     });
 
-    return rangelandsLayerIndex > firstPickableLayerIndex;
+    return firstPickableLayerIndex < 0 || rangelandsLayerIndex < firstPickableLayerIndex;
   }, [layersData, layers]);
 
   return isPickable;

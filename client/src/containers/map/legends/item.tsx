@@ -9,12 +9,13 @@ import BasicLegend from "@/components/map/legends/content/basic";
 import GradientLegend from "@/components/map/legends/content/gradient";
 import RangelandLegend from "@/components/map/legends/content/rangeland";
 import { LegendComponent } from "@/components/map/types";
-import { getLayerSettings } from "@/lib/utils";
+import { cn, getLayerSettings } from "@/lib/utils";
 import { Collapsible, CollapsibleContent } from "@radix-ui/react-collapsible";
 import LegendChoropleth from "@/components/map/legends/content/choropleth";
 import { useGetLayers } from "@/types/generated/layer";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { DraggableAttributes } from "@dnd-kit/core";
+import { RANGELAND_DATASET_SLUG } from "@/containers/datasets/constants";
 
 const LEGEND_CONTENT = {
   Basic: BasicLegend,
@@ -32,6 +33,7 @@ export type LegendItemProps = {
   id?: string;
   isOpen: boolean;
   onOpenChange: () => void;
+  className: string;
 };
 
 const LegendItem = ({
@@ -39,8 +41,9 @@ const LegendItem = ({
   attributes,
   listeners,
   sortable,
-  isDragging,
-  id,
+  // isDragging,
+  // id,
+  className,
   isOpen,
   onOpenChange,
 }: LegendItemProps) => {
@@ -119,6 +122,9 @@ const LegendItem = ({
   };
 
   const subtitle = useMemo(() => {
+    if (dataset === RANGELAND_DATASET_SLUG) {
+      return;
+    }
     if (
       datasetData?.data?.attributes?.type === "Group" ||
       datasetData?.data?.attributes?.type === "Temporal-Group"
@@ -133,30 +139,29 @@ const LegendItem = ({
   }, [datasetData?.data?.attributes?.type, datasetLayer?.attributes]);
 
   return (
-    <Collapsible open={isOpen} defaultOpen asChild>
-      <div className="group space-y-2 border-b border-b-gray-300 pb-4 last-of-type:border-b-0 last-of-type:pb-0">
-        <LegendHeader
-          visible={settings.visibility}
-          opacity={settings.opacity}
-          title={datasetData?.data?.attributes?.title}
-          subtitle={subtitle}
-          handleChangeIsOpen={onOpenChange}
-          info={datasetLayer?.attributes?.description}
-          setOpacity={(o) => setLayerSettings("opacity", o)}
-          setVisibility={(v) => setLayerSettings("visibility", v)}
-          listeners={listeners}
-          attributes={attributes}
-          sortable={sortable}
-        />
-        <CollapsibleContent className="px-4">
-          {datasetLayer?.attributes?.legend?.unit && (
-            <div className="mb-1.5 flex items-end justify-end">
-              <span className="text-xs">{datasetLayer?.attributes?.legend?.unit}</span>
-            </div>
-          )}
-          {LEGEND}
-        </CollapsibleContent>
-      </div>
+    <Collapsible open={isOpen} defaultOpen className={cn("space-y-2", className)}>
+      <LegendHeader
+        visible={settings.visibility}
+        opacity={settings.opacity}
+        title={datasetData?.data?.attributes?.title}
+        subtitle={subtitle}
+        handleChangeIsOpen={onOpenChange}
+        info={datasetLayer?.attributes?.description}
+        setOpacity={(o) => setLayerSettings("opacity", o)}
+        setVisibility={(v) => setLayerSettings("visibility", v)}
+        listeners={listeners}
+        attributes={attributes}
+        sortable={sortable}
+      />
+      <CollapsibleContent className="px-4">
+        {datasetLayer?.attributes?.legend?.unit && (
+          <div className="mb-1.5 flex items-end justify-end">
+            <span className="text-xs">{datasetLayer?.attributes?.legend?.unit}</span>
+          </div>
+        )}
+        {LEGEND}
+      </CollapsibleContent>
+      {/* { <div className="h-[1px] w-full bg-gray-300" />} */}
     </Collapsible>
   );
 };

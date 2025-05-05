@@ -1,6 +1,5 @@
 "use client";
 
-import { useGetDatasets } from "@/types/generated/dataset";
 import DatasetsItem from "@/containers/datasets/item";
 import DatasetsHeader, { CategoryButtonProps } from "./header";
 import { useGetLocalizedList } from "@/lib/localized-query";
@@ -38,20 +37,23 @@ const Datasets = () => {
   );
 
   return (
-    <div className="mb-10">
+    <div>
       <DatasetsHeader categories={categories} />
       <div className="">
         {datasetCategoriesData?.data?.map((category) => (
           <div
             key={category.id}
-            className="space-y-5 border-b border-b-foreground pb-6 last-of-type:border-b-0"
+            className="space-y-5 border-b border-b-foreground last-of-type:border-b-0"
           >
-            <h2 id={category?.attributes?.slug} className="px-6 pt-6 text-2xl font-bold">
+            <h2
+              id={category?.attributes?.slug}
+              className="px-6 pt-6 font-serif text-2xl text-green-light"
+            >
               {category?.attributes?.title}
             </h2>
             <div className="">
               {category?.attributes?.datasets?.data?.map((dataset) => (
-                <div key={dataset?.id} className="group space-y-7 pt-6 first-of-type:pt-0">
+                <div key={dataset?.id} className="space-y-7 pt-6 first-of-type:pt-0">
                   <DatasetsItem
                     {...(dataset as DatasetListResponseDataItem)}
                     className="px-6"

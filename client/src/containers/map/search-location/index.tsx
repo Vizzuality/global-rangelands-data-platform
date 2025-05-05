@@ -114,9 +114,9 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
           <Button
             onClick={() => setOpen(!open)}
             variant="ghost"
-            className="transition-color block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 hover:bg-orange-100 focus-visible:bg-global data-[state=open]:bg-global"
+            className="transition-color hover:bg-hunter-green-200 focus-visible:bg-hunter-green-200 block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 data-[state=open]:bg-green-light data-[state=open]:text-white"
           >
-            <SearchIcon className="h-5 w-5 stroke-foreground stroke-[1.5px]" />
+            <SearchIcon className="h-5 w-5 stroke-[1.5px]" />
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -136,19 +136,19 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
                 type="text"
                 value={locationSearch}
                 placeholder={t("Search")}
-                className="w-full border-2 border-background bg-background p-2 px-9 text-sm leading-none text-foreground placeholder:text-sm placeholder:font-light placeholder:text-popover-foreground/50 focus-visible:outline-global"
+                className="w-full border-2 border-background bg-background p-2 px-9 text-sm leading-none text-foreground placeholder:text-sm placeholder:font-light placeholder:text-popover-foreground/50 focus-visible:outline-green-light"
               />
               {locationSearch.length >= 1 && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setLocationSearch("")}
-                  className="absolute right-9 h-fit w-fit rounded-full p-0.5 hover:bg-orange-100 focus-visible:ring-global data-[state=open]:bg-global"
+                  className="hover:bg-hunter-green-200 absolute right-9 h-fit w-fit rounded-full p-0.5 focus-visible:outline-none focus-visible:ring-green-light focus-visible:ring-offset-0 data-[state=open]:bg-global"
                 >
                   <XIcon className="h-4 w-4 stroke-slate-400 stroke-[1.5px]" />
                 </Button>
               )}
-              <PopoverClose className="mr-1 h-fit w-fit rounded-full p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-global">
+              <PopoverClose className="mr-1 h-fit w-fit rounded-full p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-light">
                 <ChevronRightIcon className="mx-auto h-5 w-5" />
               </PopoverClose>
             </div>

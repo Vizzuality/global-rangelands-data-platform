@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { TemporalDatasetItem } from "./absolute";
 import { TemporalChangesDatasetItem } from "./changes";
+import { cn } from "@/lib/utils";
 
 const selectTypes = ["absolute", "changes"] as const;
 type SelectType = (typeof selectTypes)[number];
@@ -35,15 +36,21 @@ const TemporalChangesDataset = ({ layers, isTemporalGroup }: TemporalDatasetProp
     const absoluteLayerSlug = absoluteLayer?.attributes?.slug;
     const changeLayerSlug = changeLayer?.attributes?.slug;
     if (value === "absolute" && absoluteLayerSlug) {
-      setSyncLayers((prev) => [
-        ...prev?.filter((l) => l !== changeLayerSlug && l !== absoluteLayerSlug),
-        absoluteLayerSlug,
-      ]);
+      // setSyncLayers((prev) => [
+      //   ...prev?.filter((l) => l !== changeLayerSlug && l !== absoluteLayerSlug),
+      //   absoluteLayerSlug,
+      // ]);
+      setSyncLayers((prev) =>
+        prev.map((layer) => (layer === changeLayerSlug ? absoluteLayerSlug : layer)),
+      );
     } else if (value === "changes" && changeLayerSlug) {
-      setSyncLayers((prev) => [
-        ...prev?.filter((l) => l !== absoluteLayerSlug && l !== changeLayerSlug),
-        changeLayerSlug,
-      ]);
+      // setSyncLayers((prev) => [
+      //   ...prev?.filter((l) => l !== absoluteLayerSlug && l !== changeLayerSlug),
+      //   changeLayerSlug,
+      // ]);
+      setSyncLayers((prev) =>
+        prev.map((layer) => (layer === absoluteLayerSlug ? changeLayerSlug : layer)),
+      );
     }
   };
 
@@ -56,29 +63,36 @@ const TemporalChangesDataset = ({ layers, isTemporalGroup }: TemporalDatasetProp
   return isChangesDataset ? (
     <div className="space-y-4">
       <RadioGroup
-        className="flex gap-4 text-xs"
+        className="flex justify-between gap-4 text-xs"
         onValueChange={handleSelectType}
         disabled={!selectedLayer}
         value={selectedType}
       >
-        <div className="flex gap-2">
+        <p className={cn(!selectedType && "text-hunter-green-300")}>{t("Show by")}</p>
+        <div className="flex cursor-pointer gap-2">
           <RadioGroupItem
             id="dataset-absolute"
-            className="flex h-4 w-4 items-center justify-center rounded-full border border-foreground"
+            className="peer flex h-4 w-4 items-center justify-center rounded-full border border-foreground disabled:border-hunter-green-300"
             value="absolute"
           />
-          <label htmlFor="dataset-absolute" className="flex items-center gap-2">
-            {t("See absolute value")}
+          <label
+            htmlFor="dataset-absolute"
+            className="flex cursor-pointer items-center gap-2 peer-disabled:text-hunter-green-300"
+          >
+            {t("Absolute value")}
           </label>
         </div>
         <div className="flex gap-2">
           <RadioGroupItem
             id="dataset-changes"
-            className="flex h-4 w-4 items-center justify-center rounded-full border border-foreground"
+            className="peer flex h-4 w-4 items-center justify-center rounded-full border border-foreground disabled:border-hunter-green-300"
             value="changes"
           />
-          <label htmlFor="dataset-changes" className="flex items-center gap-2">
-            {t("See changes over time")}
+          <label
+            htmlFor="dataset-changes"
+            className="flex cursor-pointer items-center gap-2 peer-disabled:text-hunter-green-300"
+          >
+            {t("Changes over time")}
           </label>
         </div>
       </RadioGroup>

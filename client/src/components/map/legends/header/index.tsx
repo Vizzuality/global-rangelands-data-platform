@@ -1,4 +1,4 @@
-import { ChevronDown, GridIcon, GripVerticalIcon } from "lucide-react";
+import { ChevronDown, GripVerticalIcon } from "lucide-react";
 import { LayerInfo, LayerOpacity, LayerVisibility } from "./buttons";
 import { Button } from "@/components/ui/button";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
@@ -57,7 +57,7 @@ const LegendHeader = ({
             variant="link"
             className="h-5 w-5 rounded-full px-0 py-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-0"
           >
-            <ChevronDown className="h-5 w-5 shrink-0 group-data-[state=closed]:rotate-180" />
+            <ChevronDown className="hover:text-hunter-green-400 h-5 w-5 shrink-0 group-data-[state=closed]:rotate-180 " />
           </Button>
         </div>
       </div>

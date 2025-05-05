@@ -179,43 +179,50 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
       </Select>
 
       {!!isRangelandDataset && !!rangelandsData?.data?.length && (
-        <MultiSelect
-          defaultValue={rangelandRegion || []}
-          options={filterOptions}
-          onValueChange={handleFilter}
-          triggerLabel={
-            <div className="flex flex-1 items-center justify-between gap-3">
-              <div className="flex flex-1 items-center justify-between gap-2">
-                <span className="">
-                  {!!rangelandRegion?.length
-                    ? `${rangelandRegion.length} ${t("selected")}`
-                    : t("All categories")}
-                </span>{" "}
-                {!!rangelandRegion?.length && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span
-                          className="border-input hover:bg-accent hover:text-accent-foreground flex h-5 w-5 items-center justify-center rounded-full border bg-background px-0 py-0 text-xs"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setRangelandRegion([]);
-                          }}
-                        >
-                          <XIcon className="h-3 w-3" />
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-background text-xs">
-                        {t("Remove all filters")}
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
+        <div className="space-y-6">
+          <MultiSelect
+            defaultValue={rangelandRegion || []}
+            options={filterOptions}
+            onValueChange={handleFilter}
+            triggerLabel={
+              <div className="flex flex-1 items-center justify-between gap-3">
+                <div className="flex flex-1 items-center justify-between gap-2">
+                  <span className="">
+                    {!!rangelandRegion?.length
+                      ? `${rangelandRegion.length} ${t("selected")}`
+                      : t("All categories")}
+                  </span>{" "}
+                  {!!rangelandRegion?.length && (
+                    <TooltipProvider>
+                      <Tooltip delayDuration={100}>
+                        <TooltipTrigger asChild>
+                          <span
+                            className="border-input flex h-5 w-5 items-center justify-center rounded-full border bg-background px-0 py-0 text-xs group-hover:text-foreground"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setRangelandRegion([]);
+                            }}
+                          >
+                            <XIcon className="h-3 w-3 " />
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-background text-xs">
+                          {t("Remove all filters")}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
+                <CircleLegend selected removable={false} colors={getLegendColors(rangelandType)} />
               </div>
-              <CircleLegend selected removable={false} colors={getLegendColors(rangelandType)} />
-            </div>
-          }
-        />
+            }
+          />
+          <div className="bg-green-light bg-[url(/images/green-pattern.png)] bg-contain p-2.5 ">
+            <p className="text-xs font-medium text-white ">
+              {t("Note: The filtering of this layer impacts all other layers of the platform")}.
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );
