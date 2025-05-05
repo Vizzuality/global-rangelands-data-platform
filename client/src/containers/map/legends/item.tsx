@@ -141,6 +141,7 @@ const LegendItem = ({
   return (
     <Collapsible open={isOpen} defaultOpen className={cn("space-y-2", className)}>
       <LegendHeader
+        isOpen={isOpen}
         visible={settings.visibility}
         opacity={settings.opacity}
         title={datasetData?.data?.attributes?.title}

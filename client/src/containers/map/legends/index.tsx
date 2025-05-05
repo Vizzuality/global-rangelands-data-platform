@@ -45,7 +45,7 @@ const Legends = ({ open, onOpenChange }: LegendsProps) => {
           <Button
             onClick={() => onOpenChange(!open)}
             variant="ghost"
-            className="transition-color hover:bg-hunter-green-200 block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 focus-visible:bg-global data-[state=open]:bg-green-light data-[state=open]:text-white"
+            className="transition-color block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 hover:bg-hunter-green-200 focus-visible:bg-global data-[state=open]:bg-green-light data-[state=open]:text-white"
           >
             <Layers3Icon className="h-5 w-5 stroke-[1.5px]" />
           </Button>
@@ -58,7 +58,7 @@ const Legends = ({ open, onOpenChange }: LegendsProps) => {
         >
           <ScrollArea type="always" className="relative">
             <ScrollAreaViewport className="max-h-[70vh] w-full">
-              <div className="my-6 space-y-4 px-4">
+              <div className="my-4 space-y-4 px-4">
                 <SortableList onChangeOrder={handleSortChange}>
                   {datasets?.map((d, index) => (
                     <LegendItem
@@ -82,7 +82,7 @@ const Legends = ({ open, onOpenChange }: LegendsProps) => {
                   ))}
                 </SortableList>
               </div>
-              <div className="absolute bottom-0 z-50 h-7 w-[calc(100%-8px)] bg-gradient-to-b from-background/0 to-background"></div>
+              <div className="absolute bottom-0 z-50 h-6 w-[calc(100%-8px)] bg-gradient-to-b from-background/0 to-background"></div>
             </ScrollAreaViewport>
             <Scrollbar className="w-1.5">
               <ScrollAreaThumb className="rounded-md bg-gray-300" />
