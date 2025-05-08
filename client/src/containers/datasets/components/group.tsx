@@ -70,16 +70,26 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
   const selectedLayer = useMemo(() => {
     const selectedLayerId = datasetLayers?.find((l) => !!l && syncLayers?.includes(l));
 
-    return layers?.find((l) => l.attributes?.slug === selectedLayerId);
+    return layers?.find((l) => l.attributes?.slug === selectedLayerId) || layers?.[0];
   }, [layers, datasetLayers, syncLayers]);
 
   const getLegendColors = (layerSlug?: string) => {
-    if (!layerSlug) return;
     if (isRangelandDataset) {
       return RANGELAND_LAYERS_COLORS_LEGEND[
         layerSlug as keyof typeof RANGELAND_LAYERS_COLORS_LEGEND
       ];
     }
+    if (layerSlug) {
+      const layer = layers?.find((l) => l.attributes?.slug === layerSlug);
+      return (
+        layer?.attributes?.legend?.items?.reduce<string[]>(
+          (acc, item) => (item.color ? [...acc, item.color] : acc),
+          [],
+        ) || []
+      );
+    }
+
+    return [];
   };
 
   useEffect(() => {
@@ -144,7 +154,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
         defaultValue={selectedLayer?.attributes?.slug}
         value={selectedLayer?.attributes?.slug}
       >
-        <SelectTrigger>
+        <SelectTrigger className="group">
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <ColorSwatchIcon />
@@ -152,13 +162,11 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
                 {selectedLayer?.attributes?.title || t("Types")}
               </span>
             </div>
-            {isRangelandDataset && selectedLayer?.attributes?.slug && (
-              <CircleLegend
-                selected
-                removable={false}
-                colors={getLegendColors(selectedLayer.attributes.slug)}
-              />
-            )}
+            <CircleLegend
+              selected
+              removable={false}
+              colors={getLegendColors(selectedLayer?.attributes?.slug)}
+            />
           </div>
         </SelectTrigger>
         <SelectContent>
@@ -168,9 +176,13 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
               if (!layer.id || !layerSlug) return null;
               const colors = getLegendColors(layerSlug);
               return (
-                <SelectItem value={layerSlug} key={layer.id} className="justify-between">
+                <SelectItem
+                  value={layerSlug}
+                  key={layer.id}
+                  className="items-start justify-between gap-1"
+                >
                   <p>{layer.attributes?.title}</p>
-                  {isRangelandDataset && <CircleLegend colors={colors} />}
+                  <CircleLegend colors={colors} />
                 </SelectItem>
               );
             })}

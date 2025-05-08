@@ -30,7 +30,7 @@ const SearchResultItem = <T,>({ option, onOptionClick, children }: SearchResultI
       role="option"
       aria-selected="false"
       tabIndex={0}
-      className="hover:text-secondary-500 flex cursor-pointer gap-2 rounded px-2 py-2 text-sm transition-all duration-300 hover:bg-orange-100  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-global"
+      className="hover:text-secondary-500 flex cursor-pointer gap-2 rounded-2xl px-2 py-2 text-sm transition-all duration-300 hover:bg-hunter-green-200  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-global"
       onClick={() => onOptionClick(option)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {

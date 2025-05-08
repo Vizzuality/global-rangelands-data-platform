@@ -152,7 +152,7 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
   );
 
   return (
-    <div className="w-[308px] overflow-hidden rounded-lg bg-background drop-shadow-2xl">
+    <div className="w-[308px] overflow-hidden bg-background drop-shadow-2xl">
       <div className="border-t-[12px] border-t-foreground"></div>
       <div className="space-y-4 p-6 pt-3">
         <div className="space-y-2">
@@ -185,7 +185,7 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
             {speciesOrdered?.map((specie, i) => (
               <span key={specie}>
                 {speciesNames[specie as keyof typeof speciesNames]}
-                <span className="text-foreground/60">
+                <span className="text-hunter-green-400">
                   {content.breeds?.[specie]?.[0] ? ` (${content.breeds?.[specie]})` : ""}
                 </span>
                 {i === (content.species?.length || 0) - 2
@@ -198,7 +198,7 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
           </p>
         </div>
 
-        <div className="text-[10px] leading-normal">
+        <div className="text-xs leading-normal">
           {t(
             "Note: The presented information is a subset of the content available in the original source ",
           )}{" "}

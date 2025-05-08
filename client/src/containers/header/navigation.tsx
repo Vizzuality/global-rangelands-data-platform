@@ -20,10 +20,10 @@ const HeaderNavigation = () => {
       title: t("Explore Map"),
       href: "/map",
     },
-    // {
-    //   title: t("About"),
-    //   href: "/about",
-    // },
+    {
+      title: t("Home"),
+      href: "/",
+    },
   ];
 
   const isMap = pathname === "/map";
@@ -46,7 +46,7 @@ const HeaderNavigation = () => {
                   className={cn(
                     "flex h-[var(--header-height)] items-center border-t-4 border-t-transparent pb-1 text-sm transition-colors duration-300",
                     isActive && "border-white text-global",
-                    isMap ? "text-white" : "text-foreground",
+                    isMap ? "text-white hover:text-white/70" : "text-foreground",
                   )}
                 >
                   <NavigationMenuLink active={isActive} asChild>
