@@ -41,7 +41,7 @@ const LegendHeader = ({
             <button
               aria-label="drag"
               type="button"
-              className="text-primary-foreground mt-0.5 flex h-5 w-5 -translate-x-1 cursor-grabbing items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+              className="mt-0.5 flex h-5 w-5 -translate-x-1 cursor-grabbing items-center justify-center rounded-full text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
               {...listeners}
               {...attributes}
             >
@@ -61,7 +61,7 @@ const LegendHeader = ({
             variant="link"
             className="group h-5 w-5 rounded-full px-0 py-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-0"
           >
-            <ChevronDown className="h-5 w-5 shrink-0 transition-all duration-300 hover:text-hunter-green-400 group-data-[state=closed]:-rotate-180" />
+            <ChevronDown className="h-5 w-5 shrink-0 transition-all duration-300 hover:text-hunter-green-400 group-data-[state=open]:-rotate-180" />
           </Button>
         </div>
       </div>

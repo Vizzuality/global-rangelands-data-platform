@@ -114,7 +114,7 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
           <Button
             onClick={() => setOpen(!open)}
             variant="ghost"
-            className="transition-color hover:bg-hunter-green-200 focus-visible:bg-hunter-green-200 block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 data-[state=open]:bg-green-light data-[state=open]:text-white"
+            className="transition-color block h-min rounded-full border-2 border-background bg-background px-2 py-2 shadow-black/10 drop-shadow-md duration-300 hover:bg-hunter-green-200 focus-visible:bg-hunter-green-200 data-[state=open]:bg-green-light data-[state=open]:text-white"
           >
             <SearchIcon className="h-5 w-5 stroke-[1.5px]" />
           </Button>
@@ -124,7 +124,7 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
           sideOffset={20}
           side="left"
           className={cn(
-            "relative z-50 w-[348px] overflow-hidden rounded-lg bg-background px-0 py-0 shadow-lg drop-shadow-2xl",
+            "relative z-50 w-[348px] overflow-hidden bg-background px-0 py-0 shadow-lg drop-shadow-2xl",
             !!debouncedSearch.length && "mb-5",
           )}
         >
@@ -143,7 +143,7 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
                   variant="ghost"
                   size="sm"
                   onClick={() => setLocationSearch("")}
-                  className="hover:bg-hunter-green-200 absolute right-9 h-fit w-fit rounded-full p-0.5 focus-visible:outline-none focus-visible:ring-green-light focus-visible:ring-offset-0 data-[state=open]:bg-global"
+                  className="absolute right-9 h-fit w-fit rounded-full p-0.5 hover:bg-hunter-green-200 focus-visible:outline-none focus-visible:ring-green-light focus-visible:ring-offset-0 data-[state=open]:bg-global"
                 >
                   <XIcon className="h-4 w-4 stroke-slate-400 stroke-[1.5px]" />
                 </Button>

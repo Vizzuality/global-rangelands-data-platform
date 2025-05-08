@@ -28,7 +28,7 @@ const CircleLegend = ({ colors, selected, className, removable = true }: CircleL
       className={cn(
         "flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full transition-all duration-300",
         selected &&
-          "border-[1.5px] border-foreground group-hover:border-white group-disabled:hover:border-red-500",
+          "border-[1.5px] border-foreground group-hover:border-white group-disabled:border-hunter-green-300 group-disabled:!bg-white group-disabled:![background-image:none] group-disabled:hover:border-hunter-green-300 ",
         className,
       )}
     >

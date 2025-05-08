@@ -46,7 +46,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
             },
           }
         : undefined,
-      populate: ["translations"],
+      populate: ["translations", "legend", "legend.items"],
     },
     {
       query: {

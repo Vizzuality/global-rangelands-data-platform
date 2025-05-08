@@ -8,7 +8,6 @@ import HomeGallery from "./gallery";
 import { useRef } from "react";
 import ResourcesBox from "./resources-box";
 import { useTranslations } from "next-intl";
-import Header from "./header";
 
 const Home = () => {
   const t = useTranslations();
@@ -41,8 +40,8 @@ const Home = () => {
   ];
 
   return (
-    <div className="w-full overflow-hidden scroll-smooth">
-      <div className="relative">
+    <div className="w-full">
+      <div className="">
         <motion.div className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern0.png)] bg-contain bg-repeat"></motion.div>
 
         <motion.div
@@ -55,17 +54,7 @@ const Home = () => {
           className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern1.png)] bg-contain bg-repeat"
         ></motion.div>
 
-        <div className="relative mx-auto h-full opacity-100">
-          <motion.div
-            animate={{ transform: "translateY(0)" }}
-            initial={{ transform: "translateY(-200%)" }}
-            transition={{
-              duration: 1,
-              delay: 1.5,
-            }}
-          >
-            <Header />
-          </motion.div>
+        <div className="relative mx-auto mt-[100px] h-full opacity-100">
           <motion.div
             animate={{ opacity: 1, scale: 1 }}
             initial={{ opacity: 0, scale: 0.75 }}
@@ -96,7 +85,7 @@ const Home = () => {
             {/* App images */}
             <div className="mx-auto mt-12 w-full overflow-x-hidden overflow-y-visible sm:mt-28">
               <div className="flex w-screen items-center justify-center">
-                <div className="z-50 w-[75%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:w-[795px]">
+                <div className="z-40 w-[75%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:w-[795px]">
                   <Image
                     src="/images/home/hero-app.png"
                     width={795.269}

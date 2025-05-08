@@ -55,7 +55,7 @@ const MapLayers = () => {
   const ecoregions = useGetLocalizedList(ecoregionsQuery);
 
   const layersBadgeTooltip = useMemo(() => {
-    const text = `${layers.length - 1} ${t("layer")}${layers.length - 1 === 1 ? "" : "s"} ${"filtered by"}`;
+    const text = `${layers.length - 1} ${t("layer")}${layers.length - 1 === 1 ? "" : "s"} ${"filtered by"}:`;
     let data = t("Rangeland Systems");
 
     if (rangelandType === "rangeland-ecoregions") {
@@ -79,7 +79,7 @@ const MapLayers = () => {
     }
 
     return (
-      <p>
+      <p className="text-start">
         {text} <span className="font-semibold">{data}</span>
       </p>
     );
@@ -94,7 +94,7 @@ const MapLayers = () => {
       badgeTooltip: layersBadgeTooltip,
     },
     {
-      title: t("Rangelands stories"),
+      title: t("Rangelands Stories"),
       id: "stories",
       color: "stories",
     },
@@ -122,14 +122,16 @@ const MapLayers = () => {
             <TooltipProvider>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
-                  <div className="relative flex h-[26px] w-[26px] items-center justify-center">
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full border border-foreground transition-colors duration-300 group-data-[state=active]:border-white">
+                  <div className="relative flex h-[26px] w-[26px] items-center justify-center rounded-full">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full border border-foreground transition-colors duration-300 group-data-[state=active]:border-white group-data-[state=inactive]:hover:border-green-light group-data-[state=active]:hover:bg-white group-data-[state=active]:hover:text-green-light group-data-[state=inactive]:hover:text-green-light">
                       {tab.badge}
                     </div>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs" sideOffset={16} side="bottom">
-                  <div className="text-xs text-green-light">{tab.badgeTooltip}</div>
+                <TooltipContent asChild sideOffset={16} side="bottom">
+                  <div className="max-w-[150px] border-0 text-xs group-data-[state=active]:bg-background group-data-[state=inactive]:bg-foreground group-data-[state=active]:text-green-light group-data-[state=inactive]:text-white">
+                    {tab.badgeTooltip}
+                  </div>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
