@@ -82,7 +82,7 @@ const Legends = ({ open, onOpenChange }: LegendsProps) => {
                   ))}
                 </SortableList>
               </div>
-              <div className="absolute bottom-0 z-50 h-6 w-[calc(100%-8px)] bg-gradient-to-b from-background/0 to-background"></div>
+              <div className="absolute bottom-0 z-50 h-5 w-[calc(100%-8px)] bg-gradient-to-b from-background/0 to-background"></div>
             </ScrollAreaViewport>
             <Scrollbar className="w-1.5">
               <ScrollAreaThumb className="rounded-md bg-gray-300" />

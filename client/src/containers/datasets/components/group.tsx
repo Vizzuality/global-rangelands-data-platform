@@ -158,7 +158,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <ColorSwatchIcon />
-              <span className="line-clamp-1 max-w-[250px]">
+              <span className="line-clamp-1 max-w-[248px] break-all text-start">
                 {selectedLayer?.attributes?.title || t("Types")}
               </span>
             </div>

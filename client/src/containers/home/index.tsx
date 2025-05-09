@@ -41,7 +41,7 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <div className="">
+      <div className="relative">
         <motion.div className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern0.png)] bg-contain bg-repeat"></motion.div>
 
         <motion.div
@@ -54,7 +54,7 @@ const Home = () => {
           className="absolute left-0 top-0 h-full w-full bg-orange-light bg-[url(/images/home/pattern1.png)] bg-contain bg-repeat"
         ></motion.div>
 
-        <div className="relative mx-auto mt-[100px] h-full opacity-100">
+        <div className="relative mx-auto h-full pt-[180px] opacity-100">
           <motion.div
             animate={{ opacity: 1, scale: 1 }}
             initial={{ opacity: 0, scale: 0.75 }}
@@ -65,10 +65,10 @@ const Home = () => {
             className="h-full"
           >
             {/* Title */}
-            <div className="mx-auto mt-14 max-w-[828px] space-y-2 text-white sm:mt-10">
+            <div className="mx-auto max-w-[828px] space-y-2 text-white">
               <div className="mb-8 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
                 <Image src="/images/home/title-icon.png" alt="title-icon" width={123} height={58} />
-                <h1 className="font-serif text-[40px] font-bold sm:text-[78px] ">
+                <h1 className="font-serif text-[40px] font-bold leading-tight sm:text-[78px] ">
                   {t("Data Rangelands")}
                 </h1>
               </div>
@@ -87,7 +87,7 @@ const Home = () => {
               <div className="flex w-screen items-center justify-center">
                 <div className="z-40 w-[75%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:w-[795px]">
                   <Image
-                    src="/images/home/hero-app.png"
+                    src="/images/home/home-center.png"
                     width={795.269}
                     height={515.85}
                     alt={t("Map screenshot")}
@@ -99,7 +99,7 @@ const Home = () => {
                 <div className="absolute left-[-40%] w-[60%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:left-[-2%] sm:w-[653px]">
                   <Image
                     priority
-                    src="/images/home/hero-stories.png"
+                    src="/images/home/home-left.png"
                     width={653.204}
                     height={423.7}
                     alt={t("Stories screenshot")}
@@ -109,7 +109,7 @@ const Home = () => {
 
                 <div className="absolute right-[-40%] w-[60%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:right-[-2%] sm:w-[653px]">
                   <Image
-                    src="/images/home/hero-app-2.png"
+                    src="/images/home/home-right.png"
                     width={653.204}
                     height={423.7}
                     alt={t("Map screenshot 2")}

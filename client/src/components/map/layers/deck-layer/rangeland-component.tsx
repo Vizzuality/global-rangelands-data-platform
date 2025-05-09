@@ -3,7 +3,6 @@ import { useDeckMapboxOverlayContext } from "../../provider";
 import { env } from "@/env.mjs";
 import { useEffect, useMemo, useState } from "react";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
-import { useGetLayers } from "@/types/generated/layer";
 import {
   RANGELAND_BIOMES,
   RANGELAND_ECOREGIONS,
@@ -27,46 +26,18 @@ const useIsPickable = () => {
   const [layers] = useSyncLayers();
   const [layerSettings] = useSyncLayersSettings();
 
-  const { data: layersData } = useGetLayers(
-    {
-      filters: {
-        slug: {
-          $in: layers,
-        },
-      },
-    },
-    {
-      query: {
-        enabled: layers.length > 1,
-      },
-    },
-  );
-
   const isPickable = useMemo(() => {
-    // if (!layersData?.data || (layers.length === 1 && RANGELANDS_LAYERS_SLUGS.includes(layers[0]))) {
-    //   return true;
-    // }
-
     const rangelandsLayerIndex = layers.findIndex((layer) =>
       RANGELANDS_LAYERS_SLUGS.includes(layer),
     );
 
     const firstPickableLayerIndex = layers?.findIndex((layer) => {
-      const layerData = layersData?.data?.find((l) => l.attributes?.slug === layer);
-
-      if (!layerData?.attributes?.slug) return false;
-
-      const layerSetting: Record<string, unknown> | undefined =
-        layerSettings?.[layerData.attributes?.slug];
-
-      return (
-        (layerData?.attributes?.config as Record<string, unknown>)?.pickable &&
-        (!layerSetting || layerSetting?.visibility)
-      );
+      const layerSetting = layerSettings?.[layer];
+      return layerSetting?.visibility !== false;
     });
 
-    return firstPickableLayerIndex < 0 || rangelandsLayerIndex < firstPickableLayerIndex;
-  }, [layersData, layers]);
+    return firstPickableLayerIndex === rangelandsLayerIndex;
+  }, [layers]);
 
   return isPickable;
 };
