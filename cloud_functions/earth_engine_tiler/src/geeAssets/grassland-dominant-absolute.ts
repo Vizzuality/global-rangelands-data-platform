@@ -10,9 +10,9 @@ export const GrasslandDominantAbsolute: ContinuousDataset = {
 
   vizParams: {
     bands: ['dominant_class'],
-    min: 0,
+    min: 1,
     max: 2,
-    palette: ['#ff9916','#ffcd73']
+    palette: ['#C3B94E','#6F8728']
   },
 
   areYearsValid (startYear, endYear) : boolean {
@@ -39,14 +39,7 @@ export const GrasslandDominantAbsolute: ContinuousDataset = {
     // Mask out value 0 (make it transparent)
     image = image.updateMask(image.select('dominant_class').neq(0));
 
-    // Adjust vizParams: min should be 1, palette should have only two colors
-    const vizParams = {
-      ...this.vizParams,
-      min: 1,
-      palette: ['#ff9916', '#ffcd73']
-    };
-
-    const mapId = await EarthEngineUtils.getMapId(image, vizParams);
+    const mapId = await EarthEngineUtils.getMapId(image, this.vizParams);
 
     return ee.data.getTileUrl(mapId, x, y, z);
   },
