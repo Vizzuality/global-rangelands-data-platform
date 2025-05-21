@@ -12,7 +12,7 @@ export const GrasslandDominantAbsolute: ContinuousDataset = {
     bands: ['dominant_class'],
     min: 0,
     max: 2,
-    palette: ['#ffffff','#ff9916','#ffcd73']
+    palette: ['#ff9916','#ffcd73']
   },
 
   areYearsValid (startYear, endYear) : boolean {
@@ -25,15 +25,29 @@ export const GrasslandDominantAbsolute: ContinuousDataset = {
   },
 
   getEEAsset() {
-    return ee.ImageCollection(this.assetPath.default);
+    // Get the image collection and select the image for the year, then mask out value 0
+    return ee.ImageCollection(this.assetPath.default)
+      .map(img => img.updateMask(img.select('dominant_class').neq(0)));
   },
 
   async getMapUrl(z, x, y, startYear, endYear) {
-    const image = this.getEEAsset()
-      .filter( ee.Filter.date( `${String(startYear)}-01-01`, `${String(startYear)}-12-31` ) );
+    // Filter by year and get the first image
+    let image = this.getEEAsset()
+      .filter(ee.Filter.date(`${String(startYear)}-01-01`, `${String(startYear)}-12-31`))
+      .first();
 
-    const mapId = await EarthEngineUtils.getMapId(image, this.vizParams);
+    // Mask out value 0 (make it transparent)
+    image = image.updateMask(image.select('dominant_class').neq(0));
 
-    return ee.data.getTileUrl( mapId, x, y, z );
+    // Adjust vizParams: min should be 1, palette should have only two colors
+    const vizParams = {
+      ...this.vizParams,
+      min: 1,
+      palette: ['#ff9916', '#ffcd73']
+    };
+
+    const mapId = await EarthEngineUtils.getMapId(image, vizParams);
+
+    return ee.data.getTileUrl(mapId, x, y, z);
   },
 };
