@@ -871,6 +871,7 @@ export interface ApiDatasetDataset extends Schema.CollectionType {
       'manyToOne',
       'api::story.story'
     >;
+    short_description: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

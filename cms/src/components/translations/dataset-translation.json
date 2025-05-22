@@ -21,6 +21,9 @@
         "fr"
       ],
       "required": true
+    },
+    "short_description": {
+      "type": "string"
     }
   }
 }

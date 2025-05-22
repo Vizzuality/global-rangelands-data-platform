@@ -15,7 +15,8 @@
           "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url"
+          "sources.url",
+          "short_description"
         ]
       },
       "conditions": []
@@ -32,7 +33,8 @@
           "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url"
+          "sources.url",
+          "short_description"
         ]
       },
       "conditions": []
@@ -49,7 +51,8 @@
           "citations.content",
           "citations.url",
           "sources.name",
-          "sources.url"
+          "sources.url",
+          "short_description"
         ]
       },
       "conditions": []

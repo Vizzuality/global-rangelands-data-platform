@@ -110,6 +110,7 @@ export interface TranslationsDatasetTranslation extends Schema.Component {
     title: Attribute.String & Attribute.Required;
     description: Attribute.RichText;
     locale: Attribute.Enumeration<['es', 'fr']> & Attribute.Required;
+    short_description: Attribute.String;
   };
 }
 
