@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Link } from "@/navigation";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView } from "motion/react";
 
 import HomeGallery from "./gallery";
 import { useRef } from "react";
@@ -168,12 +168,17 @@ const Home = () => {
       <div className="mt-10 bg-[url(/images/home/pattern2.png)] py-14 sm:py-[120px]">
         <div className="container mx-auto">
           <div className="relative mx-auto max-w-[940px] text-green-dark">
-            <div className="absolute -left-[35px] top-[5%] z-0 hidden h-[90%] w-[calc(100%+70px)] bg-green-medium sm:top-[7.5%] sm:block sm:h-[85%]"></div>
-            <div className="absolute left-[50%] top-[-5%] z-0 aspect-square h-[120vw] -translate-x-[50%] rotate-45 bg-green-medium p-8 sm:left-[50%] sm:top-[-10%] sm:h-[120%]">
-              <div className="h-full w-full border-[5px] border-b-0 border-r-0 border-[#B8B756]"></div>
+            {/* Desktop green box */}
+            <div className="absolute -left-[35px] top-[7.5%] z-0 hidden h-[90%] w-[calc(100%+70px)] bg-green-medium sm:block sm:h-[85%]"></div>
+            <div className="absolute left-[50%] top-[-10%] z-0 hidden aspect-square h-[120%] w-[] -translate-x-[50%] rotate-45 bg-green-medium p-8 sm:block">
+              <div className="h-full w-full border-[5px] border-[#B8B756]"></div>
             </div>
 
-            <div className="absolute bottom-[-5%] left-[50%] z-0 aspect-square h-[120vw] -translate-x-[50%] rotate-45 bg-green-medium p-8 sm:left-[50%] sm:top-[-10%] sm:hidden sm:h-[120%]">
+            {/* Mobile green box */}
+            <div className="absolute left-[50%] top-[-5%] z-0 h-[120vw] w-[120vw] -translate-x-[50%] rotate-45 bg-green-medium p-8 sm:hidden">
+              <div className="h-full w-full border-[5px] border-b-0 border-r-0 border-[#B8B756]"></div>
+            </div>
+            <div className="absolute bottom-[-5%] left-[50%] z-0 h-[120vw] w-[120vw] -translate-x-[50%] rotate-45 bg-green-medium p-8 sm:hidden">
               <div className="h-full w-full border-[5px] border-l-0 border-t-0 border-[#B8B756]"></div>
             </div>
 

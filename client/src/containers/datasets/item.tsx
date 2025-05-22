@@ -185,7 +185,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
           </div>
         )}
         <div className="space-y-5">
-          <p className="line-clamp-2 max-w-[336px] text-xs">{attributes?.description}</p>
+          <p className="text-xs">{attributes?.short_description}</p>
           <div className="flex gap-2">
             <DatasetInfo
               title={attributes?.title}

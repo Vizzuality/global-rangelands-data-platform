@@ -543,6 +543,7 @@ export type StoryDatasetsDataItemAttributesTranslationsItem = {
   description?: string;
   id?: number;
   locale?: StoryDatasetsDataItemAttributesTranslationsItemLocale;
+  short_description?: string;
   title?: string;
 };
 
@@ -557,6 +558,7 @@ export type StoryDatasetsDataItemAttributes = {
   description?: string;
   layers?: StoryDatasetsDataItemAttributesLayersItem[];
   publishedAt?: string;
+  short_description?: string;
   slug?: string;
   sources?: StoryDatasetsDataItemAttributesSources;
   story?: StoryDatasetsDataItemAttributesStory;
@@ -2469,6 +2471,7 @@ export type DatasetCategoryDatasetsDataItemAttributesTranslationsItem = {
   description?: string;
   id?: number;
   locale?: DatasetCategoryDatasetsDataItemAttributesTranslationsItemLocale;
+  short_description?: string;
   title?: string;
 };
 
@@ -2483,6 +2486,7 @@ export type DatasetCategoryDatasetsDataItemAttributes = {
   description?: string;
   layers?: DatasetCategoryDatasetsDataItemAttributesLayersItem[];
   publishedAt?: string;
+  short_description?: string;
   slug?: string;
   sources?: DatasetCategoryDatasetsDataItemAttributesSources;
   story?: DatasetCategoryDatasetsDataItemAttributesStory;
@@ -3203,6 +3207,7 @@ export interface TranslationsDatasetTranslationComponent {
   description?: string;
   id?: number;
   locale?: TranslationsDatasetTranslationComponentLocale;
+  short_description?: string;
   title?: string;
 }
 
@@ -3550,6 +3555,7 @@ export interface Dataset {
   description?: string;
   layers: DefaultLayerComponent[];
   publishedAt?: string;
+  short_description?: string;
   slug?: string;
   sources?: DefaultSourceComponent;
   story?: DatasetStory;
@@ -3890,6 +3896,7 @@ export type DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItem
   description?: string;
   id?: number;
   locale?: DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItemLocale;
+  short_description?: string;
   title?: string;
 };
 
@@ -3928,6 +3935,7 @@ export type DatasetStoryDataAttributesDatasetsDataItemAttributes = {
   description?: string;
   layers?: DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItem[];
   publishedAt?: string;
+  short_description?: string;
   slug?: string;
   sources?: DatasetStoryDataAttributesDatasetsDataItemAttributesSources;
   story?: DatasetStoryDataAttributesDatasetsDataItemAttributesStory;
@@ -4032,6 +4040,7 @@ export type DatasetRequestData = {
   citations?: DefaultCitationsComponent[];
   description?: string;
   layers: DefaultLayerComponent[];
+  short_description?: string;
   slug?: string;
   sources?: DefaultSourceComponent;
   story?: DatasetRequestDataStory;
