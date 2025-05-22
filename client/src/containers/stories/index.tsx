@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const Stories = () => {
   const t = useTranslations();
@@ -16,8 +17,16 @@ const Stories = () => {
           )}
         </p>
       </header>
-      <div className="p-6">
+      <div className="space-y-10 p-6">
         <p>{t("Coming soon...")}</p>
+        <div>
+          <Image
+            src="/images/stories/rangelands-stories.png"
+            alt="Rangelands Stories"
+            width={500}
+            height={500}
+          />
+        </div>
       </div>
     </div>
   );

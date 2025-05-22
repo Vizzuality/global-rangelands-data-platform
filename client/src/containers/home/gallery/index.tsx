@@ -2,10 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import HomeGalleryItem from "./item";
-import { useInView } from "framer-motion";
+import { useInView, motion } from "motion/react";
 import { useTranslations } from "next-intl";
-
-import { motion } from "framer-motion";
 
 const HomeGallery = () => {
   const t = useTranslations();

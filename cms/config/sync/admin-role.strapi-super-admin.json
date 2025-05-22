@@ -84,7 +84,9 @@
           "translations.title",
           "translations.description",
           "translations.locale",
-          "story"
+          "translations.short_description",
+          "story",
+          "short_description"
         ]
       },
       "conditions": []
@@ -125,7 +127,9 @@
           "translations.title",
           "translations.description",
           "translations.locale",
-          "story"
+          "translations.short_description",
+          "story",
+          "short_description"
         ]
       },
       "conditions": []
@@ -152,7 +156,9 @@
           "translations.title",
           "translations.description",
           "translations.locale",
-          "story"
+          "translations.short_description",
+          "story",
+          "short_description"
         ]
       },
       "conditions": []

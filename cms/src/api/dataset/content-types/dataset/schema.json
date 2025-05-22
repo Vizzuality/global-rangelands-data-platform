@@ -74,6 +74,10 @@
       "relation": "manyToOne",
       "target": "api::story.story",
       "inversedBy": "datasets"
+    },
+    "short_description": {
+      "type": "string",
+      "required": false
     }
   }
 }

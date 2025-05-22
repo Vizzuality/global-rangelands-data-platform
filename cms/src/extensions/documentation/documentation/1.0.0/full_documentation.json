@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-04-02T10:53:56.894Z"
+    "x-generation-date": "2025-05-22T17:55:36.268Z"
   },
   "servers": [
     {
@@ -149,6 +149,9 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "short_description": {
+                "type": "string"
               }
             }
           }
@@ -394,6 +397,9 @@
                                               "es",
                                               "fr"
                                             ]
+                                          },
+                                          "short_description": {
+                                            "type": "string"
                                           }
                                         }
                                       }
@@ -414,6 +420,9 @@
                                           }
                                         }
                                       }
+                                    },
+                                    "short_description": {
+                                      "type": "string"
                                     },
                                     "createdAt": {
                                       "type": "string",
@@ -947,6 +956,9 @@
                 }
               }
             }
+          },
+          "short_description": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -1485,6 +1497,9 @@
               "es",
               "fr"
             ]
+          },
+          "short_description": {
+            "type": "string"
           }
         }
       },
@@ -2094,6 +2109,9 @@
                                   "es",
                                   "fr"
                                 ]
+                              },
+                              "short_description": {
+                                "type": "string"
                               }
                             }
                           }
@@ -2621,6 +2639,9 @@
                               }
                             }
                           }
+                        },
+                        "short_description": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",
@@ -5259,6 +5280,9 @@
                                   "es",
                                   "fr"
                                 ]
+                              },
+                              "short_description": {
+                                "type": "string"
                               }
                             }
                           }
@@ -5786,6 +5810,9 @@
                               }
                             }
                           }
+                        },
+                        "short_description": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",

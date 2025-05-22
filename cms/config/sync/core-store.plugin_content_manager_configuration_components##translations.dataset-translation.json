@@ -60,19 +60,40 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "short_description": {
+        "edit": {
+          "label": "short_description",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "short_description",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
       "list": [
         "id",
         "title",
-        "locale"
+        "locale",
+        "short_description"
       ],
       "edit": [
         [
           {
             "name": "title",
             "size": 6
+          }
+        ],
+        [
+          {
+            "name": "short_description",
+            "size": 12
           }
         ],
         [
