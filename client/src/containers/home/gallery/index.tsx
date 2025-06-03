@@ -14,22 +14,23 @@ const HomeGallery = () => {
   const isInView = useInView(ref);
 
   const images = [
-    { src: "/images/home/gallery/3.png", alt: t("White cattle") },
-    { src: "/images/home/gallery/8.png", alt: t("Brown cattle") },
+    { src: "/images/home/gallery/slide09.png", alt: t("Brown cattle") },
+    { src: "/images/home/gallery/slide10.png", alt: t("Goats") },
 
-    { src: "/images/home/gallery/1.png", alt: t("Woman with alpacas") },
-    { src: "/images/home/gallery/10.png", alt: t("Field with flowers") },
-    { src: "/images/home/gallery/2.png", alt: t("Man with cattle") },
+    { src: "/images/home/gallery/slide01.png", alt: t("White cattle") },
+    { src: "/images/home/gallery/slide02.png", alt: t("Man with goats") },
+    { src: "/images/home/gallery/slide03.png", alt: t("Field with flowers") },
     { src: "/images/home/gallery/9.svg", alt: t("54% covered of earth surface") },
-    { src: "/images/home/gallery/4.png", alt: t("Man with goats") },
-    { src: "/images/home/gallery/7.png", alt: t("Sheep in field") },
-    { src: "/images/home/gallery/5.png", alt: t("Man with camels") },
-    { src: "/images/home/gallery/6.png", alt: t("Tundra landscape") },
-    { src: "/images/home/gallery/3.png", alt: t("White cattle") },
-    { src: "/images/home/gallery/8.png", alt: t("Brown cattle") },
+    { src: "/images/home/gallery/slide04.png", alt: t("Man with cattle") },
+    { src: "/images/home/gallery/slide05.png", alt: t("Goats in field") },
+    { src: "/images/home/gallery/slide06.png", alt: t("Sheep in field") },
+    { src: "/images/home/gallery/slide07.png", alt: t("Man with camels") },
+    { src: "/images/home/gallery/slide08.png", alt: t("Tundra landscape") },
+    { src: "/images/home/gallery/slide09.png", alt: t("Brown cattle") },
+    { src: "/images/home/gallery/slide10.png", alt: t("Goats") },
 
-    { src: "/images/home/gallery/1.png", alt: t("Woman with alpacas") },
-    { src: "/images/home/gallery/10.png", alt: t("Field with flowers") },
+    { src: "/images/home/gallery/slide01.png", alt: t("White cattle") },
+    { src: "/images/home/gallery/slide02.png", alt: t("Man with goats") },
   ];
 
   const animate = () => {
