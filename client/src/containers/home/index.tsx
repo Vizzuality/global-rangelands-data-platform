@@ -73,7 +73,7 @@ const Home = () => {
                 </h1>
               </div>
               <div>
-                <p className="container text-center font-serif text-2xl sm:text-3xl">
+                <p className="container text-center font-sans text-2xl leading-relaxed">
                   {t(
                     "A global gateway to the rangelands data repository—powering smarter decisions for their use, management, and restoration",
                   )}
@@ -85,7 +85,7 @@ const Home = () => {
             {/* App images */}
             <div className="mx-auto mt-12 w-full overflow-x-hidden overflow-y-visible sm:mt-28">
               <div className="flex w-screen items-center justify-center">
-                <div className="z-40 w-[75%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light opacity-100 sm:w-[795px]">
+                <div className="z-40 w-[75%] overflow-hidden  opacity-100 sm:w-[795px]">
                   <Image
                     src="/images/home/home-center.png"
                     width={795.269}
@@ -96,7 +96,7 @@ const Home = () => {
                   />
                 </div>
 
-                <div className="absolute left-[-40%] w-[60%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:left-[-2%] sm:w-[653px]">
+                <div className="absolute left-[-40%] w-[60%] overflow-hidden  sm:left-[-2%] sm:w-[653px]">
                   <Image
                     priority
                     src="/images/home/home-left.png"
@@ -105,9 +105,10 @@ const Home = () => {
                     alt={t("Stories screenshot")}
                     className="object-cover"
                   />
+                  <div className="AAAAA absolute top-0 h-full w-full bg-orange-light/20 "></div>
                 </div>
 
-                <div className="absolute right-[-40%] w-[60%] overflow-hidden rounded-[9.5px] border-[5px] border-brown-light sm:right-[-2%] sm:w-[653px]">
+                <div className="absolute right-[-40%] w-[60%] overflow-hidden bg-orange-light/25  sm:right-[-2%] sm:w-[653px]">
                   <Image
                     src="/images/home/home-right.png"
                     width={653.204}
@@ -116,6 +117,7 @@ const Home = () => {
                     className="object-cover"
                     priority
                   />
+                  <div className="AAAAA absolute top-0 h-full w-full bg-orange-light/25 "></div>
                 </div>
               </div>
             </div>
