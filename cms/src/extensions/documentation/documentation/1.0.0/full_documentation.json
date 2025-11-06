@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-05-22T17:55:36.268Z"
+    "x-generation-date": "2025-11-06T10:06:15.448Z"
   },
   "servers": [
     {
@@ -1066,6 +1066,7 @@
                             "type": "string",
                             "enum": [
                               "Basic",
+                              "Grouped",
                               "Gradient",
                               "Choropleth",
                               "Rangeland"
@@ -1089,6 +1090,9 @@
                                   "type": "string"
                                 },
                                 "name_fr": {
+                                  "type": "string"
+                                },
+                                "group": {
                                   "type": "string"
                                 }
                               }
@@ -1666,6 +1670,7 @@
                                                 "type": "string",
                                                 "enum": [
                                                   "Basic",
+                                                  "Grouped",
                                                   "Gradient",
                                                   "Choropleth",
                                                   "Rangeland"
@@ -1689,6 +1694,9 @@
                                                       "type": "string"
                                                     },
                                                     "name_fr": {
+                                                      "type": "string"
+                                                    },
+                                                    "group": {
                                                       "type": "string"
                                                     }
                                                   }
@@ -3909,6 +3917,7 @@
             "type": "string",
             "enum": [
               "Basic",
+              "Grouped",
               "Gradient",
               "Choropleth",
               "Rangeland"
@@ -3932,6 +3941,9 @@
                   "type": "string"
                 },
                 "name_fr": {
+                  "type": "string"
+                },
+                "group": {
                   "type": "string"
                 }
               }
@@ -4837,6 +4849,7 @@
                                                 "type": "string",
                                                 "enum": [
                                                   "Basic",
+                                                  "Grouped",
                                                   "Gradient",
                                                   "Choropleth",
                                                   "Rangeland"
@@ -4860,6 +4873,9 @@
                                                       "type": "string"
                                                     },
                                                     "name_fr": {
+                                                      "type": "string"
+                                                    },
+                                                    "group": {
                                                       "type": "string"
                                                     }
                                                   }

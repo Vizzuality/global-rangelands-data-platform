@@ -2,7 +2,13 @@
 
 import { useEffect, useState, useCallback, FC } from "react";
 
-import ReactMapGL, { ViewState, ViewStateChangeEvent, MapEvent, useMap } from "react-map-gl";
+import ReactMapGL, {
+  ViewState,
+  ViewStateChangeEvent,
+  MapEvent,
+  useMap,
+  MapLayerMouseEvent,
+} from "react-map-gl";
 
 import { useDebounce } from "rooks";
 
@@ -45,7 +51,6 @@ export const Map: FC<CustomMapProps> = ({
   );
   const [isFlying, setFlying] = useState(false);
   const [loaded, setLoaded] = useState(false);
-
   /**
    * CALLBACKS
    */

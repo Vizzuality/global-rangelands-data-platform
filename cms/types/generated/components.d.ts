@@ -39,6 +39,7 @@ export interface DefaultItem extends Schema.Component {
     color: Attribute.String & Attribute.DefaultTo<'#000000'>;
     name_es: Attribute.String;
     name_fr: Attribute.String;
+    group: Attribute.String;
   };
 }
 
@@ -65,7 +66,7 @@ export interface DefaultLegend extends Schema.Component {
   };
   attributes: {
     type: Attribute.Enumeration<
-      ['Basic', 'Gradient', 'Choropleth', 'Rangeland']
+      ['Basic', 'Grouped', 'Gradient', 'Choropleth', 'Rangeland']
     > &
       Attribute.Required &
       Attribute.DefaultTo<'Basic'>;

@@ -7,10 +7,12 @@ import { createElement, useMemo } from "react";
 import RangelandsTooltip from "@/components/map/tooltip/components/rangelands";
 import PastoralistTooltip from "@/components/map/tooltip/components/postoralists";
 import { useLocale } from "next-intl";
+import EjAtlasTooltip from "@/components/map/tooltip/components/ej-atlas";
 
 const PopupItemComponent = {
   RangelandsTooltip,
   PastoralistTooltip,
+  EjAtlasTooltip,
 };
 
 type PopupItemComponentType = keyof typeof PopupItemComponent;
@@ -39,6 +41,7 @@ const Item = ({ slug }: PopupItemProps) => {
 
   const POPUP_COMPONENT = useMemo(() => {
     const popupConfig = layerData?.data?.attributes?.interaction_config;
+    console.log(popupConfig);
 
     if (!isInteractionConfig(popupConfig)) return null;
 
