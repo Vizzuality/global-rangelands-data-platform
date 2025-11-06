@@ -1,7 +1,9 @@
 import { ScatterplotLayer } from "@deck.gl/layers";
 import { useDeckMapboxOverlayContext } from "../../provider";
 import { useEffect, useMemo, useState } from "react";
-import { MVTLayer } from "deck.gl";
+import { TileLayer } from "deck.gl";
+import { MVTLoader } from "@loaders.gl/mvt";
+import { load } from "@loaders.gl/core";
 
 import { useAtomValue } from "jotai";
 import { deckLayersInteractiveAtom } from "@/store/map";
@@ -9,6 +11,7 @@ import { deckLayersInteractiveAtom } from "@/store/map";
 import useMapZoom from "@/hooks/use-map-zoom";
 import Supercluster from "supercluster";
 import { useMap } from "react-map-gl";
+import { features } from "process";
 
 export interface EjAtlasLayerComponentProps {
   id: string;
@@ -20,7 +23,8 @@ export interface EjAtlasLayerComponentProps {
   beforeId?: string;
 }
 
-const SUPER_CLUSTER = new Supercluster();
+const SUPER_CLUSTER = new Supercluster({ radius: 1, maxZoom: 20 });
+
 const EjAtlasLayerComponent = ({
   id,
   data,
@@ -37,7 +41,6 @@ const EjAtlasLayerComponent = ({
   const interactiveLayers = useAtomValue(deckLayersInteractiveAtom);
 
   const zoom = useMapZoom();
-  const { current: mapRef } = useMap();
 
   useMemo(() => {
     const ejAtlasInteractiveLayer = interactiveLayers["ej-atlas-points"];
@@ -48,13 +51,33 @@ const EjAtlasLayerComponent = ({
 
   const config = useMemo(
     () =>
-      new MVTLayer({
+      new TileLayer({
         id: i,
         data,
         beforeId,
         opacity,
         visible: visibility,
         pickable: true,
+        getTileData: async (props) => {
+          const loaderOptions = {
+            mvt: {
+              coordinates: "wgs84",
+              tileIndex: {
+                x: props.index.x,
+                y: props.index.y,
+                z: props.index.z,
+              },
+            },
+          };
+
+          return load(props.url, MVTLoader, loaderOptions).then((data) => {
+            const d = SUPER_CLUSTER.load(data).getClusters(
+              [props.bbox.west, props.bbox.south, props.bbox.east, props.bbox.north],
+              props.zoom,
+            );
+            return d;
+          });
+        },
         onClick: (info) => {
           if (!info?.object) return;
           setHoveredProperty(`${info?.object?.properties.name}-${info?.object?.id}`);
@@ -66,39 +89,35 @@ const EjAtlasLayerComponent = ({
         },
         binary: false,
         renderSubLayers: (props) => {
-          if (!props.data) return null;
-          console.log(props);
-          const bbox = mapRef?.getBounds().toArray().flat();
-          const zoom = mapRef?.getZoom();
-          const data = SUPER_CLUSTER.load(props.data).getClusters(bbox, zoom);
+          if (!props.data || !props.tile) return null;
 
-          console.log({ bbox, zoom });
-          console.log("supercluster", data);
+          console.log("Rendering sublayers for tile:", props.tile.index, "with data:", props.data);
+
           return [
             new ScatterplotLayer(props, {
               id: `${props.id}-filled`,
-              data,
+              data: props.data,
               radiusUnits: "pixels",
               radiusScale: 1,
               stroked: false,
               filled: true,
               lineWidthUnits: "pixels",
               lineWidthMinPixels: 0,
-              getLineColor: () => {
-                return [255, 255, 255];
+
+              getFillColor: (d) => {
+                if (d.properties.cluster) {
+                  return [0, 0, 255, 100];
+                }
+                return [0, 0, 0];
               },
-              getRadius: 10,
+              getRadius: 5,
               getPosition: (f) => {
                 return f.geometry.coordinates;
-              },
-              updateTriggers: {
-                getRadius: [hoveredProperty, zoom],
-                getLineWidth: [hoveredProperty],
               },
             }),
             new ScatterplotLayer(props, {
               id: `${props.id}-line`,
-              data,
+              data: props.data,
               radiusUnits: "pixels",
               radiusScale: 1,
               stroked: true,
@@ -108,14 +127,10 @@ const EjAtlasLayerComponent = ({
               getLineColor: () => {
                 return [0, 0, 0];
               },
-              getRadius: 12,
+              getRadius: 7,
               getLineWidth: 2,
               getPosition: (f) => {
                 return f.geometry.coordinates;
-              },
-              updateTriggers: {
-                getRadius: [hoveredProperty, zoom],
-                getLineWidth: [hoveredProperty],
               },
             }),
           ];
@@ -132,7 +147,6 @@ const EjAtlasLayerComponent = ({
     setTimeout(() => {
       // https://github.com/visgl/deck.gl/blob/c2ba79b08b0ea807c6779d8fe1aaa307ebc22f91/modules/mapbox/src/resolve-layers.ts#L66
       addLayer(config);
-      console.log("test", config.getRenderedFeatures());
     }, 10);
   }, [i, id, config, addLayer]);
 
