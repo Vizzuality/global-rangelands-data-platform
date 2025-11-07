@@ -7,7 +7,7 @@ type ResourcesBoxProps = {
 
 const ResourcesBox = ({ title, content }: ResourcesBoxProps) => {
   return (
-    <div className="bg-green-light relative mx-auto aspect-square h-full max-w-[340px] text-white">
+    <div className="relative mx-auto aspect-square h-full max-w-[340px] bg-green-light text-white">
       <Image
         width={340}
         height={340}

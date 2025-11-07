@@ -27,7 +27,7 @@ const MapZoomControl = () => {
       <Button
         variant="ghost"
         onClick={increaseZoom}
-        className="transition-color hover:bg-hunter-green-200 focus-visible:bg-hunter-green-200 block h-min rounded-full px-1.5 py-1.5 duration-200 active:bg-green-light active:text-white"
+        className="transition-color block h-min rounded-full px-1.5 py-1.5 duration-200 hover:bg-hunter-green-200 focus-visible:bg-hunter-green-200 active:bg-green-light active:text-white"
       >
         <PlusIcon className="h-4 w-4" />
         <span className="sr-only">Zoom in</span>
@@ -35,7 +35,7 @@ const MapZoomControl = () => {
       <Button
         variant="ghost"
         onClick={decreaseZoom}
-        className="transition-color hover:bg-hunter-green-200 focus-visible:bg-hunter-green-200 block h-min rounded-full px-1.5 py-1.5 duration-200 active:bg-green-light active:text-white"
+        className="transition-color block h-min rounded-full px-1.5 py-1.5 duration-200 hover:bg-hunter-green-200 focus-visible:bg-hunter-green-200 active:bg-green-light active:text-white"
       >
         <MinusIcon className="h-4 w-4" />
         <span className="sr-only">Zoom out</span>

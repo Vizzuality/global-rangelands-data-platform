@@ -37,7 +37,7 @@ const useIsPickable = () => {
     });
 
     return firstPickableLayerIndex === rangelandsLayerIndex;
-  }, [layers]);
+  }, [layers, layerSettings]);
 
   return isPickable;
 };

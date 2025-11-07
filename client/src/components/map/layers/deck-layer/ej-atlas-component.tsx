@@ -41,16 +41,11 @@ export interface EjAtlasLayerComponentProps {
   beforeId?: string;
 }
 
-const SUPER_CLUSTER = new Supercluster({ radius: 1, maxZoom: 20 });
-
 const EjAtlasLayerComponent = ({
   id,
   data,
   opacity,
   visibility,
-  colorProperty,
-  lineWidth = 1,
-  beforeId,
   ...props
 }: EjAtlasLayerComponentProps) => {
   const [hoveredProperty, setHoveredProperty] = useState<string | null>(null);
@@ -92,23 +87,23 @@ const EjAtlasLayerComponent = ({
             },
           };
 
+          if (!tileProps.url) return [];
+
           return load(tileProps.url, MVTLoader, loaderOptions).then((data) => {
             // Create a unique key for this tile
             const tileKey = `${tileProps.index.z}-${tileProps.index.x}-${tileProps.index.y}`;
 
             // Create a new Supercluster instance for this tile
             const tileSupercluster = new Supercluster({ radius: 1, maxZoom: 20 });
+            const bboxAny = tileProps.bbox as Record<string, number>;
+            const west = "west" in bboxAny ? bboxAny.west : bboxAny.left;
+            const south = "south" in bboxAny ? bboxAny.south : bboxAny.bottom;
+            const east = "east" in bboxAny ? bboxAny.east : bboxAny.right;
+            const north = "north" in bboxAny ? bboxAny.north : bboxAny.top;
+
             const clusters = tileSupercluster
               .load(data)
-              .getClusters(
-                [
-                  tileProps.bbox.west,
-                  tileProps.bbox.south,
-                  tileProps.bbox.east,
-                  tileProps.bbox.north,
-                ],
-                tileProps.zoom,
-              );
+              .getClusters([west, south, east, north], tileProps.index.z);
 
             // Store the supercluster instance
             setSuperclusterInstances((prev) => {
@@ -149,8 +144,8 @@ const EjAtlasLayerComponent = ({
         renderSubLayers: (props) => {
           if (!props.data || !props.tile) return null;
 
-          const individualPoints = props.data.filter((d) => !d.properties.cluster);
-          const clusterPoints = props.data.filter((d) => d.properties.cluster);
+          const individualPoints = props.data.filter((d: any) => !d.properties.cluster);
+          const clusterPoints = props.data.filter((d: any) => d.properties.cluster);
 
           return [
             // Individual points - filled (rendered first, at bottom)
@@ -163,7 +158,7 @@ const EjAtlasLayerComponent = ({
               filled: true,
               lineWidthUnits: "pixels",
               lineWidthMinPixels: 0,
-              getFillColor: (d) => {
+              getFillColor: (d: any) => {
                 return fillColorMap[d.properties.First_level_category] ?? [102, 102, 102, 255];
               },
               getRadius: 5,
@@ -179,7 +174,7 @@ const EjAtlasLayerComponent = ({
               filled: false,
               lineWidthUnits: "pixels",
               lineWidthMinPixels: 0,
-              getLineColor: (d) => {
+              getLineColor: (d: any) => {
                 return lineColorMap[d.properties.Conflict_intensity_cual] ?? [0, 0, 0, 255];
               },
               getRadius: 8,
@@ -218,7 +213,18 @@ const EjAtlasLayerComponent = ({
         ...props,
       }),
 
-    [id, opacity, visibility, props, zoom],
+    [
+      id,
+      data,
+      hoveredProperty,
+      i,
+      setClusterFeatures,
+      superclusterInstances,
+      opacity,
+      visibility,
+      props,
+      zoom,
+    ],
   );
 
   useEffect(() => {

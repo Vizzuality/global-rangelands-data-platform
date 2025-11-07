@@ -74,8 +74,6 @@ const PastoralistLayerComponent = ({
   data,
   opacity,
   visibility,
-  colorProperty,
-  lineWidth = 1,
   beforeId,
   ...props
 }: PastoralistLayerComponentProps) => {
