@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-11-06T10:06:15.448Z"
+    "x-generation-date": "2025-11-07T09:51:23.489Z"
   },
   "servers": [
     {
@@ -1066,7 +1066,6 @@
                             "type": "string",
                             "enum": [
                               "Basic",
-                              "Grouped",
                               "Gradient",
                               "Choropleth",
                               "Rangeland"
@@ -1670,7 +1669,6 @@
                                                 "type": "string",
                                                 "enum": [
                                                   "Basic",
-                                                  "Grouped",
                                                   "Gradient",
                                                   "Choropleth",
                                                   "Rangeland"
@@ -3917,7 +3915,6 @@
             "type": "string",
             "enum": [
               "Basic",
-              "Grouped",
               "Gradient",
               "Choropleth",
               "Rangeland"
@@ -4849,7 +4846,6 @@
                                                 "type": "string",
                                                 "enum": [
                                                   "Basic",
-                                                  "Grouped",
                                                   "Gradient",
                                                   "Choropleth",
                                                   "Rangeland"

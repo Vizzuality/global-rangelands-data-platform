@@ -8,8 +8,6 @@ const Popup = () => {
   const deckInteractiveLayers = useAtomValue(deckLayersInteractiveAtom);
   const setInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
   const slugs = getKeys(deckInteractiveLayers);
-
-  console.log({ deckInteractiveLayers });
   const coordinate = deckInteractiveLayers[slugs[0]]?.coordinate || [];
 
   if (!slugs.length || coordinate?.length != 2) return null;

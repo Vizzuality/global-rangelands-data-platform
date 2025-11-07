@@ -1,5 +1,5 @@
 import { useGetBySlug } from "@/lib/localized-query";
-import { deckLayersInteractiveAtom } from "@/store/map";
+import { clusterFeaturesAtom, deckLayersInteractiveAtom } from "@/store/map";
 import { LayerResponse } from "@/types/generated/strapi.schemas";
 import { InteractionConfig } from "@/types/layers";
 import { useAtomValue } from "jotai";
@@ -24,6 +24,7 @@ type PopupItemProps = {
 const Item = ({ slug }: PopupItemProps) => {
   const locale = useLocale();
   const deckInteractiveLayers = useAtomValue(deckLayersInteractiveAtom);
+  const clusterFeatures = useAtomValue(clusterFeaturesAtom);
   const info = deckInteractiveLayers[slug];
 
   const { data: layerData } = useGetBySlug<LayerResponse>(`layer/${slug}`, {
@@ -41,7 +42,6 @@ const Item = ({ slug }: PopupItemProps) => {
 
   const POPUP_COMPONENT = useMemo(() => {
     const popupConfig = layerData?.data?.attributes?.interaction_config;
-    console.log(popupConfig);
 
     if (!isInteractionConfig(popupConfig)) return null;
 
@@ -53,7 +53,10 @@ const Item = ({ slug }: PopupItemProps) => {
           [curr.key]: info?.object?.properties?.[curr.value],
         };
       }, {});
-      return createElement(PopupItemComponent[type], props);
+      return createElement(PopupItemComponent[type], {
+        ...props,
+        items: clusterFeatures,
+      });
     }
   }, [layerData]);
 

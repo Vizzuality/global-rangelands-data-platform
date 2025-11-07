@@ -11,6 +11,7 @@ import {
   rangelandsTypeParser,
 } from "./parsers";
 import { PickingInfo } from "deck.gl";
+import Supercluster from "supercluster";
 
 export const useSyncDatasets = () => {
   return useQueryState("datasets", datasetsParser);
@@ -75,5 +76,6 @@ export const useSyncSearchParams = () => {
 export const sidebarOpenAtom = atom(true);
 export const layersInteractiveAtom = atom<(number | string)[]>([]);
 export const deckLayersInteractiveAtom = atom<Record<string, PickingInfo>>({});
+export const clusterFeaturesAtom = atom<Supercluster.PointFeature<Supercluster.AnyProps>[]>([]);
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);
 export const sidebarModeAtom = atom<"layers" | "stories">("layers");

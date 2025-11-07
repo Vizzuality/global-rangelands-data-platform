@@ -66,7 +66,7 @@ export interface DefaultLegend extends Schema.Component {
   };
   attributes: {
     type: Attribute.Enumeration<
-      ['Basic', 'Grouped', 'Gradient', 'Choropleth', 'Rangeland']
+      ['Basic', 'Gradient', 'Choropleth', 'Rangeland']
     > &
       Attribute.Required &
       Attribute.DefaultTo<'Basic'>;

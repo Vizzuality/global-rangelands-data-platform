@@ -1,18 +1,36 @@
-import { ScatterplotLayer } from "@deck.gl/layers";
+import { ScatterplotLayer, TextLayer } from "@deck.gl/layers";
 import { useDeckMapboxOverlayContext } from "../../provider";
 import { useEffect, useMemo, useState } from "react";
 import { TileLayer } from "deck.gl";
 import { MVTLoader } from "@loaders.gl/mvt";
 import { load } from "@loaders.gl/core";
 
-import { useAtomValue } from "jotai";
-import { deckLayersInteractiveAtom } from "@/store/map";
+import { useAtomValue, useSetAtom } from "jotai";
+import { clusterFeaturesAtom, deckLayersInteractiveAtom } from "@/store/map";
 
 import useMapZoom from "@/hooks/use-map-zoom";
 import Supercluster from "supercluster";
-import { useMap } from "react-map-gl";
-import { features } from "process";
 
+const fillColorMap: Record<string, [number, number, number, number]> = {
+  "Fossil fuels and climate justice energy": [26, 33, 162, 255],
+  "Biomass and land conflicts forests agriculture and livestock management": [147, 81, 26, 255],
+  "Biodiversity conservation conflicts": [99, 182, 103, 255],
+  "Water management": [36, 117, 204, 255],
+  "Tourism recreation": [142, 64, 191, 255],
+  "Infrastructure and built environment": [231, 170, 90, 255],
+  "Waste management": [82, 128, 85, 255],
+  "Industrial and utilities conflicts": [223, 106, 67, 255],
+  "Mineral ores and building materials extraction": [239, 159, 159, 255],
+  Nuclear: [144, 119, 4, 255],
+  Other: [102, 102, 102, 255],
+};
+const lineColorMap: Record<string, [number, number, number, number]> = {
+  KNOWN: [0, 0, 0, 255],
+  LATENT: [49, 181, 246, 255],
+  LOW: [225, 192, 71, 255],
+  MEDIUM: [229, 143, 31, 255],
+  HIGH: [218, 62, 62, 255],
+};
 export interface EjAtlasLayerComponentProps {
   id: string;
   data: string;
@@ -36,9 +54,13 @@ const EjAtlasLayerComponent = ({
   ...props
 }: EjAtlasLayerComponentProps) => {
   const [hoveredProperty, setHoveredProperty] = useState<string | null>(null);
+  const [superclusterInstances, setSuperclusterInstances] = useState<Map<string, Supercluster>>(
+    new Map(),
+  );
   const i = `${id}-deck`;
   const { addLayer, removeLayer } = useDeckMapboxOverlayContext();
   const interactiveLayers = useAtomValue(deckLayersInteractiveAtom);
+  const setClusterFeatures = useSetAtom(clusterFeaturesAtom);
 
   const zoom = useMapZoom();
 
@@ -54,33 +76,69 @@ const EjAtlasLayerComponent = ({
       new TileLayer({
         id: i,
         data,
-        beforeId,
+        beforeId: undefined,
         opacity,
         visible: visibility,
         pickable: true,
-        getTileData: async (props) => {
+        getTileData: async (tileProps) => {
           const loaderOptions = {
             mvt: {
               coordinates: "wgs84",
               tileIndex: {
-                x: props.index.x,
-                y: props.index.y,
-                z: props.index.z,
+                x: tileProps.index.x,
+                y: tileProps.index.y,
+                z: tileProps.index.z,
               },
             },
           };
 
-          return load(props.url, MVTLoader, loaderOptions).then((data) => {
-            const d = SUPER_CLUSTER.load(data).getClusters(
-              [props.bbox.west, props.bbox.south, props.bbox.east, props.bbox.north],
-              props.zoom,
-            );
-            return d;
+          return load(tileProps.url, MVTLoader, loaderOptions).then((data) => {
+            // Create a unique key for this tile
+            const tileKey = `${tileProps.index.z}-${tileProps.index.x}-${tileProps.index.y}`;
+
+            // Create a new Supercluster instance for this tile
+            const tileSupercluster = new Supercluster({ radius: 1, maxZoom: 20 });
+            const clusters = tileSupercluster
+              .load(data)
+              .getClusters(
+                [
+                  tileProps.bbox.west,
+                  tileProps.bbox.south,
+                  tileProps.bbox.east,
+                  tileProps.bbox.north,
+                ],
+                tileProps.zoom,
+              );
+
+            // Store the supercluster instance
+            setSuperclusterInstances((prev) => {
+              const newMap = new Map(prev);
+              newMap.set(tileKey, tileSupercluster);
+              return newMap;
+            });
+
+            // Attach tile key to each cluster/point for later reference
+            return clusters.map((c) => ({
+              ...c,
+              _tileKey: tileKey,
+            }));
           });
         },
         onClick: (info) => {
           if (!info?.object) return;
-          setHoveredProperty(`${info?.object?.properties.name}-${info?.object?.id}`);
+
+          // Check if clicked object is a cluster
+          if (info.object.properties.cluster) {
+            const tileKey = info.object._tileKey;
+            const clusterId = info.object.properties.cluster_id;
+
+            // Get the supercluster instance for this tile
+            const tileSupercluster = superclusterInstances.get(tileKey);
+
+            if (tileSupercluster) {
+              setClusterFeatures(tileSupercluster.getLeaves(clusterId, Infinity));
+            }
+          }
         },
         onTileError: () => {},
         updateTriggers: {
@@ -91,47 +149,69 @@ const EjAtlasLayerComponent = ({
         renderSubLayers: (props) => {
           if (!props.data || !props.tile) return null;
 
-          console.log("Rendering sublayers for tile:", props.tile.index, "with data:", props.data);
+          const individualPoints = props.data.filter((d) => !d.properties.cluster);
+          const clusterPoints = props.data.filter((d) => d.properties.cluster);
 
           return [
+            // Individual points - filled (rendered first, at bottom)
             new ScatterplotLayer(props, {
-              id: `${props.id}-filled`,
-              data: props.data,
+              id: `${props.id}-individual-filled`,
+              data: individualPoints,
               radiusUnits: "pixels",
               radiusScale: 1,
               stroked: false,
               filled: true,
               lineWidthUnits: "pixels",
               lineWidthMinPixels: 0,
-
               getFillColor: (d) => {
-                if (d.properties.cluster) {
-                  return [0, 0, 255, 100];
-                }
-                return [0, 0, 0];
+                return fillColorMap[d.properties.First_level_category] ?? [102, 102, 102, 255];
               },
               getRadius: 5,
-              getPosition: (f) => {
-                return f.geometry.coordinates;
-              },
+              getPosition: (f) => f.geometry.coordinates,
             }),
+            // Individual points - stroked
             new ScatterplotLayer(props, {
-              id: `${props.id}-line`,
-              data: props.data,
+              id: `${props.id}-individual-line`,
+              data: individualPoints,
               radiusUnits: "pixels",
               radiusScale: 1,
               stroked: true,
               filled: false,
               lineWidthUnits: "pixels",
               lineWidthMinPixels: 0,
-              getLineColor: () => {
-                return [0, 0, 0];
+              getLineColor: (d) => {
+                return lineColorMap[d.properties.Conflict_intensity_cual] ?? [0, 0, 0, 255];
               },
-              getRadius: 7,
+              getRadius: 8,
               getLineWidth: 2,
-              getPosition: (f) => {
-                return f.geometry.coordinates;
-              },
+              getPosition: (f) => f.geometry.coordinates,
+            }),
+            // Cluster points - filled (rendered after individual points)
+            new ScatterplotLayer(props, {
+              id: `${props.id}-cluster-filled`,
+              data: clusterPoints,
+              radiusUnits: "pixels",
+              radiusScale: 1,
+              stroked: false,
+              filled: true,
+              lineWidthUnits: "pixels",
+              lineWidthMinPixels: 0,
+              getFillColor: [64, 133, 64, 255],
+              getRadius: 12,
+              getPosition: (f) => f.geometry.coordinates,
+            }),
+            // Cluster text (rendered last, on top of everything)
+            new TextLayer(props, {
+              id: `${props.id}-cluster-text`,
+              data: clusterPoints,
+              getPosition: (f) => f.geometry.coordinates,
+              getText: (d) => String(d.properties.point_count),
+              getColor: [255, 255, 255, 255],
+              getSize: 12,
+              getAlignmentBaseline: "center",
+              getTextAnchor: "middle",
+              fontFamily: "Arial, sans-serif",
+              fontWeight: "normal",
             }),
           ];
         },

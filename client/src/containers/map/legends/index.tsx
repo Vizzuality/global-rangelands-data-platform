@@ -22,8 +22,6 @@ type LegendsProps = {
 const Legends = ({ open, onOpenChange }: LegendsProps) => {
   const [datasets, setDatasets] = useSyncDatasets();
 
-  console.log({ datasets });
-
   const currDatasets = useRef<string[]>(datasets);
 
   const handleSortChange = (newOrder: string[]) => {
