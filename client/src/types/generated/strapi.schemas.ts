@@ -971,6 +971,7 @@ export const StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendT
 
 export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem = {
   color?: string;
+  group?: string;
   id?: number;
   name?: string;
   name_es?: string;
@@ -1699,6 +1700,7 @@ export const DefaultLegendComponentType = {
 
 export type DefaultLegendComponentItemsItem = {
   color?: string;
+  group?: string;
   id?: number;
   name?: string;
   name_es?: string;
@@ -2909,6 +2911,7 @@ export const DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttribu
 export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem =
   {
     color?: string;
+    group?: string;
     id?: number;
     name?: string;
     name_es?: string;
@@ -3299,6 +3302,7 @@ export const DefaultLayerComponentLayerDataAttributesLegendType = {
 
 export type DefaultLayerComponentLayerDataAttributesLegendItemsItem = {
   color?: string;
+  group?: string;
   id?: number;
   name?: string;
   name_es?: string;

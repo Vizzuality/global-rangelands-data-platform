@@ -83,7 +83,7 @@ const MapLayers = () => {
         {text} <span className="font-semibold">{data}</span>
       </p>
     );
-  }, [layers, ecoregions, biomes, rangelandType, rangelandRegion]);
+  }, [layers, ecoregions, biomes, rangelandType, rangelandRegion, t]);
 
   const tabs = [
     {
@@ -100,15 +100,19 @@ const MapLayers = () => {
     },
   ];
 
-  const handleClick = useCallback((id: typeof sidebarMode) => {
-    // setSidebarOpen((prev) => !prev);
-    setSidebarMode(id);
-  }, []);
+  const handleClick = useCallback(
+    (id: typeof sidebarMode) => {
+      // setSidebarOpen((prev) => !prev);
+      setSidebarMode(id);
+    },
+    [setSidebarMode],
+  );
 
   return (
     <div className="flex gap-2">
       {tabs.map((tab) => (
         <button
+          key={`map-tab-${tab.id}`}
           className="group flex h-10 items-center gap-2 rounded-[20px] border-2 border-orange-100/0 px-2.5 text-sm transition-colors duration-300 hover:bg-background focus-visible:border-2 focus-visible:border-orange-100 focus-visible:bg-background focus-visible:outline-0 data-[state=open]:rounded-b-none "
           style={{
             backgroundColor: sidebarMode === tab.id ? `rgb(var(--${tab.color}-rgb))` : undefined,

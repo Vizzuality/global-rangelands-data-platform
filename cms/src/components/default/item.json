@@ -19,6 +19,9 @@
     },
     "name_fr": {
       "type": "string"
+    },
+    "group": {
+      "type": "string"
     }
   }
 }

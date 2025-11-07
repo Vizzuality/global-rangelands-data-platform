@@ -74,8 +74,6 @@ const PastoralistLayerComponent = ({
   data,
   opacity,
   visibility,
-  colorProperty,
-  lineWidth = 1,
   beforeId,
   ...props
 }: PastoralistLayerComponentProps) => {
@@ -179,7 +177,7 @@ const PastoralistLayerComponent = ({
         ...props,
       }),
 
-    [id, opacity, visibility, props, zoom],
+    [beforeId, data, hoveredProperty, i, opacity, visibility, props, zoom],
   );
 
   useEffect(() => {

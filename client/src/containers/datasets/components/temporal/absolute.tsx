@@ -77,7 +77,7 @@ export const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
     >
       <SelectTrigger>
         <div className="flex gap-2">
-          <CalendarDaysIcon className="group-disabled:text-hunter-green-300 h-5 w-5 text-foreground transition-colors duration-300 group-hover:text-white group-focus:text-white" />
+          <CalendarDaysIcon className="h-5 w-5 text-foreground transition-colors duration-300 group-hover:text-white group-focus:text-white group-disabled:text-hunter-green-300" />
           <SelectValue aria-label={value}>{value || defaultValue}</SelectValue>
         </div>
       </SelectTrigger>

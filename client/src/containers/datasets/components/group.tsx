@@ -18,6 +18,7 @@ import ColorSwatchIcon from "@/svgs/color-swatch.svg";
 
 import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
 import {
+  clusterFeaturesAtom,
   deckLayersInteractiveAtom,
   useSyncDatasets,
   useSyncLayers,
@@ -47,6 +48,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
   const [rangelandType, setRangelandType] = useSyncRangelandType();
   const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
   const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
+  const setClusterFeatures = useSetAtom(clusterFeaturesAtom);
   const datasetLayers = useMemo(() => layers?.map((l) => l?.attributes?.slug), [layers]);
 
   const isRangelandDataset = datasetSlug === RANGELAND_DATASET_SLUG;
@@ -65,6 +67,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
       setRangelandRegion([]);
     }
     setDeckInteractiveLayers({});
+    setClusterFeatures([]);
     onChange?.(layerSlug);
   };
   const selectedLayer = useMemo(() => {

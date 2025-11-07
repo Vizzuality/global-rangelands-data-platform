@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactElement, cloneElement } from "react";
 
-import { useSortable, verticalListSortingStrategy, SortingStrategy } from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 

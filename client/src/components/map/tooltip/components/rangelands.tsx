@@ -88,7 +88,7 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
       };
     }
     return {};
-  }, [rangelandType, biomesData, ecoregionsData]);
+  }, [rangelandType, biomesData, ecoregionsData, t]);
 
   return (
     <div className="overflow-hidden bg-background drop-shadow-2xl">

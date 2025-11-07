@@ -14,9 +14,7 @@ import useSyncLayersOrder from "@/hooks/use-sync-layers-order";
 
 const Map = () => {
   const [mapStyle] = useSyncMapStyle();
-
   useSyncLayersOrder();
-
   return (
     <div className="h-full w-full">
       <MapComponent

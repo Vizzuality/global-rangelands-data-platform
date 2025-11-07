@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-05-22T17:55:36.268Z"
+    "x-generation-date": "2025-11-07T14:28:53.807Z"
   },
   "servers": [
     {
@@ -1090,6 +1090,9 @@
                                 },
                                 "name_fr": {
                                   "type": "string"
+                                },
+                                "group": {
+                                  "type": "string"
                                 }
                               }
                             }
@@ -1689,6 +1692,9 @@
                                                       "type": "string"
                                                     },
                                                     "name_fr": {
+                                                      "type": "string"
+                                                    },
+                                                    "group": {
                                                       "type": "string"
                                                     }
                                                   }
@@ -3933,6 +3939,9 @@
                 },
                 "name_fr": {
                   "type": "string"
+                },
+                "group": {
+                  "type": "string"
                 }
               }
             }
@@ -4860,6 +4869,9 @@
                                                       "type": "string"
                                                     },
                                                     "name_fr": {
+                                                      "type": "string"
+                                                    },
+                                                    "group": {
                                                       "type": "string"
                                                     }
                                                   }

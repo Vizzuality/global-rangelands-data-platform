@@ -3,7 +3,7 @@
 import "./index.css";
 
 import { useTranslations } from "@/i18n";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { MapTooltipProps } from "../../types";
 
 // Species icons
@@ -126,17 +126,20 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
       breeds: parseProperties<Record<string, string[]>>(breeds),
       categories: parseProperties<Record<string, string[]>>(species_categories),
     };
-  }, []);
+  }, [name, country, species, othernames, breeds, species_categories]);
 
-  const getCategory = (specie: string) => {
-    if (!content.categories || typeof content.categories !== "object") return;
-    return Object.entries(content.categories)?.find(([, values]) => {
-      if (!values || !Array.isArray(values)) return;
-      return values
-        ?.map((v) => typeof v === "string" && v.toLowerCase())
-        .includes(specie.toLowerCase());
-    })?.[0];
-  };
+  const getCategory = useCallback(
+    (specie: string) => {
+      if (!content.categories || typeof content.categories !== "object") return;
+      return Object.entries(content.categories)?.find(([, values]) => {
+        if (!values || !Array.isArray(values)) return;
+        return values
+          ?.map((v) => typeof v === "string" && v.toLowerCase())
+          .includes(specie.toLowerCase());
+      })?.[0];
+    },
+    [content.categories],
+  );
 
   const speciesOrdered = useMemo(
     () =>
@@ -148,7 +151,7 @@ const PastoralistTooltip = (props: MapTooltipProps) => {
         if (!categoryA || !categoryB) return 0;
         return categoryAIndex - categoryBIndex;
       }),
-    [content.species],
+    [content.species, getCategory],
   );
 
   return (

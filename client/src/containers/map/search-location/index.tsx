@@ -101,11 +101,14 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
     // TODO: handle story option click
   }, []);
 
-  const handleOpenChange = useCallback((open: boolean) => {
-    setLocationSearch("");
-    setOpen(open);
-    onOpenChange(open);
-  }, []);
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setLocationSearch("");
+      setOpen(open);
+      onOpenChange(open);
+    },
+    [setLocationSearch, setOpen, onOpenChange],
+  );
 
   return (
     <div>

@@ -1,5 +1,5 @@
 import { useGetBySlug } from "@/lib/localized-query";
-import { deckLayersInteractiveAtom } from "@/store/map";
+import { clusterFeaturesAtom, deckLayersInteractiveAtom } from "@/store/map";
 import { LayerResponse } from "@/types/generated/strapi.schemas";
 import { InteractionConfig } from "@/types/layers";
 import { useAtomValue } from "jotai";
@@ -7,10 +7,12 @@ import { createElement, useMemo } from "react";
 import RangelandsTooltip from "@/components/map/tooltip/components/rangelands";
 import PastoralistTooltip from "@/components/map/tooltip/components/postoralists";
 import { useLocale } from "next-intl";
+import EjAtlasTooltip from "@/components/map/tooltip/components/ej-atlas";
 
 const PopupItemComponent = {
   RangelandsTooltip,
   PastoralistTooltip,
+  EjAtlasTooltip,
 };
 
 type PopupItemComponentType = keyof typeof PopupItemComponent;
@@ -22,6 +24,7 @@ type PopupItemProps = {
 const Item = ({ slug }: PopupItemProps) => {
   const locale = useLocale();
   const deckInteractiveLayers = useAtomValue(deckLayersInteractiveAtom);
+  const clusterFeatures = useAtomValue(clusterFeaturesAtom);
   const info = deckInteractiveLayers[slug];
 
   const { data: layerData } = useGetBySlug<LayerResponse>(`layer/${slug}`, {
@@ -50,9 +53,12 @@ const Item = ({ slug }: PopupItemProps) => {
           [curr.key]: info?.object?.properties?.[curr.value],
         };
       }, {});
-      return createElement(PopupItemComponent[type], props);
+      return createElement(PopupItemComponent[type], {
+        ...props,
+        items: clusterFeatures,
+      });
     }
-  }, [layerData]);
+  }, [layerData, clusterFeatures, info?.object?.properties]);
 
   return <div>{POPUP_COMPONENT}</div>;
 };

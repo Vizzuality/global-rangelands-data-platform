@@ -21,7 +21,6 @@ const Datasets = () => {
     ],
     sort: "id:asc",
   });
-
   const { data: datasetCategoriesData } = useGetLocalizedList(datasetCategoriesQuery);
 
   const categories = useMemo(

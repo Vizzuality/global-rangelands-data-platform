@@ -45,7 +45,6 @@ export const Map: FC<CustomMapProps> = ({
   );
   const [isFlying, setFlying] = useState(false);
   const [loaded, setLoaded] = useState(false);
-
   /**
    * CALLBACKS
    */

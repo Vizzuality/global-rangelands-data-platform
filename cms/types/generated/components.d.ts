@@ -39,6 +39,7 @@ export interface DefaultItem extends Schema.Component {
     color: Attribute.String & Attribute.DefaultTo<'#000000'>;
     name_es: Attribute.String;
     name_fr: Attribute.String;
+    group: Attribute.String;
   };
 }
 

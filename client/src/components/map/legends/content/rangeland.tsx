@@ -62,7 +62,7 @@ const RangelandLegend = () => {
     if (rangelandType === RANGELAND_ECOREGIONS) {
       return t("Ecoregions");
     }
-  }, [rangelandType]);
+  }, [rangelandType, t]);
 
   return (
     <div className="space-y-2">
