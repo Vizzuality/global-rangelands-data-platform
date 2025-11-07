@@ -35,6 +35,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
   const datasetLayers =
     useMemo(() => attributes?.layers.map((l) => l.layer?.data?.id), [attributes?.layers])?.filter(
       (l) => !!l,
+      [],
     ) || [];
 
   const layersQuery = useGetLayers(
@@ -65,7 +66,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
 
   const layersData = useMemo(
     () => (datasetLayers?.length ? localizedLayersData?.data : []),
-    [datasetLayers],
+    [datasetLayers, localizedLayersData?.data],
   );
   const handleToggleDataset = (checked: boolean) => {
     if (!id) return;

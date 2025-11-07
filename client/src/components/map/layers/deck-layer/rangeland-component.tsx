@@ -80,7 +80,18 @@ const RangelandsLayerComponent = ({
         },
         ...props,
       }),
-    [id, dataWithMapboxToken, opacity, visibility, props, isPickable],
+    [
+      beforeId,
+      colorProperty,
+      hoveredProperty,
+      i,
+      lineWidth,
+      dataWithMapboxToken,
+      opacity,
+      visibility,
+      props,
+      isPickable,
+    ],
   );
 
   useEffect(() => {

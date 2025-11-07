@@ -78,7 +78,7 @@ const LayerManager = () => {
           Loop through active layers. The id is gonna be used to fetch the current layer and know how to order the layers.
           The first item will always be at the top of the layers stack
         */}
-        {layers.map((l, i) => {
+        {layers.map((l) => {
           const id = l;
           const beforeId = `${l}-background-layer`;
           return (

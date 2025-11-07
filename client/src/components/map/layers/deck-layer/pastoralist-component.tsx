@@ -177,7 +177,7 @@ const PastoralistLayerComponent = ({
         ...props,
       }),
 
-    [id, opacity, visibility, props, zoom],
+    [beforeId, data, hoveredProperty, i, opacity, visibility, props, zoom],
   );
 
   useEffect(() => {

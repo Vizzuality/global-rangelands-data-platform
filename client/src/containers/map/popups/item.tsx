@@ -58,7 +58,7 @@ const Item = ({ slug }: PopupItemProps) => {
         items: clusterFeatures,
       });
     }
-  }, [layerData]);
+  }, [layerData, clusterFeatures, info?.object?.properties]);
 
   return <div>{POPUP_COMPONENT}</div>;
 };

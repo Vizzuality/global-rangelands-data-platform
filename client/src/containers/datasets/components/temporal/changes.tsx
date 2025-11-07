@@ -127,7 +127,7 @@ export const TemporalChangesDatasetItem = ({
 
     const layerSlug = layer?.attributes?.slug;
     return { defaultStartYear: startYear, layerSlug };
-  }, [layer?.attributes]);
+  }, [layer?.attributes, isTemporalGroup, lastSelected.startYear]);
 
   const { startYear, endYear, isDisabled } = useMemo(() => {
     const startYear = !!layerSlug
@@ -140,7 +140,7 @@ export const TemporalChangesDatasetItem = ({
     const isDisabled = !layerSlug || !layers?.includes(layerSlug);
 
     return { startYear, endYear, isDisabled };
-  }, [layerSlug, layers, layersSettings]);
+  }, [layerSlug, layers, layersSettings, selectType]);
 
   const startYearOptions = useMemo(
     () => _getOptions(layer?.attributes?.params_config, undefined, endYear),
@@ -148,7 +148,7 @@ export const TemporalChangesDatasetItem = ({
   );
   const endYearOptions = useMemo(
     () => _getOptions(layer?.attributes?.params_config, startYear || defaultStartYear),
-    [layer, startYear],
+    [layer, startYear, defaultStartYear],
   );
 
   const defaultEndYear = useMemo(() => {
@@ -199,7 +199,7 @@ export const TemporalChangesDatasetItem = ({
         };
       });
     }
-  }, [selectType, layerSlug, isTemporalGroup]);
+  }, [selectType, layerSlug, isTemporalGroup, defaultEndYear, setLayersSettings]);
 
   return (
     <div className="space-y-4">

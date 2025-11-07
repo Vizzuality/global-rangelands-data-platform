@@ -19,9 +19,22 @@ type EjAtlasTooltipProps = {
   Headline: string;
   Location: string;
   First_level_category: string;
-  Conflict_intensity_cual: string;
+  Conflict_intensity_cual: keyof typeof conflictLabelMap;
   Project_status: string;
-  items: any[];
+  items: EjAtlasFeature[];
+};
+
+type EjAtlasFeatureProperties = {
+  Case: string;
+  Headline: string;
+  Location: string;
+  First_level_category: string;
+  Conflict_intensity_cual: keyof typeof conflictLabelMap;
+  Project_status: string;
+};
+
+type EjAtlasFeature = {
+  properties: EjAtlasFeatureProperties;
 };
 
 const EjAtlasInfo: FC<{
@@ -29,7 +42,7 @@ const EjAtlasInfo: FC<{
   Headline: string;
   Location: string;
   First_level_category: string;
-  Conflict_intensity_cual: string;
+  Conflict_intensity_cual: keyof typeof conflictLabelMap;
   Project_status: string;
 }> = ({
   Case,

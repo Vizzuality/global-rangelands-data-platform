@@ -11,6 +11,20 @@ import { clusterFeaturesAtom, deckLayersInteractiveAtom } from "@/store/map";
 import useMapZoom from "@/hooks/use-map-zoom";
 import Supercluster from "supercluster";
 
+type Coordinates = [number, number] | [number, number, number];
+interface FeatureWithProps {
+  geometry: { coordinates: Coordinates };
+  properties: {
+    cluster?: boolean;
+    cluster_id?: number;
+    point_count?: number;
+    First_level_category?: string;
+    Conflict_intensity_cual?: string;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
 const fillColorMap: Record<string, [number, number, number, number]> = {
   "Fossil fuels and climate justice energy": [26, 33, 162, 255],
   "Biomass and land conflicts forests agriculture and livestock management": [147, 81, 26, 255],
@@ -144,8 +158,9 @@ const EjAtlasLayerComponent = ({
         renderSubLayers: (props) => {
           if (!props.data || !props.tile) return null;
 
-          const individualPoints = props.data.filter((d: any) => !d.properties.cluster);
-          const clusterPoints = props.data.filter((d: any) => d.properties.cluster);
+          const typedData = props.data as FeatureWithProps[];
+          const individualPoints = typedData.filter((d: FeatureWithProps) => !d.properties.cluster);
+          const clusterPoints = typedData.filter((d: FeatureWithProps) => d.properties.cluster);
 
           return [
             // Individual points - filled (rendered first, at bottom)
@@ -158,7 +173,7 @@ const EjAtlasLayerComponent = ({
               filled: true,
               lineWidthUnits: "pixels",
               lineWidthMinPixels: 0,
-              getFillColor: (d: any) => {
+              getFillColor: (d) => {
                 return fillColorMap[d.properties.First_level_category] ?? [102, 102, 102, 255];
               },
               getRadius: 5,
@@ -174,7 +189,7 @@ const EjAtlasLayerComponent = ({
               filled: false,
               lineWidthUnits: "pixels",
               lineWidthMinPixels: 0,
-              getLineColor: (d: any) => {
+              getLineColor: (d) => {
                 return lineColorMap[d.properties.Conflict_intensity_cual] ?? [0, 0, 0, 255];
               },
               getRadius: 8,
@@ -214,7 +229,6 @@ const EjAtlasLayerComponent = ({
       }),
 
     [
-      id,
       data,
       hoveredProperty,
       i,

@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { XIcon } from "lucide-react";
 
 export type CircleLegendProps = {
   colors?: string[];
@@ -8,7 +7,7 @@ export type CircleLegendProps = {
   className?: string;
 };
 
-const CircleLegend = ({ colors, selected, className, removable = true }: CircleLegendProps) => {
+const CircleLegend = ({ colors, selected, className }: CircleLegendProps) => {
   if (!colors?.length) return null;
 
   const stripeGradient = colors.map((color, i) => {
@@ -31,9 +30,7 @@ const CircleLegend = ({ colors, selected, className, removable = true }: CircleL
           "border-[1.5px] border-foreground group-hover:border-white group-disabled:border-hunter-green-300 group-disabled:!bg-white group-disabled:![background-image:none] group-disabled:hover:border-hunter-green-300 ",
         className,
       )}
-    >
-      {/* {selected && removable && <XIcon className="h-3 w-3 flex-shrink-0" />} */}
-    </div>
+    ></div>
   );
 };
 
