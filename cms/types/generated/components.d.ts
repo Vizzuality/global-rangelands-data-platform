@@ -40,6 +40,7 @@ export interface DefaultItem extends Schema.Component {
     name_es: Attribute.String;
     name_fr: Attribute.String;
     group: Attribute.String;
+    style: Attribute.Enumeration<['filled', 'outline']>;
   };
 }
 

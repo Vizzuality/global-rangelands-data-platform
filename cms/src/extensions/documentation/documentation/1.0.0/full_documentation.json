@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-11-07T14:28:53.807Z"
+    "x-generation-date": "2025-11-10T08:52:50.947Z"
   },
   "servers": [
     {
@@ -1093,6 +1093,13 @@
                                 },
                                 "group": {
                                   "type": "string"
+                                },
+                                "style": {
+                                  "type": "string",
+                                  "enum": [
+                                    "filled",
+                                    "outline"
+                                  ]
                                 }
                               }
                             }
@@ -1696,6 +1703,13 @@
                                                     },
                                                     "group": {
                                                       "type": "string"
+                                                    },
+                                                    "style": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "filled",
+                                                        "outline"
+                                                      ]
                                                     }
                                                   }
                                                 }
@@ -3942,6 +3956,13 @@
                 },
                 "group": {
                   "type": "string"
+                },
+                "style": {
+                  "type": "string",
+                  "enum": [
+                    "filled",
+                    "outline"
+                  ]
                 }
               }
             }
@@ -4873,6 +4894,13 @@
                                                     },
                                                     "group": {
                                                       "type": "string"
+                                                    },
+                                                    "style": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "filled",
+                                                        "outline"
+                                                      ]
                                                     }
                                                   }
                                                 }
