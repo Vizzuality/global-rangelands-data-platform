@@ -26,25 +26,29 @@ interface FeatureWithProps {
 }
 
 const fillColorMap: Record<string, [number, number, number, number]> = {
-  "Fossil fuels and climate justice energy": [26, 33, 162, 255],
-  "Biomass and land conflicts forests agriculture and livestock management": [147, 81, 26, 255],
+  "Fossil Fuels and Climate Justice/Energy": [26, 33, 162, 255],
+  "Biomass and land conflicts (Forests, agriculture, fisheries and livestock management)": [
+    147, 81, 26, 255,
+  ],
   "Biodiversity conservation conflicts": [99, 182, 103, 255],
-  "Water management": [36, 117, 204, 255],
-  "Tourism recreation": [142, 64, 191, 255],
-  "Infrastructure and built environment": [231, 170, 90, 255],
-  "Waste management": [82, 128, 85, 255],
-  "Industrial and utilities conflicts": [223, 106, 67, 255],
-  "Mineral ores and building materials extraction": [239, 159, 159, 255],
-  Nuclear: [144, 119, 4, 255],
+  "Water Management": [36, 117, 204, 255],
+  "Tourism Recreation": [142, 64, 191, 255],
+  "Infrastructure and built environment": [224, 200, 41, 255],
+  "Waste Management": [82, 128, 85, 255],
+  "Industrial and utilities conflicts": [233, 67, 12, 255],
+  "Mineral Ores and Building Materials Extraction": [239, 159, 159, 255],
+  Nuclear: [224, 200, 41, 255],
   Other: [102, 102, 102, 255],
 };
+
 const lineColorMap: Record<string, [number, number, number, number]> = {
   KNOWN: [0, 0, 0, 255],
   LATENT: [49, 181, 246, 255],
   LOW: [225, 192, 71, 255],
-  MEDIUM: [229, 143, 31, 255],
-  HIGH: [218, 62, 62, 255],
+  MEDIUM: [218, 62, 62, 255],
+  HIGH: [105, 7, 7, 255],
 };
+
 export interface EjAtlasLayerComponentProps {
   id: string;
   data: string;
