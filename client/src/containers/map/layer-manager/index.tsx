@@ -81,11 +81,12 @@ const LayerManager = () => {
         {layers.map((l) => {
           const id = l;
           const beforeId = `${l}-background-layer`;
+          console.log(layersSettings?.[id], layersSettings);
           return (
             <LayerManagerItem
               key={id}
               id={id}
-              beforeId={beforeId}
+              {...(layersSettings?.[id]?.beforeIdIndex !== 0 && { beforeId: beforeId })}
               settings={{
                 // ...{ opacity: 1, visibility: true },
                 ...(!!layersSettings && layersSettings[l]),
