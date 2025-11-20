@@ -2,7 +2,7 @@
 
 import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
 
-import { useSyncDatasets, useSyncLayers } from "@/store/map";
+import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
 import CitationsIcon from "@/svgs/citations.svg";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import TemporalChangesDataset from "./components/temporal";
 import { useGetLayers } from "@/types/generated/layer";
 import { useGetLocalizedList } from "@/lib/localized-query";
 import TemporalGroupDataset from "./components/temporal-group";
+import { before } from "node:test";
 
 type DatasetsItemProps = DatasetListResponseDataItem & {
   className?: string;
@@ -23,10 +24,12 @@ type DatasetsItemProps = DatasetListResponseDataItem & {
 
 type LocalizedGroupProps = "group_es" | "group_fr";
 
+const LAYERS_EXCEPTIONS = ["environmental-justice"];
+
 const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) => {
   const t = useTranslations();
   const [datasets, setDatasets] = useSyncDatasets();
-  // const [layersSettings, setLayersSettings] = useSyncLayersSettings();
+  const [layersSettings, setLayersSettings] = useSyncLayersSettings();
   const [, setLayers] = useSyncLayers();
   const id = attributes?.slug;
 
@@ -86,6 +89,18 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
       const firstDatasetLayer = layersData?.[0]?.attributes?.slug;
       if (firstDatasetLayer) {
         setLayers((prev) => [...prev, firstDatasetLayer]);
+      }
+      if (LAYERS_EXCEPTIONS.includes(id)) {
+        setLayersSettings((prev) => {
+          if (!id) return prev;
+          return {
+            ...prev,
+            [id]: {
+              ...(prev ? prev[id] : {}),
+              beforeIdIndex: 0,
+            },
+          };
+        });
       }
     }
   };

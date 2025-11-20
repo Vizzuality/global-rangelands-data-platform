@@ -43,10 +43,12 @@ type SortableListProps = PropsWithChildren & {
 
 import SortableItem from "./item";
 import { LegendItemProps } from "@/containers/map/legends/item";
+import { useSyncLayersSettings } from "@/store/map";
 
 export const SortableList = ({ children, onChangeOrder }: SortableListProps) => {
   const uid = useId();
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const [layersSettings, setLayersSettings] = useSyncLayersSettings();
 
   const ActiveItem = useMemo(() => {
     const activeChildArray = Children.map(children, (Child) => {
@@ -104,6 +106,23 @@ export const SortableList = ({ children, onChangeOrder }: SortableListProps) => 
           const newArr = arrayMove(itemsIds || [], oldIndex, newIndex);
           onChangeOrder(newArr);
         }
+      }
+
+      if (active.id === "environmental-justice" || over?.id === "environmental-justice") {
+        setLayersSettings((prev) => {
+          if (!active.id || !over?.id) return prev;
+          return {
+            ...prev,
+            [active.id]: {
+              ...(prev ? prev[active.id] : {}),
+              beforeIdIndex: null,
+            },
+            [over.id]: {
+              ...(prev ? prev[over.id] : {}),
+              beforeIdIndex: null,
+            },
+          };
+        });
       }
     },
     [itemsIds, onChangeOrder],

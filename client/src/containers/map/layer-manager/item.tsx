@@ -51,7 +51,6 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   if (isValidElement(c)) {
     return cloneElement(c, { id, key: `${id}-layer` });
   }
-
   return <DeckLayer key={`${id}-layer`} id={id} beforeId={beforeId} config={c} />;
 };
 
