@@ -33,7 +33,7 @@ const fillColorMap: Record<string, [number, number, number, number]> = {
   "Biodiversity conservation conflicts": [99, 182, 103, 255],
   "Water Management": [36, 117, 204, 255],
   "Tourism Recreation": [142, 64, 191, 255],
-  "Infrastructure and built environment": [224, 200, 41, 255],
+  "Infrastructure and built environment": [132, 222, 225, 255],
   "Waste Management": [82, 128, 85, 255],
   "Industrial and utilities conflicts": [233, 67, 12, 255],
   "Mineral Ores and Building Materials Extraction": [239, 159, 159, 255],
