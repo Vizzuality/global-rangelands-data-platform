@@ -27,15 +27,15 @@ interface FeatureWithProps {
 
 const fillColorMap: Record<string, [number, number, number, number]> = {
   "Fossil Fuels and Climate Justice/Energy": [26, 33, 162, 255],
-  "Biomass and land conflicts (Forests, agriculture, fisheries and livestock management)": [
+  "Biomass and Land Conflicts (Forests, Agriculture, Fisheries and Livestock Management)": [
     147, 81, 26, 255,
   ],
   "Biodiversity conservation conflicts": [99, 182, 103, 255],
   "Water Management": [36, 117, 204, 255],
   "Tourism Recreation": [142, 64, 191, 255],
-  "Infrastructure and built environment": [132, 222, 225, 255],
+  "Infrastructure and Built Environment": [132, 222, 225, 255],
   "Waste Management": [82, 128, 85, 255],
-  "Industrial and utilities conflicts": [233, 67, 12, 255],
+  "Industrial and Utilities conflicts": [233, 67, 12, 255],
   "Mineral Ores and Building Materials Extraction": [239, 159, 159, 255],
   Nuclear: [224, 200, 41, 255],
   Other: [102, 102, 102, 255],
