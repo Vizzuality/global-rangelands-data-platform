@@ -1089,7 +1089,22 @@ export interface ApiStoryStory extends Schema.CollectionType {
     title: Attribute.String & Attribute.Required & Attribute.Unique;
     description: Attribute.RichText;
     notes: Attribute.RichText;
-    location: Attribute.String;
+    latitude: Attribute.Float &
+      Attribute.SetMinMax<
+        {
+          min: -90;
+          max: 90;
+        },
+        number
+      >;
+    longitude: Attribute.Float &
+      Attribute.SetMinMax<
+        {
+          min: -180;
+          max: 180;
+        },
+        number
+      >;
     datasets: Attribute.Relation<
       'api::story.story',
       'oneToMany',
