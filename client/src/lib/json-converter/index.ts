@@ -99,5 +99,5 @@ export const parseConfig = <T>({
       params,
     },
   });
-  return JSON_CONVERTER.convert(config);
+  return JSON_CONVERTER.convert(config) as T | null;
 };

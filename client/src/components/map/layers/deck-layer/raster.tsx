@@ -54,7 +54,7 @@ class RasterLayer {
           return new BitmapLayer({
             ...bitmapProps,
             id: subLayerId,
-            image: subLayerData,
+            image: subLayerData as BitmapLayerProps["image"],
             bounds: [west, south, east, north],
             // textureParameters: {
             //   [GL.TEXTURE_MIN_FILTER]: GL.NEAREST,
