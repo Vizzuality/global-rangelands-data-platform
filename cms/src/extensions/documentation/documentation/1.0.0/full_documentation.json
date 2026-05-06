@@ -21,7 +21,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-11-10T08:52:50.947Z"
+    "x-generation-date": "2026-05-06T13:38:48.238Z"
   },
   "servers": [
     {
@@ -271,8 +271,13 @@
                       "notes": {
                         "type": "string"
                       },
-                      "location": {
-                        "type": "string"
+                      "latitude": {
+                        "type": "number",
+                        "format": "float"
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "format": "float"
                       },
                       "datasets": {
                         "type": "object",
@@ -2157,8 +2162,13 @@
                                     "notes": {
                                       "type": "string"
                                     },
-                                    "location": {
-                                      "type": "string"
+                                    "latitude": {
+                                      "type": "number",
+                                      "format": "float"
+                                    },
+                                    "longitude": {
+                                      "type": "number",
+                                      "format": "float"
                                     },
                                     "datasets": {
                                       "type": "object",
@@ -4695,8 +4705,13 @@
               "notes": {
                 "type": "string"
               },
-              "location": {
-                "type": "string"
+              "latitude": {
+                "type": "number",
+                "format": "float"
+              },
+              "longitude": {
+                "type": "number",
+                "format": "float"
               },
               "datasets": {
                 "type": "array",
@@ -4800,8 +4815,13 @@
           "notes": {
             "type": "string"
           },
-          "location": {
-            "type": "string"
+          "latitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "float"
           },
           "datasets": {
             "type": "object",
@@ -5348,8 +5368,13 @@
                                     "notes": {
                                       "type": "string"
                                     },
-                                    "location": {
-                                      "type": "string"
+                                    "latitude": {
+                                      "type": "number",
+                                      "format": "float"
+                                    },
+                                    "longitude": {
+                                      "type": "number",
+                                      "format": "float"
                                     },
                                     "datasets": {
                                       "type": "object",
