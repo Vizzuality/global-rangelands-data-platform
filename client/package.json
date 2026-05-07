@@ -9,7 +9,7 @@
     "check-types": "tsc",
     "lint": "next lint",
     "types": "orval --config ./orval.config.ts",
-    "prepare": "husky"
+    "prepare": "cd .. && husky client/.husky"
   },
   "dependencies": {
     "@deck.gl/aggregation-layers": "^9.3.2",
