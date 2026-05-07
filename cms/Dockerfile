@@ -15,7 +15,7 @@ RUN apt-get update -y && \
 
 ENV NODE_ENV=development
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app/
 
