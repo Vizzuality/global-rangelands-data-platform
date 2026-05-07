@@ -1,5 +1,5 @@
 # Build all the things
-FROM node:18.17-bullseye-slim as build
+FROM node:18.17-bullseye-slim AS build
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y \
@@ -12,11 +12,12 @@ RUN apt-get update -y && \
       libvips-dev \
     && apt-get clean
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
+
+RUN corepack enable
 
 WORKDIR /app
 
-COPY .yarn ./.yarn
 COPY config ./config
 COPY database ./database
 COPY public ./public
@@ -24,17 +25,17 @@ COPY src ./src
 
 COPY .env \
      .nvmrc \
-     .yarnrc.yml \
+     .npmrc \
      favicon.png \
      package.json \
+     pnpm-lock.yaml \
      entrypoint.sh \
      tsconfig.json \
-     yarn.lock \
      ./
 
-RUN yarn install
+RUN pnpm install --frozen-lockfile
 
-RUN yarn build
+RUN pnpm build
 
 # Copy only the built files into the final image
 FROM node:18.17-bullseye-slim AS runner
@@ -43,7 +44,7 @@ RUN apt-get update -y && \
     apt-get install -y libvips-dev && \
     apt-get clean
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 WORKDIR /app
 

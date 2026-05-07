@@ -2,41 +2,43 @@
 FROM node:20.5-bullseye-slim AS build
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y libc6  && \
+    apt-get install -y libc6 && \
     apt-get clean
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN corepack enable
 
 WORKDIR /app
 
-COPY .yarn ./.yarn
 COPY public ./public
 COPY src ./src
 
 COPY .browserslistrc \
-     .yarnrc.yml \
+     .npmrc \
      entrypoint.sh \
      index.js \
      logger.ts \
      components.json \
      next.config.mjs \
      package.json \
+     pnpm-lock.yaml \
      postcss.config.mjs \
      README.md \
      tailwind.config.ts \
      tsconfig.json \
-     yarn.lock \
      .env.local \
      ./
 
-RUN yarn install
+RUN pnpm install --frozen-lockfile
 
-RUN yarn build
+RUN pnpm build
 
 # Copy only the built files into the final image
 FROM node:20.5-bullseye-slim AS runner
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app
 
@@ -54,6 +56,6 @@ COPY --from=build /app/.env.local ./.env.local
 USER nextjs
 
 EXPOSE 3000
-ENV PORT 3000
+ENV PORT=3000
 
 ENTRYPOINT ["/app/entrypoint.sh"]

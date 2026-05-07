@@ -1,4 +1,1 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-cd ./client && yarn types && yarn lint --fix && yarn check-types && git add src/types/generated/
+cd ./client && pnpm types && pnpm lint --fix && pnpm check-types && git add src/types/generated/

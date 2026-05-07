@@ -7,7 +7,7 @@ This platform is built using Node.js and [Next.js](https://nextjs.org/), a React
 ## Dependencies
 
 - Node.js v20.12
-- Yarn v4.2.1
+- pnpm v10 (managed via corepack)
 
 ## Install & run
 
@@ -16,17 +16,24 @@ This platform is built using Node.js and [Next.js](https://nextjs.org/), a React
 Be sure to set the required environment variables before running the application - see
 the [Configuration](#configuration) section below for more details.
 
+First-time setup:
+
+```bash
+corepack enable
+pnpm install
+```
+
 To run the application in development mode, use:
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 To run the application in production mode, use:
 
 ```bash
-yarn build
-yarn start
+pnpm build
+pnpm start
 ```
 
 ### Docker

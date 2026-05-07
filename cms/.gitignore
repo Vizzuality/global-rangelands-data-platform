@@ -117,3 +117,10 @@ build
 # Plugins
 ############################
 src/extensions/documentation/documentation/**/*.json
+
+############################
+# pnpm
+############################
+
+.pnpm-store/
+pnpm-debug.log*

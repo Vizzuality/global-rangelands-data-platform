@@ -12,11 +12,13 @@ RUN apt-get update -y && \
       nasm bash \
       libvips-dev \
     && apt-get clean
-ENV NODE_ENV development
+
+ENV NODE_ENV=development
+
+RUN corepack enable
 
 WORKDIR /app/
 
-COPY .yarn ./.yarn
 COPY config ./config
 COPY database ./database
 COPY public ./public
@@ -24,17 +26,17 @@ COPY src ./src
 
 COPY .env \
      .nvmrc \
-     .yarnrc.yml \
+     .npmrc \
      favicon.png \
      package.json \
+     pnpm-lock.yaml \
      entrypoint.sh \
      tsconfig.json \
-     yarn.lock \
      ./
 
-RUN yarn install
+RUN pnpm install --frozen-lockfile
 
-ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH=/app/node_modules/.bin:$PATH
 
 EXPOSE 1337
 ENTRYPOINT ["/app/cms/entrypoint.sh"]
