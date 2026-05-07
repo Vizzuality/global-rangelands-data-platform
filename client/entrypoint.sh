@@ -12,7 +12,7 @@ case "${NODE_ENV}" in
         ;;
     production)
         echo "Running Production Server"
-        exec pnpm start
+        exec node node_modules/next/dist/bin/next start
         ;;
     *)
         echo "Unknown NODE environment: \"${NODE_ENV}\""
