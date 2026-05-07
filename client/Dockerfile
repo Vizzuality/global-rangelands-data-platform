@@ -1,4 +1,4 @@
-FROM node:20.5-bullseye-slim
+FROM node:24.15.0-bookworm-slim
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
