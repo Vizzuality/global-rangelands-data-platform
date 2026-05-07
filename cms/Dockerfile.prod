@@ -14,7 +14,7 @@ RUN apt-get update -y && \
 
 ENV NODE_ENV=production
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
@@ -45,6 +45,8 @@ RUN apt-get update -y && \
     apt-get clean
 
 ENV NODE_ENV=production
+
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
