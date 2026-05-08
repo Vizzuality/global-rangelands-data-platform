@@ -5,7 +5,7 @@ import LanguageSelector from "../language-selector";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "motion/react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const MIN_SCROLL = 150;
 
@@ -62,7 +62,9 @@ const Header = () => {
           {t("Explore map")}
         </Link>
         <div className="h-5 w-px bg-brown-dark"></div>
-        <LanguageSelector />
+        <Suspense fallback={null}>
+          <LanguageSelector />
+        </Suspense>
       </motion.div>
     </motion.div>
   );
