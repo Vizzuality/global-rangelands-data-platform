@@ -1,12 +1,15 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 
+import { setRequestLocale } from "next-intl/server";
+
 import { getTranslations } from "@/i18n";
 import LayoutProviders from "./layout-providers";
 import NextIntlProvider from "./next-intl-provider";
 import { eyesForSerifs, wotfard } from "@/assets/fonts";
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+  setRequestLocale(locale);
   const t = await getTranslations({ locale });
 
   return {
@@ -59,6 +62,7 @@ export default function LocaleLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  setRequestLocale(locale);
   return (
     <LayoutProviders>
       <NextIntlProvider locale={locale}>
