@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/navigation";
 import { motion, useInView } from "motion/react";
 
 import HomeGallery from "./gallery";

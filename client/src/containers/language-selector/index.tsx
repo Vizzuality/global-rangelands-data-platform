@@ -10,7 +10,8 @@ import {
 import OpenCloseArrow from "@/components/ui/open-close-arrow";
 import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
-import { usePathname, useRouter, locales } from "@/navigation";
+import { LOCALES, type Locale } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { LanguagesIcon } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -43,7 +44,7 @@ const LanguageSelector = ({ className, variant = "light" }: LanguageSelectorProp
     router.push(path, { locale: nextLocale });
   };
 
-  const localeLabels: Record<(typeof locales)[number], string> = {
+  const localeLabels: Record<Locale, string> = {
     en: t("English"),
     es: t("Spanish"),
     fr: t("French"),
@@ -60,7 +61,7 @@ const LanguageSelector = ({ className, variant = "light" }: LanguageSelectorProp
         disabled
       >
         <LanguagesIcon className="h-5 w-5" />
-        <span>{localeLabels[locale]}</span>
+        <span>{localeLabels[locale as Locale]}</span>
         <OpenCloseArrow />
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -69,7 +70,7 @@ const LanguageSelector = ({ className, variant = "light" }: LanguageSelectorProp
         className={cn(variants.menuItems[variant])}
       >
         <DropdownMenuRadioGroup value={locale} onValueChange={onSelectLocale}>
-          {locales.map((l) => (
+          {LOCALES.map((l) => (
             <DropdownMenuRadioItem key={l} value={l}>
               {localeLabels[l]}
             </DropdownMenuRadioItem>

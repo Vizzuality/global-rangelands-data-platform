@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import OpenCloseArrow from "@/components/ui/open-close-arrow";
 import { useTranslations } from "@/i18n";
-import { usePathname, useRouter, locales } from "@/navigation";
+import { LOCALES, type Locale } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { LanguagesIcon } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -27,7 +28,7 @@ const LanguageSelector = () => {
     router.push(path, { locale: nextLocale });
   };
 
-  const localeLabels: Record<(typeof locales)[number], string> = {
+  const localeLabels: Record<Locale, string> = {
     en: t("English"),
     es: t("Spanish"),
     fr: t("French"),
@@ -38,12 +39,12 @@ const LanguageSelector = () => {
       <DropdownMenuTrigger className="group flex h-fit w-fit gap-2 rounded-full border border-white bg-foreground px-5 py-3.5 text-sm text-white">
         <LanguagesIcon className="h-5 w-5" />
         <span>{t("Select Language")}:</span>
-        <span>{localeLabels[locale]}</span>
+        <span>{localeLabels[locale as Locale]}</span>
         <OpenCloseArrow />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-foreground text-white">
         <DropdownMenuRadioGroup onValueChange={onSelectLocale}>
-          {locales.map((l) => (
+          {LOCALES.map((l) => (
             <DropdownMenuRadioItem key={l} value={l}>
               {localeLabels[l]}
             </DropdownMenuRadioItem>
