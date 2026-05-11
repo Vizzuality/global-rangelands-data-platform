@@ -15,7 +15,7 @@ const LegendList: FC<LegendComponentProps> = ({ items }) => (
             className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300"
             style={{ borderColor: i.color }}
           ></div>
-        ) : !!i.color ? (
+        ) : i.color ? (
           <CircleLegend colors={[i.color]} />
         ) : null}
         <span className="text-xs font-light">{i.name}</span>

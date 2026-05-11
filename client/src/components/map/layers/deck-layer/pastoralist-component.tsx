@@ -84,7 +84,7 @@ const PastoralistLayerComponent = ({
 
   const zoom = useMapZoom();
 
-  useMemo(() => {
+  useEffect(() => {
     const pastoralistInteractiveLayer = interactiveLayers["pastoralists"];
     if (!pastoralistInteractiveLayer) {
       setHoveredProperty(null);

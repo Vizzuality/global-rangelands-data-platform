@@ -32,7 +32,7 @@ const RangelandLegend = () => {
     const biomesItems = biomes?.map((rd) => {
       const ecoregions =
         rangelandType === RANGELAND_ECOREGIONS
-          ? !!rangelandRegions?.length
+          ? rangelandRegions?.length
             ? rd?.attributes?.ecoregions?.data?.filter((rd) =>
                 rangelandRegions.includes(`${rd?.attributes?.code}`),
               )

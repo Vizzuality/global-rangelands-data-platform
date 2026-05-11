@@ -77,7 +77,7 @@ const EjAtlasLayerComponent = ({
 
   const zoom = useMapZoom();
 
-  useMemo(() => {
+  useEffect(() => {
     const ejAtlasInteractiveLayer = interactiveLayers["ej-atlas-points"];
     if (!ejAtlasInteractiveLayer) {
       setHoveredProperty(null);

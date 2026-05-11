@@ -38,7 +38,6 @@ function useMapboxOverlay(
   },
 ) {
   const { default: map } = useMap();
-  map?.getCanvas().style.cursor;
   const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
   const overlay = useControl<MapboxOverlay>(
     () =>
@@ -46,10 +45,8 @@ function useMapboxOverlay(
         ...props,
         onClick: (info) => {
           setDeckInteractiveLayers(() => {
-            const slug =
-              info?.layer?.props &&
-              "slug" in info?.layer?.props &&
-              (info?.layer?.props?.slug as string);
+            const layerProps = info?.layer?.props;
+            const slug = layerProps && "slug" in layerProps && (layerProps.slug as string);
             if (!slug) return {};
             return {
               [slug]: info,

@@ -43,7 +43,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
 
   const layersQuery = useGetLayers(
     {
-      filters: !!datasetLayers.length
+      filters: datasetLayers.length
         ? {
             id: {
               $in: datasetLayers,

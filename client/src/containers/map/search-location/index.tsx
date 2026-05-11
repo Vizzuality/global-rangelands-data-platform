@@ -158,7 +158,7 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
 
             {!!debouncedSearch.length && (
               <SearchResultList title={t("Locations")}>
-                {!!locationOptions?.length ? (
+                {locationOptions?.length ? (
                   locationOptions.map((option) => (
                     <SearchResultItem
                       key={option.value}

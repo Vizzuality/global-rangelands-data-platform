@@ -64,7 +64,7 @@ const LegendItem = ({
 
   const layersQuery = useGetLayers(
     {
-      filters: !!datasetLayers.length
+      filters: datasetLayers.length
         ? {
             id: {
               $in: datasetLayers,
@@ -109,7 +109,7 @@ const LegendItem = ({
 
   const setLayerSettings = (key: string, value: boolean | number) => {
     const layer = datasetLayer?.attributes;
-    if (!!layer?.slug) {
+    if (layer?.slug) {
       const layerSlug = layer.slug;
       setLayersSettings((prev) => ({
         ...prev,
