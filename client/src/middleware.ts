@@ -13,9 +13,11 @@ export default function middleware(request: NextRequest) {
   const url = new URL(location);
   const forwardedHost = request.headers.get("x-forwarded-host");
   const forwardedProto = request.headers.get("x-forwarded-proto");
-  if (forwardedHost) url.host = forwardedHost;
+  if (forwardedHost) {
+    url.host = forwardedHost;
+    if (!forwardedHost.includes(":")) url.port = "";
+  }
   if (forwardedProto) url.protocol = `${forwardedProto}:`;
-  url.port = "";
   response.headers.set("location", url.toString());
   return response;
 }
