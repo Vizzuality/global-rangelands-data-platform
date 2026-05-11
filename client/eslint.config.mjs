@@ -8,7 +8,7 @@ import importX from "eslint-plugin-import-x";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import prettierRecommended from "eslint-plugin-prettier/recommended";
 
-const nextCoreWebVitals = {
+const nextRules = {
   plugins: { "@next/next": nextPlugin },
   rules: {
     ...nextPlugin.configs.recommended.rules,
@@ -16,7 +16,7 @@ const nextCoreWebVitals = {
   },
 };
 
-const reactHooksRecommended = {
+const reactHooksRules = {
   plugins: { "react-hooks": reactHooks },
   rules: {
     ...reactHooks.configs.recommended.rules,
@@ -24,7 +24,7 @@ const reactHooksRecommended = {
   },
 };
 
-const jsxA11yRecommended = {
+const jsxA11yRules = {
   plugins: { "jsx-a11y": jsxA11y },
   rules: {
     "jsx-a11y/alt-text": ["warn", { elements: ["img"], img: ["Image"] }],
@@ -36,7 +36,7 @@ const jsxA11yRecommended = {
   },
 };
 
-const importXRecommended = {
+const importXRules = {
   plugins: { "import-x": importX },
   rules: { "import-x/no-anonymous-default-export": "warn" },
 };
@@ -54,7 +54,7 @@ const commonJsFiles = {
   rules: { "@typescript-eslint/no-require-imports": "off" },
 };
 
-export default [
+const config = [
   {
     ignores: [
       "src/types/generated/**",
@@ -71,11 +71,13 @@ export default [
   ...tseslint.configs.recommended,
   eslintReact.configs.recommended,
   { rules: { "@eslint-react/exhaustive-deps": "off" } },
-  reactHooksRecommended,
-  nextCoreWebVitals,
-  importXRecommended,
-  jsxA11yRecommended,
+  reactHooksRules,
+  nextRules,
+  importXRules,
+  jsxA11yRules,
   prettierRecommended,
   projectRules,
   commonJsFiles,
 ];
+
+export default config;
