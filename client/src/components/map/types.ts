@@ -1,4 +1,4 @@
-import type { ViewState, MapProps } from "react-map-gl";
+import type { ViewState, MapProps } from "react-map-gl/mapbox";
 
 import { FitBoundsOptions } from "mapbox-gl";
 import { MAPBOX_STYLE } from "./constants";

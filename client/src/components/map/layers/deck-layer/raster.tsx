@@ -1,14 +1,14 @@
 import { GeoBoundingBox, TileLayer, TileLayerProps } from "@deck.gl/geo-layers";
 import { BitmapLayer, BitmapLayerProps } from "@deck.gl/layers";
 // import GL from "@luma.gl/constants";
-import { RasterSource } from "mapbox-gl";
+import type { RasterSourceSpecification } from "mapbox-gl";
 
 import { LayerProps } from "@/types/layers";
 
 export interface RasterLayerProps extends LayerProps {
   id: string;
   beforeId: string;
-  source: RasterSource;
+  source: RasterSourceSpecification;
   opacity: number;
   visibility: boolean;
   tileProps: TileLayerProps;

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { MouseEvent, useCallback } from "react";
-import { useMap } from "react-map-gl";
+import { useMap } from "react-map-gl/mapbox";
 
 const MapZoomControl = () => {
   const { current: mapRef } = useMap();

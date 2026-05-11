@@ -1,4 +1,4 @@
-import { Popup } from "react-map-gl";
+import { Popup } from "react-map-gl/mapbox";
 import { PropsWithChildren } from "react";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
