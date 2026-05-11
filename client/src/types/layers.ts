@@ -1,12 +1,12 @@
-import { AnyLayer, AnySource } from "react-map-gl";
+import type { LayerSpecification, SourceSpecification } from "mapbox-gl";
 
 import { FormatProps } from "@/lib/json-converter/utils/formats";
 
 // import type { Layer } from "@/types/generated/strapi.schemas";
 
 export type Config = {
-  source?: AnySource;
-  styles?: AnyLayer[];
+  source?: SourceSpecification;
+  styles?: LayerSpecification[];
 };
 
 export type ParamsConfigValue = {
