@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 
-import { DEFAULT_LOCALE } from "@/middleware";
+import { DEFAULT_LOCALE } from "@/i18n/routing";
 
 import API, { ErrorType } from "@/services/api";
 import { useMemo } from "react";

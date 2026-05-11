@@ -1,5 +1,6 @@
+import { Suspense } from "react";
+
 import { cn } from "@/lib/utils";
-// import LanguageSelector from "./language-selector";
 import HeaderNavigation from "./navigation";
 import LanguageSelector from "../language-selector";
 
@@ -13,7 +14,9 @@ const Header = () => {
       <div className="mx-6 flex items-center justify-between gap-7">
         <HeaderNavigation />
         <div className="h-5 w-px bg-white"></div>
-        <LanguageSelector variant="dark" />
+        <Suspense fallback={null}>
+          <LanguageSelector variant="dark" />
+        </Suspense>
       </div>
     </div>
   );

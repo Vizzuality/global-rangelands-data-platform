@@ -1,3 +1,6 @@
+import { Suspense } from "react";
+import { setRequestLocale } from "next-intl/server";
+
 import Map from "@/containers/map";
 import Sidebar from "@/containers/sidebar";
 import getQueryClient from "@/lib/react-query/getQueryClient";
@@ -47,16 +50,19 @@ async function prefetchQueries() {
   }
 }
 
-export default async function Home() {
+export default async function Home({ params: { locale } }: { params: { locale: string } }) {
+  setRequestLocale(locale);
   const dehydratedState = await prefetchQueries();
   return (
     <div>
       <HydrationBoundary state={dehydratedState}>
         <Header />
-        <div className="flex h-[var(--content-height)] w-full overflow-y-hidden">
-          <Sidebar />
-          <Map />
-        </div>
+        <Suspense fallback={null}>
+          <div className="flex h-[var(--content-height)] w-full overflow-y-hidden">
+            <Sidebar />
+            <Map />
+          </div>
+        </Suspense>
       </HydrationBoundary>
     </div>
   );
