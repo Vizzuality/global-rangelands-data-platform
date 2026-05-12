@@ -37,7 +37,7 @@ class RasterLayer {
       year: 2020,
       visible: visibility ?? true,
       opacity: opacity ?? 1,
-      refinementStrategy: "never",
+      refinementStrategy: "best-available",
       renderSubLayers: (subLayer) => {
         const {
           id: subLayerId,
