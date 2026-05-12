@@ -130,7 +130,7 @@ export const TemporalChangesDatasetItem = ({
   }, [layer?.attributes, isTemporalGroup, lastSelected.startYear]);
 
   const { startYear, endYear, isDisabled } = useMemo(() => {
-    const startYear = !!layerSlug
+    const startYear = layerSlug
       ? (layersSettings?.[layerSlug]?.startYear as number | undefined)
       : undefined;
     const endYear =

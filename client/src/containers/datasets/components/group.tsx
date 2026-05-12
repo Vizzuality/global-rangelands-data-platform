@@ -203,7 +203,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
               <div className="flex flex-1 items-center justify-between gap-3">
                 <div className="flex flex-1 items-center justify-between gap-2">
                   <span className="">
-                    {!!rangelandRegion?.length
+                    {rangelandRegion?.length
                       ? `${rangelandRegion.length} ${t("selected")}`
                       : t("All categories")}
                   </span>{" "}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { Layer, useMap } from "react-map-gl/mapbox";
 
@@ -28,7 +28,7 @@ const LayerManager = () => {
   const [layers] = useSyncLayers();
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
   // Sync layers settings with layers
-  useMemo(() => {
+  useEffect(() => {
     if (!layers?.length && !layersSettings) return;
 
     if (!layers?.length && layersSettings) {
