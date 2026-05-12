@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { setRequestLocale } from "next-intl/server";
 
 import Map from "@/containers/map";
 import Sidebar from "@/containers/sidebar";
@@ -50,8 +49,9 @@ async function prefetchQueries() {
   }
 }
 
-export default async function Home({ params: { locale } }: { params: { locale: string } }) {
-  setRequestLocale(locale);
+export default async function Home(props: { params: Promise<{ locale: string }> }) {
+  await props.params;
+
   const dehydratedState = await prefetchQueries();
   return (
     <div>
