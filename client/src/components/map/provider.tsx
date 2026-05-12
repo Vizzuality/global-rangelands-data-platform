@@ -11,7 +11,7 @@ import {
   useRef,
 } from "react";
 
-import { useControl, useMap } from "react-map-gl";
+import { useControl, useMap } from "react-map-gl/mapbox";
 
 import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import { Layer } from "deck.gl";

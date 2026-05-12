@@ -13,7 +13,8 @@ import { cn } from "@/lib/utils";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { ChevronRightIcon, MapIcon, MapPinIcon, SearchIcon, XIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
-import { LngLatBoundsLike, useMap } from "react-map-gl";
+import { useMap } from "react-map-gl/mapbox";
+import type { LngLatBoundsLike } from "mapbox-gl";
 import { useDebouncedValue } from "rooks";
 
 type LocationOption = {
