@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 
-import { Layer, useMap } from "react-map-gl";
+import { Layer, useMap } from "react-map-gl/mapbox";
 
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
 

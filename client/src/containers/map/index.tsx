@@ -1,7 +1,7 @@
 "use client";
 import MapComponent from "@/components/map";
 import { MAPBOX_STYLE } from "@/components/map/constants";
-import { AttributionControl } from "react-map-gl";
+import { AttributionControl } from "react-map-gl/mapbox";
 import LayerManager from "./layer-manager";
 import Navigation from "@/containers/navigation";
 import MapStyles from "@/containers/navigation/map-style";

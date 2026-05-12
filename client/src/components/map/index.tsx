@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback, FC } from "react";
 
-import ReactMapGL, { ViewState, ViewStateChangeEvent, MapEvent, useMap } from "react-map-gl";
+import { Map as ReactMapGL, useMap } from "react-map-gl/mapbox";
+import type { ViewState, ViewStateChangeEvent, MapEvent } from "react-map-gl/mapbox";
 
 import { useDebounce } from "rooks";
 

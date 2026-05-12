@@ -3,7 +3,7 @@
 import { PropsWithChildren, useState } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MapProvider } from "react-map-gl";
+import { MapProvider } from "react-map-gl/mapbox";
 
 export default function LayoutProviders({ children }: PropsWithChildren) {
   const [queryClient] = useState(() => new QueryClient());

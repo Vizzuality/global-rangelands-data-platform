@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMap } from "react-map-gl";
+import { useMap } from "react-map-gl/mapbox";
 
 export default function useMapZoom() {
   const { current: map } = useMap();
