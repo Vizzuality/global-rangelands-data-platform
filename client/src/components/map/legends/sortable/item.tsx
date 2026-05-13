@@ -18,7 +18,7 @@ export const SortableItem: React.FC<SortableItemProps> = ({ id, children }: Sort
     transition,
   };
 
-  const CHILD = cloneElement(children as ReactElement, {
+  const CHILD = cloneElement(children as ReactElement<Record<string, unknown>>, {
     listeners,
     attributes,
     isDragging,

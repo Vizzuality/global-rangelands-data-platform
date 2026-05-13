@@ -1,30 +1,13 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./globals.css";
 
-import { setRequestLocale } from "next-intl/server";
-
 import { getTranslations } from "@/i18n";
-import { LOCALES } from "@/i18n/routing";
 import LayoutProviders from "./layout-providers";
 import NextIntlProvider from "./next-intl-provider";
 import { eyesForSerifs, wotfard } from "@/assets/fonts";
 
-// TODO(next-16): when bumping to Next 16 + React 19, update:
-//   1. `params: { locale }` → `params: Promise<{ locale }>` and `await params` (async params API)
-//      — applies here, in `[locale]/page.tsx`, and in `[locale]/map/page.tsx`.
-//   2. Replace `export const revalidate = 3600` with the Cache Components model:
-//      `'use cache'` directive + `cacheLife('hours')` (or a custom profile) + `cacheTag(...)`.
-//      Lets translators/Strapi trigger on-demand invalidation via `revalidateTag`.
-//   3. Consider PPR (Partial Prerendering) on `/[locale]/map` so the dynamic Sidebar/Map
-//      subtree streams while the static shell ships immediately — drop the manual Suspense.
-export const revalidate = 3600;
-
-export function generateStaticParams() {
-  return LOCALES.map((locale) => ({ locale }));
-}
-
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
-  setRequestLocale(locale);
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+  const { locale } = await props.params;
   const t = await getTranslations({ locale });
 
   return {
@@ -70,14 +53,13 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   };
 }
 
-export default function LocaleLayout({
-  children,
-  params: { locale },
-}: {
+export default async function LocaleLayout(props: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  setRequestLocale(locale);
+  const { locale } = await props.params;
+  const { children } = props;
+
   return (
     <LayoutProviders>
       <NextIntlProvider locale={locale}>

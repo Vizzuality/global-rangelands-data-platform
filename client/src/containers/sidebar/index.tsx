@@ -1,5 +1,4 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useAtom, useAtomValue } from "jotai";
@@ -7,6 +6,8 @@ import { sidebarModeAtom, sidebarOpenAtom } from "@/store/map";
 import { ScrollAreaWithThumb } from "@/components/ui/scroll-area";
 import Datasets from "../datasets";
 import Stories from "../stories";
+
+import type { JSX } from "react";
 
 const Sidebar = (): JSX.Element => {
   const [open, setOpen] = useAtom(sidebarOpenAtom);

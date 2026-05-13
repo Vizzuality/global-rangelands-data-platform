@@ -1,11 +1,10 @@
-import { setRequestLocale } from "next-intl/server";
-
 import Footer from "@/containers/footer";
 import HomeComponent from "@/containers/home";
 import Header from "@/containers/home/header";
 
-export default function Home({ params: { locale } }: { params: { locale: string } }) {
-  setRequestLocale(locale);
+export default async function Home(props: { params: Promise<{ locale: string }> }) {
+  await props.params;
+
   return (
     <main className="h-auto min-h-screen w-[100vsw] overflow-x-hidden">
       <Header />
