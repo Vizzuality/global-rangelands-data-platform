@@ -1105,6 +1105,11 @@ export interface ApiStoryStory extends Schema.CollectionType {
         },
         number
       >;
+    category: Attribute.Relation<
+      'api::story.story',
+      'manyToOne',
+      'api::story-category.story-category'
+    >;
     datasets: Attribute.Relation<
       'api::story.story',
       'oneToMany',
@@ -1124,6 +1129,47 @@ export interface ApiStoryStory extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::story.story',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiStoryCategoryStoryCategory extends Schema.CollectionType {
+  collectionName: 'story_categories';
+  info: {
+    singularName: 'story-category';
+    pluralName: 'story-categories';
+    displayName: 'Story Category';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    stories: Attribute.Relation<
+      'api::story-category.story-category',
+      'oneToMany',
+      'api::story.story'
+    >;
+    translations: Attribute.Component<
+      'translations.story-category-translation',
+      true
+    >;
+    slug: Attribute.String & Attribute.Required & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::story-category.story-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::story-category.story-category',
       'oneToOne',
       'admin::user'
     > &
@@ -1156,6 +1202,7 @@ declare module '@strapi/types' {
       'api::layer.layer': ApiLayerLayer;
       'api::rangeland.rangeland': ApiRangelandRangeland;
       'api::story.story': ApiStoryStory;
+      'api::story-category.story-category': ApiStoryCategoryStoryCategory;
     }
   }
 }
