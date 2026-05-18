@@ -422,6 +422,7 @@ export interface Story {
   description?: string;
   further_information?: DefaultFurtherInfoComponent[];
   image?: StoryImage;
+  image_credit?: string;
   latitude?: number;
   longitude?: number;
   notes?: string;
@@ -621,6 +622,7 @@ export type StoryDatasetsDataItemAttributesStoryDataAttributes = {
   description?: string;
   further_information?: StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItem[];
   image?: StoryDatasetsDataItemAttributesStoryDataAttributesImage;
+  image_credit?: string;
   latitude?: number;
   longitude?: number;
   notes?: string;
@@ -1266,6 +1268,7 @@ export type StoryRequestData = {
   description?: string;
   further_information?: DefaultFurtherInfoComponent[];
   image?: StoryRequestDataImage;
+  image_credit?: string;
   latitude?: number;
   longitude?: number;
   notes?: string;
@@ -2592,6 +2595,7 @@ export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributes = {
   description?: string;
   further_information?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItem[];
   image?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImage;
+  image_credit?: string;
   latitude?: number;
   longitude?: number;
   notes?: string;
@@ -3579,6 +3583,7 @@ export type DatasetStoryDataAttributes = {
   description?: string;
   further_information?: DatasetStoryDataAttributesFurtherInformationItem[];
   image?: DatasetStoryDataAttributesImage;
+  image_credit?: string;
   latitude?: number;
   longitude?: number;
   notes?: string;

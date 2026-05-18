@@ -34,6 +34,12 @@
       "action": "api::rangeland.rangeland.findOne"
     },
     {
+      "action": "api::story-category.story-category.find"
+    },
+    {
+      "action": "api::story-category.story-category.findOne"
+    },
+    {
       "action": "plugin::slugify.slugController.findSlug"
     },
     {
