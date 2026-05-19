@@ -2,43 +2,58 @@ import { MVTLayer } from "deck.gl";
 import { useDeckMapboxOverlayContext } from "../../provider";
 import { useEffect, useMemo, useState } from "react";
 
-// Category values as confirmed from live GFW tile data (GET on dynamic/{z}/{x}/{y}.pbf).
-// Update here if WRI changes the enum in a future dataset version.
-export const LANDMARK_CATEGORY_VALUES = ["Indigenous", "Community", "Indicative"] as const;
-export type LandmarkCategory = (typeof LANDMARK_CATEGORY_VALUES)[number];
+// Indigenous Peoples' Lands — red/orange family
+const IP_DOCUMENTED: [number, number, number, number] = [167, 55, 3, 230]; // #a73703
+const IP_NOT_DOCUMENTED: [number, number, number, number] = [173, 89, 41, 255]; // #ad5929
+const IP_CUSTOMARY: [number, number, number, number] = [254, 218, 162, 230]; // #fedaa2
+const IP_FORMAL_CLAIM: [number, number, number, number] = [229, 129, 62, 230]; // #e5813e
 
-// Color map: LandMark blue family, distinguishable at low zoom, WCAG 3:1 on light basemap.
-// Source: https://landmarkmap.org official legend palette adapted to 3-category model.
-const CATEGORY_COLOR_MAP: Record<LandmarkCategory, [number, number, number, number]> = {
-  Indigenous: [0, 71, 142, 220], // #00478E — documented/acknowledged dark blue
-  Community: [64, 149, 218, 220], // #4095DA — medium blue
-  Indicative: [194, 228, 255, 180], // #C2E4FF — light blue (lower alpha for subtle polygons)
-};
+// Local Community Lands — blue family
+const LC_DOCUMENTED: [number, number, number, number] = [1, 70, 142, 230]; // #01468e
+const LC_NOT_DOCUMENTED: [number, number, number, number] = [64, 148, 219, 230]; // #4094db
+const LC_CUSTOMARY: [number, number, number, number] = [194, 228, 255, 230]; // #c2e4ff
+const LC_FORMAL_CLAIM: [number, number, number, number] = [94, 182, 254, 230]; // #5eb6fe
 
-const DEFAULT_COLOR: [number, number, number, number] = [120, 120, 120, 180];
+// Indicative + fallback
+const INDICATIVE: [number, number, number, number] = [157, 157, 156, 230]; // #9d9d9c
+const DEFAULT_COLOR: [number, number, number, number] = [157, 157, 156, 200];
+
+// Toggle to disable hover stroke emphasis (LandMark site has none). Flip to false to match exactly.
+const HOVER_ENABLED = true;
 
 export function getLandmarkFillColor(
-  category: string | undefined,
+  props: Record<string, unknown>,
 ): [number, number, number, number] {
-  if (!category) return DEFAULT_COLOR;
+  const layer = props?.layer;
+  const formRec = props?.form_rec;
+  const docStatus = props?.doc_status;
 
-  if (CATEGORY_COLOR_MAP[category as LandmarkCategory]) {
-    return CATEGORY_COLOR_MAP[category as LandmarkCategory];
+  if (layer === "Indicative") return INDICATIVE;
+
+  const isIP = layer === "Indigenous Lands";
+  const isLC = layer === "Community Lands";
+  if (!isIP && !isLC) return DEFAULT_COLOR;
+
+  if (formRec === "Acknowledged by govt") {
+    if (docStatus === "Documented") return isIP ? IP_DOCUMENTED : LC_DOCUMENTED;
+    if (docStatus === "Not documented") return isIP ? IP_NOT_DOCUMENTED : LC_NOT_DOCUMENTED;
+    return isIP ? IP_NOT_DOCUMENTED : LC_NOT_DOCUMENTED;
   }
 
-  // Collapse 5-value LandMark typology if encountered in the future
-  if (category.startsWith("IP")) return CATEGORY_COLOR_MAP["Indigenous"];
-  if (category.startsWith("CL")) return CATEGORY_COLOR_MAP["Community"];
-
-  if (process.env.NODE_ENV === "development") {
-    console.warn(`[LandmarkComponent] Unknown category value: "${category}"`);
+  if (formRec === "Not acknowledged by govt") {
+    if (docStatus === "Held or used under customary tenure")
+      return isIP ? IP_CUSTOMARY : LC_CUSTOMARY;
+    if (docStatus === "Held or used with formal land claim submitted")
+      return isIP ? IP_FORMAL_CLAIM : LC_FORMAL_CLAIM;
+    return isIP ? IP_CUSTOMARY : LC_CUSTOMARY;
   }
-  return DEFAULT_COLOR;
+
+  // form_rec === "Unknown" or anything else → Indicative grey
+  return INDICATIVE;
 }
 
 export interface LandmarkLayerComponentProps {
   id: string;
-  data: string;
   opacity?: number;
   visibility?: boolean;
   beforeId?: string;
@@ -46,32 +61,34 @@ export interface LandmarkLayerComponentProps {
 
 const LandmarkLayerComponent = ({
   id,
-  data,
   opacity,
   visibility,
   beforeId,
   ...props
 }: LandmarkLayerComponentProps) => {
   const [hoveredFeatureId, setHoveredFeatureId] = useState<string | null>(null);
-  const i = `${id}-deck`;
+  const polyId = `${id}-deck-poly`;
+  const pointsId = `${id}-deck-points`;
   const { addLayer, removeLayer } = useDeckMapboxOverlayContext();
 
-  const config = useMemo(
+  const polyConfig = useMemo(
     () =>
       new MVTLayer({
-        id: i,
-        data,
+        id: polyId,
+        data: "https://tiles.globalforestwatch.org/landmark_ip_lc_and_indicative_poly/latest/default/{z}/{x}/{y}.pbf",
         beforeId,
         opacity: opacity ?? 1,
         visible: visibility ?? true,
         pickable: true,
-        getFillColor: (f) => getLandmarkFillColor(f?.properties?.category as string | undefined),
-        getLineColor: [255, 255, 255, 160],
+        getFillColor: (f) => getLandmarkFillColor(f?.properties as Record<string, unknown>),
+        getLineColor: [134, 54, 13, 255],
         getLineWidth: (f) => {
+          if (!HOVER_ENABLED) return 1;
           const fid = `${f?.properties?.gfw_geostore_id ?? f?.id}`;
-          return fid === hoveredFeatureId ? 1 : 0;
+          return fid === hoveredFeatureId ? 2 : 1;
         },
         lineWidthUnits: "pixels",
+        lineWidthMinPixels: 0.5,
         onHover: (info) => {
           if (!info?.object) {
             setHoveredFeatureId(null);
@@ -88,22 +105,55 @@ const LandmarkLayerComponent = ({
         binary: false,
         ...props,
       }),
-    [beforeId, data, hoveredFeatureId, i, opacity, visibility, props],
+    [beforeId, hoveredFeatureId, polyId, opacity, visibility, props],
+  );
+
+  const pointsConfig = useMemo(
+    () =>
+      new MVTLayer({
+        id: pointsId,
+        data: "https://tiles.globalforestwatch.org/landmark_ip_lc_and_indicative_points/latest/dynamic/{z}/{x}/{y}.pbf",
+        beforeId,
+        opacity: opacity ?? 1,
+        visible: visibility ?? true,
+        pickable: true,
+        getFillColor: (f) => getLandmarkFillColor(f?.properties as Record<string, unknown>),
+        getLineColor: [0, 0, 0, 255],
+        getLineWidth: 1,
+        lineWidthUnits: "pixels",
+        pointType: "circle",
+        pointRadiusUnits: "pixels",
+        pointRadiusMinPixels: 3,
+        getPointRadius: 1,
+        onTileError: () => {},
+        binary: false,
+        ...props,
+      }),
+    [beforeId, pointsId, opacity, visibility, props],
   );
 
   useEffect(() => {
-    if (!config) return;
+    if (!polyConfig) return;
     // Give the map a chance to load the background layer before adding the Deck layer.
     // See: https://github.com/visgl/deck.gl/blob/c2ba79b08b0ea807c6779d8fe1aaa307ebc22f91/modules/mapbox/src/resolve-layers.ts#L66
-    setTimeout(() => {
-      addLayer(config);
+    const t = setTimeout(() => {
+      addLayer(polyConfig);
     }, 10);
-  }, [i, id, config, addLayer]);
+    return () => clearTimeout(t);
+  }, [polyConfig, addLayer]);
 
   useEffect(() => {
-    if (!config) return;
+    if (!pointsConfig) return;
+    const t = setTimeout(() => {
+      addLayer(pointsConfig);
+    }, 10);
+    return () => clearTimeout(t);
+  }, [pointsConfig, addLayer]);
+
+  useEffect(() => {
     return () => {
-      removeLayer(i);
+      removeLayer(polyId);
+      removeLayer(pointsId);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
