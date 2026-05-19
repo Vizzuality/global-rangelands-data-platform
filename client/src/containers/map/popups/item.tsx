@@ -8,11 +8,13 @@ import RangelandsTooltip from "@/components/map/tooltip/components/rangelands";
 import PastoralistTooltip from "@/components/map/tooltip/components/postoralists";
 import { useLocale } from "next-intl";
 import EjAtlasTooltip from "@/components/map/tooltip/components/ej-atlas";
+import LandmarkTooltip from "@/components/map/tooltip/components/landmark";
 
 const PopupItemComponent = {
   RangelandsTooltip,
   PastoralistTooltip,
   EjAtlasTooltip,
+  LandmarkTooltip,
 };
 
 type PopupItemComponentType = keyof typeof PopupItemComponent;

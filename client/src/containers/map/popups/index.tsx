@@ -1,5 +1,9 @@
 import { getKeys } from "@/lib/utils";
-import { deckLayersInteractiveAtom } from "@/store/map";
+import {
+  deckLayersInteractiveAtom,
+  landmarkActiveFidAtom,
+  landmarkCandidatesAtom,
+} from "@/store/map";
 import { useAtomValue, useSetAtom } from "jotai";
 import Item from "./item";
 import MapTooltip from "@/components/map/tooltip";
@@ -7,6 +11,8 @@ import MapTooltip from "@/components/map/tooltip";
 const Popup = () => {
   const deckInteractiveLayers = useAtomValue(deckLayersInteractiveAtom);
   const setInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
+  const setLandmarkCandidates = useSetAtom(landmarkCandidatesAtom);
+  const setLandmarkActiveFid = useSetAtom(landmarkActiveFidAtom);
   const slugs = getKeys(deckInteractiveLayers);
   const coordinate = deckInteractiveLayers[slugs[0]]?.coordinate || [];
 
@@ -14,6 +20,8 @@ const Popup = () => {
 
   const handleClose = () => {
     setInteractiveLayers({});
+    setLandmarkCandidates([]);
+    setLandmarkActiveFid(null);
   };
 
   return (
