@@ -18,6 +18,11 @@ const LC_FORMAL_CLAIM: [number, number, number, number] = [94, 182, 254, 230]; /
 const INDICATIVE: [number, number, number, number] = [157, 157, 156, 230]; // #9d9d9c
 const DEFAULT_COLOR: [number, number, number, number] = [157, 157, 156, 200];
 
+// Stroke colors per category
+const IP_LINE: [number, number, number, number] = [134, 54, 13, 255]; // #86360d
+const LC_LINE: [number, number, number, number] = [1, 40, 116, 255]; // #012874
+const INDICATIVE_LINE: [number, number, number, number] = [130, 132, 130, 255]; // #828482
+
 // Toggle to disable hover stroke emphasis (LandMark site has none). Flip to false to match exactly.
 const HOVER_ENABLED = true;
 
@@ -52,18 +57,36 @@ export function getLandmarkFillColor(
   return INDICATIVE;
 }
 
+export function getLandmarkLineColor(
+  props: Record<string, unknown>,
+): [number, number, number, number] {
+  const layer = props?.layer;
+  if (layer === "Indigenous Lands") return IP_LINE;
+  if (layer === "Community Lands") return LC_LINE;
+  return INDICATIVE_LINE;
+}
+
+export type LandmarkCategory = "Indigenous Lands" | "Community Lands" | "Indicative";
+
 export interface LandmarkLayerComponentProps {
   id: string;
   opacity?: number;
   visibility?: boolean;
   beforeId?: string;
+  category?: LandmarkCategory;
 }
+
+const TRANSPARENT: [number, number, number, number] = [0, 0, 0, 0];
+
+const matchesCategory = (props: Record<string, unknown> | undefined, category?: LandmarkCategory) =>
+  !category || props?.layer === category;
 
 const LandmarkLayerComponent = ({
   id,
   opacity,
   visibility,
   beforeId,
+  category,
   ...props
 }: LandmarkLayerComponentProps) => {
   const [hoveredFeatureId, setHoveredFeatureId] = useState<string | null>(null);
@@ -80,11 +103,21 @@ const LandmarkLayerComponent = ({
         opacity: opacity ?? 1,
         visible: visibility ?? true,
         pickable: true,
-        getFillColor: (f) => getLandmarkFillColor(f?.properties as Record<string, unknown>),
-        getLineColor: [134, 54, 13, 255],
+        getFillColor: (f) => {
+          const p = f?.properties as Record<string, unknown>;
+          if (!matchesCategory(p, category)) return TRANSPARENT;
+          return getLandmarkFillColor(p);
+        },
+        getLineColor: (f) => {
+          const p = f?.properties as Record<string, unknown>;
+          if (!matchesCategory(p, category)) return TRANSPARENT;
+          return getLandmarkLineColor(p);
+        },
         getLineWidth: (f) => {
+          const p = f?.properties as Record<string, unknown>;
+          if (!matchesCategory(p, category)) return 0;
           if (!HOVER_ENABLED) return 1;
-          const fid = `${f?.properties?.gfw_geostore_id ?? f?.id}`;
+          const fid = `${p?.gfw_geostore_id ?? f?.id}`;
           return fid === hoveredFeatureId ? 2 : 1;
         },
         lineWidthUnits: "pixels",
@@ -99,13 +132,14 @@ const LandmarkLayerComponent = ({
         },
         onTileError: () => {},
         updateTriggers: {
-          getLineWidth: [hoveredFeatureId],
-          getFillColor: [],
+          getLineWidth: [hoveredFeatureId, category],
+          getFillColor: [category],
+          getLineColor: [category],
         },
         binary: false,
         ...props,
       }),
-    [beforeId, hoveredFeatureId, polyId, opacity, visibility, props],
+    [beforeId, category, hoveredFeatureId, polyId, opacity, visibility, props],
   );
 
   const pointsConfig = useMemo(
@@ -117,19 +151,39 @@ const LandmarkLayerComponent = ({
         opacity: opacity ?? 1,
         visible: visibility ?? true,
         pickable: true,
-        getFillColor: (f) => getLandmarkFillColor(f?.properties as Record<string, unknown>),
-        getLineColor: [0, 0, 0, 255],
-        getLineWidth: 1,
+        getFillColor: (f) => {
+          const p = f?.properties as Record<string, unknown>;
+          if (!matchesCategory(p, category)) return TRANSPARENT;
+          return getLandmarkFillColor(p);
+        },
+        getLineColor: (f) => {
+          const p = f?.properties as Record<string, unknown>;
+          if (!matchesCategory(p, category)) return TRANSPARENT;
+          return [0, 0, 0, 255];
+        },
+        getLineWidth: (f) => {
+          const p = f?.properties as Record<string, unknown>;
+          return matchesCategory(p, category) ? 1 : 0;
+        },
         lineWidthUnits: "pixels",
         pointType: "circle",
         pointRadiusUnits: "pixels",
         pointRadiusMinPixels: 3,
-        getPointRadius: 1,
+        getPointRadius: (f) => {
+          const p = f?.properties as Record<string, unknown>;
+          return matchesCategory(p, category) ? 1 : 0;
+        },
         onTileError: () => {},
+        updateTriggers: {
+          getFillColor: [category],
+          getLineColor: [category],
+          getLineWidth: [category],
+          getPointRadius: [category],
+        },
         binary: false,
         ...props,
       }),
-    [beforeId, pointsId, opacity, visibility, props],
+    [beforeId, category, pointsId, opacity, visibility, props],
   );
 
   useEffect(() => {
