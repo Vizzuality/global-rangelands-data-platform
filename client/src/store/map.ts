@@ -77,5 +77,12 @@ export const sidebarOpenAtom = atom(true);
 export const layersInteractiveAtom = atom<(number | string)[]>([]);
 export const deckLayersInteractiveAtom = atom<Record<string, PickingInfo>>({});
 export const clusterFeaturesAtom = atom<Supercluster.PointFeature<Supercluster.AnyProps>[]>([]);
+
+export type LandmarkCandidate = {
+  properties: Record<string, unknown>;
+  id?: string | number;
+};
+export const landmarkCandidatesAtom = atom<LandmarkCandidate[]>([]);
+export const landmarkActiveFidAtom = atom<string | null>(null);
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);
 export const sidebarModeAtom = atom<"layers" | "stories">("layers");
