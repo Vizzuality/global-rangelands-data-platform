@@ -273,8 +273,6 @@ const LandmarkLayerComponent = ({
 
   useEffect(() => {
     if (!polyConfig) return;
-    // Give the map a chance to load the background layer before adding the Deck layer.
-    // See: https://github.com/visgl/deck.gl/blob/c2ba79b08b0ea807c6779d8fe1aaa307ebc22f91/modules/mapbox/src/resolve-layers.ts#L66
     const t = setTimeout(() => {
       addLayer(polyConfig);
     }, 10);
