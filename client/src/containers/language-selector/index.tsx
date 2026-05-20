@@ -44,7 +44,7 @@ const LanguageSelector = ({ className, variant = "light" }: LanguageSelectorProp
     router.push(path, { locale: nextLocale });
   };
 
-  const localeLabels: Record<Locale, string> = {
+  const localeLabels: Partial<Record<"en" | "es" | "fr", string>> = {
     en: t("English"),
     es: t("Spanish"),
     fr: t("French"),

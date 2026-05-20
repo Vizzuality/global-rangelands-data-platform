@@ -169,8 +169,7 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
             : i[`name_${locale}` as keyof DefaultLegendComponentItemsItem];
 
         return {
-          color: i.color,
-          id: i.id,
+          ...i,
           name: legendItemName,
         };
       });

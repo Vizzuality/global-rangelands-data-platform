@@ -1,11 +1,23 @@
 import createMiddleware from "next-intl/middleware";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-import { routing } from "@/i18n/routing";
+import { DEFAULT_LOCALE, DISABLED_LOCALES, routing } from "@/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
+const DISABLED_LOCALE_PATTERN = new RegExp(`^/(${DISABLED_LOCALES.join("|")})(/|$)`);
+
 export default function proxy(request: NextRequest) {
+  const disabledMatch = request.nextUrl.pathname.match(DISABLED_LOCALE_PATTERN);
+  if (disabledMatch) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = request.nextUrl.pathname.replace(
+      DISABLED_LOCALE_PATTERN,
+      `/${DEFAULT_LOCALE}$2`,
+    );
+    return NextResponse.redirect(redirectUrl);
+  }
+
   const response = intlMiddleware(request);
   const location = response.headers.get("location");
   if (!location) return response;

@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import LanguageSelector from "../language-selector";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const MIN_SCROLL = 150;
 
@@ -61,10 +60,6 @@ const Header = () => {
         <Link className="transition-colors duration-300 hover:text-brown-light" href="/map">
           {t("Explore map")}
         </Link>
-        <div className="h-5 w-px bg-brown-dark"></div>
-        <Suspense fallback={null}>
-          <LanguageSelector />
-        </Suspense>
       </motion.div>
     </motion.div>
   );
