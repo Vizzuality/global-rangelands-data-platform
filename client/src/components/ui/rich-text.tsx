@@ -26,6 +26,11 @@ const RichText = ({ children, className }: RichTextProps) => {
               {props.children}
             </ol>
           ),
+          ul: (props) => (
+            <ul {...omit(props, "node")} className="ml-4 list-disc">
+              {props.children}
+            </ul>
+          ),
         }}
         remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
         rehypePlugins={[rehypeRaw]}
