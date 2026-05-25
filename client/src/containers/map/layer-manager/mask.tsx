@@ -54,6 +54,7 @@ const Mask = ({ id, beforeId }: MaskProps) => {
       data,
       beforeId,
       operation: "mask",
+      binary: false,
       visible: true,
       opacity: 1,
       pickable: false,
