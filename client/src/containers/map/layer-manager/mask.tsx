@@ -1,7 +1,7 @@
 "use client";
 
 import { MVTLayer } from "@deck.gl/geo-layers";
-import { DataFilterExtension } from "@deck.gl/extensions";
+import { GeoJsonLayer } from "@deck.gl/layers";
 
 import DeckLayer from "@/components/map/layers/deck-layer";
 import { useMemo } from "react";
@@ -17,6 +17,8 @@ interface MaskProps {
   id: string;
 }
 
+type MaskFeature = GeoJSON.Feature<GeoJSON.Geometry, { biome_num?: number; eco_id?: number }>;
+
 const Mask = ({ id, beforeId }: MaskProps) => {
   const [rangelandType] = useSyncRangelandType();
 
@@ -25,28 +27,15 @@ const Mask = ({ id, beforeId }: MaskProps) => {
 
   const data = TILESET_URL + `?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
 
-  const filterEnabled =
-    rangelandType === "rangeland-biomes" || rangelandType === "rangeland-ecoregions";
-
-  const filterCategories = useMemo(() => {
+  const allowedCodes = useMemo(() => {
     if (rangelandType === "rangeland-biomes") {
-      return Object.keys(biomes).map(Number);
+      return new Set(Object.keys(biomes).map(Number));
     }
     if (rangelandType === "rangeland-ecoregions") {
-      return Object.keys(ecoregions).map(Number);
+      return new Set(Object.keys(ecoregions).map(Number));
     }
-    return [];
+    return null;
   }, [rangelandType, biomes, ecoregions]);
-
-  const getFilterCategory = useMemo(
-    () => (f: { properties: Record<string, unknown> }) => {
-      if (rangelandType === "rangeland-biomes") {
-        return f.properties.biome_num as number;
-      }
-      return f.properties.eco_id as number;
-    },
-    [rangelandType],
-  );
 
   const c = useMemo(() => {
     return new MVTLayer({
@@ -58,26 +47,25 @@ const Mask = ({ id, beforeId }: MaskProps) => {
       visible: true,
       opacity: 1,
       pickable: false,
-      extensions: [new DataFilterExtension({ filterSize: 0, categorySize: 1 })],
-      filterEnabled,
-      getFilterCategory,
-      filterCategories,
+      renderSubLayers: (props) => {
+        const tileData = props.data as MaskFeature[] | null | undefined;
+        const features =
+          allowedCodes && Array.isArray(tileData)
+            ? tileData.filter((f) => {
+                const code =
+                  rangelandType === "rangeland-biomes"
+                    ? f.properties.biome_num
+                    : f.properties.eco_id;
+                return typeof code === "number" && allowedCodes.has(code);
+              })
+            : tileData;
+        return new GeoJsonLayer({ ...props, data: features as unknown as MaskFeature[] });
+      },
       updateTriggers: {
-        getFilterCategory: rangelandType,
-        filterCategories: [rangelandType, biomes, ecoregions],
+        renderSubLayers: [rangelandType, allowedCodes],
       },
     });
-  }, [
-    id,
-    data,
-    beforeId,
-    filterEnabled,
-    getFilterCategory,
-    filterCategories,
-    rangelandType,
-    biomes,
-    ecoregions,
-  ]);
+  }, [id, data, beforeId, rangelandType, allowedCodes]);
 
   return (
     <>
