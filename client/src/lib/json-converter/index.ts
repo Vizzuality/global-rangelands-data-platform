@@ -74,28 +74,6 @@ export const getParams = ({ params_config, settings = {} }: GetParamsProps) => {
  * @returns {Object} config
  *
  */
-function dedupeExtensions(node: unknown): unknown {
-  if (Array.isArray(node)) return node.map(dedupeExtensions);
-  if (node && typeof node === "object") {
-    const out: Record<string, unknown> = {};
-    for (const [k, v] of Object.entries(node)) {
-      if (k === "extensions" && Array.isArray(v)) {
-        const seen = new Set<string>();
-        out[k] = v.filter((e) => {
-          const t = (e as { "@@type"?: string })?.["@@type"];
-          if (!t || seen.has(t)) return false;
-          seen.add(t);
-          return true;
-        });
-      } else {
-        out[k] = dedupeExtensions(v);
-      }
-    }
-    return out;
-  }
-  return node;
-}
-
 interface ParseConfigurationProps {
   config: unknown;
   params_config: unknown;
@@ -122,5 +100,5 @@ export const parseConfig = <T>({
       params,
     },
   });
-  return JSON_CONVERTER.convert(dedupeExtensions(config)) as T | null;
+  return JSON_CONVERTER.convert(config) as T | null;
 };
