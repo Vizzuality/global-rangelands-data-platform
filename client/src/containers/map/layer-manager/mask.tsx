@@ -67,11 +67,7 @@ const Mask = ({ id, beforeId }: MaskProps) => {
     });
   }, [id, data, beforeId, rangelandType, allowedCodes]);
 
-  return (
-    <>
-      <DeckLayer id={`${id}-layer`} config={c} />;
-    </>
-  );
+  return <DeckLayer id={`${id}-layer`} config={c} />;
 };
 
 export default Mask;
