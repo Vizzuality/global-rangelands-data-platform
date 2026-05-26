@@ -7,9 +7,8 @@ import DeckLayer from "@/components/map/layers/deck-layer";
 import { useMemo } from "react";
 import { useSyncRangelandType } from "@/store/map";
 import { useBiomes, useEcoregions } from "@/lib/filters";
+import { useGetLayers } from "@/types/generated/layer";
 import { env } from "@/env.mjs";
-
-const TILESET_URL = "https://api.mapbox.com/v4/grass2024.969ld3cp/{z}/{x}/{y}.mvt";
 
 interface MaskProps {
   beforeId?: string;
@@ -25,7 +24,16 @@ const Mask = ({ id, beforeId }: MaskProps) => {
   const biomes = useBiomes();
   const ecoregions = useEcoregions();
 
-  const data = TILESET_URL + `?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}`;
+  const { data: layersResponse } = useGetLayers({
+    filters: { slug: { $eq: "rangeland-ecoregions" } },
+    "pagination[pageSize]": 1,
+  });
+
+  const tilesetUrl = (
+    layersResponse?.data?.[0]?.attributes?.config as { data?: string } | undefined
+  )?.data;
+
+  const data = tilesetUrl ? `${tilesetUrl}?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}` : null;
 
   const allowedCodes = useMemo(() => {
     if (rangelandType === "rangeland-biomes") {
@@ -38,6 +46,7 @@ const Mask = ({ id, beforeId }: MaskProps) => {
   }, [rangelandType, biomes, ecoregions]);
 
   const c = useMemo(() => {
+    if (!data) return null;
     return new MVTLayer({
       id: `${id}-layer-deck`,
       data,
@@ -68,6 +77,7 @@ const Mask = ({ id, beforeId }: MaskProps) => {
     });
   }, [id, data, beforeId, rangelandType, allowedCodes]);
 
+  if (!c) return null;
   return <DeckLayer id={`${id}-layer`} config={c} />;
 };
 
