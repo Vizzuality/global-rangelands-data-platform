@@ -4,6 +4,114 @@
  * DOCUMENTATION
  * OpenAPI spec version: 1.0.0
  */
+export type GetStoryCategoriesIdPopulateOneOf = { [key: string]: any };
+
+export type GetStoryCategoriesIdParams = {
+  /**
+   * Relations to return
+   */
+  populate?: string | GetStoryCategoriesIdPopulateOneOf;
+};
+
+export type GetStoryCategoriesPopulateOneOf = { [key: string]: any };
+
+export type GetStoryCategoriesParams = {
+  /**
+   * Sort by attributes ascending (asc) or descending (desc)
+   */
+  sort?: string;
+  /**
+   * Return page/pageSize (default: true)
+   */
+  "pagination[withCount]"?: boolean;
+  /**
+   * Page number (default: 0)
+   */
+  "pagination[page]"?: number;
+  /**
+   * Page size (default: 25)
+   */
+  "pagination[pageSize]"?: number;
+  /**
+   * Offset value (default: 0)
+   */
+  "pagination[start]"?: number;
+  /**
+   * Number of entities to return (default: 25)
+   */
+  "pagination[limit]"?: number;
+  /**
+   * Fields to return (ex: ['title','author','test'])
+   */
+  fields?: string[];
+  /**
+   * Relations to return
+   */
+  populate?: string | GetStoryCategoriesPopulateOneOf;
+  /**
+   * Filters to apply
+   */
+  filters?: { [key: string]: any };
+  /**
+   * Locale to apply
+   */
+  locale?: string;
+};
+
+export type GetStoriesIdPopulateOneOf = { [key: string]: any };
+
+export type GetStoriesIdParams = {
+  /**
+   * Relations to return
+   */
+  populate?: string | GetStoriesIdPopulateOneOf;
+};
+
+export type GetStoriesPopulateOneOf = { [key: string]: any };
+
+export type GetStoriesParams = {
+  /**
+   * Sort by attributes ascending (asc) or descending (desc)
+   */
+  sort?: string;
+  /**
+   * Return page/pageSize (default: true)
+   */
+  "pagination[withCount]"?: boolean;
+  /**
+   * Page number (default: 0)
+   */
+  "pagination[page]"?: number;
+  /**
+   * Page size (default: 25)
+   */
+  "pagination[pageSize]"?: number;
+  /**
+   * Offset value (default: 0)
+   */
+  "pagination[start]"?: number;
+  /**
+   * Number of entities to return (default: 25)
+   */
+  "pagination[limit]"?: number;
+  /**
+   * Fields to return (ex: ['title','author','test'])
+   */
+  fields?: string[];
+  /**
+   * Relations to return
+   */
+  populate?: string | GetStoriesPopulateOneOf;
+  /**
+   * Filters to apply
+   */
+  filters?: { [key: string]: any };
+  /**
+   * Locale to apply
+   */
+  locale?: string;
+};
+
 export type GetRangelandsIdPopulateOneOf = { [key: string]: any };
 
 export type GetRangelandsIdParams = {
