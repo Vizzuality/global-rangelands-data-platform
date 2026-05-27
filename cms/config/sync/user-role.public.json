@@ -40,6 +40,12 @@
       "action": "api::story-category.story-category.findOne"
     },
     {
+      "action": "api::story.story.find"
+    },
+    {
+      "action": "api::story.story.findOne"
+    },
+    {
       "action": "plugin::slugify.slugController.findSlug"
     },
     {
