@@ -153,6 +153,17 @@ export interface TranslationsRangelandTranslation extends Schema.Component {
   };
 }
 
+export interface TranslationsStoryCategoryTranslation extends Schema.Component {
+  collectionName: 'components_translations_story_category_translations';
+  info: {
+    displayName: 'story-category translation';
+  };
+  attributes: {
+    title: Attribute.String;
+    locale: Attribute.Enumeration<['en', 'es', 'fr']>;
+  };
+}
+
 export interface TranslationsStoryTranslation extends Schema.Component {
   collectionName: 'components_translations_story_translations';
   info: {
@@ -189,6 +200,7 @@ declare module '@strapi/types' {
       'translations.ecoregion-translation': TranslationsEcoregionTranslation;
       'translations.layer-translation': TranslationsLayerTranslation;
       'translations.rangeland-translation': TranslationsRangelandTranslation;
+      'translations.story-category-translation': TranslationsStoryCategoryTranslation;
       'translations.story-translation': TranslationsStoryTranslation;
       'translations.translations': TranslationsTranslations;
     }

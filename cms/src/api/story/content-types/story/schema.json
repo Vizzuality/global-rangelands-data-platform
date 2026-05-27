@@ -35,6 +35,12 @@
       "min": -180,
       "max": 180
     },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::story-category.story-category",
+      "inverseBy": "stories"
+    },
     "datasets": {
       "type": "relation",
       "relation": "oneToMany",

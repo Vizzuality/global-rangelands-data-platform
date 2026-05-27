@@ -22,6 +22,10 @@ module.exports = ({ env }) => ({
           field: 'slug',
           references: 'title',
         },
+        'story-category': {
+          field: 'slug',
+          references: 'title',
+        },
       }
     }
   },

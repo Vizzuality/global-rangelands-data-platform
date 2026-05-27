@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "story_categories",
+  "info": {
+    "singularName": "story-category",
+    "pluralName": "story-categories",
+    "displayName": "Story Category",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "stories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::story.story",
+      "mappedBy": "category"
+    },
+    "translations": {
+      "displayName": "story-category translation",
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.story-category-translation"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}
