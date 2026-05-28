@@ -1113,7 +1113,7 @@ export interface ApiStoryStory extends Schema.CollectionType {
     image: Attribute.Media;
     translations: Attribute.Component<'translations.story-translation', true>;
     further_information: Attribute.Component<'default.further-info', true>;
-    slug: Attribute.String & Attribute.Required & Attribute.Unique;
+    slug: Attribute.String & Attribute.Unique;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -1,10 +1,19 @@
 import Markdown from "react-markdown";
 
 import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 
 import { cn } from "@/lib/utils";
 import { omit } from "lodash-es";
+
+const sanitizeSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    a: [...(defaultSchema.attributes?.a ?? []), "target", "rel"],
+  },
+};
 
 type RichTextProps = {
   children: string | undefined | null;
@@ -33,7 +42,7 @@ const RichText = ({ children, className }: RichTextProps) => {
           ),
         }}
         remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
-        rehypePlugins={[rehypeRaw]}
+        rehypePlugins={[rehypeRaw, [rehypeSanitize, sanitizeSchema]]}
       >
         {children}
       </Markdown>

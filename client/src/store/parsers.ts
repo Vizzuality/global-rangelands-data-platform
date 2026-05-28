@@ -35,3 +35,4 @@ export const pillarsParser = parseAsArrayOf(parseAsInteger).withDefault([]);
 export const availableForFundingParser = parseAsBoolean.withDefault(false);
 export const countriesParser = parseAsArrayOf(parseAsString).withDefault([]);
 export const publicationStateParser = parseAsString.withDefault("live");
+export const categoryParser = parseAsString;

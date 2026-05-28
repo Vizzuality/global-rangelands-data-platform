@@ -3,6 +3,7 @@ import { createSerializer, useQueryState } from "nuqs";
 
 import {
   bboxParser,
+  categoryParser,
   datasetsParser,
   layersParser,
   layersSettingsParser,
@@ -41,8 +42,13 @@ export const useSyncRangelandRegions = () => {
   return useQueryState("rangeland-regions", rangelandRegionsParser);
 };
 
+export const useSyncCategory = () => {
+  return useQueryState("category", categoryParser);
+};
+
 const searchParams = {
   bbox: bboxParser,
+  category: categoryParser,
   datasets: datasetsParser,
   layers: layersParser,
   layersSettings: layersSettingsParser,
@@ -55,6 +61,7 @@ const serialize = createSerializer(searchParams);
 
 export const useSyncSearchParams = () => {
   const [bbox] = useSyncBbox();
+  const [category] = useSyncCategory();
   const [datasets] = useSyncDatasets();
   const [layers] = useSyncLayers();
   const [layersSettings] = useSyncLayersSettings();
@@ -63,6 +70,7 @@ export const useSyncSearchParams = () => {
   const [rangelandRegion] = useSyncRangelandRegions();
 
   return serialize({
+    category,
     datasets,
     layers,
     layersSettings,
@@ -85,4 +93,10 @@ export type LandmarkCandidate = {
 export const landmarkCandidatesAtom = atom<LandmarkCandidate[]>([]);
 export const landmarkActiveFidAtom = atom<string | null>(null);
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);
-export const sidebarModeAtom = atom<"layers" | "stories">("layers");
+export type StashedLayers = {
+  datasets: string[] | null;
+  layers: string[] | null;
+  layersSettings: Record<string, Record<string, unknown>> | null | undefined;
+} | null;
+
+export const stashedLayersAtom = atom<StashedLayers>(null);

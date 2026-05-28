@@ -1,19 +1,30 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
-import { useAtom, useAtomValue } from "jotai";
-import { sidebarModeAtom, sidebarOpenAtom } from "@/store/map";
+import { useAtom } from "jotai";
+import { sidebarOpenAtom } from "@/store/map";
+import { usePathname } from "@/i18n/navigation";
 import { ScrollAreaWithThumb } from "@/components/ui/scroll-area";
 import Datasets from "../datasets";
 import Stories from "../stories";
+import StoryDetail from "../stories/detail";
 
 import type { JSX } from "react";
 
 const Sidebar = (): JSX.Element => {
   const [open, setOpen] = useAtom(sidebarOpenAtom);
+  const pathname = usePathname();
 
   const toggleOpen = () => setOpen((prev) => !prev);
-  const sidebarMode = useAtomValue(sidebarModeAtom);
+
+  const storyDetailMatch = pathname.match(/^\/map\/story\/([^/]+)/);
+  const storyDetailSlug = storyDetailMatch?.[1] ?? null;
+
+  const renderContent = () => {
+    if (storyDetailSlug) return <StoryDetail slug={storyDetailSlug} />;
+    if (pathname.startsWith("/map/stories")) return <Stories />;
+    return <Datasets />;
+  };
 
   return (
     <aside
@@ -41,7 +52,7 @@ const Sidebar = (): JSX.Element => {
         </button>
       </div>
       <ScrollAreaWithThumb className="relative z-10 h-[var(--content-height)] w-[400px] bg-white">
-        {sidebarMode === "layers" ? <Datasets /> : <Stories />}
+        {renderContent()}
       </ScrollAreaWithThumb>
     </aside>
   );

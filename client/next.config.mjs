@@ -15,6 +15,23 @@ const nextConfig = {
         hostname: "storage.googleapis.com",
         pathname: "/rdp-landing-bucket/**",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "1337",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "0.0.0.0",
+        port: "1337",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "staging.rangelandsdata.org",
+        pathname: "/uploads/**",
+      },
     ],
   },
   turbopack: {
