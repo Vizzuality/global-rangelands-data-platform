@@ -17,6 +17,7 @@ const config: Config = {
         "brown-light": "rgba(194, 57, 12, 1)",
         "orange-dark": "rgba(208, 96, 16, 1)",
         "orange-light": "rgba(217, 100, 16, 1)",
+        "orange-bright": "rgba(255, 147, 70, 1)",
         "green-dark": "rgba(24, 34, 25, 1)",
         "green-medium": "rgba(5, 73, 38, 1)",
         "green-light": "rgba(64, 133, 64, 1)",
