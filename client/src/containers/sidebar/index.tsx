@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useAtom } from "jotai";
+import { AnimatePresence, motion } from "motion/react";
 import { sidebarOpenAtom } from "@/store/map";
 import { usePathname } from "@/i18n/navigation";
 import { ScrollAreaWithThumb } from "@/components/ui/scroll-area";
@@ -19,12 +20,7 @@ const Sidebar = (): JSX.Element => {
 
   const storyDetailMatch = pathname.match(/^\/map\/story\/([^/]+)/);
   const storyDetailSlug = storyDetailMatch?.[1] ?? null;
-
-  const renderContent = () => {
-    if (storyDetailSlug) return <StoryDetail slug={storyDetailSlug} />;
-    if (pathname.startsWith("/map/stories")) return <Stories />;
-    return <Datasets />;
-  };
+  const inStoriesMode = pathname.startsWith("/map/stor");
 
   return (
     <aside
@@ -52,8 +48,24 @@ const Sidebar = (): JSX.Element => {
         </button>
       </div>
       <ScrollAreaWithThumb className="relative z-10 h-[var(--content-height)] w-[400px] bg-white">
-        {renderContent()}
+        {inStoriesMode ? <Stories /> : <Datasets />}
       </ScrollAreaWithThumb>
+      <AnimatePresence>
+        {storyDetailSlug && (
+          <motion.div
+            key="story-detail"
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute inset-y-0 left-0 z-20 w-[400px] bg-white shadow-lg"
+          >
+            <ScrollAreaWithThumb className="h-[var(--content-height)] w-full">
+              <StoryDetail slug={storyDetailSlug} />
+            </ScrollAreaWithThumb>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </aside>
   );
 };
