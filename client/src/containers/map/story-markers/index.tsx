@@ -73,10 +73,13 @@ const StoryMarkers = () => {
   if (!isStoriesMode) return null;
 
   const stories = data?.data ?? [];
+  const visibleStories = activeSlug
+    ? stories.filter((s) => s.attributes?.slug === activeSlug)
+    : stories;
 
   return (
     <>
-      {stories.map((item) => {
+      {visibleStories.map((item) => {
         const { id, attributes } = item;
         if (!id || !attributes) return null;
 
