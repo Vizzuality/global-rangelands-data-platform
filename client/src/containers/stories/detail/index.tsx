@@ -5,19 +5,14 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeft, ExternalLink, FileText, Video } from "lucide-react";
-import { useAtom } from "jotai";
+import { useMap } from "react-map-gl/mapbox";
+import { useAtomValue } from "jotai";
 
 import { Link } from "@/i18n/navigation";
 import { useGetStories } from "@/types/generated/story";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
 import RichText from "@/components/ui/rich-text";
-import {
-  stashedLayersAtom,
-  useSyncDatasets,
-  useSyncLayers,
-  useSyncLayersSettings,
-  useSyncSearchParams,
-} from "@/store/map";
+import { sidebarOpenAtom, useSyncSearchParams } from "@/store/map";
 import type { DefaultFurtherInfoComponent } from "@/types/generated/strapi.schemas";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
 
@@ -82,11 +77,9 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
   const t = useTranslations();
   const locale = useLocale();
   const searchParams = useSyncSearchParams();
-
-  const [datasets, setDatasets] = useSyncDatasets();
-  const [layers, setLayers] = useSyncLayers();
-  const [layersSettings, setLayersSettings] = useSyncLayersSettings();
-  const [, setStashed] = useAtom(stashedLayersAtom);
+  const maps = useMap();
+  const map = maps.current ?? maps.default;
+  const sidebarOpen = useAtomValue(sidebarOpenAtom);
 
   const { data } = useGetStories(
     {
@@ -107,6 +100,17 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
 
   const attributes = data?.data?.[0]?.attributes;
   const translations = attributes?.translations;
+  const latitude = attributes?.latitude;
+  const longitude = attributes?.longitude;
+
+  useEffect(() => {
+    if (!map || latitude == null || longitude == null) return;
+    map.flyTo({
+      center: [longitude, latitude],
+      offset: sidebarOpen ? [200, 0] : [0, 0],
+      essential: true,
+    });
+  }, [map, latitude, longitude, sidebarOpen]);
 
   const localized =
     locale !== DEFAULT_LOCALE ? translations?.find((tr) => tr.locale === locale) : undefined;
@@ -123,50 +127,6 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
         | { data?: { id?: number; attributes?: StoryDatasetAttributes }[] }
         | undefined
     )?.data ?? [];
-
-  useEffect(() => {
-    if (storyDatasets.length === 0) return;
-
-    const relatedDatasetSlugs = storyDatasets
-      .map((d) => d.attributes?.slug)
-      .filter((s): s is string => !!s);
-
-    const relatedLayerSlugs = storyDatasets.flatMap(
-      (d) =>
-        d.attributes?.layers
-          ?.map((l) => l.layer?.data?.attributes?.slug)
-          .filter((s): s is string => !!s) ?? [],
-    );
-
-    if (relatedDatasetSlugs.length === 0 && relatedLayerSlugs.length === 0) return;
-
-    setStashed((prev) => {
-      if (prev !== null) return prev;
-      return {
-        datasets: datasets,
-        layers: layers,
-        layersSettings: layersSettings,
-      };
-    });
-
-    setDatasets(relatedDatasetSlugs);
-    setLayers(relatedLayerSlugs);
-    setLayersSettings(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug, storyDatasets.length]);
-
-  useEffect(() => {
-    return () => {
-      setStashed((prev) => {
-        if (prev === null) return null;
-        setDatasets(prev.datasets ?? []);
-        setLayers(prev.layers ?? []);
-        setLayersSettings(prev.layersSettings ?? null);
-        return null;
-      });
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="flex flex-col">

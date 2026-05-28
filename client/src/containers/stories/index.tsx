@@ -53,10 +53,12 @@ const StoryCategoryGroup = ({
           const localizedTitle =
             storyAttrs?.translations?.find((tr) => tr.locale === locale)?.title ??
             storyAttrs?.title;
-          const imageUrl = storyAttrs?.image?.data?.attributes?.url;
-          const imageAlt =
-            storyAttrs?.image?.data?.attributes?.alternativeText ?? localizedTitle ?? "";
+          const imageAttrs = storyAttrs?.image?.data?.attributes;
+          const imageUrl = imageAttrs?.url;
+          const imageAlt = imageAttrs?.alternativeText ?? localizedTitle ?? "";
+          const imageCaption = imageAttrs?.caption;
           const categoryTitle = title;
+          const variant = (slug && STORY_CARD_VARIANTS[slug]) || STORY_CARD_DEFAULT_VARIANT;
 
           const cardContent = (
             <div className="overflow-hidden">
