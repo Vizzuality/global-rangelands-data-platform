@@ -118,8 +118,13 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
   const title = localized?.title ?? attributes?.title;
   const description = localized?.description ?? attributes?.description;
 
-  const imageUrl = (attributes?.image as { data?: { attributes?: { url?: string } } } | undefined)
-    ?.data?.attributes?.url;
+  const imageAttrs = (
+    attributes?.image as
+      | { data?: { attributes?: { url?: string; caption?: string } } }
+      | undefined
+  )?.data?.attributes;
+  const imageUrl = imageAttrs?.url;
+  const imageCaption = imageAttrs?.caption;
 
   const storyDatasets =
     (
@@ -148,6 +153,11 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
             fill
             className="object-cover"
           />
+          {imageCaption && (
+            <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
+              {imageCaption}
+            </span>
+          )}
         </div>
       )}
 
