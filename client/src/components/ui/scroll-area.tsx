@@ -49,11 +49,42 @@ type ScrollAreaWithThumbProps = React.PropsWithChildren & {
   className?: string;
 };
 const ScrollAreaWithThumb = ({ children, className }: ScrollAreaWithThumbProps) => {
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const [atBottom, setAtBottom] = React.useState(true);
+
+  React.useEffect(() => {
+    const root = rootRef.current;
+    const viewport = root?.querySelector<HTMLElement>("[data-radix-scroll-area-viewport]");
+    if (!viewport) return;
+
+    const update = () => {
+      const reachedEnd = viewport.scrollTop + viewport.clientHeight >= viewport.scrollHeight - 1;
+      const fits = viewport.scrollHeight <= viewport.clientHeight;
+      setAtBottom(reachedEnd || fits);
+    };
+    update();
+    viewport.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(viewport);
+    Array.from(viewport.children).forEach((child) => observer.observe(child));
+
+    return () => {
+      viewport.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, [children]);
+
   return (
-    <ScrollArea className={cn("relative", className)}>
+    <ScrollArea ref={rootRef} className={cn("relative", className)}>
       <>
         {children}
-        <div className="absolute bottom-0 z-50 h-10 w-[calc(100%-8px)] bg-gradient-to-b from-background/0  to-background"></div>
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute bottom-0 z-50 h-10 w-[calc(100%-8px)] bg-gradient-to-b from-background/0 to-background transition-opacity duration-200",
+            atBottom && "opacity-0",
+          )}
+        />
       </>
       <ScrollAreaPrimitive.ScrollAreaScrollbar className="w-1.5">
         <ScrollAreaPrimitive.ScrollAreaThumb className="rounded-md bg-gray-300" />
