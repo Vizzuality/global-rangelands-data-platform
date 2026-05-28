@@ -19,8 +19,7 @@
     "stories": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::story.story",
-      "mappedBy": "category"
+      "target": "api::story.story"
     },
     "translations": {
       "displayName": "story-category translation",
