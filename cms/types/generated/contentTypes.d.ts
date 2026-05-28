@@ -1105,11 +1105,6 @@ export interface ApiStoryStory extends Schema.CollectionType {
         },
         number
       >;
-    category: Attribute.Relation<
-      'api::story.story',
-      'manyToOne',
-      'api::story-category.story-category'
-    >;
     datasets: Attribute.Relation<
       'api::story.story',
       'oneToMany',
@@ -1118,6 +1113,7 @@ export interface ApiStoryStory extends Schema.CollectionType {
     image: Attribute.Media;
     translations: Attribute.Component<'translations.story-translation', true>;
     further_information: Attribute.Component<'default.further-info', true>;
+    slug: Attribute.String & Attribute.Required & Attribute.Unique;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
