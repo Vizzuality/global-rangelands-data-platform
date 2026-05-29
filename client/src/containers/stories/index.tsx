@@ -1,17 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import Image from "next/image";
 import { Globe, Users } from "lucide-react";
 import { useTranslations } from "@/i18n";
-import { Link } from "@/i18n/navigation";
-import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import { useGetLocalizedList } from "@/lib/localized-query";
 import { useGetStoryCategories } from "@/types/generated/story-category";
 import { useSyncCategory, useSyncSearchParams } from "@/store/map";
 import { StoryCategoryListResponseDataItem } from "@/types/generated/strapi.schemas";
-import { CMS_MEDIA_BASE } from "@/lib/cms";
+import StoryCard from "./card";
 
 type StoryItem = NonNullable<
   NonNullable<NonNullable<StoryCategoryListResponseDataItem["attributes"]>["stories"]>["data"]
@@ -33,10 +30,9 @@ const StoryCategoryGroup = ({
   stories: StoryItem[];
   searchParams: string;
 }) => {
-  const t = useTranslations();
-  const locale = useLocale();
   const slug = category.attributes?.slug;
   const title = category.attributes?.title;
+  const variant = (slug && STORY_CARD_VARIANTS[slug]) || STORY_CARD_DEFAULT_VARIANT;
 
   return (
     <div
@@ -47,62 +43,15 @@ const StoryCategoryGroup = ({
         {title}
       </h2>
       <div className="space-y-2">
-        {stories.map((story) => {
-          const storyAttrs = story.attributes;
-          const storySlug = storyAttrs?.slug;
-          const localizedTitle =
-            storyAttrs?.translations?.find((tr) => tr.locale === locale)?.title ??
-            storyAttrs?.title;
-          const imageAttrs = storyAttrs?.image?.data?.attributes;
-          const imageUrl = imageAttrs?.url;
-          const imageAlt = imageAttrs?.alternativeText ?? localizedTitle ?? "";
-          const imageCaption = imageAttrs?.caption;
-          const categoryTitle = title;
-          const variant = (slug && STORY_CARD_VARIANTS[slug]) || STORY_CARD_DEFAULT_VARIANT;
-
-          const cardContent = (
-            <div className="overflow-hidden">
-              <div className={cn("flex flex-col gap-2.5 px-8 pb-5 pt-8", variant)}>
-                <p className="text-[10px] font-medium uppercase leading-5">{categoryTitle}</p>
-                <p className="text-base font-medium leading-6">{localizedTitle ?? t("Untitled")}</p>
-              </div>
-              {imageUrl && (
-                <div className="relative h-44">
-                  <Image
-                    src={`${CMS_MEDIA_BASE}${imageUrl}`}
-                    alt={imageAlt}
-                    fill
-                    className="object-cover"
-                    sizes="352px"
-                  />
-                  {imageCaption && (
-                    <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
-                      {imageCaption}
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-
-          if (!storySlug) {
-            return (
-              <div key={story.id} className="block">
-                {cardContent}
-              </div>
-            );
-          }
-
-          return (
-            <Link
-              key={story.id}
-              href={`/map/story/${storySlug}${searchParams}`}
-              className="group block"
-            >
-              {cardContent}
-            </Link>
-          );
-        })}
+        {stories.map((story) => (
+          <StoryCard
+            key={story.id}
+            story={story}
+            categoryTitle={title}
+            searchParams={searchParams}
+            variant={variant}
+          />
+        ))}
       </div>
     </div>
   );
