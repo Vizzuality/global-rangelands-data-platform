@@ -5,17 +5,6 @@ import StoryDetail from "@/containers/stories/detail";
 import { getTranslations } from "@/i18n";
 import { getStories } from "@/types/generated/story";
 
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  try {
-    const response = await getStories({ "pagination[limit]": 1000, fields: ["slug"] });
-    return (response.data ?? [])
-      .filter((story) => !!story.attributes?.slug)
-      .map((story) => ({ slug: story.attributes!.slug! }));
-  } catch {
-    return [];
-  }
-}
-
 export async function generateMetadata(props: {
   params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
