@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import Stories from "@/containers/stories";
 import { getTranslations } from "@/i18n";
 
 export async function generateMetadata(props: {
@@ -14,5 +15,5 @@ export async function generateMetadata(props: {
 }
 
 export default function StoriesPage() {
-  return null;
+  return <Stories />;
 }

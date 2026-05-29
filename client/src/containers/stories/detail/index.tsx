@@ -119,9 +119,7 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
   const description = localized?.description ?? attributes?.description;
 
   const imageAttrs = (
-    attributes?.image as
-      | { data?: { attributes?: { url?: string; caption?: string } } }
-      | undefined
+    attributes?.image as { data?: { attributes?: { url?: string; caption?: string } } } | undefined
   )?.data?.attributes;
   const imageUrl = imageAttrs?.url;
   const imageCaption = imageAttrs?.caption;

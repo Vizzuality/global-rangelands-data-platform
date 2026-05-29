@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import StoryDetail from "@/containers/stories/detail";
 import { getTranslations } from "@/i18n";
 import { getStories } from "@/types/generated/story";
 
@@ -53,7 +54,7 @@ export default async function StoryDetailPage(props: {
   try {
     const response = await getStories({
       filters: { slug: { $eq: slug } },
-      populate: ["image", "category", "datasets", "translations", "further_information"],
+      populate: ["image", "datasets", "translations", "further_information"],
       "pagination[limit]": 1,
     });
 
@@ -64,5 +65,5 @@ export default async function StoryDetailPage(props: {
     notFound();
   }
 
-  return null;
+  return <StoryDetail slug={slug} />;
 }

@@ -92,11 +92,10 @@ export default async function MapLayout(props: {
         <Header />
         <Suspense fallback={null}>
           <div className="flex h-[var(--content-height)] w-full overflow-y-hidden">
-            <Sidebar />
+            <Sidebar>{props.children}</Sidebar>
             <Map />
           </div>
         </Suspense>
-        {props.children}
       </HydrationBoundary>
     </div>
   );
