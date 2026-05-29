@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { ArrowLeft, ExternalLink, FileText, Video } from "lucide-react";
+import { ArrowLeft, CirclePlay, ExternalLink, FileText } from "lucide-react";
 import { useMap } from "react-map-gl/mapbox";
 import { useAtomValue } from "jotai";
 
@@ -43,7 +43,7 @@ const FurtherInfoItem = ({
 
   const icon =
     item.type === "video" ? (
-      <Video className="h-4 w-4 shrink-0" />
+      <CirclePlay className="h-4 w-4 shrink-0" />
     ) : item.type === "paper" ? (
       <FileText className="h-4 w-4 shrink-0" />
     ) : (
