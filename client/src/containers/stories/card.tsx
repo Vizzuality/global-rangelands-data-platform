@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "@/i18n";
 import type { StoryCategoryListResponseDataItem } from "@/types/generated/strapi.schemas";
-import StoryCardContent from "./card-content";
+import StoryCardContent from "@/components/story-card-content";
 
 type StoryItem = NonNullable<
   NonNullable<NonNullable<StoryCategoryListResponseDataItem["attributes"]>["stories"]>["data"]
