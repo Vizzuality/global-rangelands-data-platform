@@ -31,7 +31,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "staging.rangelandsdata.org",
-        pathname: "/uploads/**",
+        pathname: "/cms/uploads/**",
       },
     ],
   },
