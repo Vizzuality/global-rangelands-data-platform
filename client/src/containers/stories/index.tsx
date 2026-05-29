@@ -37,7 +37,7 @@ const StoryCategoryGroup = ({
   return (
     <div
       key={category.id}
-      className="space-y-5 border-b border-b-foreground last-of-type:border-b-0"
+      className="space-y-5 border-b border-b-foreground pb-6 last-of-type:border-b-0 last-of-type:pb-0"
     >
       <h2 id={slug} className="px-6 pt-6 font-serif text-2xl text-green-light">
         {title}
