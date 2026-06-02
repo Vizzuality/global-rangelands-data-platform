@@ -1,5 +1,5 @@
 node_modules
 build
 credentials.json
-ee_credentials.json
+ee_credentials*.json
 .env

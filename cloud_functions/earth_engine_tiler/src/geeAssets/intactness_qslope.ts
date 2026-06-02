@@ -4,7 +4,7 @@ import { EarthEngineUtils } from "../earth-engine-utils";
 
 export const IntactnessQSlope: ContinuousDataset = {
   assetPath: {
-    default: "projects/gmvad-grass/assets/intactness/intactness_Qslope_2009"
+    default: "projects/my-project-ilri-57371/assets/GRASS/intactness_Qslope_2009"
   },
 
   // The visualization parameters will be defined here
