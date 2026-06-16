@@ -2,7 +2,6 @@
 
 import { useLocale } from "next-intl";
 
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "@/i18n";
 import type { StoryCategoryListResponseDataItem } from "@/types/generated/strapi.schemas";
 import StoryCardContent from "@/components/story-card-content";
@@ -31,16 +30,17 @@ const StoryCard = ({ story, categoryTitle, searchParams, variant }: StoryCardPro
   const imageAttrs = storyAttrs?.image?.data?.attributes;
 
   return (
-    <Link href={`/map/story/${storySlug}${searchParams}`} className="group block">
+    <article className="group relative">
       <StoryCardContent
         variant={variant}
+        href={`/map/story/${storySlug}${searchParams}`}
         categoryTitle={categoryTitle}
         title={localizedTitle ?? t("Untitled")}
         imageUrl={imageAttrs?.url}
         imageAlt={imageAttrs?.alternativeText ?? localizedTitle ?? ""}
         imageCaption={imageAttrs?.caption}
       />
-    </Link>
+    </article>
   );
 };
 

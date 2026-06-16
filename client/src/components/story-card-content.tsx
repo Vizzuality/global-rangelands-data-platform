@@ -1,10 +1,12 @@
 import Image from "next/image";
 
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
 
 type StoryCardContentProps = {
   variant: string;
+  href: string;
   categoryTitle?: string;
   title: string;
   imageUrl?: string;
@@ -14,6 +16,7 @@ type StoryCardContentProps = {
 
 const StoryCardContent = ({
   variant,
+  href,
   categoryTitle,
   title,
   imageUrl,
@@ -25,7 +28,14 @@ const StoryCardContent = ({
       {categoryTitle && (
         <p className="text-[10px] font-medium uppercase leading-5">{categoryTitle}</p>
       )}
-      <p className="text-base font-medium leading-6">{title}</p>
+      <h3 className="text-base font-medium leading-6">
+        <Link
+          href={href}
+          className="before:absolute before:inset-0 focus-visible:underline focus-visible:outline-none"
+        >
+          {title}
+        </Link>
+      </h3>
     </div>
     {imageUrl && (
       <div className="relative h-44">
