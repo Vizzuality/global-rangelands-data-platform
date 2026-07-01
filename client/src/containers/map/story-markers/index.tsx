@@ -6,7 +6,8 @@ import { usePathname } from "@/i18n/navigation";
 import { useRouter } from "@/i18n/navigation";
 import { useGetStories } from "@/types/generated/story";
 import { useGetStoryCategories } from "@/types/generated/story-category";
-import { useSyncSearchParams } from "@/store/map";
+import { useSyncCategory, useSyncSearchParams } from "@/store/map";
+import type { StoryListResponseDataItem } from "@/types/generated/strapi.schemas";
 import StoryMarker, { type StoryMarkerVariant } from "./marker";
 
 const STORIES_MODE_PREFIXES = ["/map/stories", "/map/story"];
@@ -32,10 +33,29 @@ const MARKER_GLOW_BY_CATEGORY: Record<string, StoryMarkerVariant> = {
 };
 const DEFAULT_MARKER_GLOW = MARKER_GLOW_BY_CATEGORY["rangelands-atlas-stories"];
 
+const resolveVisibleStories = ({
+  stories,
+  activeSlug,
+  activeCategory,
+  categoryByStoryId,
+}: {
+  stories: StoryListResponseDataItem[];
+  activeSlug: string | null;
+  activeCategory: string | null;
+  categoryByStoryId: Map<number, string>;
+}): StoryListResponseDataItem[] => {
+  if (activeSlug) return stories.filter((s) => s.attributes?.slug === activeSlug);
+  if (activeCategory) {
+    return stories.filter((s) => s.id != null && categoryByStoryId.get(s.id) === activeCategory);
+  }
+  return stories;
+};
+
 const StoryMarkers = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSyncSearchParams();
+  const [activeCategory] = useSyncCategory();
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   const isStoriesMode = STORIES_MODE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
@@ -71,9 +91,12 @@ const StoryMarkers = () => {
   if (!isStoriesMode) return null;
 
   const stories = data?.data ?? [];
-  const visibleStories = activeSlug
-    ? stories.filter((s) => s.attributes?.slug === activeSlug)
-    : stories;
+  const visibleStories = resolveVisibleStories({
+    stories,
+    activeSlug,
+    activeCategory,
+    categoryByStoryId,
+  });
 
   return (
     <>

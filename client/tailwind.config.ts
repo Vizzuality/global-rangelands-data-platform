@@ -24,6 +24,7 @@ const config: Config = {
         "hunter-green-200": "rgba(199, 212, 198, 1)",
         "hunter-green-300": "rgba(160, 182, 159, 1)",
         "hunter-green-400": "rgba(117, 147, 116, 1)",
+        navy: "rgba(26, 25, 62, 1)",
       },
       lineHeight: {
         relaxed: "185%",

@@ -99,7 +99,7 @@ const MapLayers = () => {
       isActive: !isStoriesMode,
     },
     {
-      title: t("Rangelands Stories"),
+      title: t("Stories"),
       id: "stories",
       href: `/map/stories${searchParams}` as const,
       color: "stories",
