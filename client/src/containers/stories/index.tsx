@@ -9,33 +9,17 @@ import { useGetStoryCategories } from "@/types/generated/story-category";
 import { useSyncCategory, useSyncSearchParams } from "@/store/map";
 import { StoryCategoryListResponseDataItem } from "@/types/generated/strapi.schemas";
 import StoryCard from "./card";
+import {
+  CATEGORY_DESCRIPTIONS,
+  CATEGORY_TITLE_COLOR,
+  CATEGORY_TITLE_DEFAULT_COLOR,
+  STORY_CARD_DEFAULT_VARIANT,
+  STORY_CARD_VARIANTS,
+} from "./categories";
 
 type StoryItem = NonNullable<
   NonNullable<NonNullable<StoryCategoryListResponseDataItem["attributes"]>["stories"]>["data"]
 >[number];
-
-const STORY_CARD_VARIANTS: Record<string, string> = {
-  "rangelands-atlas-stories": "bg-brown-dark text-white",
-  "investment-cases": "bg-orange-bright text-brown-dark",
-  "rangelands-restorations-champions": "bg-green-light text-white",
-};
-const STORY_CARD_DEFAULT_VARIANT = "bg-brown-dark text-white";
-
-const CATEGORY_TITLE_COLOR: Record<string, string> = {
-  "rangelands-atlas-stories": "text-brown-dark",
-  "investment-cases": "text-brown-dark",
-  "rangelands-restorations-champions": "text-green-light",
-};
-const CATEGORY_TITLE_DEFAULT_COLOR = "text-brown-dark";
-
-const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  "rangelands-atlas-stories":
-    "These case studies show the impact of changes in rangelands on local communities, their livestock, and natural resources. They also highlight efforts by pastoralists and organizations to protect these rangelands and their wildlife, while strengthening livelihoods reliant on extensive livestock systems.",
-  "investment-cases":
-    "Business and finance approaches that channel investment into rangeland restoration and the livelihoods that depend on it.",
-  "rangelands-restorations-champions":
-    "People and organizations leading rangeland restoration and protecting these landscapes and the communities they sustain.",
-};
 
 const CategoryList = ({
   categories,
