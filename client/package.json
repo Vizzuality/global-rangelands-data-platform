@@ -125,7 +125,8 @@
       "next>postcss": "8.5.14",
       "axios>form-data": "4.0.6",
       "express>qs": "6.15.3",
-      "cosmiconfig>js-yaml": "4.3.0"
+      "cosmiconfig>js-yaml": "4.3.0",
+      "@svgr/webpack>@babel/core": "7.29.7"
     }
   }
 }
