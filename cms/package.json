@@ -12,11 +12,11 @@
     "config-sync": "config-sync"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "4.24.2",
-    "@strapi/plugin-documentation": "4.24.4",
-    "@strapi/plugin-i18n": "4.24.2",
-    "@strapi/plugin-users-permissions": "4.24.2",
-    "@strapi/strapi": "4.24.2",
+    "@strapi/plugin-cloud": "4.26.2",
+    "@strapi/plugin-documentation": "4.26.2",
+    "@strapi/plugin-i18n": "4.26.2",
+    "@strapi/plugin-users-permissions": "4.26.2",
+    "@strapi/strapi": "4.26.2",
     "pg": "8.8.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
