@@ -101,30 +101,31 @@ Do this as a dedicated, tested piece of work:
 
 ---
 
-## 2. `cms` — Strapi dependency tree (deferred)
+## 2. `cms` — Strapi dependency tree (partially fixed; remainder deferred to Strapi 5)
 
-**Deferred:** ~151 advisories (10 critical, 63 high, 66 moderate, 26 low).
+**Partially addressed on this branch.** All `@strapi/*` packages were bumped within major 4
+(`4.24.2 → 4.26.2`, the terminal 4.x release), clearing **32 advisories (5 critical + 12
+high)** — including the Content-Type-Builder SQL injection and the koa ReDoS/Host-Header
+criticals.
 
-Direct advisories are on `@strapi/strapi`, `@strapi/plugin-users-permissions`, and
-`@strapi/plugin-content-type-builder`. The remaining ~145 are **transitive** dependencies
-(axios, tar, handlebars, koa, elliptic, ws, vite, form-data, …) whose versions are **pinned
-by Strapi's own dependency tree**.
+**Remaining deferred:** 5 critical / 51 high (post-bump), the bulk being build-time, CLI,
+install-time, and admin-bundle transitives that are **not on the production runtime attack
+surface**. The one genuinely runtime-reachable, unauthenticated critical that remains is the
+**Strapi relational-filter data leak** (`GHSA-rjg2-95x7-8qmx`), which is **only fixed in
+Strapi 5.37.0**.
 
-### Why deferred
+### Why deferred (remainder)
 
-- The realistic fix is upgrading **Strapi itself** to a patched release — a **major
-  framework upgrade** with high regression risk (content types, plugins, admin, migrations)
-  that needs a dedicated project and QA cycle.
-- Individually overriding ~150 transitive packages scoped to `@strapi/*` parents is
-  impractical and fragile: many patched majors (e.g. `uuid`, `webpack`, `vite`) would break
-  the Strapi versions that expect the older majors, and the override list would need
-  constant maintenance.
+- **Strapi 4 is end-of-life** (`4.26.2`, June 2026, is the last 4.x release) — the remaining
+  transitive advisories will never be patched on the 4.x line, and scoped overrides are
+  fragile against Strapi's pinned old majors.
+- The remaining items are either **Strapi-5-only fixes** (the data-leak critical) or **low
+  runtime reachability** (admin/CLI/build/install-time).
 
 ### Remediation path
 
-Plan a dedicated Strapi upgrade. Re-run `pnpm audit --prod` in `cms/` afterward; most of
-these advisories should clear with the framework bump. Anything still outstanding can then
-be addressed with targeted, scoped overrides.
+Schedule the **Strapi 5 migration**. Full reachability tiering, the measured 4.26.2 delta,
+and a repo-specific v5 effort estimate are in **`CMS-VULN-ASSESSMENT.md`** (repo root).
 
 ---
 
