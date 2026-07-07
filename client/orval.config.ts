@@ -3,6 +3,7 @@ module.exports = {
     output: {
       mode: "tags",
       client: "react-query",
+      httpClient: "axios",
       target: "./src/types/generated/strapi.ts",
       mock: false,
       clean: true,
@@ -13,14 +14,15 @@ module.exports = {
           name: "API",
         },
         query: {
-          useQuery: true,
-          useMutation: true,
           signal: true,
         },
       },
     },
     input: {
       target: "../cms/src/extensions/documentation/documentation/1.0.0/full_documentation.json",
+      override: {
+        transformer: "./orval-transform.ts",
+      },
       filters: {
         tags: [
           "Dataset",
