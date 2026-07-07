@@ -63,19 +63,39 @@ function useMapboxOverlay(
 
 export const DeckMapboxOverlayProvider = ({ children }: PropsWithChildren) => {
   const layersRef = useRef<any[]>([]);
+  const { default: map } = useMap();
 
   const OVERLAY = useMapboxOverlay({
     interleaved: true,
   });
+
+  // A layer's beforeId can point at a mapbox background layer that was already
+  // removed from the map (e.g. toggling the layer off unmounts it), which makes
+  // deck.gl's resolveLayerGroups call map.moveLayer on a nonexistent id and throw.
+  // Strip beforeId in that case so the layer is appended to the top instead.
+  const withValidBeforeId = useCallback(
+    (layers: any[]) => {
+      const mapInstance = map?.getMap?.();
+      if (!mapInstance) return layers;
+      return layers.map((layer) => {
+        const beforeId = layer?.props?.beforeId;
+        if (beforeId && !mapInstance.getLayer(beforeId)) {
+          return layer.clone({ beforeId: undefined });
+        }
+        return layer;
+      });
+    },
+    [map],
+  );
 
   const addLayer = useCallback(
     (layer: any) => {
       const newLayers = [...layersRef.current.filter((l) => l.id !== layer.id), layer];
 
       layersRef.current = newLayers;
-      return OVERLAY.setProps({ layers: newLayers });
+      return OVERLAY.setProps({ layers: withValidBeforeId(newLayers) });
     },
-    [OVERLAY],
+    [OVERLAY, withValidBeforeId],
   );
 
   const removeLayer = useCallback(
@@ -83,9 +103,9 @@ export const DeckMapboxOverlayProvider = ({ children }: PropsWithChildren) => {
       const newLayers = [...layersRef.current.filter((l) => l.id !== id)];
 
       layersRef.current = newLayers;
-      OVERLAY.setProps({ layers: newLayers });
+      OVERLAY.setProps({ layers: withValidBeforeId(newLayers) });
     },
-    [OVERLAY],
+    [OVERLAY, withValidBeforeId],
   );
 
   const context = useMemo(
