@@ -4,10 +4,7 @@
  * DOCUMENTATION
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,8 +17,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   Error,
@@ -29,24 +26,20 @@ import type {
   GetStoryCategoriesParams,
   StoryCategoryListResponse,
   StoryCategoryRequest,
-  StoryCategoryResponse
-} from './strapi.schemas';
+  StoryCategoryResponse,
+} from "./strapi.schemas";
 
-import { API } from '../../services/api/index';
-import type { ErrorType } from '../../services/api/index';
-
-
+import { API } from "../../services/api/index";
+import type { ErrorType } from "../../services/api/index";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
   const result = { queryKey } as T & { queryKey: K };
   for (const key of Object.keys(query)) {
     // The explicit queryKey always wins, matching the previous
     // `{ ...query, queryKey }` spread where it was set last.
-    if (key === 'queryKey') continue;
+    if (key === "queryKey") continue;
     Object.defineProperty(result, key, {
       enumerable: true,
       configurable: true,
@@ -57,356 +50,480 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
 };
 
 export const getStoryCategories = (
-    params?: GetStoryCategoriesParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  params?: GetStoryCategoriesParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<StoryCategoryListResponse>(
+    { url: `/story-categories`, method: "GET", params, signal },
+    options,
+  );
+};
 
+export const getGetStoryCategoriesQueryKey = (params?: GetStoryCategoriesParams) => {
+  return [`/story-categories`, ...(params ? [params] : [])] as const;
+};
 
-      return API<StoryCategoryListResponse>(
-      {url: `/story-categories`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetStoryCategoriesQueryKey = (params?: GetStoryCategoriesParams,) => {
-    return [
-    `/story-categories`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetStoryCategoriesQueryOptions = <TData = Awaited<ReturnType<typeof getStoryCategories>>, TError = ErrorType<Error>>(params?: GetStoryCategoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetStoryCategoriesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getStoryCategories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoryCategoriesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetStoryCategoriesQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetStoryCategoriesQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getStoryCategories>>> = ({ signal }) =>
+    getStoryCategories(params, requestOptions, signal);
 
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getStoryCategories>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
 
+export type GetStoryCategoriesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getStoryCategories>>
+>;
+export type GetStoryCategoriesQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStoryCategories>>> = ({ signal }) => getStoryCategories(params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetStoryCategoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getStoryCategories>>>
-export type GetStoryCategoriesQueryError = ErrorType<Error>
-
-
-export function useGetStoryCategories<TData = Awaited<ReturnType<typeof getStoryCategories>>, TError = ErrorType<Error>>(
- params: undefined |  GetStoryCategoriesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>> & Pick<
+export function useGetStoryCategories<
+  TData = Awaited<ReturnType<typeof getStoryCategories>>,
+  TError = ErrorType<Error>,
+>(
+  params: undefined | GetStoryCategoriesParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStoryCategories>>,
           TError,
           Awaited<ReturnType<typeof getStoryCategories>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStoryCategories<TData = Awaited<ReturnType<typeof getStoryCategories>>, TError = ErrorType<Error>>(
- params?: GetStoryCategoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStoryCategories<
+  TData = Awaited<ReturnType<typeof getStoryCategories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoryCategoriesParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStoryCategories>>,
           TError,
           Awaited<ReturnType<typeof getStoryCategories>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStoryCategories<TData = Awaited<ReturnType<typeof getStoryCategories>>, TError = ErrorType<Error>>(
- params?: GetStoryCategoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStoryCategories<
+  TData = Awaited<ReturnType<typeof getStoryCategories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoryCategoriesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetStoryCategories<TData = Awaited<ReturnType<typeof getStoryCategories>>, TError = ErrorType<Error>>(
- params?: GetStoryCategoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetStoryCategories<
+  TData = Awaited<ReturnType<typeof getStoryCategories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoryCategoriesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategories>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetStoryCategoriesQueryOptions(params, options);
 
-  const queryOptions = getGetStoryCategoriesQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
-
-
-
-
-
 
 export const postStoryCategories = (
-    storyCategoryRequest: StoryCategoryRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  storyCategoryRequest: StoryCategoryRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<StoryCategoryResponse>(
-      {url: `/story-categories`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: storyCategoryRequest, signal
+  return API<StoryCategoryResponse>(
+    {
+      url: `/story-categories`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: storyCategoryRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPostStoryCategoriesMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postStoryCategories>>,
+    TError,
+    { data: StoryCategoryRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postStoryCategories>>,
+  TError,
+  { data: StoryCategoryRequest },
+  TContext
+> => {
+  const mutationKey = ["postStoryCategories"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postStoryCategories>>,
+    { data: StoryCategoryRequest }
+  > = (props) => {
+    const { data } = props ?? {};
 
+    return postStoryCategories(data, requestOptions);
+  };
 
-export const getPostStoryCategoriesMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postStoryCategories>>, TError,{data: StoryCategoryRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof postStoryCategories>>, TError,{data: StoryCategoryRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['postStoryCategories'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PostStoryCategoriesMutationResult = NonNullable<
+  Awaited<ReturnType<typeof postStoryCategories>>
+>;
+export type PostStoryCategoriesMutationBody = StoryCategoryRequest;
+export type PostStoryCategoriesMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postStoryCategories>>, {data: StoryCategoryRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postStoryCategories(data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostStoryCategoriesMutationResult = NonNullable<Awaited<ReturnType<typeof postStoryCategories>>>
-    export type PostStoryCategoriesMutationBody = StoryCategoryRequest
-    export type PostStoryCategoriesMutationError = ErrorType<Error>
-
-    export const usePostStoryCategories = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postStoryCategories>>, TError,{data: StoryCategoryRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postStoryCategories>>,
-        TError,
-        {data: StoryCategoryRequest},
-        TContext
-      > => {
-      return useMutation(getPostStoryCategoriesMutationOptions(options), queryClient);
-    }
-    export const getStoryCategoriesId = (
-    id: number,
-    params?: GetStoryCategoriesIdParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePostStoryCategories = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postStoryCategories>>,
+      TError,
+      { data: StoryCategoryRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postStoryCategories>>,
+  TError,
+  { data: StoryCategoryRequest },
+  TContext
+> => {
+  return useMutation(getPostStoryCategoriesMutationOptions(options), queryClient);
+};
+export const getStoryCategoriesId = (
+  id: number,
+  params?: GetStoryCategoriesIdParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<StoryCategoryResponse>(
+    { url: `/story-categories/${id}`, method: "GET", params, signal },
+    options,
+  );
+};
 
-
-      return API<StoryCategoryResponse>(
-      {url: `/story-categories/${id}`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetStoryCategoriesIdQueryKey = (id: number,
-    params?: GetStoryCategoriesIdParams,) => {
-    return [
-    `/story-categories/${id}`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetStoryCategoriesIdQueryOptions = <TData = Awaited<ReturnType<typeof getStoryCategoriesId>>, TError = ErrorType<Error>>(id: number,
-    params?: GetStoryCategoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetStoryCategoriesIdQueryKey = (
+  id: number,
+  params?: GetStoryCategoriesIdParams,
 ) => {
+  return [`/story-categories/${id}`, ...(params ? [params] : [])] as const;
+};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+export const getGetStoryCategoriesIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoryCategoriesIdParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetStoryCategoriesIdQueryKey(id,params);
+  const queryKey = queryOptions?.queryKey ?? getGetStoryCategoriesIdQueryKey(id, params);
 
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getStoryCategoriesId>>> = ({ signal }) =>
+    getStoryCategoriesId(id, params, requestOptions, signal);
 
+  return {
+    queryKey,
+    queryFn,
+    enabled: id !== null && id !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStoryCategoriesId>>> = ({ signal }) => getStoryCategoriesId(id,params, requestOptions, signal);
+export type GetStoryCategoriesIdQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getStoryCategoriesId>>
+>;
+export type GetStoryCategoriesIdQueryError = ErrorType<Error>;
 
-
-
-
-
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetStoryCategoriesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getStoryCategoriesId>>>
-export type GetStoryCategoriesIdQueryError = ErrorType<Error>
-
-
-export function useGetStoryCategoriesId<TData = Awaited<ReturnType<typeof getStoryCategoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params: undefined |  GetStoryCategoriesIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>> & Pick<
+export function useGetStoryCategoriesId<
+  TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params: undefined | GetStoryCategoriesIdParams,
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>
+    > &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStoryCategoriesId>>,
           TError,
           Awaited<ReturnType<typeof getStoryCategoriesId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStoryCategoriesId<TData = Awaited<ReturnType<typeof getStoryCategoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetStoryCategoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStoryCategoriesId<
+  TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoryCategoriesIdParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>
+    > &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStoryCategoriesId>>,
           TError,
           Awaited<ReturnType<typeof getStoryCategoriesId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStoryCategoriesId<TData = Awaited<ReturnType<typeof getStoryCategoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetStoryCategoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStoryCategoriesId<
+  TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoryCategoriesIdParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetStoryCategoriesId<TData = Awaited<ReturnType<typeof getStoryCategoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetStoryCategoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetStoryCategoriesId<
+  TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoryCategoriesIdParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getStoryCategoriesId>>, TError, TData>
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetStoryCategoriesIdQueryOptions(id, params, options);
 
-  const queryOptions = getGetStoryCategoriesIdQueryOptions(id,params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
 
-
-
-
-
-
 export const putStoryCategoriesId = (
-    id: number,
-    storyCategoryRequest: StoryCategoryRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  id: number,
+  storyCategoryRequest: StoryCategoryRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<StoryCategoryResponse>(
-      {url: `/story-categories/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: storyCategoryRequest, signal
+  return API<StoryCategoryResponse>(
+    {
+      url: `/story-categories/${id}`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: storyCategoryRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPutStoryCategoriesIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putStoryCategoriesId>>,
+    TError,
+    { id: number; data: StoryCategoryRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putStoryCategoriesId>>,
+  TError,
+  { id: number; data: StoryCategoryRequest },
+  TContext
+> => {
+  const mutationKey = ["putStoryCategoriesId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putStoryCategoriesId>>,
+    { id: number; data: StoryCategoryRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
 
+    return putStoryCategoriesId(id, data, requestOptions);
+  };
 
-export const getPutStoryCategoriesIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putStoryCategoriesId>>, TError,{id: number;data: StoryCategoryRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof putStoryCategoriesId>>, TError,{id: number;data: StoryCategoryRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['putStoryCategoriesId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PutStoryCategoriesIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putStoryCategoriesId>>
+>;
+export type PutStoryCategoriesIdMutationBody = StoryCategoryRequest;
+export type PutStoryCategoriesIdMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putStoryCategoriesId>>, {id: number;data: StoryCategoryRequest}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  putStoryCategoriesId(id,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutStoryCategoriesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putStoryCategoriesId>>>
-    export type PutStoryCategoriesIdMutationBody = StoryCategoryRequest
-    export type PutStoryCategoriesIdMutationError = ErrorType<Error>
-
-    export const usePutStoryCategoriesId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putStoryCategoriesId>>, TError,{id: number;data: StoryCategoryRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putStoryCategoriesId>>,
-        TError,
-        {id: number;data: StoryCategoryRequest},
-        TContext
-      > => {
-      return useMutation(getPutStoryCategoriesIdMutationOptions(options), queryClient);
-    }
-    export const deleteStoryCategoriesId = (
-    id: number,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePutStoryCategoriesId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof putStoryCategoriesId>>,
+      TError,
+      { id: number; data: StoryCategoryRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof putStoryCategoriesId>>,
+  TError,
+  { id: number; data: StoryCategoryRequest },
+  TContext
+> => {
+  return useMutation(getPutStoryCategoriesIdMutationOptions(options), queryClient);
+};
+export const deleteStoryCategoriesId = (
+  id: number,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<number>({ url: `/story-categories/${id}`, method: "DELETE", signal }, options);
+};
 
+export const getDeleteStoryCategoriesIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteStoryCategoriesId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-      return API<number>(
-      {url: `/story-categories/${id}`, method: 'DELETE', signal
-    },
-      options);
-    }
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
 
+    return deleteStoryCategoriesId(id, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DeleteStoryCategoriesIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteStoryCategoriesId>>
+>;
 
-export const getDeleteStoryCategoriesIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteStoryCategoriesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteStoryCategoriesId>>, TError,{id: number}, TContext> => {
+export type DeleteStoryCategoriesIdMutationError = ErrorType<Error>;
 
-const mutationKey = ['deleteStoryCategoriesId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteStoryCategoriesId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteStoryCategoriesId(id,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteStoryCategoriesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteStoryCategoriesId>>>
-
-    export type DeleteStoryCategoriesIdMutationError = ErrorType<Error>
-
-    export const useDeleteStoryCategoriesId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteStoryCategoriesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
-      return useMutation(getDeleteStoryCategoriesIdMutationOptions(options), queryClient);
-    }
+export const useDeleteStoryCategoriesId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteStoryCategoriesIdMutationOptions(options), queryClient);
+};

@@ -4,10 +4,7 @@
  * DOCUMENTATION
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,8 +17,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   DatasetListResponse,
@@ -29,24 +26,20 @@ import type {
   DatasetResponse,
   Error,
   GetDatasetsIdParams,
-  GetDatasetsParams
-} from './strapi.schemas';
+  GetDatasetsParams,
+} from "./strapi.schemas";
 
-import { API } from '../../services/api/index';
-import type { ErrorType } from '../../services/api/index';
-
-
+import { API } from "../../services/api/index";
+import type { ErrorType } from "../../services/api/index";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
   const result = { queryKey } as T & { queryKey: K };
   for (const key of Object.keys(query)) {
     // The explicit queryKey always wins, matching the previous
     // `{ ...query, queryKey }` spread where it was set last.
-    if (key === 'queryKey') continue;
+    if (key === "queryKey") continue;
     Object.defineProperty(result, key, {
       enumerable: true,
       configurable: true,
@@ -57,356 +50,451 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
 };
 
 export const getDatasets = (
-    params?: GetDatasetsParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  params?: GetDatasetsParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<DatasetListResponse>({ url: `/datasets`, method: "GET", params, signal }, options);
+};
 
+export const getGetDatasetsQueryKey = (params?: GetDatasetsParams) => {
+  return [`/datasets`, ...(params ? [params] : [])] as const;
+};
 
-      return API<DatasetListResponse>(
-      {url: `/datasets`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetDatasetsQueryKey = (params?: GetDatasetsParams,) => {
-    return [
-    `/datasets`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetDatasetsQueryOptions = <TData = Awaited<ReturnType<typeof getDatasets>>, TError = ErrorType<Error>>(params?: GetDatasetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetDatasetsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDatasets>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetDatasetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetDatasetsQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDatasetsQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDatasets>>> = ({ signal }) =>
+    getDatasets(params, requestOptions, signal);
 
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getDatasets>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
 
+export type GetDatasetsQueryResult = NonNullable<Awaited<ReturnType<typeof getDatasets>>>;
+export type GetDatasetsQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDatasets>>> = ({ signal }) => getDatasets(params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetDatasetsQueryResult = NonNullable<Awaited<ReturnType<typeof getDatasets>>>
-export type GetDatasetsQueryError = ErrorType<Error>
-
-
-export function useGetDatasets<TData = Awaited<ReturnType<typeof getDatasets>>, TError = ErrorType<Error>>(
- params: undefined |  GetDatasetsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>> & Pick<
+export function useGetDatasets<
+  TData = Awaited<ReturnType<typeof getDatasets>>,
+  TError = ErrorType<Error>,
+>(
+  params: undefined | GetDatasetsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDatasets>>,
           TError,
           Awaited<ReturnType<typeof getDatasets>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDatasets<TData = Awaited<ReturnType<typeof getDatasets>>, TError = ErrorType<Error>>(
- params?: GetDatasetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetDatasets<
+  TData = Awaited<ReturnType<typeof getDatasets>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetDatasetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDatasets>>,
           TError,
           Awaited<ReturnType<typeof getDatasets>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDatasets<TData = Awaited<ReturnType<typeof getDatasets>>, TError = ErrorType<Error>>(
- params?: GetDatasetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetDatasets<
+  TData = Awaited<ReturnType<typeof getDatasets>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetDatasetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetDatasets<TData = Awaited<ReturnType<typeof getDatasets>>, TError = ErrorType<Error>>(
- params?: GetDatasetsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetDatasets<
+  TData = Awaited<ReturnType<typeof getDatasets>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetDatasetsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasets>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetDatasetsQueryOptions(params, options);
 
-  const queryOptions = getGetDatasetsQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
-
-
-
-
-
 
 export const postDatasets = (
-    datasetRequest: DatasetRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  datasetRequest: DatasetRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<DatasetResponse>(
-      {url: `/datasets`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: datasetRequest, signal
+  return API<DatasetResponse>(
+    {
+      url: `/datasets`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: datasetRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPostDatasetsMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postDatasets>>,
+    TError,
+    { data: DatasetRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postDatasets>>,
+  TError,
+  { data: DatasetRequest },
+  TContext
+> => {
+  const mutationKey = ["postDatasets"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postDatasets>>,
+    { data: DatasetRequest }
+  > = (props) => {
+    const { data } = props ?? {};
 
+    return postDatasets(data, requestOptions);
+  };
 
-export const getPostDatasetsMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDatasets>>, TError,{data: DatasetRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof postDatasets>>, TError,{data: DatasetRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['postDatasets'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PostDatasetsMutationResult = NonNullable<Awaited<ReturnType<typeof postDatasets>>>;
+export type PostDatasetsMutationBody = DatasetRequest;
+export type PostDatasetsMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postDatasets>>, {data: DatasetRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postDatasets(data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostDatasetsMutationResult = NonNullable<Awaited<ReturnType<typeof postDatasets>>>
-    export type PostDatasetsMutationBody = DatasetRequest
-    export type PostDatasetsMutationError = ErrorType<Error>
-
-    export const usePostDatasets = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDatasets>>, TError,{data: DatasetRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postDatasets>>,
-        TError,
-        {data: DatasetRequest},
-        TContext
-      > => {
-      return useMutation(getPostDatasetsMutationOptions(options), queryClient);
-    }
-    export const getDatasetsId = (
-    id: number,
-    params?: GetDatasetsIdParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePostDatasets = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postDatasets>>,
+      TError,
+      { data: DatasetRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postDatasets>>,
+  TError,
+  { data: DatasetRequest },
+  TContext
+> => {
+  return useMutation(getPostDatasetsMutationOptions(options), queryClient);
+};
+export const getDatasetsId = (
+  id: number,
+  params?: GetDatasetsIdParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<DatasetResponse>({ url: `/datasets/${id}`, method: "GET", params, signal }, options);
+};
 
+export const getGetDatasetsIdQueryKey = (id: number, params?: GetDatasetsIdParams) => {
+  return [`/datasets/${id}`, ...(params ? [params] : [])] as const;
+};
 
-      return API<DatasetResponse>(
-      {url: `/datasets/${id}`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetDatasetsIdQueryKey = (id: number,
-    params?: GetDatasetsIdParams,) => {
-    return [
-    `/datasets/${id}`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetDatasetsIdQueryOptions = <TData = Awaited<ReturnType<typeof getDatasetsId>>, TError = ErrorType<Error>>(id: number,
-    params?: GetDatasetsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetDatasetsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getDatasetsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetDatasetsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetDatasetsIdQueryKey(id, params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDatasetsIdQueryKey(id,params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDatasetsId>>> = ({ signal }) =>
+    getDatasetsId(id, params, requestOptions, signal);
 
+  return {
+    queryKey,
+    queryFn,
+    enabled: id !== null && id !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+};
 
+export type GetDatasetsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getDatasetsId>>>;
+export type GetDatasetsIdQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDatasetsId>>> = ({ signal }) => getDatasetsId(id,params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetDatasetsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getDatasetsId>>>
-export type GetDatasetsIdQueryError = ErrorType<Error>
-
-
-export function useGetDatasetsId<TData = Awaited<ReturnType<typeof getDatasetsId>>, TError = ErrorType<Error>>(
- id: number,
-    params: undefined |  GetDatasetsIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>> & Pick<
+export function useGetDatasetsId<
+  TData = Awaited<ReturnType<typeof getDatasetsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params: undefined | GetDatasetsIdParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDatasetsId>>,
           TError,
           Awaited<ReturnType<typeof getDatasetsId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDatasetsId<TData = Awaited<ReturnType<typeof getDatasetsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetDatasetsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetDatasetsId<
+  TData = Awaited<ReturnType<typeof getDatasetsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetDatasetsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDatasetsId>>,
           TError,
           Awaited<ReturnType<typeof getDatasetsId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDatasetsId<TData = Awaited<ReturnType<typeof getDatasetsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetDatasetsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetDatasetsId<
+  TData = Awaited<ReturnType<typeof getDatasetsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetDatasetsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetDatasetsId<TData = Awaited<ReturnType<typeof getDatasetsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetDatasetsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetDatasetsId<
+  TData = Awaited<ReturnType<typeof getDatasetsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetDatasetsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getDatasetsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetDatasetsIdQueryOptions(id, params, options);
 
-  const queryOptions = getGetDatasetsIdQueryOptions(id,params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
 
-
-
-
-
-
 export const putDatasetsId = (
-    id: number,
-    datasetRequest: DatasetRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  id: number,
+  datasetRequest: DatasetRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<DatasetResponse>(
-      {url: `/datasets/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: datasetRequest, signal
+  return API<DatasetResponse>(
+    {
+      url: `/datasets/${id}`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: datasetRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPutDatasetsIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putDatasetsId>>,
+    TError,
+    { id: number; data: DatasetRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putDatasetsId>>,
+  TError,
+  { id: number; data: DatasetRequest },
+  TContext
+> => {
+  const mutationKey = ["putDatasetsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putDatasetsId>>,
+    { id: number; data: DatasetRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
 
+    return putDatasetsId(id, data, requestOptions);
+  };
 
-export const getPutDatasetsIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putDatasetsId>>, TError,{id: number;data: DatasetRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof putDatasetsId>>, TError,{id: number;data: DatasetRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['putDatasetsId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PutDatasetsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putDatasetsId>>>;
+export type PutDatasetsIdMutationBody = DatasetRequest;
+export type PutDatasetsIdMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putDatasetsId>>, {id: number;data: DatasetRequest}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  putDatasetsId(id,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutDatasetsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putDatasetsId>>>
-    export type PutDatasetsIdMutationBody = DatasetRequest
-    export type PutDatasetsIdMutationError = ErrorType<Error>
-
-    export const usePutDatasetsId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putDatasetsId>>, TError,{id: number;data: DatasetRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putDatasetsId>>,
-        TError,
-        {id: number;data: DatasetRequest},
-        TContext
-      > => {
-      return useMutation(getPutDatasetsIdMutationOptions(options), queryClient);
-    }
-    export const deleteDatasetsId = (
-    id: number,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePutDatasetsId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof putDatasetsId>>,
+      TError,
+      { id: number; data: DatasetRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof putDatasetsId>>,
+  TError,
+  { id: number; data: DatasetRequest },
+  TContext
+> => {
+  return useMutation(getPutDatasetsIdMutationOptions(options), queryClient);
+};
+export const deleteDatasetsId = (
+  id: number,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<number>({ url: `/datasets/${id}`, method: "DELETE", signal }, options);
+};
 
+export const getDeleteDatasetsIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteDatasetsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteDatasetsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteDatasetsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-      return API<number>(
-      {url: `/datasets/${id}`, method: 'DELETE', signal
-    },
-      options);
-    }
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteDatasetsId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
 
+    return deleteDatasetsId(id, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DeleteDatasetsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteDatasetsId>>
+>;
 
-export const getDeleteDatasetsIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDatasetsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteDatasetsId>>, TError,{id: number}, TContext> => {
+export type DeleteDatasetsIdMutationError = ErrorType<Error>;
 
-const mutationKey = ['deleteDatasetsId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDatasetsId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteDatasetsId(id,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteDatasetsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDatasetsId>>>
-
-    export type DeleteDatasetsIdMutationError = ErrorType<Error>
-
-    export const useDeleteDatasetsId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDatasetsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteDatasetsId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
-      return useMutation(getDeleteDatasetsIdMutationOptions(options), queryClient);
-    }
+export const useDeleteDatasetsId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteDatasetsId>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteDatasetsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteDatasetsIdMutationOptions(options), queryClient);
+};

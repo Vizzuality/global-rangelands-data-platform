@@ -4,10 +4,7 @@
  * DOCUMENTATION
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,8 +17,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   Error,
@@ -29,24 +26,20 @@ import type {
   GetLayersParams,
   LayerListResponse,
   LayerRequest,
-  LayerResponse
-} from './strapi.schemas';
+  LayerResponse,
+} from "./strapi.schemas";
 
-import { API } from '../../services/api/index';
-import type { ErrorType } from '../../services/api/index';
-
-
+import { API } from "../../services/api/index";
+import type { ErrorType } from "../../services/api/index";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
   const result = { queryKey } as T & { queryKey: K };
   for (const key of Object.keys(query)) {
     // The explicit queryKey always wins, matching the previous
     // `{ ...query, queryKey }` spread where it was set last.
-    if (key === 'queryKey') continue;
+    if (key === "queryKey") continue;
     Object.defineProperty(result, key, {
       enumerable: true,
       configurable: true,
@@ -57,356 +50,448 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
 };
 
 export const getLayers = (
-    params?: GetLayersParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  params?: GetLayersParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<LayerListResponse>({ url: `/layers`, method: "GET", params, signal }, options);
+};
 
+export const getGetLayersQueryKey = (params?: GetLayersParams) => {
+  return [`/layers`, ...(params ? [params] : [])] as const;
+};
 
-      return API<LayerListResponse>(
-      {url: `/layers`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetLayersQueryKey = (params?: GetLayersParams,) => {
-    return [
-    `/layers`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetLayersQueryOptions = <TData = Awaited<ReturnType<typeof getLayers>>, TError = ErrorType<Error>>(params?: GetLayersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetLayersQueryOptions = <
+  TData = Awaited<ReturnType<typeof getLayers>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetLayersParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetLayersQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetLayersQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getLayers>>> = ({ signal }) =>
+    getLayers(params, requestOptions, signal);
 
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getLayers>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
 
+export type GetLayersQueryResult = NonNullable<Awaited<ReturnType<typeof getLayers>>>;
+export type GetLayersQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLayers>>> = ({ signal }) => getLayers(params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetLayersQueryResult = NonNullable<Awaited<ReturnType<typeof getLayers>>>
-export type GetLayersQueryError = ErrorType<Error>
-
-
-export function useGetLayers<TData = Awaited<ReturnType<typeof getLayers>>, TError = ErrorType<Error>>(
- params: undefined |  GetLayersParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>> & Pick<
+export function useGetLayers<
+  TData = Awaited<ReturnType<typeof getLayers>>,
+  TError = ErrorType<Error>,
+>(
+  params: undefined | GetLayersParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getLayers>>,
           TError,
           Awaited<ReturnType<typeof getLayers>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetLayers<TData = Awaited<ReturnType<typeof getLayers>>, TError = ErrorType<Error>>(
- params?: GetLayersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetLayers<
+  TData = Awaited<ReturnType<typeof getLayers>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetLayersParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getLayers>>,
           TError,
           Awaited<ReturnType<typeof getLayers>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetLayers<TData = Awaited<ReturnType<typeof getLayers>>, TError = ErrorType<Error>>(
- params?: GetLayersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetLayers<
+  TData = Awaited<ReturnType<typeof getLayers>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetLayersParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetLayers<TData = Awaited<ReturnType<typeof getLayers>>, TError = ErrorType<Error>>(
- params?: GetLayersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetLayers<
+  TData = Awaited<ReturnType<typeof getLayers>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetLayersParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayers>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetLayersQueryOptions(params, options);
 
-  const queryOptions = getGetLayersQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
-
-
-
-
-
 
 export const postLayers = (
-    layerRequest: LayerRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  layerRequest: LayerRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<LayerResponse>(
-      {url: `/layers`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: layerRequest, signal
+  return API<LayerResponse>(
+    {
+      url: `/layers`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: layerRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPostLayersMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postLayers>>,
+    TError,
+    { data: LayerRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postLayers>>,
+  TError,
+  { data: LayerRequest },
+  TContext
+> => {
+  const mutationKey = ["postLayers"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postLayers>>,
+    { data: LayerRequest }
+  > = (props) => {
+    const { data } = props ?? {};
 
+    return postLayers(data, requestOptions);
+  };
 
-export const getPostLayersMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postLayers>>, TError,{data: LayerRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof postLayers>>, TError,{data: LayerRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['postLayers'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PostLayersMutationResult = NonNullable<Awaited<ReturnType<typeof postLayers>>>;
+export type PostLayersMutationBody = LayerRequest;
+export type PostLayersMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postLayers>>, {data: LayerRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postLayers(data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostLayersMutationResult = NonNullable<Awaited<ReturnType<typeof postLayers>>>
-    export type PostLayersMutationBody = LayerRequest
-    export type PostLayersMutationError = ErrorType<Error>
-
-    export const usePostLayers = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postLayers>>, TError,{data: LayerRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postLayers>>,
-        TError,
-        {data: LayerRequest},
-        TContext
-      > => {
-      return useMutation(getPostLayersMutationOptions(options), queryClient);
-    }
-    export const getLayersId = (
-    id: number,
-    params?: GetLayersIdParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePostLayers = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postLayers>>,
+      TError,
+      { data: LayerRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postLayers>>,
+  TError,
+  { data: LayerRequest },
+  TContext
+> => {
+  return useMutation(getPostLayersMutationOptions(options), queryClient);
+};
+export const getLayersId = (
+  id: number,
+  params?: GetLayersIdParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<LayerResponse>({ url: `/layers/${id}`, method: "GET", params, signal }, options);
+};
 
+export const getGetLayersIdQueryKey = (id: number, params?: GetLayersIdParams) => {
+  return [`/layers/${id}`, ...(params ? [params] : [])] as const;
+};
 
-      return API<LayerResponse>(
-      {url: `/layers/${id}`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetLayersIdQueryKey = (id: number,
-    params?: GetLayersIdParams,) => {
-    return [
-    `/layers/${id}`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetLayersIdQueryOptions = <TData = Awaited<ReturnType<typeof getLayersId>>, TError = ErrorType<Error>>(id: number,
-    params?: GetLayersIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetLayersIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getLayersId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetLayersIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetLayersIdQueryKey(id, params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetLayersIdQueryKey(id,params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getLayersId>>> = ({ signal }) =>
+    getLayersId(id, params, requestOptions, signal);
 
+  return {
+    queryKey,
+    queryFn,
+    enabled: id !== null && id !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+};
 
+export type GetLayersIdQueryResult = NonNullable<Awaited<ReturnType<typeof getLayersId>>>;
+export type GetLayersIdQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLayersId>>> = ({ signal }) => getLayersId(id,params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetLayersIdQueryResult = NonNullable<Awaited<ReturnType<typeof getLayersId>>>
-export type GetLayersIdQueryError = ErrorType<Error>
-
-
-export function useGetLayersId<TData = Awaited<ReturnType<typeof getLayersId>>, TError = ErrorType<Error>>(
- id: number,
-    params: undefined |  GetLayersIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>> & Pick<
+export function useGetLayersId<
+  TData = Awaited<ReturnType<typeof getLayersId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params: undefined | GetLayersIdParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getLayersId>>,
           TError,
           Awaited<ReturnType<typeof getLayersId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetLayersId<TData = Awaited<ReturnType<typeof getLayersId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetLayersIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetLayersId<
+  TData = Awaited<ReturnType<typeof getLayersId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetLayersIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getLayersId>>,
           TError,
           Awaited<ReturnType<typeof getLayersId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetLayersId<TData = Awaited<ReturnType<typeof getLayersId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetLayersIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetLayersId<
+  TData = Awaited<ReturnType<typeof getLayersId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetLayersIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetLayersId<TData = Awaited<ReturnType<typeof getLayersId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetLayersIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetLayersId<
+  TData = Awaited<ReturnType<typeof getLayersId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetLayersIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getLayersId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetLayersIdQueryOptions(id, params, options);
 
-  const queryOptions = getGetLayersIdQueryOptions(id,params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
 
-
-
-
-
-
 export const putLayersId = (
-    id: number,
-    layerRequest: LayerRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  id: number,
+  layerRequest: LayerRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<LayerResponse>(
-      {url: `/layers/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: layerRequest, signal
+  return API<LayerResponse>(
+    {
+      url: `/layers/${id}`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: layerRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPutLayersIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putLayersId>>,
+    TError,
+    { id: number; data: LayerRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putLayersId>>,
+  TError,
+  { id: number; data: LayerRequest },
+  TContext
+> => {
+  const mutationKey = ["putLayersId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putLayersId>>,
+    { id: number; data: LayerRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
 
+    return putLayersId(id, data, requestOptions);
+  };
 
-export const getPutLayersIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putLayersId>>, TError,{id: number;data: LayerRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof putLayersId>>, TError,{id: number;data: LayerRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['putLayersId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PutLayersIdMutationResult = NonNullable<Awaited<ReturnType<typeof putLayersId>>>;
+export type PutLayersIdMutationBody = LayerRequest;
+export type PutLayersIdMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putLayersId>>, {id: number;data: LayerRequest}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  putLayersId(id,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutLayersIdMutationResult = NonNullable<Awaited<ReturnType<typeof putLayersId>>>
-    export type PutLayersIdMutationBody = LayerRequest
-    export type PutLayersIdMutationError = ErrorType<Error>
-
-    export const usePutLayersId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putLayersId>>, TError,{id: number;data: LayerRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putLayersId>>,
-        TError,
-        {id: number;data: LayerRequest},
-        TContext
-      > => {
-      return useMutation(getPutLayersIdMutationOptions(options), queryClient);
-    }
-    export const deleteLayersId = (
-    id: number,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePutLayersId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof putLayersId>>,
+      TError,
+      { id: number; data: LayerRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof putLayersId>>,
+  TError,
+  { id: number; data: LayerRequest },
+  TContext
+> => {
+  return useMutation(getPutLayersIdMutationOptions(options), queryClient);
+};
+export const deleteLayersId = (
+  id: number,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<number>({ url: `/layers/${id}`, method: "DELETE", signal }, options);
+};
 
+export const getDeleteLayersIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteLayersId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteLayersId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteLayersId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-      return API<number>(
-      {url: `/layers/${id}`, method: 'DELETE', signal
-    },
-      options);
-    }
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteLayersId>>, { id: number }> = (
+    props,
+  ) => {
+    const { id } = props ?? {};
 
+    return deleteLayersId(id, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DeleteLayersIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteLayersId>>>;
 
-export const getDeleteLayersIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteLayersId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteLayersId>>, TError,{id: number}, TContext> => {
+export type DeleteLayersIdMutationError = ErrorType<Error>;
 
-const mutationKey = ['deleteLayersId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteLayersId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteLayersId(id,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteLayersIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteLayersId>>>
-
-    export type DeleteLayersIdMutationError = ErrorType<Error>
-
-    export const useDeleteLayersId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteLayersId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteLayersId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
-      return useMutation(getDeleteLayersIdMutationOptions(options), queryClient);
-    }
+export const useDeleteLayersId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteLayersId>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteLayersId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteLayersIdMutationOptions(options), queryClient);
+};

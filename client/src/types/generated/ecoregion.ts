@@ -4,10 +4,7 @@
  * DOCUMENTATION
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,8 +17,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   EcoregionListResponse,
@@ -29,24 +26,20 @@ import type {
   EcoregionResponse,
   Error,
   GetEcoregionsIdParams,
-  GetEcoregionsParams
-} from './strapi.schemas';
+  GetEcoregionsParams,
+} from "./strapi.schemas";
 
-import { API } from '../../services/api/index';
-import type { ErrorType } from '../../services/api/index';
-
-
+import { API } from "../../services/api/index";
+import type { ErrorType } from "../../services/api/index";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
   const result = { queryKey } as T & { queryKey: K };
   for (const key of Object.keys(query)) {
     // The explicit queryKey always wins, matching the previous
     // `{ ...query, queryKey }` spread where it was set last.
-    if (key === 'queryKey') continue;
+    if (key === "queryKey") continue;
     Object.defineProperty(result, key, {
       enumerable: true,
       configurable: true,
@@ -57,356 +50,456 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
 };
 
 export const getEcoregions = (
-    params?: GetEcoregionsParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  params?: GetEcoregionsParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<EcoregionListResponse>({ url: `/ecoregions`, method: "GET", params, signal }, options);
+};
 
+export const getGetEcoregionsQueryKey = (params?: GetEcoregionsParams) => {
+  return [`/ecoregions`, ...(params ? [params] : [])] as const;
+};
 
-      return API<EcoregionListResponse>(
-      {url: `/ecoregions`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetEcoregionsQueryKey = (params?: GetEcoregionsParams,) => {
-    return [
-    `/ecoregions`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetEcoregionsQueryOptions = <TData = Awaited<ReturnType<typeof getEcoregions>>, TError = ErrorType<Error>>(params?: GetEcoregionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetEcoregionsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getEcoregions>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetEcoregionsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetEcoregionsQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetEcoregionsQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEcoregions>>> = ({ signal }) =>
+    getEcoregions(params, requestOptions, signal);
 
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getEcoregions>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
 
+export type GetEcoregionsQueryResult = NonNullable<Awaited<ReturnType<typeof getEcoregions>>>;
+export type GetEcoregionsQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEcoregions>>> = ({ signal }) => getEcoregions(params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetEcoregionsQueryResult = NonNullable<Awaited<ReturnType<typeof getEcoregions>>>
-export type GetEcoregionsQueryError = ErrorType<Error>
-
-
-export function useGetEcoregions<TData = Awaited<ReturnType<typeof getEcoregions>>, TError = ErrorType<Error>>(
- params: undefined |  GetEcoregionsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>> & Pick<
+export function useGetEcoregions<
+  TData = Awaited<ReturnType<typeof getEcoregions>>,
+  TError = ErrorType<Error>,
+>(
+  params: undefined | GetEcoregionsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getEcoregions>>,
           TError,
           Awaited<ReturnType<typeof getEcoregions>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEcoregions<TData = Awaited<ReturnType<typeof getEcoregions>>, TError = ErrorType<Error>>(
- params?: GetEcoregionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetEcoregions<
+  TData = Awaited<ReturnType<typeof getEcoregions>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetEcoregionsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getEcoregions>>,
           TError,
           Awaited<ReturnType<typeof getEcoregions>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEcoregions<TData = Awaited<ReturnType<typeof getEcoregions>>, TError = ErrorType<Error>>(
- params?: GetEcoregionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetEcoregions<
+  TData = Awaited<ReturnType<typeof getEcoregions>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetEcoregionsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetEcoregions<TData = Awaited<ReturnType<typeof getEcoregions>>, TError = ErrorType<Error>>(
- params?: GetEcoregionsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetEcoregions<
+  TData = Awaited<ReturnType<typeof getEcoregions>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetEcoregionsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregions>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetEcoregionsQueryOptions(params, options);
 
-  const queryOptions = getGetEcoregionsQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
-
-
-
-
-
 
 export const postEcoregions = (
-    ecoregionRequest: EcoregionRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  ecoregionRequest: EcoregionRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<EcoregionResponse>(
-      {url: `/ecoregions`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: ecoregionRequest, signal
+  return API<EcoregionResponse>(
+    {
+      url: `/ecoregions`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: ecoregionRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPostEcoregionsMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postEcoregions>>,
+    TError,
+    { data: EcoregionRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postEcoregions>>,
+  TError,
+  { data: EcoregionRequest },
+  TContext
+> => {
+  const mutationKey = ["postEcoregions"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postEcoregions>>,
+    { data: EcoregionRequest }
+  > = (props) => {
+    const { data } = props ?? {};
 
+    return postEcoregions(data, requestOptions);
+  };
 
-export const getPostEcoregionsMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postEcoregions>>, TError,{data: EcoregionRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof postEcoregions>>, TError,{data: EcoregionRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['postEcoregions'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PostEcoregionsMutationResult = NonNullable<Awaited<ReturnType<typeof postEcoregions>>>;
+export type PostEcoregionsMutationBody = EcoregionRequest;
+export type PostEcoregionsMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postEcoregions>>, {data: EcoregionRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postEcoregions(data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostEcoregionsMutationResult = NonNullable<Awaited<ReturnType<typeof postEcoregions>>>
-    export type PostEcoregionsMutationBody = EcoregionRequest
-    export type PostEcoregionsMutationError = ErrorType<Error>
-
-    export const usePostEcoregions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postEcoregions>>, TError,{data: EcoregionRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postEcoregions>>,
-        TError,
-        {data: EcoregionRequest},
-        TContext
-      > => {
-      return useMutation(getPostEcoregionsMutationOptions(options), queryClient);
-    }
-    export const getEcoregionsId = (
-    id: number,
-    params?: GetEcoregionsIdParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePostEcoregions = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postEcoregions>>,
+      TError,
+      { data: EcoregionRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postEcoregions>>,
+  TError,
+  { data: EcoregionRequest },
+  TContext
+> => {
+  return useMutation(getPostEcoregionsMutationOptions(options), queryClient);
+};
+export const getEcoregionsId = (
+  id: number,
+  params?: GetEcoregionsIdParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<EcoregionResponse>(
+    { url: `/ecoregions/${id}`, method: "GET", params, signal },
+    options,
+  );
+};
 
+export const getGetEcoregionsIdQueryKey = (id: number, params?: GetEcoregionsIdParams) => {
+  return [`/ecoregions/${id}`, ...(params ? [params] : [])] as const;
+};
 
-      return API<EcoregionResponse>(
-      {url: `/ecoregions/${id}`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetEcoregionsIdQueryKey = (id: number,
-    params?: GetEcoregionsIdParams,) => {
-    return [
-    `/ecoregions/${id}`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetEcoregionsIdQueryOptions = <TData = Awaited<ReturnType<typeof getEcoregionsId>>, TError = ErrorType<Error>>(id: number,
-    params?: GetEcoregionsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetEcoregionsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getEcoregionsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetEcoregionsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetEcoregionsIdQueryKey(id, params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetEcoregionsIdQueryKey(id,params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEcoregionsId>>> = ({ signal }) =>
+    getEcoregionsId(id, params, requestOptions, signal);
 
+  return {
+    queryKey,
+    queryFn,
+    enabled: id !== null && id !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+};
 
+export type GetEcoregionsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getEcoregionsId>>>;
+export type GetEcoregionsIdQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEcoregionsId>>> = ({ signal }) => getEcoregionsId(id,params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetEcoregionsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getEcoregionsId>>>
-export type GetEcoregionsIdQueryError = ErrorType<Error>
-
-
-export function useGetEcoregionsId<TData = Awaited<ReturnType<typeof getEcoregionsId>>, TError = ErrorType<Error>>(
- id: number,
-    params: undefined |  GetEcoregionsIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>> & Pick<
+export function useGetEcoregionsId<
+  TData = Awaited<ReturnType<typeof getEcoregionsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params: undefined | GetEcoregionsIdParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getEcoregionsId>>,
           TError,
           Awaited<ReturnType<typeof getEcoregionsId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEcoregionsId<TData = Awaited<ReturnType<typeof getEcoregionsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetEcoregionsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetEcoregionsId<
+  TData = Awaited<ReturnType<typeof getEcoregionsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetEcoregionsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getEcoregionsId>>,
           TError,
           Awaited<ReturnType<typeof getEcoregionsId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEcoregionsId<TData = Awaited<ReturnType<typeof getEcoregionsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetEcoregionsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetEcoregionsId<
+  TData = Awaited<ReturnType<typeof getEcoregionsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetEcoregionsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetEcoregionsId<TData = Awaited<ReturnType<typeof getEcoregionsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetEcoregionsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetEcoregionsId<
+  TData = Awaited<ReturnType<typeof getEcoregionsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetEcoregionsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetEcoregionsIdQueryOptions(id, params, options);
 
-  const queryOptions = getGetEcoregionsIdQueryOptions(id,params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
 
-
-
-
-
-
 export const putEcoregionsId = (
-    id: number,
-    ecoregionRequest: EcoregionRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  id: number,
+  ecoregionRequest: EcoregionRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<EcoregionResponse>(
-      {url: `/ecoregions/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: ecoregionRequest, signal
+  return API<EcoregionResponse>(
+    {
+      url: `/ecoregions/${id}`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: ecoregionRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPutEcoregionsIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putEcoregionsId>>,
+    TError,
+    { id: number; data: EcoregionRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putEcoregionsId>>,
+  TError,
+  { id: number; data: EcoregionRequest },
+  TContext
+> => {
+  const mutationKey = ["putEcoregionsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putEcoregionsId>>,
+    { id: number; data: EcoregionRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
 
+    return putEcoregionsId(id, data, requestOptions);
+  };
 
-export const getPutEcoregionsIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putEcoregionsId>>, TError,{id: number;data: EcoregionRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof putEcoregionsId>>, TError,{id: number;data: EcoregionRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['putEcoregionsId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PutEcoregionsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putEcoregionsId>>
+>;
+export type PutEcoregionsIdMutationBody = EcoregionRequest;
+export type PutEcoregionsIdMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putEcoregionsId>>, {id: number;data: EcoregionRequest}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  putEcoregionsId(id,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutEcoregionsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putEcoregionsId>>>
-    export type PutEcoregionsIdMutationBody = EcoregionRequest
-    export type PutEcoregionsIdMutationError = ErrorType<Error>
-
-    export const usePutEcoregionsId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putEcoregionsId>>, TError,{id: number;data: EcoregionRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putEcoregionsId>>,
-        TError,
-        {id: number;data: EcoregionRequest},
-        TContext
-      > => {
-      return useMutation(getPutEcoregionsIdMutationOptions(options), queryClient);
-    }
-    export const deleteEcoregionsId = (
-    id: number,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePutEcoregionsId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof putEcoregionsId>>,
+      TError,
+      { id: number; data: EcoregionRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof putEcoregionsId>>,
+  TError,
+  { id: number; data: EcoregionRequest },
+  TContext
+> => {
+  return useMutation(getPutEcoregionsIdMutationOptions(options), queryClient);
+};
+export const deleteEcoregionsId = (
+  id: number,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<number>({ url: `/ecoregions/${id}`, method: "DELETE", signal }, options);
+};
 
+export const getDeleteEcoregionsIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteEcoregionsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteEcoregionsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteEcoregionsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-      return API<number>(
-      {url: `/ecoregions/${id}`, method: 'DELETE', signal
-    },
-      options);
-    }
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteEcoregionsId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
 
+    return deleteEcoregionsId(id, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DeleteEcoregionsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteEcoregionsId>>
+>;
 
-export const getDeleteEcoregionsIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteEcoregionsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteEcoregionsId>>, TError,{id: number}, TContext> => {
+export type DeleteEcoregionsIdMutationError = ErrorType<Error>;
 
-const mutationKey = ['deleteEcoregionsId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteEcoregionsId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteEcoregionsId(id,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteEcoregionsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteEcoregionsId>>>
-
-    export type DeleteEcoregionsIdMutationError = ErrorType<Error>
-
-    export const useDeleteEcoregionsId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteEcoregionsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteEcoregionsId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
-      return useMutation(getDeleteEcoregionsIdMutationOptions(options), queryClient);
-    }
+export const useDeleteEcoregionsId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteEcoregionsId>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteEcoregionsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteEcoregionsIdMutationOptions(options), queryClient);
+};

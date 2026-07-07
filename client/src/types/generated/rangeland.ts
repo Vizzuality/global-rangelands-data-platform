@@ -4,10 +4,7 @@
  * DOCUMENTATION
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,8 +17,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   Error,
@@ -29,24 +26,20 @@ import type {
   GetRangelandsParams,
   RangelandListResponse,
   RangelandRequest,
-  RangelandResponse
-} from './strapi.schemas';
+  RangelandResponse,
+} from "./strapi.schemas";
 
-import { API } from '../../services/api/index';
-import type { ErrorType } from '../../services/api/index';
-
-
+import { API } from "../../services/api/index";
+import type { ErrorType } from "../../services/api/index";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
   const result = { queryKey } as T & { queryKey: K };
   for (const key of Object.keys(query)) {
     // The explicit queryKey always wins, matching the previous
     // `{ ...query, queryKey }` spread where it was set last.
-    if (key === 'queryKey') continue;
+    if (key === "queryKey") continue;
     Object.defineProperty(result, key, {
       enumerable: true,
       configurable: true,
@@ -57,356 +50,456 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
 };
 
 export const getRangelands = (
-    params?: GetRangelandsParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  params?: GetRangelandsParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<RangelandListResponse>({ url: `/rangelands`, method: "GET", params, signal }, options);
+};
 
+export const getGetRangelandsQueryKey = (params?: GetRangelandsParams) => {
+  return [`/rangelands`, ...(params ? [params] : [])] as const;
+};
 
-      return API<RangelandListResponse>(
-      {url: `/rangelands`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetRangelandsQueryKey = (params?: GetRangelandsParams,) => {
-    return [
-    `/rangelands`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetRangelandsQueryOptions = <TData = Awaited<ReturnType<typeof getRangelands>>, TError = ErrorType<Error>>(params?: GetRangelandsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetRangelandsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRangelands>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetRangelandsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetRangelandsQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetRangelandsQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRangelands>>> = ({ signal }) =>
+    getRangelands(params, requestOptions, signal);
 
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRangelands>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
 
+export type GetRangelandsQueryResult = NonNullable<Awaited<ReturnType<typeof getRangelands>>>;
+export type GetRangelandsQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRangelands>>> = ({ signal }) => getRangelands(params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetRangelandsQueryResult = NonNullable<Awaited<ReturnType<typeof getRangelands>>>
-export type GetRangelandsQueryError = ErrorType<Error>
-
-
-export function useGetRangelands<TData = Awaited<ReturnType<typeof getRangelands>>, TError = ErrorType<Error>>(
- params: undefined |  GetRangelandsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>> & Pick<
+export function useGetRangelands<
+  TData = Awaited<ReturnType<typeof getRangelands>>,
+  TError = ErrorType<Error>,
+>(
+  params: undefined | GetRangelandsParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRangelands>>,
           TError,
           Awaited<ReturnType<typeof getRangelands>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRangelands<TData = Awaited<ReturnType<typeof getRangelands>>, TError = ErrorType<Error>>(
- params?: GetRangelandsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetRangelands<
+  TData = Awaited<ReturnType<typeof getRangelands>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetRangelandsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRangelands>>,
           TError,
           Awaited<ReturnType<typeof getRangelands>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRangelands<TData = Awaited<ReturnType<typeof getRangelands>>, TError = ErrorType<Error>>(
- params?: GetRangelandsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetRangelands<
+  TData = Awaited<ReturnType<typeof getRangelands>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetRangelandsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetRangelands<TData = Awaited<ReturnType<typeof getRangelands>>, TError = ErrorType<Error>>(
- params?: GetRangelandsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetRangelands<
+  TData = Awaited<ReturnType<typeof getRangelands>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetRangelandsParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelands>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetRangelandsQueryOptions(params, options);
 
-  const queryOptions = getGetRangelandsQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
-
-
-
-
-
 
 export const postRangelands = (
-    rangelandRequest: RangelandRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  rangelandRequest: RangelandRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<RangelandResponse>(
-      {url: `/rangelands`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: rangelandRequest, signal
+  return API<RangelandResponse>(
+    {
+      url: `/rangelands`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: rangelandRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPostRangelandsMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postRangelands>>,
+    TError,
+    { data: RangelandRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postRangelands>>,
+  TError,
+  { data: RangelandRequest },
+  TContext
+> => {
+  const mutationKey = ["postRangelands"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postRangelands>>,
+    { data: RangelandRequest }
+  > = (props) => {
+    const { data } = props ?? {};
 
+    return postRangelands(data, requestOptions);
+  };
 
-export const getPostRangelandsMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postRangelands>>, TError,{data: RangelandRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof postRangelands>>, TError,{data: RangelandRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['postRangelands'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PostRangelandsMutationResult = NonNullable<Awaited<ReturnType<typeof postRangelands>>>;
+export type PostRangelandsMutationBody = RangelandRequest;
+export type PostRangelandsMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postRangelands>>, {data: RangelandRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postRangelands(data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostRangelandsMutationResult = NonNullable<Awaited<ReturnType<typeof postRangelands>>>
-    export type PostRangelandsMutationBody = RangelandRequest
-    export type PostRangelandsMutationError = ErrorType<Error>
-
-    export const usePostRangelands = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postRangelands>>, TError,{data: RangelandRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postRangelands>>,
-        TError,
-        {data: RangelandRequest},
-        TContext
-      > => {
-      return useMutation(getPostRangelandsMutationOptions(options), queryClient);
-    }
-    export const getRangelandsId = (
-    id: number,
-    params?: GetRangelandsIdParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePostRangelands = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postRangelands>>,
+      TError,
+      { data: RangelandRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postRangelands>>,
+  TError,
+  { data: RangelandRequest },
+  TContext
+> => {
+  return useMutation(getPostRangelandsMutationOptions(options), queryClient);
+};
+export const getRangelandsId = (
+  id: number,
+  params?: GetRangelandsIdParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<RangelandResponse>(
+    { url: `/rangelands/${id}`, method: "GET", params, signal },
+    options,
+  );
+};
 
+export const getGetRangelandsIdQueryKey = (id: number, params?: GetRangelandsIdParams) => {
+  return [`/rangelands/${id}`, ...(params ? [params] : [])] as const;
+};
 
-      return API<RangelandResponse>(
-      {url: `/rangelands/${id}`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetRangelandsIdQueryKey = (id: number,
-    params?: GetRangelandsIdParams,) => {
-    return [
-    `/rangelands/${id}`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetRangelandsIdQueryOptions = <TData = Awaited<ReturnType<typeof getRangelandsId>>, TError = ErrorType<Error>>(id: number,
-    params?: GetRangelandsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetRangelandsIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRangelandsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetRangelandsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetRangelandsIdQueryKey(id, params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetRangelandsIdQueryKey(id,params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRangelandsId>>> = ({ signal }) =>
+    getRangelandsId(id, params, requestOptions, signal);
 
+  return {
+    queryKey,
+    queryFn,
+    enabled: id !== null && id !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+};
 
+export type GetRangelandsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getRangelandsId>>>;
+export type GetRangelandsIdQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRangelandsId>>> = ({ signal }) => getRangelandsId(id,params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetRangelandsIdQueryResult = NonNullable<Awaited<ReturnType<typeof getRangelandsId>>>
-export type GetRangelandsIdQueryError = ErrorType<Error>
-
-
-export function useGetRangelandsId<TData = Awaited<ReturnType<typeof getRangelandsId>>, TError = ErrorType<Error>>(
- id: number,
-    params: undefined |  GetRangelandsIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>> & Pick<
+export function useGetRangelandsId<
+  TData = Awaited<ReturnType<typeof getRangelandsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params: undefined | GetRangelandsIdParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRangelandsId>>,
           TError,
           Awaited<ReturnType<typeof getRangelandsId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRangelandsId<TData = Awaited<ReturnType<typeof getRangelandsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetRangelandsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetRangelandsId<
+  TData = Awaited<ReturnType<typeof getRangelandsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetRangelandsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRangelandsId>>,
           TError,
           Awaited<ReturnType<typeof getRangelandsId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRangelandsId<TData = Awaited<ReturnType<typeof getRangelandsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetRangelandsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetRangelandsId<
+  TData = Awaited<ReturnType<typeof getRangelandsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetRangelandsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetRangelandsId<TData = Awaited<ReturnType<typeof getRangelandsId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetRangelandsIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetRangelandsId<
+  TData = Awaited<ReturnType<typeof getRangelandsId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetRangelandsIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetRangelandsIdQueryOptions(id, params, options);
 
-  const queryOptions = getGetRangelandsIdQueryOptions(id,params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
 
-
-
-
-
-
 export const putRangelandsId = (
-    id: number,
-    rangelandRequest: RangelandRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  id: number,
+  rangelandRequest: RangelandRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<RangelandResponse>(
-      {url: `/rangelands/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: rangelandRequest, signal
+  return API<RangelandResponse>(
+    {
+      url: `/rangelands/${id}`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: rangelandRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPutRangelandsIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putRangelandsId>>,
+    TError,
+    { id: number; data: RangelandRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putRangelandsId>>,
+  TError,
+  { id: number; data: RangelandRequest },
+  TContext
+> => {
+  const mutationKey = ["putRangelandsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putRangelandsId>>,
+    { id: number; data: RangelandRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
 
+    return putRangelandsId(id, data, requestOptions);
+  };
 
-export const getPutRangelandsIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putRangelandsId>>, TError,{id: number;data: RangelandRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof putRangelandsId>>, TError,{id: number;data: RangelandRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['putRangelandsId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PutRangelandsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof putRangelandsId>>
+>;
+export type PutRangelandsIdMutationBody = RangelandRequest;
+export type PutRangelandsIdMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putRangelandsId>>, {id: number;data: RangelandRequest}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  putRangelandsId(id,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutRangelandsIdMutationResult = NonNullable<Awaited<ReturnType<typeof putRangelandsId>>>
-    export type PutRangelandsIdMutationBody = RangelandRequest
-    export type PutRangelandsIdMutationError = ErrorType<Error>
-
-    export const usePutRangelandsId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putRangelandsId>>, TError,{id: number;data: RangelandRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putRangelandsId>>,
-        TError,
-        {id: number;data: RangelandRequest},
-        TContext
-      > => {
-      return useMutation(getPutRangelandsIdMutationOptions(options), queryClient);
-    }
-    export const deleteRangelandsId = (
-    id: number,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePutRangelandsId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof putRangelandsId>>,
+      TError,
+      { id: number; data: RangelandRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof putRangelandsId>>,
+  TError,
+  { id: number; data: RangelandRequest },
+  TContext
+> => {
+  return useMutation(getPutRangelandsIdMutationOptions(options), queryClient);
+};
+export const deleteRangelandsId = (
+  id: number,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<number>({ url: `/rangelands/${id}`, method: "DELETE", signal }, options);
+};
 
+export const getDeleteRangelandsIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteRangelandsId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteRangelandsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteRangelandsId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-      return API<number>(
-      {url: `/rangelands/${id}`, method: 'DELETE', signal
-    },
-      options);
-    }
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteRangelandsId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
 
+    return deleteRangelandsId(id, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DeleteRangelandsIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteRangelandsId>>
+>;
 
-export const getDeleteRangelandsIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRangelandsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteRangelandsId>>, TError,{id: number}, TContext> => {
+export type DeleteRangelandsIdMutationError = ErrorType<Error>;
 
-const mutationKey = ['deleteRangelandsId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteRangelandsId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteRangelandsId(id,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteRangelandsIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteRangelandsId>>>
-
-    export type DeleteRangelandsIdMutationError = ErrorType<Error>
-
-    export const useDeleteRangelandsId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRangelandsId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteRangelandsId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
-      return useMutation(getDeleteRangelandsIdMutationOptions(options), queryClient);
-    }
+export const useDeleteRangelandsId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteRangelandsId>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteRangelandsId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteRangelandsIdMutationOptions(options), queryClient);
+};

@@ -7,7 +7,7 @@ module.exports = {
       target: "./src/types/generated/strapi.ts",
       mock: false,
       clean: true,
-      prettier: true,
+      formatter: "prettier",
       override: {
         mutator: {
           path: "./src/services/api/index.ts",

@@ -4,10 +4,7 @@
  * DOCUMENTATION
  * OpenAPI spec version: 1.0.0
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query';
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -20,8 +17,8 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query';
+  UseQueryResult,
+} from "@tanstack/react-query";
 
 import type {
   Error,
@@ -29,24 +26,20 @@ import type {
   GetStoriesParams,
   StoryListResponse,
   StoryRequest,
-  StoryResponse
-} from './strapi.schemas';
+  StoryResponse,
+} from "./strapi.schemas";
 
-import { API } from '../../services/api/index';
-import type { ErrorType } from '../../services/api/index';
-
-
+import { API } from "../../services/api/index";
+import type { ErrorType } from "../../services/api/index";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
 
 const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKey: K } => {
   const result = { queryKey } as T & { queryKey: K };
   for (const key of Object.keys(query)) {
     // The explicit queryKey always wins, matching the previous
     // `{ ...query, queryKey }` spread where it was set last.
-    if (key === 'queryKey') continue;
+    if (key === "queryKey") continue;
     Object.defineProperty(result, key, {
       enumerable: true,
       configurable: true,
@@ -57,356 +50,451 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
 };
 
 export const getStories = (
-    params?: GetStoriesParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  params?: GetStoriesParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<StoryListResponse>({ url: `/stories`, method: "GET", params, signal }, options);
+};
 
+export const getGetStoriesQueryKey = (params?: GetStoriesParams) => {
+  return [`/stories`, ...(params ? [params] : [])] as const;
+};
 
-      return API<StoryListResponse>(
-      {url: `/stories`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetStoriesQueryKey = (params?: GetStoriesParams,) => {
-    return [
-    `/stories`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetStoriesQueryOptions = <TData = Awaited<ReturnType<typeof getStories>>, TError = ErrorType<Error>>(params?: GetStoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetStoriesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getStories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoriesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetStoriesQueryKey(params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetStoriesQueryKey(params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getStories>>> = ({ signal }) =>
+    getStories(params, requestOptions, signal);
 
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getStories>>,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData> };
+};
 
+export type GetStoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getStories>>>;
+export type GetStoriesQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStories>>> = ({ signal }) => getStories(params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetStoriesQueryResult = NonNullable<Awaited<ReturnType<typeof getStories>>>
-export type GetStoriesQueryError = ErrorType<Error>
-
-
-export function useGetStories<TData = Awaited<ReturnType<typeof getStories>>, TError = ErrorType<Error>>(
- params: undefined |  GetStoriesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>> & Pick<
+export function useGetStories<
+  TData = Awaited<ReturnType<typeof getStories>>,
+  TError = ErrorType<Error>,
+>(
+  params: undefined | GetStoriesParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStories>>,
           TError,
           Awaited<ReturnType<typeof getStories>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStories<TData = Awaited<ReturnType<typeof getStories>>, TError = ErrorType<Error>>(
- params?: GetStoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStories<
+  TData = Awaited<ReturnType<typeof getStories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoriesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStories>>,
           TError,
           Awaited<ReturnType<typeof getStories>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStories<TData = Awaited<ReturnType<typeof getStories>>, TError = ErrorType<Error>>(
- params?: GetStoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStories<
+  TData = Awaited<ReturnType<typeof getStories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoriesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetStories<TData = Awaited<ReturnType<typeof getStories>>, TError = ErrorType<Error>>(
- params?: GetStoriesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetStories<
+  TData = Awaited<ReturnType<typeof getStories>>,
+  TError = ErrorType<Error>,
+>(
+  params?: GetStoriesParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStories>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetStoriesQueryOptions(params, options);
 
-  const queryOptions = getGetStoriesQueryOptions(params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
-
-
-
-
-
 
 export const postStories = (
-    storyRequest: StoryRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  storyRequest: StoryRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<StoryResponse>(
-      {url: `/stories`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: storyRequest, signal
+  return API<StoryResponse>(
+    {
+      url: `/stories`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: storyRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPostStoriesMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof postStories>>,
+    TError,
+    { data: StoryRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof postStories>>,
+  TError,
+  { data: StoryRequest },
+  TContext
+> => {
+  const mutationKey = ["postStories"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof postStories>>,
+    { data: StoryRequest }
+  > = (props) => {
+    const { data } = props ?? {};
 
+    return postStories(data, requestOptions);
+  };
 
-export const getPostStoriesMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postStories>>, TError,{data: StoryRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof postStories>>, TError,{data: StoryRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['postStories'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PostStoriesMutationResult = NonNullable<Awaited<ReturnType<typeof postStories>>>;
+export type PostStoriesMutationBody = StoryRequest;
+export type PostStoriesMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postStories>>, {data: StoryRequest}> = (props) => {
-          const {data} = props ?? {};
-
-          return  postStories(data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PostStoriesMutationResult = NonNullable<Awaited<ReturnType<typeof postStories>>>
-    export type PostStoriesMutationBody = StoryRequest
-    export type PostStoriesMutationError = ErrorType<Error>
-
-    export const usePostStories = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postStories>>, TError,{data: StoryRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof postStories>>,
-        TError,
-        {data: StoryRequest},
-        TContext
-      > => {
-      return useMutation(getPostStoriesMutationOptions(options), queryClient);
-    }
-    export const getStoriesId = (
-    id: number,
-    params?: GetStoriesIdParams,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePostStories = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof postStories>>,
+      TError,
+      { data: StoryRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof postStories>>,
+  TError,
+  { data: StoryRequest },
+  TContext
+> => {
+  return useMutation(getPostStoriesMutationOptions(options), queryClient);
+};
+export const getStoriesId = (
+  id: number,
+  params?: GetStoriesIdParams,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<StoryResponse>({ url: `/stories/${id}`, method: "GET", params, signal }, options);
+};
 
+export const getGetStoriesIdQueryKey = (id: number, params?: GetStoriesIdParams) => {
+  return [`/stories/${id}`, ...(params ? [params] : [])] as const;
+};
 
-      return API<StoryResponse>(
-      {url: `/stories/${id}`, method: 'GET',
-        params, signal
-    },
-      options);
-    }
-
-
-
-
-export const getGetStoriesIdQueryKey = (id: number,
-    params?: GetStoriesIdParams,) => {
-    return [
-    `/stories/${id}`, ...(params ? [params] : [])
-    ] as const;
-    }
-
-
-export const getGetStoriesIdQueryOptions = <TData = Awaited<ReturnType<typeof getStoriesId>>, TError = ErrorType<Error>>(id: number,
-    params?: GetStoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>>, request?: SecondParameter<typeof API>}
+export const getGetStoriesIdQueryOptions = <
+  TData = Awaited<ReturnType<typeof getStoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoriesIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
 ) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetStoriesIdQueryKey(id, params);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetStoriesIdQueryKey(id,params);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getStoriesId>>> = ({ signal }) =>
+    getStoriesId(id, params, requestOptions, signal);
 
+  return {
+    queryKey,
+    queryFn,
+    enabled: id !== null && id !== undefined,
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
+};
 
+export type GetStoriesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getStoriesId>>>;
+export type GetStoriesIdQueryError = ErrorType<Error>;
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStoriesId>>> = ({ signal }) => getStoriesId(id,params, requestOptions, signal);
-
-
-
-
-
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
-}
-
-export type GetStoriesIdQueryResult = NonNullable<Awaited<ReturnType<typeof getStoriesId>>>
-export type GetStoriesIdQueryError = ErrorType<Error>
-
-
-export function useGetStoriesId<TData = Awaited<ReturnType<typeof getStoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params: undefined |  GetStoriesIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>> & Pick<
+export function useGetStoriesId<
+  TData = Awaited<ReturnType<typeof getStoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params: undefined | GetStoriesIdParams,
+  options: {
+    query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>> &
+      Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStoriesId>>,
           TError,
           Awaited<ReturnType<typeof getStoriesId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStoriesId<TData = Awaited<ReturnType<typeof getStoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetStoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>> & Pick<
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStoriesId<
+  TData = Awaited<ReturnType<typeof getStoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoriesIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>> &
+      Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStoriesId>>,
           TError,
           Awaited<ReturnType<typeof getStoriesId>>
-        > , 'initialData'
-      >, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStoriesId<TData = Awaited<ReturnType<typeof getStoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetStoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
-  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+export function useGetStoriesId<
+  TData = Awaited<ReturnType<typeof getStoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoriesIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
-export function useGetStoriesId<TData = Awaited<ReturnType<typeof getStoriesId>>, TError = ErrorType<Error>>(
- id: number,
-    params?: GetStoriesIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient
- ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+export function useGetStoriesId<
+  TData = Awaited<ReturnType<typeof getStoriesId>>,
+  TError = ErrorType<Error>,
+>(
+  id: number,
+  params?: GetStoriesIdParams,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getStoriesId>>, TError, TData>>;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+  const queryOptions = getGetStoriesIdQueryOptions(id, params, options);
 
-  const queryOptions = getGetStoriesIdQueryOptions(id,params,options)
-
-  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
+    queryKey: DataTag<QueryKey, TData>;
+  };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
 
-
-
-
-
-
 export const putStoriesId = (
-    id: number,
-    storyRequest: StoryRequest,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+  id: number,
+  storyRequest: StoryRequest,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
-
-
-      return API<StoryResponse>(
-      {url: `/stories/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: storyRequest, signal
+  return API<StoryResponse>(
+    {
+      url: `/stories/${id}`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: storyRequest,
+      signal,
     },
-      options);
-    }
+    options,
+  );
+};
 
+export const getPutStoriesIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof putStoriesId>>,
+    TError,
+    { id: number; data: StoryRequest },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof putStoriesId>>,
+  TError,
+  { id: number; data: StoryRequest },
+  TContext
+> => {
+  const mutationKey = ["putStoriesId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof putStoriesId>>,
+    { id: number; data: StoryRequest }
+  > = (props) => {
+    const { id, data } = props ?? {};
 
+    return putStoriesId(id, data, requestOptions);
+  };
 
-export const getPutStoriesIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putStoriesId>>, TError,{id: number;data: StoryRequest}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof putStoriesId>>, TError,{id: number;data: StoryRequest}, TContext> => {
+  return { mutationFn, ...mutationOptions };
+};
 
-const mutationKey = ['putStoriesId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+export type PutStoriesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putStoriesId>>>;
+export type PutStoriesIdMutationBody = StoryRequest;
+export type PutStoriesIdMutationError = ErrorType<Error>;
 
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof putStoriesId>>, {id: number;data: StoryRequest}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  putStoriesId(id,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PutStoriesIdMutationResult = NonNullable<Awaited<ReturnType<typeof putStoriesId>>>
-    export type PutStoriesIdMutationBody = StoryRequest
-    export type PutStoriesIdMutationError = ErrorType<Error>
-
-    export const usePutStoriesId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putStoriesId>>, TError,{id: number;data: StoryRequest}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof putStoriesId>>,
-        TError,
-        {id: number;data: StoryRequest},
-        TContext
-      > => {
-      return useMutation(getPutStoriesIdMutationOptions(options), queryClient);
-    }
-    export const deleteStoriesId = (
-    id: number,
- options?: SecondParameter<typeof API>,signal?: AbortSignal
+export const usePutStoriesId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof putStoriesId>>,
+      TError,
+      { id: number; data: StoryRequest },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof putStoriesId>>,
+  TError,
+  { id: number; data: StoryRequest },
+  TContext
+> => {
+  return useMutation(getPutStoriesIdMutationOptions(options), queryClient);
+};
+export const deleteStoriesId = (
+  id: number,
+  options?: SecondParameter<typeof API>,
+  signal?: AbortSignal,
 ) => {
+  return API<number>({ url: `/stories/${id}`, method: "DELETE", signal }, options);
+};
 
+export const getDeleteStoriesIdMutationOptions = <
+  TError = ErrorType<Error>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteStoriesId>>,
+    TError,
+    { id: number },
+    TContext
+  >;
+  request?: SecondParameter<typeof API>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteStoriesId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  const mutationKey = ["deleteStoriesId"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
 
-      return API<number>(
-      {url: `/stories/${id}`, method: 'DELETE', signal
-    },
-      options);
-    }
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteStoriesId>>,
+    { id: number }
+  > = (props) => {
+    const { id } = props ?? {};
 
+    return deleteStoriesId(id, requestOptions);
+  };
 
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DeleteStoriesIdMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteStoriesId>>
+>;
 
-export const getDeleteStoriesIdMutationOptions = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteStoriesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteStoriesId>>, TError,{id: number}, TContext> => {
+export type DeleteStoriesIdMutationError = ErrorType<Error>;
 
-const mutationKey = ['deleteStoriesId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteStoriesId>>, {id: number}> = (props) => {
-          const {id} = props ?? {};
-
-          return  deleteStoriesId(id,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteStoriesIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteStoriesId>>>
-
-    export type DeleteStoriesIdMutationError = ErrorType<Error>
-
-    export const useDeleteStoriesId = <TError = ErrorType<Error>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteStoriesId>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof API>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteStoriesId>>,
-        TError,
-        {id: number},
-        TContext
-      > => {
-      return useMutation(getDeleteStoriesIdMutationOptions(options), queryClient);
-    }
+export const useDeleteStoriesId = <TError = ErrorType<Error>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof deleteStoriesId>>,
+      TError,
+      { id: number },
+      TContext
+    >;
+    request?: SecondParameter<typeof API>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof deleteStoriesId>>,
+  TError,
+  { id: number },
+  TContext
+> => {
+  return useMutation(getDeleteStoriesIdMutationOptions(options), queryClient);
+};
