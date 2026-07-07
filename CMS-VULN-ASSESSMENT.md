@@ -146,7 +146,7 @@ concentrated in the **client's consumption of the API**.
 | Component | Finding | Effort |
 |---|---|---|
 | **v5 flattened response shape** | **101 `.attributes` references across 18 files** (+3 files with `.data.data` nesting) must change from `data.attributes.field` to `data.field` | **High** |
-| **orval type regeneration** | Regenerate `src/types/generated/` from the v5 OpenAPI spec; the shape change also reopens the deferred **orval 6→7** upgrade and the `populate` typing (see `SECURITY-DEFERRALS.md`) | **Medium** |
+| **orval type regeneration** | Regenerate `src/types/generated/` from the v5 OpenAPI spec. orval itself is already on 8.20.0 with a `populate` transformer (resolved 2026-07-07, see `SECURITY-DEFERRALS.md` §1), so only the spec-shape regen remains | **Medium** |
 | **`documentId` adoption** | Relations/lookups that use numeric `id` may need `documentId` | **Medium** |
 | **Coordinated breaking deploy + QA** | The API contract change is breaking; frontend and backend must ship together, with end-to-end testing of map/datasets/stories | **Medium** |
 
@@ -156,8 +156,8 @@ concentrated in the **client's consumption of the API**.
    config, and DB column migration on first boot).
 2. Resolve the plugin blockers: upgrade `config-sync` to 3.x; replace/drop
    `import-export-entries`; confirm/remove `slugify`.
-3. Regenerate the OpenAPI spec, then regenerate the client's orval types (fold in the
-   orval 7 + `populate` transformer work here).
+3. Regenerate the OpenAPI spec, then regenerate the client's orval types (orval 8 + the
+   `populate` transformer are already in place, so this is just a regen).
 4. Migrate the client's response-shape usage (the 101 `.attributes` sites) and `documentId`.
 5. End-to-end QA on a staging DB, then a coordinated FE+BE deploy.
 

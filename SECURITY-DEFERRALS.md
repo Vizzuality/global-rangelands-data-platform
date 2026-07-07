@@ -16,7 +16,7 @@ code path is low. Each entry below states which applies.
 
 | Area | Deferred advisories | Root cause | Remediation |
 |------|--------------------|------------|-------------|
-| `client` — orval | 3 (1 critical, 1 high, 1 moderate) | orval 6→7 is a breaking major upgrade | Dedicated orval 7 migration (see below) |
+| `client` — orval | ✅ **Resolved 2026-07-07** (was 3: 1 critical, 1 high, 1 moderate) | orval 6→8 is a breaking major upgrade | Done — bumped to orval [8.20.0](https://github.com/orval-labs/orval/releases/tag/v8.20.0); see §1 |
 | `cms` — Strapi tree | ~151 (10 critical, 63 high, 66 moderate, 26 low) | transitive deps pinned by Strapi's dependency tree | Dedicated Strapi framework upgrade |
 | `cloud_functions/earth_engine_tiler` — googleapis tree | 4 (moderate) | pinned by `@google/earthengine@0.1.x` → `googleapis@92` | `@google/earthengine` 0.x→1.x major upgrade |
 | `data-processing` — global `uv` tool | 5 | outdated **local** `uv` install, not a repo dependency | `uv self update` (developer/CI environment) |
@@ -27,18 +27,40 @@ js-yaml/@babel/core).
 
 ---
 
-## 1. `client` — orval upgrade (deferred)
+## 1. `client` — orval upgrade (✅ RESOLVED 2026-07-07)
 
-**Deferred advisories**
+**Status:** Resolved by bumping `orval` `6.29.1 → 8.20.0` (exact) — the latest stable as of
+2026-07-07. All three advisories below are cleared: `pnpm audit` reports zero remaining
+advisory paths through `orval`. The "Why deferred / Reachability / Remediation path" sections
+below are retained as the historical record of the deferral.
+
+**Advisories cleared**
 
 | Package | Severity | Advisory | Path |
 |---------|----------|----------|------|
-| `@orval/core` | **Critical** | GHSA-h526-wf6g-67jv | `orval > @orval/core` |
-| `@orval/mock` | **High** | GHSA-f456-rf33-4626 | `orval > @orval/mock` |
-| `js-yaml` (3.x) | Moderate | GHSA-h67p-54hq-rp68 | `orval > @apidevtools/swagger-parser > … > js-yaml` |
+| `@orval/core` | **Critical** | [GHSA-h526-wf6g-67jv](https://github.com/advisories/GHSA-h526-wf6g-67jv) | `orval > @orval/core` |
+| `@orval/mock` | **High** | [GHSA-f456-rf33-4626](https://github.com/advisories/GHSA-f456-rf33-4626) | `orval > @orval/mock` |
+| `js-yaml` (3.x) | Moderate | [GHSA-h67p-54hq-rp68](https://github.com/advisories/GHSA-h67p-54hq-rp68) | `orval > @apidevtools/swagger-parser > … > js-yaml` |
 
-All three live under `orval`, currently pinned at `^6.29.1`. The patched `@orval/core`
-(≥7.19.0) and `@orval/mock` (≥7.20.0) only exist in the **orval 7.x** line.
+### Resolution (what was actually done)
+
+Bumped `orval` to **8.20.0** — the latest stable as of 2026-07-07 — for security reasons.
+orval 8's stricter codegen needed some accompanying config changes:
+
+1. Bumped `orval` to `8.20.0` (exact) in `client/package.json`.
+2. Added `input.override.transformer` (`client/orval-transform.ts`) doing **two** spec
+   repairs orval 8 needs (v6 tolerated both): widen `populate` to also accept `string[]`
+   (orval 8's default object type moved `any`→`unknown`, which rejects the arrays that
+   compiled by accident under v6), and force URL-templated params to `in: "path"` so orval
+   8's new pre-generation spec validation accepts `/upload?id={id}`.
+3. Set `httpClient: "axios"` — orval 8's default httpClient changed to `fetch`, whose call
+   shape is incompatible with the custom axios mutator.
+4. Switched `prettier: true` → `formatter: "prettier"` (the legacy flag is a no-op in v8).
+5. Regenerated `src/types/generated/`; `pnpm check-types` green; map + datasets smoke-tested
+   (array `populate[]=…` serialization confirmed on the wire, relations populate).
+
+The arrays remain arrays on the wire, so runtime behavior is unchanged (see the disproven
+comma-join workaround below).
 
 ### Why deferred
 
@@ -180,4 +202,4 @@ declared by this repository, so it is not fixable via the lockfile.
 
 ---
 
-_Last updated: 2026-07-02 — audit branch `fix/deps/audit-2026-07-02`._
+_Last updated: 2026-07-07 — §1 (orval) resolved via orval 8.20.0 bump on branch `fix/orval-8-security`. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
