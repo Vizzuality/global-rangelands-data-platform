@@ -51,15 +51,15 @@ const LegendItem = ({
   const [layers] = useSyncLayers();
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
 
-  const { data: datasetData } = useGetBySlug<DatasetResponse>(`dataset/${dataset}`, {
+  const { data: datasetData } = useGetBySlug<DatasetResponse>(`datasets/${dataset}`, {
     populate: ["layers", "translations", "layers.layer"],
     locale,
   });
 
   const datasetLayers =
     useMemo(
-      () => datasetData?.data?.attributes?.layers.map((l) => l.layer?.data?.id),
-      [datasetData?.data?.attributes?.layers],
+      () => datasetData?.data?.layers.map((l) => l.layer?.id),
+      [datasetData?.data?.layers],
     )?.filter((l) => !!l) || [];
 
   const layersQuery = useGetLayers(
@@ -84,7 +84,7 @@ const LegendItem = ({
 
   const datasetLayer = useMemo(() => {
     return localizedLayersData?.data?.find((layer) => {
-      return !!layer?.attributes?.slug && layers.includes(layer?.attributes?.slug);
+      return !!layer?.slug && layers.includes(layer?.slug);
     });
   }, [localizedLayersData, layers]);
 
@@ -93,22 +93,22 @@ const LegendItem = ({
   };
 
   const LEGEND = useMemo(() => {
-    const legendType = datasetLayer?.attributes?.legend?.type;
+    const legendType = datasetLayer?.legend?.type;
 
     if (_isLegendType(legendType)) {
       const props = {
-        items: datasetLayer?.attributes?.legend?.items as LegendComponent["items"],
+        items: datasetLayer?.legend?.items as LegendComponent["items"],
       };
       return createElement(LEGEND_CONTENT[legendType], props);
     }
   }, [datasetLayer]);
 
   const settings = useMemo(() => {
-    return getLayerSettings(datasetLayer?.attributes, layersSettings);
+    return getLayerSettings(datasetLayer, layersSettings);
   }, [layersSettings, datasetLayer]);
 
   const setLayerSettings = (key: string, value: boolean | number) => {
-    const layer = datasetLayer?.attributes;
+    const layer = datasetLayer;
     if (layer?.slug) {
       const layerSlug = layer.slug;
       setLayersSettings((prev) => ({
@@ -125,18 +125,15 @@ const LegendItem = ({
     if (dataset === RANGELAND_DATASET_SLUG) {
       return;
     }
-    if (
-      datasetData?.data?.attributes?.type === "Group" ||
-      datasetData?.data?.attributes?.type === "Temporal-Group"
-    ) {
-      const layerName = datasetLayer?.attributes?.title;
-      const items = datasetLayer?.attributes?.legend?.items;
+    if (datasetData?.data?.type === "Group" || datasetData?.data?.type === "Temporal-Group") {
+      const layerName = datasetLayer?.title;
+      const items = datasetLayer?.legend?.items;
       if (items?.[0]?.name !== layerName) {
         return layerName;
       }
     }
     return;
-  }, [datasetData?.data?.attributes?.type, datasetLayer?.attributes]);
+  }, [datasetData?.data?.type, datasetLayer]);
 
   return (
     <Collapsible open={isOpen} defaultOpen className={cn("space-y-2", className)}>
@@ -144,10 +141,10 @@ const LegendItem = ({
         isOpen={isOpen}
         visible={settings.visibility}
         opacity={settings.opacity}
-        title={datasetData?.data?.attributes?.title}
+        title={datasetData?.data?.title}
         subtitle={subtitle}
         handleChangeIsOpen={onOpenChange}
-        info={datasetLayer?.attributes?.description}
+        info={datasetLayer?.description}
         setOpacity={(o) => setLayerSettings("opacity", o)}
         setVisibility={(v) => setLayerSettings("visibility", v)}
         listeners={listeners}
@@ -155,9 +152,9 @@ const LegendItem = ({
         sortable={sortable}
       />
       <CollapsibleContent className="px-4">
-        {datasetLayer?.attributes?.legend?.unit && (
+        {datasetLayer?.legend?.unit && (
           <div className="mb-1.5 flex items-end justify-end">
-            <span className="text-xs">{datasetLayer?.attributes?.legend?.unit}</span>
+            <span className="text-xs">{datasetLayer?.legend?.unit}</span>
           </div>
         )}
         {LEGEND}

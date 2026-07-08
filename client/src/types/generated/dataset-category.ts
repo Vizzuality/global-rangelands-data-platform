@@ -252,7 +252,7 @@ export const usePostDatasetCategories = <TError = ErrorType<Error>, TContext = u
   return useMutation(getPostDatasetCategoriesMutationOptions(options), queryClient);
 };
 export const getDatasetCategoriesId = (
-  id: number,
+  id: string,
   params?: GetDatasetCategoriesIdParams,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -264,7 +264,7 @@ export const getDatasetCategoriesId = (
 };
 
 export const getGetDatasetCategoriesIdQueryKey = (
-  id: number,
+  id: string,
   params?: GetDatasetCategoriesIdParams,
 ) => {
   return [`/dataset-categories/${id}`, ...(params ? [params] : [])] as const;
@@ -274,7 +274,7 @@ export const getGetDatasetCategoriesIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getDatasetCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetDatasetCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -309,7 +309,7 @@ export function useGetDatasetCategoriesId<
   TData = Awaited<ReturnType<typeof getDatasetCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params: undefined | GetDatasetCategoriesIdParams,
   options: {
     query: Partial<
@@ -331,7 +331,7 @@ export function useGetDatasetCategoriesId<
   TData = Awaited<ReturnType<typeof getDatasetCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetDatasetCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -353,7 +353,7 @@ export function useGetDatasetCategoriesId<
   TData = Awaited<ReturnType<typeof getDatasetCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetDatasetCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -368,7 +368,7 @@ export function useGetDatasetCategoriesId<
   TData = Awaited<ReturnType<typeof getDatasetCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetDatasetCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -388,7 +388,7 @@ export function useGetDatasetCategoriesId<
 }
 
 export const putDatasetCategoriesId = (
-  id: number,
+  id: string,
   datasetCategoryRequest: DatasetCategoryRequest,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -412,14 +412,14 @@ export const getPutDatasetCategoriesIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof putDatasetCategoriesId>>,
     TError,
-    { id: number; data: DatasetCategoryRequest },
+    { id: string; data: DatasetCategoryRequest },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof putDatasetCategoriesId>>,
   TError,
-  { id: number; data: DatasetCategoryRequest },
+  { id: string; data: DatasetCategoryRequest },
   TContext
 > => {
   const mutationKey = ["putDatasetCategoriesId"];
@@ -431,7 +431,7 @@ export const getPutDatasetCategoriesIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof putDatasetCategoriesId>>,
-    { id: number; data: DatasetCategoryRequest }
+    { id: string; data: DatasetCategoryRequest }
   > = (props) => {
     const { id, data } = props ?? {};
 
@@ -452,7 +452,7 @@ export const usePutDatasetCategoriesId = <TError = ErrorType<Error>, TContext = 
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof putDatasetCategoriesId>>,
       TError,
-      { id: number; data: DatasetCategoryRequest },
+      { id: string; data: DatasetCategoryRequest },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -461,13 +461,13 @@ export const usePutDatasetCategoriesId = <TError = ErrorType<Error>, TContext = 
 ): UseMutationResult<
   Awaited<ReturnType<typeof putDatasetCategoriesId>>,
   TError,
-  { id: number; data: DatasetCategoryRequest },
+  { id: string; data: DatasetCategoryRequest },
   TContext
 > => {
   return useMutation(getPutDatasetCategoriesIdMutationOptions(options), queryClient);
 };
 export const deleteDatasetCategoriesId = (
-  id: number,
+  id: string,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
 ) => {
@@ -481,14 +481,14 @@ export const getDeleteDatasetCategoriesIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteDatasetCategoriesId>>,
     TError,
-    { id: number },
+    { id: string },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deleteDatasetCategoriesId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   const mutationKey = ["deleteDatasetCategoriesId"];
@@ -500,7 +500,7 @@ export const getDeleteDatasetCategoriesIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deleteDatasetCategoriesId>>,
-    { id: number }
+    { id: string }
   > = (props) => {
     const { id } = props ?? {};
 
@@ -521,7 +521,7 @@ export const useDeleteDatasetCategoriesId = <TError = ErrorType<Error>, TContext
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof deleteDatasetCategoriesId>>,
       TError,
-      { id: number },
+      { id: string },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -530,7 +530,7 @@ export const useDeleteDatasetCategoriesId = <TError = ErrorType<Error>, TContext
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteDatasetCategoriesId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   return useMutation(getDeleteDatasetCategoriesIdMutationOptions(options), queryClient);

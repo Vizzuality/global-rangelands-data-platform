@@ -20,15 +20,13 @@ const useSyncLayersOrder = () => {
       const orderedLayers = [...Array.from(syncDatasets)];
 
       datasetsData?.data?.forEach((dataset) => {
-        const datasetLayers = dataset.attributes?.layers?.map(
-          (layer) => layer.layer?.data?.attributes?.slug,
-        );
+        const datasetLayers = dataset.layers?.map((layer) => layer.layer?.slug);
 
         const datasetLayerSlug = layers?.find((layer) => {
           return datasetLayers?.includes(layer);
         });
 
-        const index = !!dataset.attributes?.slug && syncDatasets?.indexOf(dataset.attributes?.slug);
+        const index = !!dataset.slug && syncDatasets?.indexOf(dataset.slug);
 
         if (datasetLayerSlug && typeof index === "number" && index >= 0) {
           orderedLayers[index] = datasetLayerSlug;

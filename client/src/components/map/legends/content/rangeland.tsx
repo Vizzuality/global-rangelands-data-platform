@@ -26,24 +26,22 @@ const RangelandLegend = () => {
   const items = useMemo((): LegendComponent["items"] => {
     const biomes =
       rangelandType === RANGELAND_BIOMES && !!rangelandRegions?.length
-        ? rangelandsData?.data?.filter((rd) => rangelandRegions.includes(`${rd?.attributes?.code}`))
+        ? rangelandsData?.data?.filter((rd) => rangelandRegions.includes(`${rd?.code}`))
         : rangelandsData?.data;
 
     const biomesItems = biomes?.map((rd) => {
       const ecoregions =
         rangelandType === RANGELAND_ECOREGIONS
           ? rangelandRegions?.length
-            ? rd?.attributes?.ecoregions?.data?.filter((rd) =>
-                rangelandRegions.includes(`${rd?.attributes?.code}`),
-              )
-            : rd?.attributes?.ecoregions?.data
+            ? rd?.ecoregions?.filter((rd) => rangelandRegions.includes(`${rd?.code}`))
+            : rd?.ecoregions
           : [];
       return {
-        name: rd?.attributes?.title,
-        color: rd?.attributes?.color,
+        name: rd?.title,
+        color: rd?.color,
         items: ecoregions?.map((e) => ({
-          name: e?.attributes?.title,
-          color: e?.attributes?.color,
+          name: e?.title,
+          color: e?.color,
         })),
       };
     });

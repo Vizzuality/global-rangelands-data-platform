@@ -1,6 +1,6 @@
 "use client";
 
-import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { Dataset } from "@/types/generated/strapi.schemas";
 
 import { useSyncDatasets, useSyncLayers, useSyncLayersSettings } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
@@ -17,7 +17,7 @@ import { useGetLocalizedList } from "@/lib/localized-query";
 import TemporalGroupDataset from "./components/temporal-group";
 import { before } from "node:test";
 
-type DatasetsItemProps = DatasetListResponseDataItem & {
+type DatasetsItemProps = Dataset & {
   className?: string;
   showTitle?: boolean;
 };
@@ -26,7 +26,8 @@ type LocalizedGroupProps = "group_es" | "group_fr";
 
 const LAYERS_EXCEPTIONS = ["environmental-justice"];
 
-const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) => {
+const DatasetsItem = (props: DatasetsItemProps) => {
+  const { className, showTitle, ...attributes } = props;
   const t = useTranslations();
   const [datasets, setDatasets] = useSyncDatasets();
   const [layersSettings, setLayersSettings] = useSyncLayersSettings();
@@ -36,7 +37,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
   const locale = useLocale();
 
   const datasetLayers =
-    useMemo(() => attributes?.layers.map((l) => l.layer?.data?.id), [attributes?.layers])?.filter(
+    useMemo(() => attributes?.layers.map((l) => l.layer?.id), [attributes?.layers])?.filter(
       (l) => !!l,
       [],
     ) || [];
@@ -81,12 +82,10 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
     });
 
     if (!checked) {
-      setLayers((prev) =>
-        prev.filter((l) => !layersData?.map((l) => l.attributes?.slug)?.includes(l)),
-      );
+      setLayers((prev) => prev.filter((l) => !layersData?.map((l) => l.slug)?.includes(l)));
     }
     if (checked) {
-      const firstDatasetLayer = layersData?.[0]?.attributes?.slug;
+      const firstDatasetLayer = layersData?.[0]?.slug;
       if (firstDatasetLayer) {
         setLayers((prev) => [...prev, firstDatasetLayer]);
       }
@@ -137,7 +136,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
         return (
           <TemporalChangesDataset
             layers={layersData?.map((l) => {
-              const layerType = attributes?.layers.find((dl) => dl.layer?.data?.id === l.id)?.type;
+              const layerType = attributes?.layers.find((dl) => dl.layer?.id === l.id)?.type;
               return {
                 ...l,
                 type: layerType,
@@ -150,7 +149,7 @@ const DatasetsItem = ({ attributes, className, showTitle }: DatasetsItemProps) =
           <TemporalGroupDataset
             layers={layersData?.map((l) => {
               const { type, group, ...props } =
-                attributes?.layers.find((dl) => dl.layer?.data?.id === l.id) || {};
+                attributes?.layers.find((dl) => dl.layer?.id === l.id) || {};
               const localizedGroup =
                 !locale || locale === "en"
                   ? group

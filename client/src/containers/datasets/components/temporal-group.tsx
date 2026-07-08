@@ -1,10 +1,10 @@
-import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { Layer } from "@/types/generated/strapi.schemas";
 import GroupDataset from "./group";
 import { useMemo } from "react";
 import TemporalChangesDataset from "./temporal";
 import { useSyncLayers } from "@/store/map";
 
-type LayerWithType = LayerListResponseDataItem & {
+type LayerWithType = Layer & {
   type?: string;
   group?: string;
   groupName?: string;
@@ -23,9 +23,7 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
   const [syncLayers] = useSyncLayers();
 
   const selectedLayer = useMemo(() => {
-    const selectedLayer = layers?.find(
-      (l) => !!l.attributes?.slug && syncLayers?.includes(l.attributes?.slug),
-    );
+    const selectedLayer = layers?.find((l) => !!l.slug && syncLayers?.includes(l.slug));
 
     return { type: selectedLayer?.type || DEFAULT_TYPE, group: selectedLayer?.group };
   }, [layers, syncLayers]);
@@ -39,14 +37,7 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
           ...acc,
           {
             ...layer,
-            ...(layer.attributes
-              ? {
-                  attributes: {
-                    ...layer.attributes,
-                    title: layer.groupName || layer.group,
-                  },
-                }
-              : {}),
+            title: layer.groupName || layer.group,
             name: layer.group,
           },
         ];
@@ -69,14 +60,7 @@ const TemporalGroupDataset = ({ layers, slug }: TemporalGroupDatasetProps) => {
           ...acc,
           {
             ...layer,
-            ...(layer.attributes
-              ? {
-                  attributes: {
-                    ...layer.attributes,
-                    title: name,
-                  },
-                }
-              : {}),
+            title: name,
             name,
             type: layer.type || "",
           },
