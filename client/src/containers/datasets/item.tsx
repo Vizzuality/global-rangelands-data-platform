@@ -15,7 +15,6 @@ import TemporalChangesDataset from "./components/temporal";
 import { useGetLayers } from "@/types/generated/layer";
 import { useGetLocalizedList } from "@/lib/localized-query";
 import TemporalGroupDataset from "./components/temporal-group";
-import { before } from "node:test";
 
 type DatasetsItemProps = Dataset & {
   className?: string;
@@ -103,30 +102,6 @@ const DatasetsItem = (props: DatasetsItemProps) => {
       }
     }
   };
-
-  //   () =>
-  //     layersData?.find(
-  //       (layer) => !!layer.attributes?.slug && layers.includes(layer.attributes.slug),
-  //     )?.attributes,
-  //   [attributes, layers],
-  // );
-
-  // const handleChangeVisibility = (visible: boolean) => {
-  //   const datasetLayerSlug = datasetLayer?.slug;
-  //   if (datasetLayerSlug) {
-  //     setLayersSettings((prev) => ({
-  //       ...prev,
-  //       [datasetLayerSlug]: {
-  //         ...(prev?.[datasetLayerSlug] || {}),
-  //         visibility: visible,
-  //       },
-  //     }));
-  //   }
-  // };
-
-  // const datasetVisibility = useMemo(() => {
-  //   return getLayerSettings(datasetLayer, layersSettings)?.visibility;
-  // }, [datasetLayer, layersSettings]);
 
   const COMPONENT = useMemo(() => {
     switch (attributes?.type) {
