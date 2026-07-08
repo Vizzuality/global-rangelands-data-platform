@@ -1,4 +1,4 @@
-FROM node:18.17-bullseye-slim
+FROM node:24.15.0-bookworm-slim
 # Install dependencies
 RUN apt-get update -y && \
     apt-get upgrade -y && \

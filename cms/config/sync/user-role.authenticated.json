@@ -28,9 +28,6 @@
       "action": "api::rangeland.rangeland.findOne"
     },
     {
-      "action": "plugin::slugify.slugController.findSlug"
-    },
-    {
       "action": "plugin::users-permissions.auth.changePassword"
     },
     {

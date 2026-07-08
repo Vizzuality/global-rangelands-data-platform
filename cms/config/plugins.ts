@@ -2,36 +2,8 @@ module.exports = ({ env }) => ({
   "config-sync": {
     enabled: true,
   },
-  slugify: {
+  "import-export-data": {
     enabled: true,
-    config: {
-      contentTypes: {
-        'rangeland': {
-          field: 'slug',
-          references: 'title',
-        },
-        'ecoregion': {
-          field: 'slug',
-          references: 'title',
-        },
-        'dataset': {
-          field: 'slug',
-          references: 'title',
-        },
-        'layer': {
-          field: 'slug',
-          references: 'title',
-        },
-        'story-category': {
-          field: 'slug',
-          references: 'title',
-        },
-        'story': {
-          field: 'slug',
-          references: 'title',
-        },
-      }
-    }
   },
   documentation: {
     config: {
