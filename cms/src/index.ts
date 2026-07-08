@@ -11,7 +11,11 @@ export default {
       if (!attributes.slug || !attributes.title) return next();
 
       const data = context.params?.data as { title?: string; slug?: string } | undefined;
-      if (data?.title) {
+      if (!data?.title) return next();
+
+      const hasSlug = typeof data.slug === "string" && data.slug.length > 0;
+      const slugUntouchedOnUpdate = context.action === "update" && data.slug === undefined;
+      if (!hasSlug && !slugUntouchedOnUpdate) {
         data.slug = slugify(data.title, { lower: true, strict: true, trim: true });
       }
 
