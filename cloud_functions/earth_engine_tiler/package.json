@@ -41,6 +41,9 @@
     "google-auth-library": {
       "node-forge": "1.4.0",
       "jws": "4.0.1"
+    },
+    "external-editor": {
+      "tmp": "0.2.6"
     }
   }
 }
