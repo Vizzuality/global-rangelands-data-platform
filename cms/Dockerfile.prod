@@ -45,6 +45,7 @@ RUN apt-get update -y && \
     apt-get clean
 
 ENV NODE_ENV=production
+ENV COREPACK_HOME=/opt/corepack
 
 RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
@@ -52,6 +53,7 @@ WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 strapi
+RUN chown -R strapi:nodejs /opt/corepack
 
 COPY --from=build --chown=strapi:nodejs /app ./
 
