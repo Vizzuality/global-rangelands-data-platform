@@ -1,13 +1,9 @@
 import { useTranslations } from "next-intl";
 
-export type StoryDatasetAttributes = {
-  slug?: string;
-  title?: string;
-  layers?: { layer?: { data?: { attributes?: { slug?: string } } } }[];
-};
+import type { StoryDatasetsItem } from "@/types/generated/strapi.schemas";
 
 type RelatedDatasetsProps = {
-  datasets: { id?: number; attributes?: StoryDatasetAttributes }[];
+  datasets: StoryDatasetsItem[];
 };
 
 const RelatedDatasets = ({ datasets }: RelatedDatasetsProps) => {
@@ -21,7 +17,7 @@ const RelatedDatasets = ({ datasets }: RelatedDatasetsProps) => {
       <ul className="space-y-1">
         {datasets.map((d) => (
           <li key={d.id} className="text-sm">
-            {d.attributes?.title ?? d.attributes?.slug}
+            {d.title ?? d.slug}
           </li>
         ))}
       </ul>

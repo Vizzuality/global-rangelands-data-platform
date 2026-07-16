@@ -7,7 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import { useGetStories } from "@/types/generated/story";
 import { useGetStoryCategories } from "@/types/generated/story-category";
 import { useSyncCategory, useSyncSearchParams } from "@/store/map";
-import type { StoryListResponseDataItem } from "@/types/generated/strapi.schemas";
+import type { Story } from "@/types/generated/strapi.schemas";
 import StoryMarker, { type StoryMarkerVariant } from "./marker";
 
 const STORIES_MODE_PREFIXES = ["/map/stories", "/map/story"];
@@ -39,12 +39,12 @@ const resolveVisibleStories = ({
   activeCategory,
   categoryByStoryId,
 }: {
-  stories: StoryListResponseDataItem[];
+  stories: Story[];
   activeSlug: string | null;
   activeCategory: string | null;
-  categoryByStoryId: Map<number, string>;
-}): StoryListResponseDataItem[] => {
-  if (activeSlug) return stories.filter((s) => s.attributes?.slug === activeSlug);
+  categoryByStoryId: Map<string | number, string>;
+}): Story[] => {
+  if (activeSlug) return stories.filter((s) => s.slug === activeSlug);
   if (activeCategory) {
     return stories.filter((s) => s.id != null && categoryByStoryId.get(s.id) === activeCategory);
   }
@@ -56,7 +56,7 @@ const StoryMarkers = () => {
   const router = useRouter();
   const searchParams = useSyncSearchParams();
   const [activeCategory] = useSyncCategory();
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | number | null>(null);
 
   const isStoriesMode = STORIES_MODE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
@@ -77,12 +77,12 @@ const StoryMarkers = () => {
   );
 
   const categoryByStoryId = useMemo(() => {
-    const map = new Map<number, string>();
+    const map = new Map<string | number, string>();
     for (const cat of categoriesData?.data ?? []) {
-      const catSlug = cat.attributes?.slug;
+      const catSlug = cat.slug;
       if (!catSlug) continue;
-      for (const story of cat.attributes?.stories?.data ?? []) {
-        if (story.id) map.set(story.id, catSlug);
+      for (const story of cat.stories ?? []) {
+        if (story.id != null) map.set(story.id, catSlug);
       }
     }
     return map;
@@ -101,11 +101,8 @@ const StoryMarkers = () => {
   return (
     <>
       {visibleStories.map((item) => {
-        const { id, attributes } = item;
-        if (!id || !attributes) return null;
-
-        const { latitude, longitude, title, image, slug } = attributes;
-        if (latitude == null || longitude == null) return null;
+        const { id, latitude, longitude, title, image, slug } = item;
+        if (id == null || latitude == null || longitude == null) return null;
 
         const categorySlug = categoryByStoryId.get(id);
         const variant =
@@ -117,7 +114,7 @@ const StoryMarkers = () => {
             latitude={latitude}
             longitude={longitude}
             title={title}
-            imageUrl={image?.data?.attributes?.url}
+            imageUrl={image?.url}
             slug={slug}
             variant={variant}
             isActive={!!slug && activeSlug === slug}

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useGetLocalizedList } from "@/lib/localized-query";
 import { useGetStoryCategories } from "@/types/generated/story-category";
 import { useSyncCategory, useSyncSearchParams } from "@/store/map";
-import { StoryCategoryListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { StoryCategory } from "@/types/generated/strapi.schemas";
 import StoryCard from "./card";
 import {
   CATEGORY_DESCRIPTIONS,
@@ -17,9 +17,7 @@ import {
   STORY_CARD_VARIANTS,
 } from "./categories";
 
-type StoryItem = NonNullable<
-  NonNullable<NonNullable<StoryCategoryListResponseDataItem["attributes"]>["stories"]>["data"]
->[number];
+type StoryItem = NonNullable<StoryCategory["stories"]>[number];
 
 const CategoryList = ({
   categories,
@@ -106,7 +104,7 @@ const CategoryStories = ({
   onBack,
   onSelect,
 }: {
-  category: StoryCategoryListResponseDataItem;
+  category: StoryCategory;
   categories: { slug: string; title: string }[];
   activeSlug?: string;
   searchParams: string;
@@ -114,9 +112,9 @@ const CategoryStories = ({
   onSelect: (slug: string) => void;
 }) => {
   const t = useTranslations();
-  const slug = category.attributes?.slug;
-  const title = category.attributes?.title;
-  const stories: StoryItem[] = category.attributes?.stories?.data ?? [];
+  const slug = category.slug;
+  const title = category.title;
+  const stories: StoryItem[] = category.stories ?? [];
   const variant = (slug && STORY_CARD_VARIANTS[slug]) || STORY_CARD_DEFAULT_VARIANT;
   const titleColor = (slug && CATEGORY_TITLE_COLOR[slug]) || CATEGORY_TITLE_DEFAULT_COLOR;
 
@@ -170,8 +168,8 @@ const Stories = () => {
     () =>
       storyCategoriesData?.data?.reduce<{ slug: string; title: string }[]>(
         (acc, category) =>
-          category.attributes?.title && category.attributes?.slug
-            ? [...acc, { slug: category.attributes.slug, title: category.attributes.title }]
+          category.title && category.slug
+            ? [...acc, { slug: category.slug, title: category.title }]
             : acc,
         [],
       ) ?? [],
@@ -179,7 +177,7 @@ const Stories = () => {
   );
 
   const selectedCategory = activeCategory
-    ? storyCategoriesData?.data?.find((c) => c.attributes?.slug === activeCategory)
+    ? storyCategoriesData?.data?.find((c) => c.slug === activeCategory)
     : undefined;
 
   if (selectedCategory) {

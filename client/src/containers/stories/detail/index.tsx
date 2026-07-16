@@ -15,7 +15,7 @@ import RichText from "@/components/ui/rich-text";
 import { sidebarOpenAtom, useSyncSearchParams } from "@/store/map";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
 import FurtherInfo from "./further-info";
-import RelatedDatasets, { type StoryDatasetAttributes } from "./related-datasets";
+import RelatedDatasets from "./related-datasets";
 
 type StoryDetailProps = {
   slug: string;
@@ -46,10 +46,10 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
     { query: { enabled: !!slug } },
   );
 
-  const attributes = data?.data?.[0]?.attributes;
-  const translations = attributes?.translations;
-  const latitude = attributes?.latitude;
-  const longitude = attributes?.longitude;
+  const story = data?.data?.[0];
+  const translations = story?.translations;
+  const latitude = story?.latitude;
+  const longitude = story?.longitude;
 
   useEffect(() => {
     if (!map || latitude == null || longitude == null) return;
@@ -63,21 +63,13 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
   const localized =
     locale !== DEFAULT_LOCALE ? translations?.find((tr) => tr.locale === locale) : undefined;
 
-  const title = localized?.title ?? attributes?.title;
-  const description = localized?.description ?? attributes?.description;
+  const title = localized?.title ?? story?.title;
+  const description = localized?.description ?? story?.description;
 
-  const imageAttrs = (
-    attributes?.image as { data?: { attributes?: { url?: string; caption?: string } } } | undefined
-  )?.data?.attributes;
-  const imageUrl = imageAttrs?.url;
-  const imageCaption = imageAttrs?.caption;
+  const imageUrl = story?.image?.url;
+  const imageCaption = story?.image?.caption;
 
-  const storyDatasets =
-    (
-      attributes?.datasets as
-        | { data?: { id?: number; attributes?: StoryDatasetAttributes }[] }
-        | undefined
-    )?.data ?? [];
+  const storyDatasets = story?.datasets ?? [];
 
   return (
     <div className="flex flex-col">
@@ -116,7 +108,7 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
           </div>
         )}
 
-        <FurtherInfo items={attributes?.further_information ?? []} locale={locale} />
+        <FurtherInfo items={story?.further_information ?? []} locale={locale} />
 
         <RelatedDatasets datasets={storyDatasets} />
       </div>

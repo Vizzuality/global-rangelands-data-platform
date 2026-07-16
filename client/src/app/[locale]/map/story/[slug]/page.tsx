@@ -17,7 +17,7 @@ export async function generateMetadata(props: {
       populate: ["translations"],
       "pagination[limit]": 1,
     });
-    const story = response.data?.[0]?.attributes;
+    const story = response.data?.[0];
 
     const title = story?.title ?? t("Rangelands Stories");
 

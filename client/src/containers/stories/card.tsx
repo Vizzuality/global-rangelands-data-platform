@@ -3,12 +3,10 @@
 import { useLocale } from "next-intl";
 
 import { useTranslations } from "@/i18n";
-import type { StoryCategoryListResponseDataItem } from "@/types/generated/strapi.schemas";
+import type { StoryCategory } from "@/types/generated/strapi.schemas";
 import StoryCardContent from "@/components/story-card-content";
 
-type StoryItem = NonNullable<
-  NonNullable<NonNullable<StoryCategoryListResponseDataItem["attributes"]>["stories"]>["data"]
->[number];
+type StoryItem = NonNullable<StoryCategory["stories"]>[number];
 
 type StoryCardProps = {
   story: StoryItem;
@@ -21,13 +19,12 @@ const StoryCard = ({ story, categoryTitle, searchParams, variant }: StoryCardPro
   const t = useTranslations();
   const locale = useLocale();
 
-  const storyAttrs = story.attributes;
-  const storySlug = storyAttrs?.slug;
+  const storySlug = story.slug;
   if (!storySlug) return null;
 
   const localizedTitle =
-    storyAttrs?.translations?.find((tr) => tr.locale === locale)?.title ?? storyAttrs?.title;
-  const imageAttrs = storyAttrs?.image?.data?.attributes;
+    story.translations?.find((tr) => tr.locale === locale)?.title ?? story.title;
+  const imageAttrs = story.image;
 
   return (
     <article className="group relative">
