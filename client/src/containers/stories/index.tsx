@@ -11,6 +11,7 @@ import { StoryCategory } from "@/types/generated/strapi.schemas";
 import StoryCard from "./card";
 import {
   CATEGORY_DESCRIPTIONS,
+  CATEGORY_ORDER,
   CATEGORY_TITLE_COLOR,
   CATEGORY_TITLE_DEFAULT_COLOR,
   STORY_CARD_DEFAULT_VARIANT,
@@ -50,6 +51,11 @@ const CategoryList = ({
     ))}
   </div>
 );
+
+function categoryOrderIndex(slug: string): number {
+  const index = CATEGORY_ORDER.indexOf(slug);
+  return index === -1 ? CATEGORY_ORDER.length : index;
+}
 
 function categoryTabClassName(isActive: boolean, activeVariant: string): string {
   return isActive ? activeVariant : "bg-white text-foreground";
@@ -164,17 +170,17 @@ const Stories = () => {
   });
   const { data: storyCategoriesData } = useGetLocalizedList(storyCategoriesQuery);
 
-  const categories = useMemo(
-    () =>
+  const categories = useMemo(() => {
+    const list =
       storyCategoriesData?.data?.reduce<{ slug: string; title: string }[]>(
         (acc, category) =>
           category.title && category.slug
             ? [...acc, { slug: category.slug, title: category.title }]
             : acc,
         [],
-      ) ?? [],
-    [storyCategoriesData],
-  );
+      ) ?? [];
+    return list.sort((a, b) => categoryOrderIndex(a.slug) - categoryOrderIndex(b.slug));
+  }, [storyCategoriesData]);
 
   const selectedCategory = activeCategory
     ? storyCategoriesData?.data?.find((c) => c.slug === activeCategory)
