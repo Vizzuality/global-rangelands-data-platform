@@ -33,7 +33,7 @@ const CategoryList = ({
         type="button"
         onClick={() => onSelect(category.slug)}
         className={cn(
-          "flex w-full items-center gap-6 py-4 text-left transition-colors hover:bg-background",
+          "flex w-full items-center gap-6 py-4 text-left",
           index < categories.length - 1 && "border-b border-foreground",
         )}
       >
@@ -194,10 +194,10 @@ const Stories = () => {
   }
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative min-h-[var(--content-height)] overflow-hidden">
       <div
         aria-hidden
-        className="pointer-events-none absolute left-0 top-[197px] h-[400px] w-[400px] bg-[url(/images/stories-pattern.png)] bg-contain bg-no-repeat"
+        className="pointer-events-none absolute bottom-0 left-0 aspect-[800/1034] w-full bg-[url(/images/stories-pattern.png)] bg-contain bg-bottom bg-no-repeat"
       />
       <div className="relative">
         <header className="space-y-4 px-6 pb-6 pt-10">
