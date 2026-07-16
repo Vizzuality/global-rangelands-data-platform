@@ -29,8 +29,8 @@ const Item = ({ slug }: PopupItemProps) => {
   const clusterFeatures = useAtomValue(clusterFeaturesAtom);
   const info = deckInteractiveLayers[slug];
 
-  const { data: layerData } = useGetBySlug<LayerResponse>(`layer/${slug}`, {
-    populate: "dataset,metadata,translations",
+  const { data: layerData } = useGetBySlug<LayerResponse>(`layers/${slug}`, {
+    populate: ["translations"],
     locale,
   });
 
@@ -43,7 +43,7 @@ const Item = ({ slug }: PopupItemProps) => {
   };
 
   const POPUP_COMPONENT = useMemo(() => {
-    const popupConfig = layerData?.data?.attributes?.interaction_config;
+    const popupConfig = layerData?.data?.interaction_config;
 
     if (!isInteractionConfig(popupConfig)) return null;
 

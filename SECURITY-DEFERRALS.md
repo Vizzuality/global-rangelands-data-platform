@@ -17,7 +17,7 @@ code path is low. Each entry below states which applies.
 | Area | Deferred advisories | Root cause | Remediation |
 |------|--------------------|------------|-------------|
 | `client` — orval | ✅ **Resolved 2026-07-07** (was 3: 1 critical, 1 high, 1 moderate) | orval 6→8 is a breaking major upgrade | Done — bumped to orval [8.20.0](https://github.com/orval-labs/orval/releases/tag/v8.20.0); see §1 |
-| `cms` — Strapi tree | ~151 (10 critical, 63 high, 66 moderate, 26 low) | transitive deps pinned by Strapi's dependency tree | Dedicated Strapi framework upgrade |
+| `cms` — Strapi tree | ✅ **Resolved 2026-07-08** (post-4.26.2 was 5 critical, 51 high) | transitive deps pinned by Strapi's dependency tree | Done — upgraded to Strapi [5.50.0](https://github.com/strapi/strapi/releases/tag/v5.50.0); see §2 |
 | `cloud_functions/earth_engine_tiler` — googleapis tree | 4 (moderate) | pinned by `@google/earthengine@0.1.x` → `googleapis@92` | `@google/earthengine` 0.x→1.x major upgrade |
 | `data-processing` — global `uv` tool | 5 | outdated **local** `uv` install, not a repo dependency | `uv self update` (developer/CI environment) |
 
@@ -123,31 +123,48 @@ Do this as a dedicated, tested piece of work:
 
 ---
 
-## 2. `cms` — Strapi dependency tree (partially fixed; remainder deferred to Strapi 5)
+## 2. `cms` — Strapi 5 upgrade (✅ RESOLVED 2026-07-08)
 
-**Partially addressed on this branch.** All `@strapi/*` packages were bumped within major 4
-(`4.24.2 → 4.26.2`, the terminal 4.x release), clearing **32 advisories (5 critical + 12
-high)** — including the Content-Type-Builder SQL injection and the koa ReDoS/Host-Header
-criticals.
+**Status:** Upgraded all `@strapi/*` packages `4.26.2 → 5.50.0` (exact) — the latest stable
+as of 2026-07-08 — for security reasons. The runtime-reachable, unauthenticated
+**relational-filter data leak** (`GHSA-rjg2-95x7-8qmx`, patched ≥5.37.0) is cleared, and
+`pnpm audit` now reports **0 critical** in `cms` — down from **5 critical / 51 high** at
+`4.26.2` to **0 critical / 12 high / 16 moderate / 8 low**. The remaining high/moderate/low
+items are build-time, CLI, install-time and admin-bundle transitives not on the production
+runtime attack surface. The "why deferred" record is retained below as history.
 
-**Remaining deferred:** 5 critical / 51 high (post-bump), the bulk being build-time, CLI,
-install-time, and admin-bundle transitives that are **not on the production runtime attack
-surface**. The one genuinely runtime-reachable, unauthenticated critical that remains is the
-**Strapi relational-filter data leak** (`GHSA-rjg2-95x7-8qmx`), which is **only fixed in
-Strapi 5.37.0**.
+### Resolution (what was done)
 
-### Why deferred (remainder)
+Coordinated CMS + client upgrade (PR [#167](https://github.com/Vizzuality/global-rangelands-data-platform/pull/167)):
+
+1. `@strapi/*` (`strapi`, `plugin-users-permissions`, `plugin-documentation`, `plugin-cloud`)
+   → `5.50.0`; removed `@strapi/plugin-i18n` (i18n is core in v5). CMS Node runtime → `24.15.0`
+   (Strapi 5 requires Node ≥20).
+2. Replaced `strapi-plugin-slugify` (no v5 release) with a document-service middleware
+   (`cms/src/index.ts`) that slugs every `api::*` type with `title` + `slug`; slug lookups
+   moved to standard `filters[slug][$eq]` queries.
+3. Replaced `strapi-plugin-import-export-entries` (no v5 release) with
+   [`import-export-data`](https://github.com/newproweb/strapi-plugin-import-export-data)
+   `5.4.4` (per-collection CSV/JSON/XLSX from the admin); bumped `strapi-plugin-config-sync`
+   → `3.2.0`.
+4. Pinned `shell-quote` → `1.9.0` via a pnpm override, clearing the last critical (a
+   `concurrently` dev-tooling transitive, `GHSA-w7jw-789q-3m8p`).
+5. Migrated the client to the v5 flat API response shape and regenerated the orval types.
+
+### Why deferred (historical)
+
+Before the upgrade, all `@strapi/*` packages were bumped within major 4 (`4.24.2 → 4.26.2`,
+the terminal 4.x release), clearing 32 advisories (5 critical + 12 high) — including the
+Content-Type-Builder SQL injection and the koa ReDoS/Host-Header criticals. The remainder
+required Strapi 5 because:
 
 - **Strapi 4 is end-of-life** (`4.26.2`, June 2026, is the last 4.x release) — the remaining
-  transitive advisories will never be patched on the 4.x line, and scoped overrides are
+  transitive advisories would never be patched on the 4.x line, and scoped overrides are
   fragile against Strapi's pinned old majors.
-- The remaining items are either **Strapi-5-only fixes** (the data-leak critical) or **low
-  runtime reachability** (admin/CLI/build/install-time).
+- The remaining items were either **Strapi-5-only fixes** (the data-leak critical, patched in
+  `5.37.0`) or **low runtime reachability** (admin/CLI/build/install-time).
 
-### Remediation path
-
-Schedule the **Strapi 5 migration**. Full reachability tiering, the measured 4.26.2 delta,
-and a repo-specific v5 effort estimate are in **`CMS-VULN-ASSESSMENT.md`** (repo root).
+Full reachability tiering and the migration record are in **`CMS-VULN-ASSESSMENT.md`** (repo root).
 
 ---
 
@@ -208,4 +225,4 @@ declared by this repository, so it is not fixable via the lockfile.
 
 ---
 
-_Last updated: 2026-07-09 — §3 (earth_engine_tiler) dev-tooling advisories cleared on branch `fix/deps/audit-2026-07-09`. §1 (orval) resolved via orval 8.20.0 bump on branch `fix/orval-8-security`. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
+_Last updated: 2026-07-09 — §3 (earth_engine_tiler) dev-tooling advisories cleared on branch `fix/deps/audit-2026-07-09`. §2 (Strapi) resolved via the Strapi 5.50.0 upgrade on branch `feat/strapi-5-migration` (PR #167). §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._

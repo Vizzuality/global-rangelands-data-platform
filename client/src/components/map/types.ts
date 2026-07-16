@@ -2,7 +2,7 @@ import type { ViewState, MapProps } from "react-map-gl/mapbox";
 
 import { FitBoundsOptions } from "mapbox-gl";
 import { MAPBOX_STYLE } from "./constants";
-import { DefaultLayerComponentLayerDataAttributesLegendItemsItem } from "@/types/generated/strapi.schemas";
+import { DefaultItemComponent } from "@/types/generated/strapi.schemas";
 
 export type MapStylesIds = keyof typeof MAPBOX_STYLE;
 export interface CustomMapProps extends MapProps {
@@ -28,8 +28,8 @@ export interface CustomMapProps extends MapProps {
 }
 
 export type LegendComponent = {
-  items: (DefaultLayerComponentLayerDataAttributesLegendItemsItem & {
-    items?: DefaultLayerComponentLayerDataAttributesLegendItemsItem[];
+  items: (DefaultItemComponent & {
+    items?: DefaultItemComponent[];
   })[];
   title: string;
 };

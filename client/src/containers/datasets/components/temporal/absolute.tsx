@@ -6,12 +6,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
-import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { Layer } from "@/types/generated/strapi.schemas";
 import { CalendarDaysIcon } from "lucide-react";
 
 type TemporalDatasetItemProps = {
   layer:
-    | (LayerListResponseDataItem & {
+    | (Layer & {
         type?: string;
       })
     | undefined;
@@ -29,13 +29,13 @@ const isCorrectTimeValues = (timeValues: unknown): timeValues is number[] => {
   return Array.isArray(timeValues) && timeValues.every((t) => typeof t === "number");
 };
 export const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
-  const timeSelect = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
+  const timeSelect = (layer?.params_config as Record<string, unknown>[])?.find(
     (p) => p.key === "time-select",
   )?.default;
-  const timeValues = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
+  const timeValues = (layer?.params_config as Record<string, unknown>[])?.find(
     (p) => p.key === "time-values",
   )?.default;
-  const defaultSelected = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
+  const defaultSelected = (layer?.params_config as Record<string, unknown>[])?.find(
     (p) => p.key === "startYear",
   )?.default;
 
@@ -49,7 +49,7 @@ export const TemporalDatasetItem = ({ layer }: TemporalDatasetItemProps) => {
         ? Array.from({ length: timeSelect[1] - timeSelect[0] + 1 }, (_, i) => timeSelect[0] + i)
         : undefined;
 
-  const layerSlug = layer?.attributes?.slug;
+  const layerSlug = layer?.slug;
 
   const onSelectTime = (value: string) => {
     setLayersSettings((prev) => {

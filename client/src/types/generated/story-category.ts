@@ -244,7 +244,7 @@ export const usePostStoryCategories = <TError = ErrorType<Error>, TContext = unk
   return useMutation(getPostStoryCategoriesMutationOptions(options), queryClient);
 };
 export const getStoryCategoriesId = (
-  id: number,
+  id: string,
   params?: GetStoryCategoriesIdParams,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -256,7 +256,7 @@ export const getStoryCategoriesId = (
 };
 
 export const getGetStoryCategoriesIdQueryKey = (
-  id: number,
+  id: string,
   params?: GetStoryCategoriesIdParams,
 ) => {
   return [`/story-categories/${id}`, ...(params ? [params] : [])] as const;
@@ -266,7 +266,7 @@ export const getGetStoryCategoriesIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetStoryCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -301,7 +301,7 @@ export function useGetStoryCategoriesId<
   TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params: undefined | GetStoryCategoriesIdParams,
   options: {
     query: Partial<
@@ -323,7 +323,7 @@ export function useGetStoryCategoriesId<
   TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetStoryCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -345,7 +345,7 @@ export function useGetStoryCategoriesId<
   TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetStoryCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -360,7 +360,7 @@ export function useGetStoryCategoriesId<
   TData = Awaited<ReturnType<typeof getStoryCategoriesId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetStoryCategoriesIdParams,
   options?: {
     query?: Partial<
@@ -380,7 +380,7 @@ export function useGetStoryCategoriesId<
 }
 
 export const putStoryCategoriesId = (
-  id: number,
+  id: string,
   storyCategoryRequest: StoryCategoryRequest,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -404,14 +404,14 @@ export const getPutStoryCategoriesIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof putStoryCategoriesId>>,
     TError,
-    { id: number; data: StoryCategoryRequest },
+    { id: string; data: StoryCategoryRequest },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof putStoryCategoriesId>>,
   TError,
-  { id: number; data: StoryCategoryRequest },
+  { id: string; data: StoryCategoryRequest },
   TContext
 > => {
   const mutationKey = ["putStoryCategoriesId"];
@@ -423,7 +423,7 @@ export const getPutStoryCategoriesIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof putStoryCategoriesId>>,
-    { id: number; data: StoryCategoryRequest }
+    { id: string; data: StoryCategoryRequest }
   > = (props) => {
     const { id, data } = props ?? {};
 
@@ -444,7 +444,7 @@ export const usePutStoryCategoriesId = <TError = ErrorType<Error>, TContext = un
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof putStoryCategoriesId>>,
       TError,
-      { id: number; data: StoryCategoryRequest },
+      { id: string; data: StoryCategoryRequest },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -453,13 +453,13 @@ export const usePutStoryCategoriesId = <TError = ErrorType<Error>, TContext = un
 ): UseMutationResult<
   Awaited<ReturnType<typeof putStoryCategoriesId>>,
   TError,
-  { id: number; data: StoryCategoryRequest },
+  { id: string; data: StoryCategoryRequest },
   TContext
 > => {
   return useMutation(getPutStoryCategoriesIdMutationOptions(options), queryClient);
 };
 export const deleteStoryCategoriesId = (
-  id: number,
+  id: string,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
 ) => {
@@ -473,14 +473,14 @@ export const getDeleteStoryCategoriesIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
     TError,
-    { id: number },
+    { id: string },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   const mutationKey = ["deleteStoryCategoriesId"];
@@ -492,7 +492,7 @@ export const getDeleteStoryCategoriesIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
-    { id: number }
+    { id: string }
   > = (props) => {
     const { id } = props ?? {};
 
@@ -513,7 +513,7 @@ export const useDeleteStoryCategoriesId = <TError = ErrorType<Error>, TContext =
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
       TError,
-      { id: number },
+      { id: string },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -522,7 +522,7 @@ export const useDeleteStoryCategoriesId = <TError = ErrorType<Error>, TContext =
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteStoryCategoriesId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   return useMutation(getDeleteStoryCategoriesIdMutationOptions(options), queryClient);

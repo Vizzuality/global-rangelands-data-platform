@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSyncLayers, useSyncLayersSettings } from "@/store/map";
-import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { Layer } from "@/types/generated/strapi.schemas";
 import { CalendarDaysIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
@@ -96,7 +96,7 @@ type LastSelected = {
 
 type TemporalDatasetItemProps = {
   layer:
-    | (LayerListResponseDataItem & {
+    | (Layer & {
         type?: string;
       })
     | undefined;
@@ -120,14 +120,14 @@ export const TemporalChangesDatasetItem = ({
     if (isTemporalGroup && lastSelected.startYear) {
       startYear = lastSelected.startYear;
     } else {
-      startYear = (layer?.attributes?.params_config as Record<string, unknown>[])?.find(
+      startYear = (layer?.params_config as Record<string, unknown>[])?.find(
         (p) => p.key === "startYear",
       )?.default as number | undefined;
     }
 
-    const layerSlug = layer?.attributes?.slug;
+    const layerSlug = layer?.slug;
     return { defaultStartYear: startYear, layerSlug };
-  }, [layer?.attributes, isTemporalGroup, lastSelected.startYear]);
+  }, [layer, isTemporalGroup, lastSelected.startYear]);
 
   const { startYear, endYear, isDisabled } = useMemo(() => {
     const startYear = layerSlug
@@ -143,11 +143,11 @@ export const TemporalChangesDatasetItem = ({
   }, [layerSlug, layers, layersSettings, selectType]);
 
   const startYearOptions = useMemo(
-    () => _getOptions(layer?.attributes?.params_config, undefined, endYear),
+    () => _getOptions(layer?.params_config, undefined, endYear),
     [layer, endYear],
   );
   const endYearOptions = useMemo(
-    () => _getOptions(layer?.attributes?.params_config, startYear || defaultStartYear),
+    () => _getOptions(layer?.params_config, startYear || defaultStartYear),
     [layer, startYear, defaultStartYear],
   );
 

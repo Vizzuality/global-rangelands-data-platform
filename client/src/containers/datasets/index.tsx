@@ -6,7 +6,7 @@ import { useGetLocalizedList } from "@/lib/localized-query";
 import { useGetDatasetCategories } from "@/types/generated/dataset-category";
 import { RANGELAND_DATASET_SLUG } from "./constants";
 import { useMemo } from "react";
-import { DatasetListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { Dataset } from "@/types/generated/strapi.schemas";
 
 const Datasets = () => {
   const datasetCategoriesQuery = useGetDatasetCategories({
@@ -27,8 +27,8 @@ const Datasets = () => {
     () =>
       datasetCategoriesData?.data?.reduce<CategoryButtonProps[]>(
         (acc, category) =>
-          category.attributes?.title && category.attributes?.slug
-            ? [...acc, { slug: category.attributes.slug, title: category.attributes.title }]
+          category.title && category.slug
+            ? [...acc, { slug: category.slug, title: category.title }]
             : acc,
         [],
       ),
@@ -44,19 +44,16 @@ const Datasets = () => {
             key={category.id}
             className="space-y-5 border-b border-b-foreground last-of-type:border-b-0"
           >
-            <h2
-              id={category?.attributes?.slug}
-              className="px-6 pt-6 font-serif text-2xl text-green-light"
-            >
-              {category?.attributes?.title}
+            <h2 id={category?.slug} className="px-6 pt-6 font-serif text-2xl text-green-light">
+              {category?.title}
             </h2>
             <div className="">
-              {category?.attributes?.datasets?.data?.map((dataset) => (
+              {category?.datasets?.map((dataset) => (
                 <div key={dataset?.id} className="space-y-7 pt-6 first-of-type:pt-0">
                   <DatasetsItem
-                    {...(dataset as DatasetListResponseDataItem)}
+                    {...(dataset as Dataset)}
                     className="px-6"
-                    showTitle={dataset.attributes?.slug !== RANGELAND_DATASET_SLUG}
+                    showTitle={dataset.slug !== RANGELAND_DATASET_SLUG}
                   />
                   <div className="w-full border-b border-slate-200 group-last-of-type:hidden" />
                 </div>
