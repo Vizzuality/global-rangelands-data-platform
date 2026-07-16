@@ -5,7 +5,7 @@ import { GriddedLivestockCommonStyles} from "./common-styles-utils";
 
 export const GriddedLivestockSheep: CategoricalDataset = {
     assetPath: {
-        default: "projects/gmvad-grass/assets/5_Sh_2015_Da"
+        default: "projects/my-project-ilri-57371/assets/GRASS/5_Sh_2015_Da"
     },
 
     bandName: 'b1',

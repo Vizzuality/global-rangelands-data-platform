@@ -12,20 +12,18 @@
     "config-sync": "config-sync"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "4.24.2",
-    "@strapi/plugin-documentation": "4.24.4",
-    "@strapi/plugin-i18n": "4.24.2",
-    "@strapi/plugin-users-permissions": "4.24.2",
-    "@strapi/strapi": "4.24.2",
+    "@strapi/plugin-cloud": "5.50.0",
+    "@strapi/plugin-documentation": "5.50.0",
+    "@strapi/plugin-users-permissions": "5.50.0",
+    "@strapi/strapi": "5.50.0",
+    "import-export-data": "5.4.4",
     "pg": "8.8.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "5.3.4",
-    "slugify": "^1.6.6",
-    "strapi-plugin-config-sync": "^1.2.5",
-    "strapi-plugin-import-export-entries": "^1.23.1",
-    "strapi-plugin-slugify": "^2.3.8",
-    "styled-components": "5.3.3"
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.30.4",
+    "slugify": "1.6.6",
+    "strapi-plugin-config-sync": "3.2.0",
+    "styled-components": "6.4.3"
   },
   "author": {
     "name": "A Strapi developer"
@@ -34,11 +32,14 @@
     "uuid": "da92dab7-bcd6-4299-a6b4-5fe2da0cc04c"
   },
   "engines": {
-    "node": ">=18.0.0 <=20.x.x",
+    "node": ">=20.0.0 <=22.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT",
   "pnpm": {
+    "overrides": {
+      "shell-quote": "1.9.0"
+    },
     "onlyBuiltDependencies": [
       "@strapi/strapi",
       "@swc/core",

@@ -64,18 +64,15 @@ const MapLayers = () => {
     if (rangelandType === "rangeland-ecoregions") {
       data = `${t("Rangeland Ecoregions")}${
         ecoregions.data?.data?.length && rangelandRegion.length > 0
-          ? ecoregions.data?.data?.map((ecoregion) => ecoregion?.attributes?.title).join(", ")
+          ? ecoregions.data?.data?.map((ecoregion) => ecoregion?.title).join(", ")
           : ""
       }`;
     } else if (rangelandType === "rangeland-biomes") {
       data = `${t("Rangeland Biomes")}${
         biomes.data?.data?.length && rangelandRegion.length > 0
           ? ` (${biomes.data?.data
-              ?.filter(
-                (biome) =>
-                  biome?.attributes?.code && rangelandRegion.includes(biome.attributes.code),
-              )
-              ?.map((biome) => biome?.attributes?.title)
+              ?.filter((biome) => biome?.code && rangelandRegion.includes(biome.code))
+              ?.map((biome) => biome?.title)
               .join(", ")})`
           : ""
       }`;

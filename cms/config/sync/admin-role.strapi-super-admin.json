@@ -836,14 +836,56 @@
       "conditions": []
     },
     {
-      "action": "plugin::import-export-entries.export",
+      "action": "plugin::import-export-data.collection.export",
       "actionParameters": {},
       "subject": null,
       "properties": {},
       "conditions": []
     },
     {
-      "action": "plugin::import-export-entries.import",
+      "action": "plugin::import-export-data.collection.import",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-data.create",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-data.delete",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-data.download",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-data.read",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-data.restore",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::import-export-data.settings",
       "actionParameters": {},
       "subject": null,
       "properties": {},

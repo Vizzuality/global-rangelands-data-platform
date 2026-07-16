@@ -5,7 +5,7 @@ import {EarthEngineUtils} from "../earth-engine-utils";
 
 export const IntactnessQPrime: ContinuousDataset = {
   assetPath: {
-    default: "projects/gmvad-grass/assets/intactness/intactness_Qprime_2009"
+    default: "projects/my-project-ilri-57371/assets/GRASS/intactness_Qprime_2009"
   },
 
   vizParams: {

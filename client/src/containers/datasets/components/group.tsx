@@ -16,7 +16,7 @@ import {
 } from "../constants";
 import ColorSwatchIcon from "@/svgs/color-swatch.svg";
 
-import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { Layer } from "@/types/generated/strapi.schemas";
 import {
   clusterFeaturesAtom,
   deckLayersInteractiveAtom,
@@ -36,7 +36,7 @@ import { useSetAtom } from "jotai";
 import { useGetLocalizedList } from "@/lib/localized-query";
 
 type GroupDatasetProps = {
-  layers?: LayerListResponseDataItem[];
+  layers?: Layer[];
   slug?: string;
   onChange?: (value: string) => void;
 };
@@ -49,7 +49,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
   const [rangelandRegion, setRangelandRegion] = useSyncRangelandRegions();
   const setDeckInteractiveLayers = useSetAtom(deckLayersInteractiveAtom);
   const setClusterFeatures = useSetAtom(clusterFeaturesAtom);
-  const datasetLayers = useMemo(() => layers?.map((l) => l?.attributes?.slug), [layers]);
+  const datasetLayers = useMemo(() => layers?.map((l) => l?.slug), [layers]);
 
   const isRangelandDataset = datasetSlug === RANGELAND_DATASET_SLUG;
 
@@ -73,7 +73,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
   const selectedLayer = useMemo(() => {
     const selectedLayerId = datasetLayers?.find((l) => !!l && syncLayers?.includes(l));
 
-    return layers?.find((l) => l.attributes?.slug === selectedLayerId) || layers?.[0];
+    return layers?.find((l) => l.slug === selectedLayerId) || layers?.[0];
   }, [layers, datasetLayers, syncLayers]);
 
   const getLegendColors = (layerSlug?: string) => {
@@ -83,9 +83,9 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
       ];
     }
     if (layerSlug) {
-      const layer = layers?.find((l) => l.attributes?.slug === layerSlug);
+      const layer = layers?.find((l) => l.slug === layerSlug);
       return (
-        layer?.attributes?.legend?.items?.reduce<string[]>(
+        layer?.legend?.items?.reduce<string[]>(
           (acc, item) => (item.color ? [...acc, item.color] : acc),
           [],
         ) || []
@@ -129,19 +129,19 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
     }
 
     return (
-      rangelandsData?.data?.map(({ attributes }) => ({
-        label: attributes?.title || "",
+      rangelandsData?.data?.map((rangeland) => ({
+        label: rangeland?.title || "",
         icon: ({ selected }: CircleLegendProps) => (
-          <CircleLegend selected={selected} colors={[attributes?.color || ""]} />
+          <CircleLegend selected={selected} colors={[rangeland?.color || ""]} />
         ),
-        value: attributes?.code || "",
+        value: rangeland?.code || "",
         options:
           rangelandType === RANGELAND_ECOREGIONS
-            ? attributes?.ecoregions?.data?.map((ecoregion) => ({
-                label: ecoregion.attributes?.title || "",
-                value: ecoregion.attributes?.code || "",
+            ? rangeland?.ecoregions?.map((ecoregion) => ({
+                label: ecoregion.title || "",
+                value: ecoregion.code || "",
                 icon: ({ selected }: CircleLegendProps) => (
-                  <CircleLegend selected={selected} colors={[ecoregion.attributes?.color || ""]} />
+                  <CircleLegend selected={selected} colors={[ecoregion.color || ""]} />
                 ),
               }))
             : [],
@@ -154,28 +154,28 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
       <Select
         onValueChange={handleSelectLayerType}
         disabled={!datasetSlug || !syncDatasets?.includes(datasetSlug)}
-        defaultValue={selectedLayer?.attributes?.slug}
-        value={selectedLayer?.attributes?.slug}
+        defaultValue={selectedLayer?.slug}
+        value={selectedLayer?.slug}
       >
         <SelectTrigger className="group">
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <ColorSwatchIcon />
               <span className="line-clamp-1 max-w-[248px] break-all text-start">
-                {selectedLayer?.attributes?.title || t("Types")}
+                {selectedLayer?.title || t("Types")}
               </span>
             </div>
             <CircleLegend
               selected
               removable={false}
-              colors={getLegendColors(selectedLayer?.attributes?.slug)}
+              colors={getLegendColors(selectedLayer?.slug)}
             />
           </div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {layers?.map((layer) => {
-              const layerSlug = layer?.attributes?.slug;
+              const layerSlug = layer?.slug;
               if (!layer.id || !layerSlug) return null;
               const colors = getLegendColors(layerSlug);
               return (
@@ -184,7 +184,7 @@ const GroupDataset = ({ layers, slug: datasetSlug, onChange }: GroupDatasetProps
                   key={layer.id}
                   className="items-start justify-between gap-1"
                 >
-                  <p>{layer.attributes?.title}</p>
+                  <p>{layer.title}</p>
                   <CircleLegend colors={colors} />
                 </SelectItem>
               );

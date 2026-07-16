@@ -4,7 +4,7 @@ import {EarthEngineUtils} from "../earth-engine-utils";
 
 export const LivestockProductionSystems: CategoricalDataset = {
   assetPath: {
-    default: "projects/gmvad-grass/assets/ps_cmb_ByteCompress"
+    default: "projects/my-project-ilri-57371/assets/GRASS/ps_cmb_ByteCompress"
   },
 
   bandName: 'b1',

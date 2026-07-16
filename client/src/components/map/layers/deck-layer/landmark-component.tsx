@@ -192,7 +192,7 @@ const LandmarkLayerComponent = ({
           getFillColor: [category],
           getLineColor: [category],
         },
-        binary: false,
+        binary: true,
         ...props,
       }),
     [
@@ -259,7 +259,7 @@ const LandmarkLayerComponent = ({
           getLineWidth: [category, hoveredFeatureId, selectedFeatureId],
           getPointRadius: [category],
         },
-        binary: false,
+        binary: true,
         ...props,
       }),
     [

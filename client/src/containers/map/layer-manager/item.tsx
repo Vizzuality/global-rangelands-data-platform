@@ -25,14 +25,14 @@ const LayerManagerItem = ({ id, beforeId, settings }: LayerManagerItemProps) => 
   const biomes = useBiomes();
   const ecoregions = useEcoregions();
 
-  const { data } = useGetBySlug<LayerResponse>(`layer/${id}`, {
-    populate: "dataset,metadata,translations",
+  const { data } = useGetBySlug<LayerResponse>(`layers/${id}`, {
+    populate: ["translations"],
     locale,
   });
 
-  if (!data?.data?.attributes) return null;
+  if (!data?.data) return null;
 
-  const { config, params_config } = data.data.attributes as unknown as LayerTyped;
+  const { config, params_config } = data.data as unknown as LayerTyped;
   const c = parseConfig<Layer>({
     config: {
       ...config,

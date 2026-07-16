@@ -2,6 +2,9 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "pnpm types && next dev",
     "build": "next build",
@@ -43,7 +46,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tanstack/react-query": "^5.40.1",
     "@transifex/native": "7.1.6",
-    "axios": "1.16.0",
+    "axios": "1.18.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "1.1.1",
@@ -61,7 +64,7 @@
     "next": "16.2.6",
     "next-intl": "4.11.0",
     "nuqs": "^1.17.4",
-    "orval": "^6.29.1",
+    "orval": "8.20.0",
     "pino": "^9.1.0",
     "pino-http": "^10.1.0",
     "pino-pretty": "^11.0.0",
@@ -123,7 +126,11 @@
       "jsonpath-plus": "10.4.0",
       "lodash": "4.18.1",
       "@stoplight/spectral-core>minimatch": "3.1.5",
-      "next>postcss": "8.5.14"
+      "next>postcss": "8.5.14",
+      "axios>form-data": "4.0.6",
+      "express>qs": "6.15.3",
+      "cosmiconfig>js-yaml": "4.3.0",
+      "@svgr/webpack>@babel/core": "7.29.7"
     }
   }
 }

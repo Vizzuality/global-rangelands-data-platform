@@ -11,16 +11,10 @@ import { DEFAULT_LOCALE } from "@/i18n/routing";
 
 import API, { ErrorType } from "@/services/api";
 import { useMemo } from "react";
-import {
-  DefaultLegendComponent,
-  DefaultLegendComponentItemsItem,
-} from "@/types/generated/strapi.schemas";
+import { DefaultItemComponent, DefaultLegendComponent } from "@/types/generated/strapi.schemas";
 
 type StrapiDATA = {
-  data?: {
-    id?: number;
-    attributes?: Record<string, unknown>;
-  }[];
+  data?: AttributesWithTranslations[];
   meta?: Record<string, unknown>;
 };
 
@@ -33,13 +27,15 @@ type Params = {
   locale?: string;
 };
 
-export const getBySlugId = <T>(id: string, params?: Params, signal?: AbortSignal) => {
-  return API<T>({
-    url: `/slugify/slugs/${id}`,
+export const getBySlugId = async <T>(id: string, params?: Params, signal?: AbortSignal) => {
+  const [collection, slug] = id.split("/");
+  const response = await API<{ data?: unknown[]; meta?: unknown }>({
+    url: `/${collection}`,
     method: "get",
-    params,
+    params: { ...params, "filters[slug][$eq]": slug },
     signal,
   });
+  return { ...response, data: response.data?.[0] } as T;
 };
 
 export const getBySlugIdQueryKey = (id: string, params?: Params) =>
@@ -72,17 +68,12 @@ type Translation = {
   id: number;
 } & Record<string, string>;
 
-type AttributesWithTranslations =
-  | ({
-      translations?: Translation[];
-    } & Record<string, unknown>)
-  | undefined;
+type AttributesWithTranslations = {
+  translations?: Translation[];
+} & Record<string, unknown>;
 
 type ResponseData = {
-  data?: {
-    id: number;
-    attributes?: AttributesWithTranslations;
-  };
+  data?: { id: number } & AttributesWithTranslations;
 };
 
 export const useGetBySlug = <
@@ -103,8 +94,7 @@ export const useGetBySlug = <
           // @ts-expect-error: select is not well typed
           select: (response) => {
             const data = response as ResponseData;
-            const attributes = data?.data?.attributes;
-            const translated = attributes?.translations?.find(
+            const translated = data?.data?.translations?.find(
               (t: Record<string, string>) => t.locale === locale,
             );
             const { id, ...translatedAtt } = translated || {};
@@ -113,10 +103,7 @@ export const useGetBySlug = <
               ...data,
               data: {
                 ...data.data,
-                attributes: {
-                  ...attributes,
-                  ...translatedAtt,
-                },
+                ...translatedAtt,
               },
             };
           },
@@ -147,8 +134,7 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
 
   if (Array.isArray(data?.data)) {
     const LOCALE_DATA = data.data.map((item) => {
-      const { translations, ...attributes } =
-        (item?.attributes as AttributesWithTranslations) || {};
+      const { translations, ...attributes } = item || {};
       const localeTranslation = translations?.find((translation) => {
         return translation.locale === locale;
       });
@@ -162,11 +148,11 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
         (attributes?.legend as DefaultLegendComponent)?.unit;
 
       const legendItems = (attributes?.legend as DefaultLegendComponent)?.items?.map((i) => {
-        const localeName = i[`name_${locale}` as keyof DefaultLegendComponentItemsItem];
+        const localeName = i[`name_${locale}` as keyof DefaultItemComponent];
         const legendItemName =
           locale === DEFAULT_LOCALE || !localeName
             ? i.name
-            : i[`name_${locale}` as keyof DefaultLegendComponentItemsItem];
+            : i[`name_${locale}` as keyof DefaultItemComponent];
 
         return {
           ...i,
@@ -183,12 +169,9 @@ export const useGetLocalizedList = <T, E>(query: UseQueryResult<T, E>) => {
         : {};
 
       return {
-        ...item,
-        attributes: {
-          ...attributes,
-          ...translatedAtt,
-          ...(legend ? { legend } : {}),
-        },
+        ...attributes,
+        ...translatedAtt,
+        ...(legend ? { legend } : {}),
       };
     });
 
