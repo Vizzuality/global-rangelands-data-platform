@@ -34,7 +34,6 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
       filters: { slug: { $eq: slug } },
       populate: [
         "image",
-        "category",
         "datasets",
         "datasets.layers",
         "datasets.layers.layer",
