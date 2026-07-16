@@ -187,6 +187,18 @@ All four are pinned by `@google/earthengine@0.1.405`, which depends on the old
 > `concurrently`), `form-data` 4.0.0→4.0.6 (via `@types/node-fetch`), `tmp` 0.0.33→0.2.6
 > (scoped override on `external-editor`), `js-yaml` 4.1.0→4.3.0 (via `eslint`). The
 > googleapis-tree deferrals below (incl. `uuid`) are unaffected and remain deferred.
+>
+> **Update 2026-07-16** (branch `fix/deps/audit-2026-07-16`): three more dev-tooling
+> advisories cleared via scoped overrides — `flatted` 3.2.7→3.4.2
+> ([GHSA-rf6f-7fwh-wjgh](https://github.com/advisories/GHSA-rf6f-7fwh-wjgh)), `lodash`
+> 4.17.21→4.18.1 ([GHSA-r5fr-rjxr-66jc](https://github.com/advisories/GHSA-r5fr-rjxr-66jc)
+> + 2 moderate), and `tmp` bumped 0.2.6→0.2.7
+> ([GHSA-7c78-jf6q-g5cm](https://github.com/advisories/GHSA-7c78-jf6q-g5cm)). All are
+> `development`-scope (eslint/gts/glob tooling), not shipped in the deployed function; `tsc`
+> compile verified. `lodash` is pinned to **4.18.1**, not the deprecated (pulled) 4.18.0.
+> **Still deferred:** `minimatch`→10.2.3, `picomatch`→4.0.4 and `uuid`→12.0.1 are
+> major-version bumps of transitives pinned by `googleapis`/`gts`; `minimatch`/`picomatch`
+> are dev-only and unreachable, `uuid` stays as in the googleapis-tree section below.
 
 ### Why deferred
 
@@ -225,4 +237,4 @@ declared by this repository, so it is not fixable via the lockfile.
 
 ---
 
-_Last updated: 2026-07-09 — §3 (earth_engine_tiler) dev-tooling advisories cleared on branch `fix/deps/audit-2026-07-09`. §2 (Strapi) resolved via the Strapi 5.50.0 upgrade on branch `feat/strapi-5-migration` (PR #167). §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
+_Last updated: 2026-07-16 — §3 (earth_engine_tiler) three more dev-tooling advisories (flatted, lodash, tmp) cleared on branch `fix/deps/audit-2026-07-16`; minimatch/picomatch/uuid majors remain deferred. §2 (Strapi) resolved via the Strapi 5.50.0 upgrade on branch `feat/strapi-5-migration` (PR #167). §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
