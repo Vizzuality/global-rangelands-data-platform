@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
@@ -19,6 +19,42 @@ import RelatedDatasets from "./related-datasets";
 
 type StoryDetailProps = {
   slug: string;
+};
+
+type StoryDescriptionProps = {
+  description: string;
+};
+
+const StoryDescription = ({ description }: StoryDescriptionProps) => {
+  const t = useTranslations();
+  const [expanded, setExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const measureRef = useCallback((el: HTMLDivElement | null) => {
+    if (el) setIsOverflowing(el.scrollHeight > el.clientHeight);
+  }, []);
+
+  return (
+    <div className="space-y-2">
+      <div
+        ref={measureRef}
+        className={
+          expanded ? "text-sm leading-relaxed" : "max-h-56 overflow-hidden text-sm leading-relaxed"
+        }
+      >
+        <RichText>{description}</RichText>
+      </div>
+
+      {(isOverflowing || expanded) && (
+        <button
+          type="button"
+          onClick={() => setExpanded((prev) => !prev)}
+          className="text-sm font-medium text-brown-light underline-offset-2 hover:underline"
+        >
+          {expanded ? t("Read less") : t("Read more")}
+        </button>
+      )}
+    </div>
+  );
 };
 
 const StoryDetail = ({ slug }: StoryDetailProps) => {
@@ -82,30 +118,32 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
         </Link>
       </div>
 
-      {imageUrl && (
-        <div className="relative h-48 w-full shrink-0">
-          <Image
-            src={`${CMS_MEDIA_BASE}${imageUrl}`}
-            alt={title ?? ""}
-            fill
-            className="object-cover"
-          />
-          {imageCaption && (
-            <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
-              {imageCaption}
-            </span>
-          )}
-        </div>
-      )}
-
       <div className="space-y-6 p-6">
-        {title && <h1 className="font-serif text-2xl font-light leading-tight">{title}</h1>}
+        {title && (
+          <h1 className="font-serif text-2xl font-light leading-tight text-green-dark">{title}</h1>
+        )}
 
-        {description && (
-          <div className="text-sm leading-relaxed">
-            <RichText>{description}</RichText>
+        {imageUrl && (
+          <div className="relative h-48 w-full shrink-0">
+            <Image
+              src={`${CMS_MEDIA_BASE}${imageUrl}`}
+              alt={title ?? ""}
+              fill
+              className="object-cover"
+            />
+            {imageCaption && (
+              <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
+                {imageCaption}
+              </span>
+            )}
           </div>
         )}
+      </div>
+
+      <div className="border-b border-foreground" />
+
+      <div className="space-y-6 p-6">
+        {description && <StoryDescription key={slug} description={description} />}
 
         <FurtherInfo items={story?.further_information ?? []} locale={locale} />
 
