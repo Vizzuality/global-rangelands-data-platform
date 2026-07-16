@@ -235,7 +235,7 @@ export const usePostEcoregions = <TError = ErrorType<Error>, TContext = unknown>
   return useMutation(getPostEcoregionsMutationOptions(options), queryClient);
 };
 export const getEcoregionsId = (
-  id: number,
+  id: string,
   params?: GetEcoregionsIdParams,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -246,7 +246,7 @@ export const getEcoregionsId = (
   );
 };
 
-export const getGetEcoregionsIdQueryKey = (id: number, params?: GetEcoregionsIdParams) => {
+export const getGetEcoregionsIdQueryKey = (id: string, params?: GetEcoregionsIdParams) => {
   return [`/ecoregions/${id}`, ...(params ? [params] : [])] as const;
 };
 
@@ -254,7 +254,7 @@ export const getGetEcoregionsIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getEcoregionsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetEcoregionsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>;
@@ -285,7 +285,7 @@ export function useGetEcoregionsId<
   TData = Awaited<ReturnType<typeof getEcoregionsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params: undefined | GetEcoregionsIdParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>> &
@@ -305,7 +305,7 @@ export function useGetEcoregionsId<
   TData = Awaited<ReturnType<typeof getEcoregionsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetEcoregionsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>> &
@@ -325,7 +325,7 @@ export function useGetEcoregionsId<
   TData = Awaited<ReturnType<typeof getEcoregionsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetEcoregionsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>;
@@ -338,7 +338,7 @@ export function useGetEcoregionsId<
   TData = Awaited<ReturnType<typeof getEcoregionsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetEcoregionsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getEcoregionsId>>, TError, TData>>;
@@ -356,7 +356,7 @@ export function useGetEcoregionsId<
 }
 
 export const putEcoregionsId = (
-  id: number,
+  id: string,
   ecoregionRequest: EcoregionRequest,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -380,14 +380,14 @@ export const getPutEcoregionsIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof putEcoregionsId>>,
     TError,
-    { id: number; data: EcoregionRequest },
+    { id: string; data: EcoregionRequest },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof putEcoregionsId>>,
   TError,
-  { id: number; data: EcoregionRequest },
+  { id: string; data: EcoregionRequest },
   TContext
 > => {
   const mutationKey = ["putEcoregionsId"];
@@ -399,7 +399,7 @@ export const getPutEcoregionsIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof putEcoregionsId>>,
-    { id: number; data: EcoregionRequest }
+    { id: string; data: EcoregionRequest }
   > = (props) => {
     const { id, data } = props ?? {};
 
@@ -420,7 +420,7 @@ export const usePutEcoregionsId = <TError = ErrorType<Error>, TContext = unknown
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof putEcoregionsId>>,
       TError,
-      { id: number; data: EcoregionRequest },
+      { id: string; data: EcoregionRequest },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -429,13 +429,13 @@ export const usePutEcoregionsId = <TError = ErrorType<Error>, TContext = unknown
 ): UseMutationResult<
   Awaited<ReturnType<typeof putEcoregionsId>>,
   TError,
-  { id: number; data: EcoregionRequest },
+  { id: string; data: EcoregionRequest },
   TContext
 > => {
   return useMutation(getPutEcoregionsIdMutationOptions(options), queryClient);
 };
 export const deleteEcoregionsId = (
-  id: number,
+  id: string,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
 ) => {
@@ -449,14 +449,14 @@ export const getDeleteEcoregionsIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteEcoregionsId>>,
     TError,
-    { id: number },
+    { id: string },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deleteEcoregionsId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   const mutationKey = ["deleteEcoregionsId"];
@@ -468,7 +468,7 @@ export const getDeleteEcoregionsIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deleteEcoregionsId>>,
-    { id: number }
+    { id: string }
   > = (props) => {
     const { id } = props ?? {};
 
@@ -489,7 +489,7 @@ export const useDeleteEcoregionsId = <TError = ErrorType<Error>, TContext = unkn
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof deleteEcoregionsId>>,
       TError,
-      { id: number },
+      { id: string },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -498,7 +498,7 @@ export const useDeleteEcoregionsId = <TError = ErrorType<Error>, TContext = unkn
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteEcoregionsId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   return useMutation(getDeleteEcoregionsIdMutationOptions(options), queryClient);

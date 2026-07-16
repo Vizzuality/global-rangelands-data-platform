@@ -7,6 +7,14 @@ what they are, how reachable they actually are in this deployment, what the with
 `4.24.2 → 4.26.2` bump fixed, and why the remaining risk requires a Strapi 5 migration —
 with a repo-specific effort estimate.
 
+> ✅ **RESOLVED 2026-07-08.** The Strapi 5 migration described here was carried out —
+> `@strapi/*` upgraded `4.26.2 → 5.50.0` on branch `feat/strapi-5-migration`
+> (PR [#167](https://github.com/Vizzuality/global-rangelands-data-platform/pull/167)). The
+> Tier-1 relational-filter critical (`GHSA-rjg2-95x7-8qmx`) is cleared and `cms` `pnpm audit`
+> now reports **0 critical** (was 5 critical / 51 high at 4.26.2 → 0 critical / 12 high /
+> 16 moderate / 8 low). This document is retained as the assessment record; the sections
+> below describe the pre-migration state.
+
 ---
 
 ## TL;DR
@@ -65,7 +73,7 @@ text. Key context verified in-repo:
 
 | Advisory | Chain | Reachability | Status |
 |---|---|---|---|
-| **Strapi — sensitive data leak via relational filtering** (CRIT, GHSA-rjg2-95x7-8qmx) | `@strapi/strapi` | **HIGH** — any API caller crafting relation filters on the public REST/GraphQL API; no auth required | ❌ **needs Strapi 5.37.0** |
+| **Strapi — sensitive data leak via relational filtering** (CRIT, GHSA-rjg2-95x7-8qmx) | `@strapi/strapi` | **HIGH** — any API caller crafting relation filters on the public REST/GraphQL API; no auth required | ✅ **fixed — upgraded to 5.50.0** (≥5.37.0) |
 
 _The koa ReDoS (critical) and Host Header Injection (high), previously Tier 1, are **fixed**
 by the 4.26.2 bump._

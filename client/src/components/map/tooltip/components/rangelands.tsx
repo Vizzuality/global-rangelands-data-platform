@@ -74,17 +74,17 @@ const RangelandsTooltip = (props: MapTooltipProps) => {
     if (rangelandType === RANGELAND_BIOMES) {
       return {
         comparisonArea: t("Rangeland types"),
-        title: biome?.attributes?.title,
-        color: biome?.attributes?.color,
+        title: biome?.title,
+        color: biome?.color,
       };
     }
     if (rangelandType === RANGELAND_ECOREGIONS) {
       const ecoregion = ecoregionsData?.data?.[0];
       return {
-        comparisonArea: biome?.attributes?.title,
-        title: ecoregion?.attributes?.title,
-        subtitle: biome?.attributes?.title,
-        color: ecoregion?.attributes?.color,
+        comparisonArea: biome?.title,
+        title: ecoregion?.title,
+        subtitle: biome?.title,
+        color: ecoregion?.color,
       };
     }
     return {};

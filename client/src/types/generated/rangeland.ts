@@ -235,7 +235,7 @@ export const usePostRangelands = <TError = ErrorType<Error>, TContext = unknown>
   return useMutation(getPostRangelandsMutationOptions(options), queryClient);
 };
 export const getRangelandsId = (
-  id: number,
+  id: string,
   params?: GetRangelandsIdParams,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -246,7 +246,7 @@ export const getRangelandsId = (
   );
 };
 
-export const getGetRangelandsIdQueryKey = (id: number, params?: GetRangelandsIdParams) => {
+export const getGetRangelandsIdQueryKey = (id: string, params?: GetRangelandsIdParams) => {
   return [`/rangelands/${id}`, ...(params ? [params] : [])] as const;
 };
 
@@ -254,7 +254,7 @@ export const getGetRangelandsIdQueryOptions = <
   TData = Awaited<ReturnType<typeof getRangelandsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetRangelandsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>;
@@ -285,7 +285,7 @@ export function useGetRangelandsId<
   TData = Awaited<ReturnType<typeof getRangelandsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params: undefined | GetRangelandsIdParams,
   options: {
     query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>> &
@@ -305,7 +305,7 @@ export function useGetRangelandsId<
   TData = Awaited<ReturnType<typeof getRangelandsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetRangelandsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>> &
@@ -325,7 +325,7 @@ export function useGetRangelandsId<
   TData = Awaited<ReturnType<typeof getRangelandsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetRangelandsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>;
@@ -338,7 +338,7 @@ export function useGetRangelandsId<
   TData = Awaited<ReturnType<typeof getRangelandsId>>,
   TError = ErrorType<Error>,
 >(
-  id: number,
+  id: string,
   params?: GetRangelandsIdParams,
   options?: {
     query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getRangelandsId>>, TError, TData>>;
@@ -356,7 +356,7 @@ export function useGetRangelandsId<
 }
 
 export const putRangelandsId = (
-  id: number,
+  id: string,
   rangelandRequest: RangelandRequest,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
@@ -380,14 +380,14 @@ export const getPutRangelandsIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof putRangelandsId>>,
     TError,
-    { id: number; data: RangelandRequest },
+    { id: string; data: RangelandRequest },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof putRangelandsId>>,
   TError,
-  { id: number; data: RangelandRequest },
+  { id: string; data: RangelandRequest },
   TContext
 > => {
   const mutationKey = ["putRangelandsId"];
@@ -399,7 +399,7 @@ export const getPutRangelandsIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof putRangelandsId>>,
-    { id: number; data: RangelandRequest }
+    { id: string; data: RangelandRequest }
   > = (props) => {
     const { id, data } = props ?? {};
 
@@ -420,7 +420,7 @@ export const usePutRangelandsId = <TError = ErrorType<Error>, TContext = unknown
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof putRangelandsId>>,
       TError,
-      { id: number; data: RangelandRequest },
+      { id: string; data: RangelandRequest },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -429,13 +429,13 @@ export const usePutRangelandsId = <TError = ErrorType<Error>, TContext = unknown
 ): UseMutationResult<
   Awaited<ReturnType<typeof putRangelandsId>>,
   TError,
-  { id: number; data: RangelandRequest },
+  { id: string; data: RangelandRequest },
   TContext
 > => {
   return useMutation(getPutRangelandsIdMutationOptions(options), queryClient);
 };
 export const deleteRangelandsId = (
-  id: number,
+  id: string,
   options?: SecondParameter<typeof API>,
   signal?: AbortSignal,
 ) => {
@@ -449,14 +449,14 @@ export const getDeleteRangelandsIdMutationOptions = <
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteRangelandsId>>,
     TError,
-    { id: number },
+    { id: string },
     TContext
   >;
   request?: SecondParameter<typeof API>;
 }): UseMutationOptions<
   Awaited<ReturnType<typeof deleteRangelandsId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   const mutationKey = ["deleteRangelandsId"];
@@ -468,7 +468,7 @@ export const getDeleteRangelandsIdMutationOptions = <
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof deleteRangelandsId>>,
-    { id: number }
+    { id: string }
   > = (props) => {
     const { id } = props ?? {};
 
@@ -489,7 +489,7 @@ export const useDeleteRangelandsId = <TError = ErrorType<Error>, TContext = unkn
     mutation?: UseMutationOptions<
       Awaited<ReturnType<typeof deleteRangelandsId>>,
       TError,
-      { id: number },
+      { id: string },
       TContext
     >;
     request?: SecondParameter<typeof API>;
@@ -498,7 +498,7 @@ export const useDeleteRangelandsId = <TError = ErrorType<Error>, TContext = unkn
 ): UseMutationResult<
   Awaited<ReturnType<typeof deleteRangelandsId>>,
   TError,
-  { id: number },
+  { id: string },
   TContext
 > => {
   return useMutation(getDeleteRangelandsIdMutationOptions(options), queryClient);

@@ -1,6 +1,6 @@
 "use client";
 import { useSyncLayers } from "@/store/map";
-import { LayerListResponseDataItem } from "@/types/generated/strapi.schemas";
+import { Layer } from "@/types/generated/strapi.schemas";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
@@ -12,7 +12,7 @@ const selectTypes = ["absolute", "changes"] as const;
 type SelectType = (typeof selectTypes)[number];
 
 type TemporalDatasetProps = {
-  layers?: (LayerListResponseDataItem & { type?: string })[];
+  layers?: (Layer & { type?: string })[];
   isTemporalGroup?: boolean;
 };
 const TemporalChangesDataset = ({ layers, isTemporalGroup }: TemporalDatasetProps) => {
@@ -24,7 +24,7 @@ const TemporalChangesDataset = ({ layers, isTemporalGroup }: TemporalDatasetProp
   const changeLayer = layers?.find((layer) => layer.type === "changes");
 
   const selectedLayer = useMemo(
-    () => layers?.find((l) => l.attributes?.slug && syncLayers.includes(l.attributes?.slug)),
+    () => layers?.find((l) => l.slug && syncLayers.includes(l.slug)),
     [layers, syncLayers],
   );
   const selectedType: SelectType = useMemo(
@@ -33,8 +33,8 @@ const TemporalChangesDataset = ({ layers, isTemporalGroup }: TemporalDatasetProp
   ) as SelectType;
 
   const handleSelectType = (value: SelectType) => {
-    const absoluteLayerSlug = absoluteLayer?.attributes?.slug;
-    const changeLayerSlug = changeLayer?.attributes?.slug;
+    const absoluteLayerSlug = absoluteLayer?.slug;
+    const changeLayerSlug = changeLayer?.slug;
     if (value === "absolute" && absoluteLayerSlug) {
       // setSyncLayers((prev) => [
       //   ...prev?.filter((l) => l !== changeLayerSlug && l !== absoluteLayerSlug),

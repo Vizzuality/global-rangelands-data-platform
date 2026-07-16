@@ -26,214 +26,263 @@ export const DatasetType = {
   "Temporal-Group": "Temporal-Group",
 } as const;
 
-export type DefaultLayerComponentLayerDataAttributesLegendType =
-  (typeof DefaultLayerComponentLayerDataAttributesLegendType)[keyof typeof DefaultLayerComponentLayerDataAttributesLegendType];
+export type DefaultLegendComponentType =
+  (typeof DefaultLegendComponentType)[keyof typeof DefaultLegendComponentType];
 
-export const DefaultLayerComponentLayerDataAttributesLegendType = {
+export const DefaultLegendComponentType = {
   Basic: "Basic",
   Gradient: "Gradient",
   Choropleth: "Choropleth",
   Rangeland: "Rangeland",
 } as const;
 
-export type DefaultLayerComponentLayerDataAttributesLegendItemsItemStyle =
-  (typeof DefaultLayerComponentLayerDataAttributesLegendItemsItemStyle)[keyof typeof DefaultLayerComponentLayerDataAttributesLegendItemsItemStyle];
+export type DefaultItemComponentStyle =
+  (typeof DefaultItemComponentStyle)[keyof typeof DefaultItemComponentStyle];
 
-export const DefaultLayerComponentLayerDataAttributesLegendItemsItemStyle = {
+export const DefaultItemComponentStyle = {
   filled: "filled",
   outline: "outline",
 } as const;
 
-export type DefaultLayerComponentLayerDataAttributesTranslationsItemLocale =
-  (typeof DefaultLayerComponentLayerDataAttributesTranslationsItemLocale)[keyof typeof DefaultLayerComponentLayerDataAttributesTranslationsItemLocale];
-
-export const DefaultLayerComponentLayerDataAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type DefaultLayerComponentLayerDataAttributesLegendItemsItem = {
-  id?: number;
+export interface DefaultItemComponent {
+  id?: string | number;
   name?: string;
   color?: string;
   name_es?: string;
   name_fr?: string;
   group?: string;
-  style?: DefaultLayerComponentLayerDataAttributesLegendItemsItemStyle;
-};
+  style?: DefaultItemComponentStyle;
+}
 
-export type DefaultLayerComponentLayerDataAttributesLegend = {
-  id?: number;
-  type?: DefaultLayerComponentLayerDataAttributesLegendType;
-  items?: DefaultLayerComponentLayerDataAttributesLegendItemsItem[];
+export interface DefaultLegendComponent {
+  id?: string | number;
+  type?: DefaultLegendComponentType;
+  items?: DefaultItemComponent[];
   unit?: string;
   unit_es?: string;
   unit_fr?: string;
-};
+}
 
-export type DefaultLayerComponentLayerDataAttributesTranslationsItem = {
-  id?: number;
+export type TranslationsLayerTranslationComponentLocale =
+  (typeof TranslationsLayerTranslationComponentLocale)[keyof typeof TranslationsLayerTranslationComponentLocale];
+
+export const TranslationsLayerTranslationComponentLocale = {
+  es: "es",
+  fr: "fr",
+} as const;
+
+export interface TranslationsLayerTranslationComponent {
+  id?: string | number;
   title?: string;
   description?: string;
-  locale?: DefaultLayerComponentLayerDataAttributesTranslationsItemLocale;
+  locale?: TranslationsLayerTranslationComponentLocale;
+}
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenKind =
+  (typeof DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenKind)[keyof typeof DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenKind];
+
+export const DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenKind = {
+  "content-api": "content-api",
+  admin: "admin",
+} as const;
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenType =
+  (typeof DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenType)[keyof typeof DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenType];
+
+export const DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenType = {
+  "read-only": "read-only",
+  "full-access": "full-access",
+  custom: "custom",
+} as const;
+
+export type DefaultLayerComponentLayerCreatedByRolesItemUsersItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem =
-  {
-    id?: number;
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: unknown };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
-  {
-    id?: number;
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
-  {
-    action?: string;
-    actionParameters?: unknown;
-    subject?: string;
-    properties?: unknown;
-    conditions?: unknown;
-    role?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-    updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem =
-  {
-    id?: number;
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy =
-  {
-    data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes =
-  {
-    name?: string;
-    code?: string;
-    description?: string;
-    users?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
-    permissions?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-    updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItem = {
-  id?: number;
-  attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes;
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemRole = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles = {
-  data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRolesDataItem[];
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken =
+  {
+    id?: string | number;
+    documentId?: string;
+  };
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy =
+  {
+    id?: string | number;
+    documentId?: string;
+  };
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy =
+  {
+    id?: string | number;
+    documentId?: string;
+  };
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem =
+  {
+    id?: string | number;
+    documentId?: string;
+  };
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItem = {
+  id?: string | number;
+  documentId?: string;
+  action?: string;
+  token?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy;
+  updatedBy?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy;
+  locale?: string;
+  localizations?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem[];
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem =
+  {
+    id?: string | number;
+    documentId?: string;
+  };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes;
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedBy = {
-  data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedByData;
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes;
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedBy = {
-  data?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedByData;
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributes = {
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiToken = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  description?: string;
+  kind?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenKind;
+  type?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenType;
+  accessKey?: string;
+  encryptedKey?: string;
+  lastUsedAt?: string;
+  permissions?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItem[];
+  adminPermissions?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem[];
+  adminUserOwner?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner;
+  expiresAt?: string;
+  /** @pattern ^\d*$ */
+  lifespan?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenCreatedBy;
+  updatedBy?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenUpdatedBy;
+  locale?: string;
+  localizations?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem[];
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItemPermissionsItem = {
+  id?: string | number;
+  documentId?: string;
+  action?: string;
+  actionParameters?: unknown;
+  subject?: string;
+  properties?: unknown;
+  conditions?: unknown;
+  role?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemRole;
+  apiToken?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemApiToken;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemCreatedBy;
+  updatedBy?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemUpdatedBy;
+  locale?: string;
+  localizations?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItemLocalizationsItem[];
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByRolesItem = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  code?: string;
+  description?: string;
+  users?: DefaultLayerComponentLayerCreatedByRolesItemUsersItem[];
+  permissions?: DefaultLayerComponentLayerCreatedByRolesItemPermissionsItem[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DefaultLayerComponentLayerCreatedByRolesItemCreatedBy;
+  updatedBy?: DefaultLayerComponentLayerCreatedByRolesItemUpdatedBy;
+  locale?: string;
+  localizations?: DefaultLayerComponentLayerCreatedByRolesItemLocalizationsItem[];
+};
+
+export type DefaultLayerComponentLayerCreatedByApiTokensItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedByLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DefaultLayerComponentLayerCreatedBy = {
+  id?: string | number;
+  documentId?: string;
   firstname?: string;
   lastname?: string;
   username?: string;
@@ -241,64 +290,51 @@ export type DefaultLayerComponentLayerDataAttributesCreatedByDataAttributes = {
   resetPasswordToken?: string;
   registrationToken?: string;
   isActive?: boolean;
-  roles?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesRoles;
+  roles?: DefaultLayerComponentLayerCreatedByRolesItem[];
+  apiTokens?: DefaultLayerComponentLayerCreatedByApiTokensItem[];
   blocked?: boolean;
   preferedLanguage?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesCreatedBy;
-  updatedBy?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: DefaultLayerComponentLayerCreatedByCreatedBy;
+  updatedBy?: DefaultLayerComponentLayerCreatedByUpdatedBy;
+  locale?: string;
+  localizations?: DefaultLayerComponentLayerCreatedByLocalizationsItem[];
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: DefaultLayerComponentLayerDataAttributesCreatedByDataAttributes;
+export type DefaultLayerComponentLayerUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesCreatedBy = {
-  data?: DefaultLayerComponentLayerDataAttributesCreatedByData;
+export type DefaultLayerComponentLayerLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DefaultLayerComponentLayerDataAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DefaultLayerComponentLayerDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DefaultLayerComponentLayerDataAttributesUpdatedByDataAttributes;
-};
-
-export type DefaultLayerComponentLayerDataAttributesUpdatedBy = {
-  data?: DefaultLayerComponentLayerDataAttributesUpdatedByData;
-};
-
-export type DefaultLayerComponentLayerDataAttributes = {
+export type DefaultLayerComponentLayer = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   description?: string;
   config?: unknown;
   params_config?: unknown;
-  legend?: DefaultLayerComponentLayerDataAttributesLegend;
+  legend?: DefaultLegendComponent;
   interaction_config?: unknown;
   slug?: string;
-  translations?: DefaultLayerComponentLayerDataAttributesTranslationsItem[];
+  translations?: TranslationsLayerTranslationComponent[];
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: DefaultLayerComponentLayerDataAttributesCreatedBy;
-  updatedBy?: DefaultLayerComponentLayerDataAttributesUpdatedBy;
-};
-
-export type DefaultLayerComponentLayerData = {
-  id?: number;
-  attributes?: DefaultLayerComponentLayerDataAttributes;
-};
-
-export type DefaultLayerComponentLayer = {
-  data?: DefaultLayerComponentLayerData;
+  createdBy?: DefaultLayerComponentLayerCreatedBy;
+  updatedBy?: DefaultLayerComponentLayerUpdatedBy;
+  locale?: string;
+  localizations?: DefaultLayerComponentLayerLocalizationsItem[];
 };
 
 export interface DefaultLayerComponent {
-  id?: number;
+  id?: string | number;
   layer?: DefaultLayerComponentLayer;
   type?: string;
   group?: string;
@@ -307,13 +343,13 @@ export interface DefaultLayerComponent {
 }
 
 export interface DefaultCitationsComponent {
-  id?: number;
+  id?: string | number;
   content?: string;
   url?: string;
 }
 
 export interface DefaultSourceComponent {
-  id?: number;
+  id?: string | number;
   name?: string;
   url?: string;
 }
@@ -327,359 +363,146 @@ export const TranslationsDatasetTranslationComponentLocale = {
 } as const;
 
 export interface TranslationsDatasetTranslationComponent {
-  id?: number;
+  id?: string | number;
   title?: string;
   description?: string;
   locale?: TranslationsDatasetTranslationComponentLocale;
   short_description?: string;
 }
 
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesType =
-  (typeof DatasetStoryDataAttributesDatasetsDataItemAttributesType)[keyof typeof DatasetStoryDataAttributesDatasetsDataItemAttributesType];
+export type DatasetStoryDatasetsItemType =
+  (typeof DatasetStoryDatasetsItemType)[keyof typeof DatasetStoryDatasetsItemType];
 
-export const DatasetStoryDataAttributesDatasetsDataItemAttributesType = {
+export const DatasetStoryDatasetsItemType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
   "Temporal-Group": "Temporal-Group",
 } as const;
 
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItemLocale =
-  (typeof DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItemLocale)[keyof typeof DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItemLocale];
+export type TranslationsStoryTranslationComponentLocale =
+  (typeof TranslationsStoryTranslationComponentLocale)[keyof typeof TranslationsStoryTranslationComponentLocale];
 
-export const DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItemLocale = {
+export const TranslationsStoryTranslationComponentLocale = {
   es: "es",
   fr: "fr",
 } as const;
 
-export type DatasetStoryDataAttributesTranslationsItemLocale =
-  (typeof DatasetStoryDataAttributesTranslationsItemLocale)[keyof typeof DatasetStoryDataAttributesTranslationsItemLocale];
+export interface TranslationsStoryTranslationComponent {
+  id?: string | number;
+  title?: string;
+  description?: string;
+  notes?: string;
+  locale?: TranslationsStoryTranslationComponentLocale;
+}
 
-export const DatasetStoryDataAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
+export type DefaultFurtherInfoComponentType =
+  (typeof DefaultFurtherInfoComponentType)[keyof typeof DefaultFurtherInfoComponentType];
 
-export type DatasetStoryDataAttributesFurtherInformationItemType =
-  (typeof DatasetStoryDataAttributesFurtherInformationItemType)[keyof typeof DatasetStoryDataAttributesFurtherInformationItemType];
-
-export const DatasetStoryDataAttributesFurtherInformationItemType = {
+export const DefaultFurtherInfoComponentType = {
   link: "link",
   paper: "paper",
   video: "video",
 } as const;
 
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayerData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributes;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayer = {
-  data?: DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayerData;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItem = {
-  id?: number;
-  layer?: DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItemLayer;
-  type?: string;
-  group?: string;
-  group_es?: string;
-  group_fr?: string;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesCitationsItem = {
-  id?: number;
+export interface DefaultFurtherInfoComponent {
+  id?: string | number;
+  url?: string;
   content?: string;
-  url?: string;
+  content_es?: string;
+  content_fr?: string;
+  type?: DefaultFurtherInfoComponentType;
+}
+
+export type DatasetStoryDatasetsItemStory = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesSources = {
-  id?: number;
-  name?: string;
-  url?: string;
+export type DatasetStoryDatasetsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItem = {
-  id?: number;
+export type DatasetStoryDatasetsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryDatasetsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryDatasetsItem = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
-  description?: string;
-  locale?: DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItemLocale;
-  short_description?: string;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesStoryDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesStoryData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesDatasetsDataItemAttributesStoryDataAttributes;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesStory = {
-  data?: DatasetStoryDataAttributesDatasetsDataItemAttributesStoryData;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesDatasetsDataItemAttributesCreatedByDataAttributes;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesCreatedBy = {
-  data?: DatasetStoryDataAttributesDatasetsDataItemAttributesCreatedByData;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesDatasetsDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributesUpdatedBy = {
-  data?: DatasetStoryDataAttributesDatasetsDataItemAttributesUpdatedByData;
-};
-
-export type DatasetStoryDataAttributesDatasetsDataItemAttributes = {
-  title?: string;
-  type?: DatasetStoryDataAttributesDatasetsDataItemAttributesType;
-  layers?: DatasetStoryDataAttributesDatasetsDataItemAttributesLayersItem[];
-  citations?: DatasetStoryDataAttributesDatasetsDataItemAttributesCitationsItem[];
-  sources?: DatasetStoryDataAttributesDatasetsDataItemAttributesSources;
+  type?: DatasetStoryDatasetsItemType;
+  layers?: DefaultLayerComponent[];
+  citations?: DefaultCitationsComponent[];
+  sources?: DefaultSourceComponent;
   slug?: string;
   description?: string;
-  translations?: DatasetStoryDataAttributesDatasetsDataItemAttributesTranslationsItem[];
-  story?: DatasetStoryDataAttributesDatasetsDataItemAttributesStory;
+  translations?: TranslationsDatasetTranslationComponent[];
+  story?: DatasetStoryDatasetsItemStory;
   short_description?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: DatasetStoryDataAttributesDatasetsDataItemAttributesCreatedBy;
-  updatedBy?: DatasetStoryDataAttributesDatasetsDataItemAttributesUpdatedBy;
+  createdBy?: DatasetStoryDatasetsItemCreatedBy;
+  updatedBy?: DatasetStoryDatasetsItemUpdatedBy;
+  locale?: string;
+  localizations?: DatasetStoryDatasetsItemLocalizationsItem[];
 };
 
-export type DatasetStoryDataAttributesDatasetsDataItem = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesDatasetsDataItemAttributes;
+export type DatasetStoryImageRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesDatasets = {
-  data?: DatasetStoryDataAttributesDatasetsDataItem[];
+export type DatasetStoryImageFolderParent = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImageDataAttributesRelatedDataItemAttributes = {
-  [key: string]: unknown;
+export type DatasetStoryImageFolderChildrenItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImageDataAttributesRelatedDataItem = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesRelatedDataItemAttributes;
+export type DatasetStoryImageFolderFilesItemRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImageDataAttributesRelated = {
-  data?: DatasetStoryDataAttributesImageDataAttributesRelatedDataItem[];
+export type DatasetStoryImageFolderFilesItemFolder = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesParentDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesParentData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesParentDataAttributes;
+export type DatasetStoryImageFolderFilesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesParent = {
-  data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesParentData;
+export type DatasetStoryImageFolderFilesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItem = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes;
+export type DatasetStoryImageFolderFilesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesChildren = {
-  data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItem[];
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem =
-  {
-    id?: number;
-    attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated =
-  {
-    data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem[];
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData =
-  {
-    id?: number;
-    attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder =
-  {
-    data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy =
-  {
-    data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy =
-  {
-    data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes =
-  {
-    name?: string;
-    alternativeText?: string;
-    caption?: string;
-    width?: number;
-    height?: number;
-    formats?: unknown;
-    hash?: string;
-    ext?: string;
-    mime?: string;
-    size?: number;
-    url?: string;
-    previewUrl?: string;
-    provider?: string;
-    provider_metadata?: unknown;
-    related?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated;
-    folder?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder;
-    folderPath?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy;
-    updatedBy?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy;
-  };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItem = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFiles = {
-  data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItem[];
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedBy = {
-  data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByData;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedBy = {
-  data?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByData;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderDataAttributes = {
-  name?: string;
-  pathId?: number;
-  parent?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesParent;
-  children?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesChildren;
-  files?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesFiles;
-  path?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  createdBy?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedBy;
-  updatedBy?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedBy;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolderData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesFolderDataAttributes;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesFolder = {
-  data?: DatasetStoryDataAttributesImageDataAttributesFolderData;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesCreatedByDataAttributes;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesCreatedBy = {
-  data?: DatasetStoryDataAttributesImageDataAttributesCreatedByData;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributesUpdatedByDataAttributes;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributesUpdatedBy = {
-  data?: DatasetStoryDataAttributesImageDataAttributesUpdatedByData;
-};
-
-export type DatasetStoryDataAttributesImageDataAttributes = {
+export type DatasetStoryImageFolderFilesItem = {
+  id?: string | number;
+  documentId?: string;
   name?: string;
   alternativeText?: string;
   caption?: string;
+  focalPoint?: unknown;
   width?: number;
   height?: number;
   formats?: unknown;
@@ -691,113 +514,151 @@ export type DatasetStoryDataAttributesImageDataAttributes = {
   previewUrl?: string;
   provider?: string;
   provider_metadata?: unknown;
-  related?: DatasetStoryDataAttributesImageDataAttributesRelated;
-  folder?: DatasetStoryDataAttributesImageDataAttributesFolder;
+  related?: DatasetStoryImageFolderFilesItemRelatedItem[];
+  folder?: DatasetStoryImageFolderFilesItemFolder;
   folderPath?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: DatasetStoryDataAttributesImageDataAttributesCreatedBy;
-  updatedBy?: DatasetStoryDataAttributesImageDataAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: DatasetStoryImageFolderFilesItemCreatedBy;
+  updatedBy?: DatasetStoryImageFolderFilesItemUpdatedBy;
+  locale?: string;
+  localizations?: DatasetStoryImageFolderFilesItemLocalizationsItem[];
 };
 
-export type DatasetStoryDataAttributesImageData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesImageDataAttributes;
+export type DatasetStoryImageFolderCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesImage = {
-  data?: DatasetStoryDataAttributesImageData;
+export type DatasetStoryImageFolderUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  description?: string;
-  notes?: string;
-  locale?: DatasetStoryDataAttributesTranslationsItemLocale;
+export type DatasetStoryImageFolderLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesFurtherInformationItem = {
-  id?: number;
+export type DatasetStoryImageFolder = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  pathId?: number;
+  parent?: DatasetStoryImageFolderParent;
+  children?: DatasetStoryImageFolderChildrenItem[];
+  files?: DatasetStoryImageFolderFilesItem[];
+  path?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DatasetStoryImageFolderCreatedBy;
+  updatedBy?: DatasetStoryImageFolderUpdatedBy;
+  locale?: string;
+  localizations?: DatasetStoryImageFolderLocalizationsItem[];
+};
+
+export type DatasetStoryImageCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryImageUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryImageLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryImage = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
   url?: string;
-  content?: string;
-  content_es?: string;
-  content_fr?: string;
-  type?: DatasetStoryDataAttributesFurtherInformationItemType;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: DatasetStoryImageRelatedItem[];
+  folder?: DatasetStoryImageFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DatasetStoryImageCreatedBy;
+  updatedBy?: DatasetStoryImageUpdatedBy;
+  locale?: string;
+  localizations?: DatasetStoryImageLocalizationsItem[];
 };
 
-export type DatasetStoryDataAttributesCreatedByDataAttributes = { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesCreatedByDataAttributes;
+export type DatasetStoryCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesCreatedBy = {
-  data?: DatasetStoryDataAttributesCreatedByData;
+export type DatasetStoryUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type DatasetStoryDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributesUpdatedByDataAttributes;
+export type DatasetStoryLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetStoryDataAttributesUpdatedBy = {
-  data?: DatasetStoryDataAttributesUpdatedByData;
-};
-
-export type DatasetStoryDataAttributes = {
+export type DatasetStory = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   description?: string;
   notes?: string;
   latitude?: number;
   longitude?: number;
-  datasets?: DatasetStoryDataAttributesDatasets;
-  image?: DatasetStoryDataAttributesImage;
-  translations?: DatasetStoryDataAttributesTranslationsItem[];
-  further_information?: DatasetStoryDataAttributesFurtherInformationItem[];
+  datasets?: DatasetStoryDatasetsItem[];
+  image?: DatasetStoryImage;
+  translations?: TranslationsStoryTranslationComponent[];
+  further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: DatasetStoryDataAttributesCreatedBy;
-  updatedBy?: DatasetStoryDataAttributesUpdatedBy;
-};
-
-export type DatasetStoryData = {
-  id?: number;
-  attributes?: DatasetStoryDataAttributes;
-};
-
-export type DatasetStory = {
-  data?: DatasetStoryData;
-};
-
-export type DatasetCreatedByDataAttributes = { [key: string]: unknown };
-
-export type DatasetCreatedByData = {
-  id?: number;
-  attributes?: DatasetCreatedByDataAttributes;
+  createdBy?: DatasetStoryCreatedBy;
+  updatedBy?: DatasetStoryUpdatedBy;
+  locale?: string;
+  localizations?: DatasetStoryLocalizationsItem[];
 };
 
 export type DatasetCreatedBy = {
-  data?: DatasetCreatedByData;
-};
-
-export type DatasetUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type DatasetUpdatedByData = {
-  id?: number;
-  attributes?: DatasetUpdatedByDataAttributes;
+  id?: string | number;
+  documentId?: string;
 };
 
 export type DatasetUpdatedBy = {
-  data?: DatasetUpdatedByData;
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
 export interface Dataset {
+  id?: string | number;
+  documentId?: string;
   title: string;
   type: DatasetType;
   layers: DefaultLayerComponent[];
@@ -813,15 +674,12 @@ export interface Dataset {
   publishedAt?: string;
   createdBy?: DatasetCreatedBy;
   updatedBy?: DatasetUpdatedBy;
-}
-
-export interface DatasetListResponseDataItem {
-  id?: number;
-  attributes?: Dataset;
+  locale?: string;
+  localizations?: DatasetLocalizationsItem[];
 }
 
 export interface DatasetListResponse {
-  data?: DatasetListResponseDataItem[];
+  data?: Dataset[];
   meta?: DatasetListResponseMeta;
 }
 
@@ -843,13 +701,8 @@ export interface Error {
 
 export type DatasetResponseMeta = { [key: string]: unknown };
 
-export interface DatasetResponseDataObject {
-  id?: number;
-  attributes?: Dataset;
-}
-
 export interface DatasetResponse {
-  data?: DatasetResponseDataObject;
+  data?: Dataset;
   meta?: DatasetResponseMeta;
 }
 
@@ -874,6 +727,8 @@ export type DatasetRequestData = {
   translations?: TranslationsDatasetTranslationComponent[];
   story?: number | string;
   short_description?: string;
+  locale?: string;
+  localizations?: (number | string)[];
 };
 
 export interface DatasetRequest {
@@ -893,69 +748,15 @@ export type DatasetCategoryListResponseMeta = {
   pagination?: DatasetCategoryListResponseMetaPagination;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesType =
-  (typeof DatasetCategoryDatasetsDataItemAttributesType)[keyof typeof DatasetCategoryDatasetsDataItemAttributesType];
+export type DatasetCategoryDatasetsItemType =
+  (typeof DatasetCategoryDatasetsItemType)[keyof typeof DatasetCategoryDatasetsItemType];
 
-export const DatasetCategoryDatasetsDataItemAttributesType = {
+export const DatasetCategoryDatasetsItemType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
   "Temporal-Group": "Temporal-Group",
 } as const;
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType =
-  (typeof DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType)[keyof typeof DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType];
-
-export const DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType = {
-  Basic: "Basic",
-  Gradient: "Gradient",
-  Choropleth: "Choropleth",
-  Rangeland: "Rangeland",
-} as const;
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle =
-  (typeof DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle)[keyof typeof DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle];
-
-export const DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle =
-  {
-    filled: "filled",
-    outline: "outline",
-  } as const;
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale =
-  (typeof DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale)[keyof typeof DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale];
-
-export const DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale =
-  {
-    es: "es",
-    fr: "fr",
-  } as const;
-
-export type DatasetCategoryDatasetsDataItemAttributesTranslationsItemLocale =
-  (typeof DatasetCategoryDatasetsDataItemAttributesTranslationsItemLocale)[keyof typeof DatasetCategoryDatasetsDataItemAttributesTranslationsItemLocale];
-
-export const DatasetCategoryDatasetsDataItemAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale =
-  (typeof DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale)[keyof typeof DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale];
-
-export const DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType =
-  (typeof DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType)[keyof typeof DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType];
-
-export const DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType =
-  {
-    link: "link",
-    paper: "paper",
-    video: "video",
-  } as const;
 
 export type TranslationsDatasetCategoryTranslationComponentLocale =
   (typeof TranslationsDatasetCategoryTranslationComponentLocale)[keyof typeof TranslationsDatasetCategoryTranslationComponentLocale];
@@ -967,524 +768,63 @@ export const TranslationsDatasetCategoryTranslationComponentLocale = {
 } as const;
 
 export interface TranslationsDatasetCategoryTranslationComponent {
-  id?: number;
+  id?: string | number;
   title?: string;
   locale?: TranslationsDatasetCategoryTranslationComponentLocale;
 }
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem =
-  {
-    id?: number;
-    name?: string;
-    color?: string;
-    name_es?: string;
-    name_fr?: string;
-    group?: string;
-    style?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegend = {
-  id?: number;
-  type?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType;
-  items?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem[];
-  unit?: string;
-  unit_es?: string;
-  unit_fr?: string;
+export type DatasetCategoryDatasetsItemStoryDatasetsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItem =
-  {
-    id?: number;
-    title?: string;
-    description?: string;
-    locale?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
-  {
-    action?: string;
-    actionParameters?: unknown;
-    subject?: string;
-    properties?: unknown;
-    conditions?: unknown;
-    role?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-    updatedBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes =
-  {
-    name?: string;
-    code?: string;
-    description?: string;
-    users?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
-    permissions?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-    updatedBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItem =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRoles =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItem[];
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributes =
-  {
-    firstname?: string;
-    lastname?: string;
-    username?: string;
-    email?: string;
-    resetPasswordToken?: string;
-    registrationToken?: string;
-    isActive?: boolean;
-    roles?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRoles;
-    blocked?: boolean;
-    preferedLanguage?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedBy;
-    updatedBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedBy;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributes;
+export type DatasetCategoryDatasetsItemStoryImageRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedBy = {
-  data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByData;
+export type DatasetCategoryDatasetsItemStoryImageFolderParent = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByDataAttributes;
+export type DatasetCategoryDatasetsItemStoryImageFolderChildrenItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedBy = {
-  data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByData;
+export type DatasetCategoryDatasetsItemStoryImageFolderFilesItemRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributes = {
-  title?: string;
-  description?: string;
-  config?: unknown;
-  params_config?: unknown;
-  legend?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegend;
-  interaction_config?: unknown;
-  slug?: string;
-  translations?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItem[];
-  createdAt?: string;
-  updatedAt?: string;
-  publishedAt?: string;
-  createdBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedBy;
-  updatedBy?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedBy;
+export type DatasetCategoryDatasetsItemStoryImageFolderFilesItemFolder = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayerData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerDataAttributes;
+export type DatasetCategoryDatasetsItemStoryImageFolderFilesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItemLayer = {
-  data?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayerData;
+export type DatasetCategoryDatasetsItemStoryImageFolderFilesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesLayersItem = {
-  id?: number;
-  layer?: DatasetCategoryDatasetsDataItemAttributesLayersItemLayer;
-  type?: string;
-  group?: string;
-  group_es?: string;
-  group_fr?: string;
+export type DatasetCategoryDatasetsItemStoryImageFolderFilesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesCitationsItem = {
-  id?: number;
-  content?: string;
-  url?: string;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesSources = {
-  id?: number;
-  name?: string;
-  url?: string;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  description?: string;
-  locale?: DatasetCategoryDatasetsDataItemAttributesTranslationsItemLocale;
-  short_description?: string;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItem = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItemAttributes;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesDatasets = {
-  data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItem[];
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItem =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItemAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelated =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItem[];
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParent =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItem =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildren =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItem[];
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem[];
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes =
-  {
-    name?: string;
-    alternativeText?: string;
-    caption?: string;
-    width?: number;
-    height?: number;
-    formats?: unknown;
-    hash?: string;
-    ext?: string;
-    mime?: string;
-    size?: number;
-    url?: string;
-    previewUrl?: string;
-    provider?: string;
-    provider_metadata?: unknown;
-    related?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated;
-    folder?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder;
-    folderPath?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy;
-    updatedBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItem =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFiles =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItem[];
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributes =
-  {
-    name?: string;
-    pathId?: number;
-    parent?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParent;
-    children?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildren;
-    files?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFiles;
-    path?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedBy;
-    updatedBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedBy;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolder =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByDataAttributes;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedBy =
-  {
-    data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByData;
-  };
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributes = {
+export type DatasetCategoryDatasetsItemStoryImageFolderFilesItem = {
+  id?: string | number;
+  documentId?: string;
   name?: string;
   alternativeText?: string;
   caption?: string;
+  focalPoint?: unknown;
   width?: number;
   height?: number;
   formats?: unknown;
@@ -1496,172 +836,221 @@ export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDat
   previewUrl?: string;
   provider?: string;
   provider_metadata?: unknown;
-  related?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelated;
-  folder?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolder;
+  related?: DatasetCategoryDatasetsItemStoryImageFolderFilesItemRelatedItem[];
+  folder?: DatasetCategoryDatasetsItemStoryImageFolderFilesItemFolder;
   folderPath?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedBy;
-  updatedBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: DatasetCategoryDatasetsItemStoryImageFolderFilesItemCreatedBy;
+  updatedBy?: DatasetCategoryDatasetsItemStoryImageFolderFilesItemUpdatedBy;
+  locale?: string;
+  localizations?: DatasetCategoryDatasetsItemStoryImageFolderFilesItemLocalizationsItem[];
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributes;
+export type DatasetCategoryDatasetsItemStoryImageFolderCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImage = {
-  data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImageData;
+export type DatasetCategoryDatasetsItemStoryImageFolderUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  description?: string;
-  notes?: string;
-  locale?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale;
+export type DatasetCategoryDatasetsItemStoryImageFolderLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItem = {
-  id?: number;
+export type DatasetCategoryDatasetsItemStoryImageFolder = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  pathId?: number;
+  parent?: DatasetCategoryDatasetsItemStoryImageFolderParent;
+  children?: DatasetCategoryDatasetsItemStoryImageFolderChildrenItem[];
+  files?: DatasetCategoryDatasetsItemStoryImageFolderFilesItem[];
+  path?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DatasetCategoryDatasetsItemStoryImageFolderCreatedBy;
+  updatedBy?: DatasetCategoryDatasetsItemStoryImageFolderUpdatedBy;
+  locale?: string;
+  localizations?: DatasetCategoryDatasetsItemStoryImageFolderLocalizationsItem[];
+};
+
+export type DatasetCategoryDatasetsItemStoryImageCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryImageUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryImageLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryImage = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
   url?: string;
-  content?: string;
-  content_es?: string;
-  content_fr?: string;
-  type?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: DatasetCategoryDatasetsItemStoryImageRelatedItem[];
+  folder?: DatasetCategoryDatasetsItemStoryImageFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DatasetCategoryDatasetsItemStoryImageCreatedBy;
+  updatedBy?: DatasetCategoryDatasetsItemStoryImageUpdatedBy;
+  locale?: string;
+  localizations?: DatasetCategoryDatasetsItemStoryImageLocalizationsItem[];
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
+export type DatasetCategoryDatasetsItemStoryCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesCreatedByDataAttributes;
+export type DatasetCategoryDatasetsItemStoryUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesCreatedBy = {
-  data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesCreatedByData;
+export type DatasetCategoryDatasetsItemStoryLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByDataAttributes;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesUpdatedBy = {
-  data?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByData;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesStoryDataAttributes = {
+export type DatasetCategoryDatasetsItemStory = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   description?: string;
   notes?: string;
   latitude?: number;
   longitude?: number;
-  datasets?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesDatasets;
-  image?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesImage;
-  translations?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItem[];
-  further_information?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItem[];
+  datasets?: DatasetCategoryDatasetsItemStoryDatasetsItem[];
+  image?: DatasetCategoryDatasetsItemStoryImage;
+  translations?: TranslationsStoryTranslationComponent[];
+  further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesCreatedBy;
-  updatedBy?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributesUpdatedBy;
+  createdBy?: DatasetCategoryDatasetsItemStoryCreatedBy;
+  updatedBy?: DatasetCategoryDatasetsItemStoryUpdatedBy;
+  locale?: string;
+  localizations?: DatasetCategoryDatasetsItemStoryLocalizationsItem[];
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStoryData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesStoryDataAttributes;
+export type DatasetCategoryDatasetsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesStory = {
-  data?: DatasetCategoryDatasetsDataItemAttributesStoryData;
+export type DatasetCategoryDatasetsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
+export type DatasetCategoryDatasetsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type DatasetCategoryDatasetsDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesCreatedByDataAttributes;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesCreatedBy = {
-  data?: DatasetCategoryDatasetsDataItemAttributesCreatedByData;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributesUpdatedBy = {
-  data?: DatasetCategoryDatasetsDataItemAttributesUpdatedByData;
-};
-
-export type DatasetCategoryDatasetsDataItemAttributes = {
+export type DatasetCategoryDatasetsItem = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
-  type?: DatasetCategoryDatasetsDataItemAttributesType;
-  layers?: DatasetCategoryDatasetsDataItemAttributesLayersItem[];
-  citations?: DatasetCategoryDatasetsDataItemAttributesCitationsItem[];
-  sources?: DatasetCategoryDatasetsDataItemAttributesSources;
+  type?: DatasetCategoryDatasetsItemType;
+  layers?: DefaultLayerComponent[];
+  citations?: DefaultCitationsComponent[];
+  sources?: DefaultSourceComponent;
   slug?: string;
   description?: string;
-  translations?: DatasetCategoryDatasetsDataItemAttributesTranslationsItem[];
-  story?: DatasetCategoryDatasetsDataItemAttributesStory;
+  translations?: TranslationsDatasetTranslationComponent[];
+  story?: DatasetCategoryDatasetsItemStory;
   short_description?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: DatasetCategoryDatasetsDataItemAttributesCreatedBy;
-  updatedBy?: DatasetCategoryDatasetsDataItemAttributesUpdatedBy;
-};
-
-export type DatasetCategoryDatasetsDataItem = {
-  id?: number;
-  attributes?: DatasetCategoryDatasetsDataItemAttributes;
-};
-
-export type DatasetCategoryDatasets = {
-  data?: DatasetCategoryDatasetsDataItem[];
-};
-
-export type DatasetCategoryCreatedByDataAttributes = { [key: string]: unknown };
-
-export type DatasetCategoryCreatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryCreatedByDataAttributes;
+  createdBy?: DatasetCategoryDatasetsItemCreatedBy;
+  updatedBy?: DatasetCategoryDatasetsItemUpdatedBy;
+  locale?: string;
+  localizations?: DatasetCategoryDatasetsItemLocalizationsItem[];
 };
 
 export type DatasetCategoryCreatedBy = {
-  data?: DatasetCategoryCreatedByData;
-};
-
-export type DatasetCategoryUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type DatasetCategoryUpdatedByData = {
-  id?: number;
-  attributes?: DatasetCategoryUpdatedByDataAttributes;
+  id?: string | number;
+  documentId?: string;
 };
 
 export type DatasetCategoryUpdatedBy = {
-  data?: DatasetCategoryUpdatedByData;
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryLocalizationsItemDatasetsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryLocalizationsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryLocalizationsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryLocalizationsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+  title?: string;
+  datasets?: DatasetCategoryLocalizationsItemDatasetsItem[];
+  translations?: TranslationsDatasetCategoryTranslationComponent[];
+  slug?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DatasetCategoryLocalizationsItemCreatedBy;
+  updatedBy?: DatasetCategoryLocalizationsItemUpdatedBy;
+  locale?: string;
+  localizations?: DatasetCategoryLocalizationsItemLocalizationsItem[];
 };
 
 export interface DatasetCategory {
+  id?: string | number;
+  documentId?: string;
   title: string;
-  datasets?: DatasetCategoryDatasets;
+  datasets?: DatasetCategoryDatasetsItem[];
   translations?: TranslationsDatasetCategoryTranslationComponent[];
   slug: string;
   createdAt?: string;
@@ -1669,27 +1058,19 @@ export interface DatasetCategory {
   publishedAt?: string;
   createdBy?: DatasetCategoryCreatedBy;
   updatedBy?: DatasetCategoryUpdatedBy;
-}
-
-export interface DatasetCategoryListResponseDataItem {
-  id?: number;
-  attributes?: DatasetCategory;
+  locale?: string;
+  localizations?: DatasetCategoryLocalizationsItem[];
 }
 
 export interface DatasetCategoryListResponse {
-  data?: DatasetCategoryListResponseDataItem[];
+  data?: DatasetCategory[];
   meta?: DatasetCategoryListResponseMeta;
 }
 
 export type DatasetCategoryResponseMeta = { [key: string]: unknown };
 
-export interface DatasetCategoryResponseDataObject {
-  id?: number;
-  attributes?: DatasetCategory;
-}
-
 export interface DatasetCategoryResponse {
-  data?: DatasetCategoryResponseDataObject;
+  data?: DatasetCategory;
   meta?: DatasetCategoryResponseMeta;
 }
 
@@ -1698,6 +1079,8 @@ export type DatasetCategoryRequestData = {
   datasets?: (number | string)[];
   translations?: TranslationsDatasetCategoryTranslationComponent[];
   slug: string;
+  locale?: string;
+  localizations?: (number | string)[];
 };
 
 export interface DatasetCategoryRequest {
@@ -1717,22 +1100,6 @@ export type EcoregionListResponseMeta = {
   pagination?: EcoregionListResponseMetaPagination;
 };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesTranslationsItemLocale =
-  (typeof EcoregionRangelandDataAttributesEcoregionsDataItemAttributesTranslationsItemLocale)[keyof typeof EcoregionRangelandDataAttributesEcoregionsDataItemAttributesTranslationsItemLocale];
-
-export const EcoregionRangelandDataAttributesEcoregionsDataItemAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type EcoregionRangelandDataAttributesTranslationsItemLocale =
-  (typeof EcoregionRangelandDataAttributesTranslationsItemLocale)[keyof typeof EcoregionRangelandDataAttributesTranslationsItemLocale];
-
-export const EcoregionRangelandDataAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
 export type TranslationsEcoregionTranslationComponentLocale =
   (typeof TranslationsEcoregionTranslationComponentLocale)[keyof typeof TranslationsEcoregionTranslationComponentLocale];
 
@@ -1742,192 +1109,238 @@ export const TranslationsEcoregionTranslationComponentLocale = {
 } as const;
 
 export interface TranslationsEcoregionTranslationComponent {
-  id?: number;
+  id?: string | number;
   title?: string;
   locale?: TranslationsEcoregionTranslationComponentLocale;
 }
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandDataAttributes = {
-  [key: string]: unknown;
-};
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenKind =
+  (typeof EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenKind)[keyof typeof EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenKind];
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandData = {
-  id?: number;
-  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandDataAttributes;
-};
+export const EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenKind = {
+  "content-api": "content-api",
+  admin: "admin",
+} as const;
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangeland = {
-  data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangelandData;
-};
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenType =
+  (typeof EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenType)[keyof typeof EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenType];
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesTranslationsItem = {
-  id?: number;
+export const EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenType = {
+  "read-only": "read-only",
+  "full-access": "full-access",
+  custom: "custom",
+} as const;
+
+export type TranslationsRangelandTranslationComponentLocale =
+  (typeof TranslationsRangelandTranslationComponentLocale)[keyof typeof TranslationsRangelandTranslationComponentLocale];
+
+export const TranslationsRangelandTranslationComponentLocale = {
+  es: "es",
+  fr: "fr",
+} as const;
+
+export interface TranslationsRangelandTranslationComponent {
+  id?: string | number;
   title?: string;
-  locale?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesTranslationsItemLocale;
+  locale?: TranslationsRangelandTranslationComponentLocale;
+}
+
+export type EcoregionRangelandEcoregionsItemRangeland = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
-  { [key: string]: unknown };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemUsersItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemRole = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken =
   {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy =
   {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
+    id?: string | number;
+    documentId?: string;
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: unknown };
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy =
   {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem =
   {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItem =
   {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
-  {
+    id?: string | number;
+    documentId?: string;
     action?: string;
-    actionParameters?: unknown;
-    subject?: string;
-    properties?: unknown;
-    conditions?: unknown;
-    role?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
+    token?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken;
     createdAt?: string;
     updatedAt?: string;
-    createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-    updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
+    publishedAt?: string;
+    createdBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy;
+    updatedBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy;
+    locale?: string;
+    localizations?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem[];
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem =
   {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner =
   {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
+    id?: string | number;
+    documentId?: string;
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem =
   {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy =
-  {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiToken = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  description?: string;
+  kind?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenKind;
+  type?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenType;
+  accessKey?: string;
+  encryptedKey?: string;
+  lastUsedAt?: string;
+  permissions?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenPermissionsItem[];
+  adminPermissions?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem[];
+  adminUserOwner?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner;
+  expiresAt?: string;
+  /** @pattern ^\d*$ */
+  lifespan?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenCreatedBy;
+  updatedBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenUpdatedBy;
+  locale?: string;
+  localizations?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem[];
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy =
-  {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributes =
-  {
-    name?: string;
-    code?: string;
-    description?: string;
-    users?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
-    permissions?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-    updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItem = {
+  id?: string | number;
+  documentId?: string;
+  action?: string;
+  actionParameters?: unknown;
+  subject?: string;
+  properties?: unknown;
+  conditions?: unknown;
+  role?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemRole;
+  apiToken?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemApiToken;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemCreatedBy;
+  updatedBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemUpdatedBy;
+  locale?: string;
+  localizations?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItemLocalizationsItem[];
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItem =
-  {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItemAttributes;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRoles =
-  {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRolesDataItem[];
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByDataAttributes;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByRolesItem = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  code?: string;
+  description?: string;
+  users?: EcoregionRangelandEcoregionsItemCreatedByRolesItemUsersItem[];
+  permissions?: EcoregionRangelandEcoregionsItemCreatedByRolesItemPermissionsItem[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemCreatedBy;
+  updatedBy?: EcoregionRangelandEcoregionsItemCreatedByRolesItemUpdatedBy;
+  locale?: string;
+  localizations?: EcoregionRangelandEcoregionsItemCreatedByRolesItemLocalizationsItem[];
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedBy =
-  {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedByData;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByApiTokensItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
+export type EcoregionRangelandEcoregionsItemCreatedByCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByDataAttributes;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedBy =
-  {
-    data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedByData;
-  };
+export type EcoregionRangelandEcoregionsItemCreatedByLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributes = {
+export type EcoregionRangelandEcoregionsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
   firstname?: string;
   lastname?: string;
   username?: string;
@@ -1935,134 +1348,98 @@ export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedB
   resetPasswordToken?: string;
   registrationToken?: string;
   isActive?: boolean;
-  roles?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesRoles;
+  roles?: EcoregionRangelandEcoregionsItemCreatedByRolesItem[];
+  apiTokens?: EcoregionRangelandEcoregionsItemCreatedByApiTokensItem[];
   blocked?: boolean;
   preferedLanguage?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesCreatedBy;
-  updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: EcoregionRangelandEcoregionsItemCreatedByCreatedBy;
+  updatedBy?: EcoregionRangelandEcoregionsItemCreatedByUpdatedBy;
+  locale?: string;
+  localizations?: EcoregionRangelandEcoregionsItemCreatedByLocalizationsItem[];
 };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByDataAttributes;
+export type EcoregionRangelandEcoregionsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedBy = {
-  data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedByData;
+export type EcoregionRangelandEcoregionsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedBy = {
-  data?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedByData;
-};
-
-export type EcoregionRangelandDataAttributesEcoregionsDataItemAttributes = {
+export type EcoregionRangelandEcoregionsItem = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   slug?: string;
   code?: string;
-  rangeland?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesRangeland;
+  rangeland?: EcoregionRangelandEcoregionsItemRangeland;
   color?: string;
-  translations?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesTranslationsItem[];
+  translations?: TranslationsEcoregionTranslationComponent[];
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesCreatedBy;
-  updatedBy?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributesUpdatedBy;
+  createdBy?: EcoregionRangelandEcoregionsItemCreatedBy;
+  updatedBy?: EcoregionRangelandEcoregionsItemUpdatedBy;
+  locale?: string;
+  localizations?: EcoregionRangelandEcoregionsItemLocalizationsItem[];
 };
 
-export type EcoregionRangelandDataAttributesEcoregionsDataItem = {
-  id?: number;
-  attributes?: EcoregionRangelandDataAttributesEcoregionsDataItemAttributes;
+export type EcoregionRangelandCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type EcoregionRangelandDataAttributesEcoregions = {
-  data?: EcoregionRangelandDataAttributesEcoregionsDataItem[];
+export type EcoregionRangelandUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type EcoregionRangelandDataAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  locale?: EcoregionRangelandDataAttributesTranslationsItemLocale;
-};
-
-export type EcoregionRangelandDataAttributesCreatedByDataAttributes = { [key: string]: unknown };
-
-export type EcoregionRangelandDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: EcoregionRangelandDataAttributesCreatedByDataAttributes;
-};
-
-export type EcoregionRangelandDataAttributesCreatedBy = {
-  data?: EcoregionRangelandDataAttributesCreatedByData;
-};
-
-export type EcoregionRangelandDataAttributesUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type EcoregionRangelandDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: EcoregionRangelandDataAttributesUpdatedByDataAttributes;
-};
-
-export type EcoregionRangelandDataAttributesUpdatedBy = {
-  data?: EcoregionRangelandDataAttributesUpdatedByData;
-};
-
-export type EcoregionRangelandDataAttributes = {
-  title?: string;
-  slug?: string;
-  code?: string;
-  color?: string;
-  ecoregions?: EcoregionRangelandDataAttributesEcoregions;
-  translations?: EcoregionRangelandDataAttributesTranslationsItem[];
-  createdAt?: string;
-  updatedAt?: string;
-  publishedAt?: string;
-  createdBy?: EcoregionRangelandDataAttributesCreatedBy;
-  updatedBy?: EcoregionRangelandDataAttributesUpdatedBy;
-};
-
-export type EcoregionRangelandData = {
-  id?: number;
-  attributes?: EcoregionRangelandDataAttributes;
+export type EcoregionRangelandLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
 export type EcoregionRangeland = {
-  data?: EcoregionRangelandData;
-};
-
-export type EcoregionCreatedByDataAttributes = { [key: string]: unknown };
-
-export type EcoregionCreatedByData = {
-  id?: number;
-  attributes?: EcoregionCreatedByDataAttributes;
+  id?: string | number;
+  documentId?: string;
+  title?: string;
+  slug?: string;
+  code?: string;
+  color?: string;
+  ecoregions?: EcoregionRangelandEcoregionsItem[];
+  translations?: TranslationsRangelandTranslationComponent[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: EcoregionRangelandCreatedBy;
+  updatedBy?: EcoregionRangelandUpdatedBy;
+  locale?: string;
+  localizations?: EcoregionRangelandLocalizationsItem[];
 };
 
 export type EcoregionCreatedBy = {
-  data?: EcoregionCreatedByData;
-};
-
-export type EcoregionUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type EcoregionUpdatedByData = {
-  id?: number;
-  attributes?: EcoregionUpdatedByDataAttributes;
+  id?: string | number;
+  documentId?: string;
 };
 
 export type EcoregionUpdatedBy = {
-  data?: EcoregionUpdatedByData;
+  id?: string | number;
+  documentId?: string;
+};
+
+export type EcoregionLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
 export interface Ecoregion {
+  id?: string | number;
+  documentId?: string;
   title: string;
   slug?: string;
   code?: string;
@@ -2074,27 +1451,19 @@ export interface Ecoregion {
   publishedAt?: string;
   createdBy?: EcoregionCreatedBy;
   updatedBy?: EcoregionUpdatedBy;
-}
-
-export interface EcoregionListResponseDataItem {
-  id?: number;
-  attributes?: Ecoregion;
+  locale?: string;
+  localizations?: EcoregionLocalizationsItem[];
 }
 
 export interface EcoregionListResponse {
-  data?: EcoregionListResponseDataItem[];
+  data?: Ecoregion[];
   meta?: EcoregionListResponseMeta;
 }
 
 export type EcoregionResponseMeta = { [key: string]: unknown };
 
-export interface EcoregionResponseDataObject {
-  id?: number;
-  attributes?: Ecoregion;
-}
-
 export interface EcoregionResponse {
-  data?: EcoregionResponseDataObject;
+  data?: Ecoregion;
   meta?: EcoregionResponseMeta;
 }
 
@@ -2105,6 +1474,8 @@ export type EcoregionRequestData = {
   rangeland?: number | string;
   color?: string;
   translations?: TranslationsEcoregionTranslationComponent[];
+  locale?: string;
+  localizations?: (number | string)[];
 };
 
 export interface EcoregionRequest {
@@ -2124,204 +1495,206 @@ export type LayerListResponseMeta = {
   pagination?: LayerListResponseMetaPagination;
 };
 
-export type DefaultLegendComponentType =
-  (typeof DefaultLegendComponentType)[keyof typeof DefaultLegendComponentType];
+export type LayerCreatedByRolesItemPermissionsItemApiTokenKind =
+  (typeof LayerCreatedByRolesItemPermissionsItemApiTokenKind)[keyof typeof LayerCreatedByRolesItemPermissionsItemApiTokenKind];
 
-export const DefaultLegendComponentType = {
-  Basic: "Basic",
-  Gradient: "Gradient",
-  Choropleth: "Choropleth",
-  Rangeland: "Rangeland",
+export const LayerCreatedByRolesItemPermissionsItemApiTokenKind = {
+  "content-api": "content-api",
+  admin: "admin",
 } as const;
 
-export type DefaultLegendComponentItemsItemStyle =
-  (typeof DefaultLegendComponentItemsItemStyle)[keyof typeof DefaultLegendComponentItemsItemStyle];
+export type LayerCreatedByRolesItemPermissionsItemApiTokenType =
+  (typeof LayerCreatedByRolesItemPermissionsItemApiTokenType)[keyof typeof LayerCreatedByRolesItemPermissionsItemApiTokenType];
 
-export const DefaultLegendComponentItemsItemStyle = {
-  filled: "filled",
-  outline: "outline",
+export const LayerCreatedByRolesItemPermissionsItemApiTokenType = {
+  "read-only": "read-only",
+  "full-access": "full-access",
+  custom: "custom",
 } as const;
 
-export type DefaultLegendComponentItemsItem = {
-  id?: number;
+export type LayerCreatedByRolesItemUsersItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemRole = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItem = {
+  id?: string | number;
+  documentId?: string;
+  action?: string;
+  token?: LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy;
+  updatedBy?: LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy;
+  locale?: string;
+  localizations?: LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem[];
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerCreatedByRolesItemPermissionsItemApiToken = {
+  id?: string | number;
+  documentId?: string;
   name?: string;
-  color?: string;
-  name_es?: string;
-  name_fr?: string;
-  group?: string;
-  style?: DefaultLegendComponentItemsItemStyle;
-};
-
-export interface DefaultLegendComponent {
-  id?: number;
-  type?: DefaultLegendComponentType;
-  items?: DefaultLegendComponentItemsItem[];
-  unit?: string;
-  unit_es?: string;
-  unit_fr?: string;
-}
-
-export type TranslationsLayerTranslationComponentLocale =
-  (typeof TranslationsLayerTranslationComponentLocale)[keyof typeof TranslationsLayerTranslationComponentLocale];
-
-export const TranslationsLayerTranslationComponentLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export interface TranslationsLayerTranslationComponent {
-  id?: number;
-  title?: string;
   description?: string;
-  locale?: TranslationsLayerTranslationComponentLocale;
-}
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes = {
-  [key: string]: unknown;
+  kind?: LayerCreatedByRolesItemPermissionsItemApiTokenKind;
+  type?: LayerCreatedByRolesItemPermissionsItemApiTokenType;
+  accessKey?: string;
+  encryptedKey?: string;
+  lastUsedAt?: string;
+  permissions?: LayerCreatedByRolesItemPermissionsItemApiTokenPermissionsItem[];
+  adminPermissions?: LayerCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem[];
+  adminUserOwner?: LayerCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner;
+  expiresAt?: string;
+  /** @pattern ^\d*$ */
+  lifespan?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: LayerCreatedByRolesItemPermissionsItemApiTokenCreatedBy;
+  updatedBy?: LayerCreatedByRolesItemPermissionsItemApiTokenUpdatedBy;
+  locale?: string;
+  localizations?: LayerCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem[];
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesUsersDataItem = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
+export type LayerCreatedByRolesItemPermissionsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesUsers = {
-  data?: LayerCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
+export type LayerCreatedByRolesItemPermissionsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: unknown };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
-  {
-    id?: number;
-    attributes?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
-  };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole = {
-  data?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
+export type LayerCreatedByRolesItemPermissionsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes = {
+export type LayerCreatedByRolesItemPermissionsItem = {
+  id?: string | number;
+  documentId?: string;
   action?: string;
   actionParameters?: unknown;
   subject?: string;
   properties?: unknown;
   conditions?: unknown;
-  role?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
+  role?: LayerCreatedByRolesItemPermissionsItemRole;
+  apiToken?: LayerCreatedByRolesItemPermissionsItemApiToken;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-  updatedBy?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: LayerCreatedByRolesItemPermissionsItemCreatedBy;
+  updatedBy?: LayerCreatedByRolesItemPermissionsItemUpdatedBy;
+  locale?: string;
+  localizations?: LayerCreatedByRolesItemPermissionsItemLocalizationsItem[];
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
+export type LayerCreatedByRolesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesPermissions = {
-  data?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
+export type LayerCreatedByRolesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
+export type LayerCreatedByRolesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesRolesDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
-};
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesCreatedBy = {
-  data?: LayerCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-};
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedBy = {
-  data?: LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-};
-
-export type LayerCreatedByDataAttributesRolesDataItemAttributes = {
+export type LayerCreatedByRolesItem = {
+  id?: string | number;
+  documentId?: string;
   name?: string;
   code?: string;
   description?: string;
-  users?: LayerCreatedByDataAttributesRolesDataItemAttributesUsers;
-  permissions?: LayerCreatedByDataAttributesRolesDataItemAttributesPermissions;
+  users?: LayerCreatedByRolesItemUsersItem[];
+  permissions?: LayerCreatedByRolesItemPermissionsItem[];
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: LayerCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-  updatedBy?: LayerCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: LayerCreatedByRolesItemCreatedBy;
+  updatedBy?: LayerCreatedByRolesItemUpdatedBy;
+  locale?: string;
+  localizations?: LayerCreatedByRolesItemLocalizationsItem[];
 };
 
-export type LayerCreatedByDataAttributesRolesDataItem = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributesRolesDataItemAttributes;
+export type LayerCreatedByApiTokensItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesRoles = {
-  data?: LayerCreatedByDataAttributesRolesDataItem[];
+export type LayerCreatedByCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesCreatedByDataAttributes = { [key: string]: unknown };
-
-export type LayerCreatedByDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributesCreatedByDataAttributes;
+export type LayerCreatedByUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesCreatedBy = {
-  data?: LayerCreatedByDataAttributesCreatedByData;
+export type LayerCreatedByLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type LayerCreatedByDataAttributesUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type LayerCreatedByDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributesUpdatedByDataAttributes;
-};
-
-export type LayerCreatedByDataAttributesUpdatedBy = {
-  data?: LayerCreatedByDataAttributesUpdatedByData;
-};
-
-export type LayerCreatedByDataAttributes = {
+export type LayerCreatedBy = {
+  id?: string | number;
+  documentId?: string;
   firstname?: string;
   lastname?: string;
   username?: string;
@@ -2329,36 +1702,62 @@ export type LayerCreatedByDataAttributes = {
   resetPasswordToken?: string;
   registrationToken?: string;
   isActive?: boolean;
-  roles?: LayerCreatedByDataAttributesRoles;
+  roles?: LayerCreatedByRolesItem[];
+  apiTokens?: LayerCreatedByApiTokensItem[];
   blocked?: boolean;
   preferedLanguage?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: LayerCreatedByDataAttributesCreatedBy;
-  updatedBy?: LayerCreatedByDataAttributesUpdatedBy;
-};
-
-export type LayerCreatedByData = {
-  id?: number;
-  attributes?: LayerCreatedByDataAttributes;
-};
-
-export type LayerCreatedBy = {
-  data?: LayerCreatedByData;
-};
-
-export type LayerUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type LayerUpdatedByData = {
-  id?: number;
-  attributes?: LayerUpdatedByDataAttributes;
+  publishedAt?: string;
+  createdBy?: LayerCreatedByCreatedBy;
+  updatedBy?: LayerCreatedByUpdatedBy;
+  locale?: string;
+  localizations?: LayerCreatedByLocalizationsItem[];
 };
 
 export type LayerUpdatedBy = {
-  data?: LayerUpdatedByData;
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerLocalizationsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerLocalizationsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerLocalizationsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type LayerLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+  title?: string;
+  description?: string;
+  config?: unknown;
+  params_config?: unknown;
+  legend?: DefaultLegendComponent;
+  interaction_config?: unknown;
+  slug?: string;
+  translations?: TranslationsLayerTranslationComponent[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: LayerLocalizationsItemCreatedBy;
+  updatedBy?: LayerLocalizationsItemUpdatedBy;
+  locale?: string;
+  localizations?: LayerLocalizationsItemLocalizationsItem[];
 };
 
 export interface Layer {
+  id?: string | number;
+  documentId?: string;
   title: string;
   description?: string;
   config: unknown;
@@ -2372,27 +1771,19 @@ export interface Layer {
   publishedAt?: string;
   createdBy?: LayerCreatedBy;
   updatedBy?: LayerUpdatedBy;
-}
-
-export interface LayerListResponseDataItem {
-  id?: number;
-  attributes?: Layer;
+  locale?: string;
+  localizations?: LayerLocalizationsItem[];
 }
 
 export interface LayerListResponse {
-  data?: LayerListResponseDataItem[];
+  data?: Layer[];
   meta?: LayerListResponseMeta;
 }
 
 export type LayerResponseMeta = { [key: string]: unknown };
 
-export interface LayerResponseDataObject {
-  id?: number;
-  attributes?: Layer;
-}
-
 export interface LayerResponse {
-  data?: LayerResponseDataObject;
+  data?: Layer;
   meta?: LayerResponseMeta;
 }
 
@@ -2405,6 +1796,8 @@ export type LayerRequestData = {
   interaction_config?: unknown;
   slug?: string;
   translations?: TranslationsLayerTranslationComponent[];
+  locale?: string;
+  localizations?: (number | string)[];
 };
 
 export interface LayerRequest {
@@ -2424,216 +1817,219 @@ export type RangelandListResponseMeta = {
   pagination?: RangelandListResponseMetaPagination;
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesTranslationsItemLocale =
-  (typeof RangelandEcoregionsDataItemAttributesRangelandDataAttributesTranslationsItemLocale)[keyof typeof RangelandEcoregionsDataItemAttributesRangelandDataAttributesTranslationsItemLocale];
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenKind =
+  (typeof RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenKind)[keyof typeof RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenKind];
 
-export const RangelandEcoregionsDataItemAttributesRangelandDataAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
+export const RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenKind = {
+  "content-api": "content-api",
+  admin: "admin",
 } as const;
 
-export type RangelandEcoregionsDataItemAttributesTranslationsItemLocale =
-  (typeof RangelandEcoregionsDataItemAttributesTranslationsItemLocale)[keyof typeof RangelandEcoregionsDataItemAttributesTranslationsItemLocale];
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenType =
+  (typeof RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenType)[keyof typeof RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenType];
 
-export const RangelandEcoregionsDataItemAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
+export const RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenType = {
+  "read-only": "read-only",
+  "full-access": "full-access",
+  custom: "custom",
 } as const;
 
-export type TranslationsRangelandTranslationComponentLocale =
-  (typeof TranslationsRangelandTranslationComponentLocale)[keyof typeof TranslationsRangelandTranslationComponentLocale];
-
-export const TranslationsRangelandTranslationComponentLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export interface TranslationsRangelandTranslationComponent {
-  id?: number;
-  title?: string;
-  locale?: TranslationsRangelandTranslationComponentLocale;
-}
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregionsDataItemAttributes =
-  { [key: string]: unknown };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregionsDataItem = {
-  id?: number;
-  attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregionsDataItemAttributes;
+export type RangelandEcoregionsItemRangelandEcoregionsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregions = {
-  data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregionsDataItem[];
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemUsersItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  locale?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesTranslationsItemLocale;
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemRole = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
-  { [key: string]: unknown };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken =
   {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy =
   {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
+    id?: string | number;
+    documentId?: string;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: unknown };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy =
   {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem =
   {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItem =
   {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
-  {
+    id?: string | number;
+    documentId?: string;
     action?: string;
-    actionParameters?: unknown;
-    subject?: string;
-    properties?: unknown;
-    conditions?: unknown;
-    role?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
+    token?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemToken;
     createdAt?: string;
     updatedAt?: string;
-    createdBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-    updatedBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
+    publishedAt?: string;
+    createdBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemCreatedBy;
+    updatedBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemUpdatedBy;
+    locale?: string;
+    localizations?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItemLocalizationsItem[];
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem =
   {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner =
   {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
+    id?: string | number;
+    documentId?: string;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem =
   {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
+    id?: string | number;
+    documentId?: string;
   };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiToken = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  description?: string;
+  kind?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenKind;
+  type?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenType;
+  accessKey?: string;
+  encryptedKey?: string;
+  lastUsedAt?: string;
+  permissions?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenPermissionsItem[];
+  adminPermissions?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenAdminPermissionsItem[];
+  adminUserOwner?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenAdminUserOwner;
+  expiresAt?: string;
+  /** @pattern ^\d*$ */
+  lifespan?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenCreatedBy;
+  updatedBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenUpdatedBy;
+  locale?: string;
+  localizations?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiTokenLocalizationsItem[];
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributes =
-  {
-    name?: string;
-    code?: string;
-    description?: string;
-    users?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
-    permissions?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-    updatedBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItem = {
+  id?: string | number;
+  documentId?: string;
+  action?: string;
+  actionParameters?: unknown;
+  subject?: string;
+  properties?: unknown;
+  conditions?: unknown;
+  role?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemRole;
+  apiToken?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemApiToken;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemCreatedBy;
+  updatedBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemUpdatedBy;
+  locale?: string;
+  localizations?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItemLocalizationsItem[];
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItem =
-  {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItemAttributes;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRoles =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRolesDataItem[];
-  };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByDataAttributes;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByRolesItem = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  code?: string;
+  description?: string;
+  users?: RangelandEcoregionsItemRangelandCreatedByRolesItemUsersItem[];
+  permissions?: RangelandEcoregionsItemRangelandCreatedByRolesItemPermissionsItem[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemCreatedBy;
+  updatedBy?: RangelandEcoregionsItemRangelandCreatedByRolesItemUpdatedBy;
+  locale?: string;
+  localizations?: RangelandEcoregionsItemRangelandCreatedByRolesItemLocalizationsItem[];
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedBy =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedByData;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByApiTokensItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
+export type RangelandEcoregionsItemRangelandCreatedByCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByDataAttributes;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedBy =
-  {
-    data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedByData;
-  };
+export type RangelandEcoregionsItemRangelandCreatedByLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributes = {
+export type RangelandEcoregionsItemRangelandCreatedBy = {
+  id?: string | number;
+  documentId?: string;
   firstname?: string;
   lastname?: string;
   username?: string;
@@ -2641,170 +2037,122 @@ export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedB
   resetPasswordToken?: string;
   registrationToken?: string;
   isActive?: boolean;
-  roles?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesRoles;
+  roles?: RangelandEcoregionsItemRangelandCreatedByRolesItem[];
+  apiTokens?: RangelandEcoregionsItemRangelandCreatedByApiTokensItem[];
   blocked?: boolean;
   preferedLanguage?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesCreatedBy;
-  updatedBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: RangelandEcoregionsItemRangelandCreatedByCreatedBy;
+  updatedBy?: RangelandEcoregionsItemRangelandCreatedByUpdatedBy;
+  locale?: string;
+  localizations?: RangelandEcoregionsItemRangelandCreatedByLocalizationsItem[];
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByDataAttributes;
+export type RangelandEcoregionsItemRangelandUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedBy = {
-  data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedByData;
+export type RangelandEcoregionsItemRangelandLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedByDataAttributes;
-};
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedBy = {
-  data?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedByData;
-};
-
-export type RangelandEcoregionsDataItemAttributesRangelandDataAttributes = {
+export type RangelandEcoregionsItemRangeland = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   slug?: string;
   code?: string;
   color?: string;
-  ecoregions?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesEcoregions;
-  translations?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesTranslationsItem[];
+  ecoregions?: RangelandEcoregionsItemRangelandEcoregionsItem[];
+  translations?: TranslationsRangelandTranslationComponent[];
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesCreatedBy;
-  updatedBy?: RangelandEcoregionsDataItemAttributesRangelandDataAttributesUpdatedBy;
+  createdBy?: RangelandEcoregionsItemRangelandCreatedBy;
+  updatedBy?: RangelandEcoregionsItemRangelandUpdatedBy;
+  locale?: string;
+  localizations?: RangelandEcoregionsItemRangelandLocalizationsItem[];
 };
 
-export type RangelandEcoregionsDataItemAttributesRangelandData = {
-  id?: number;
-  attributes?: RangelandEcoregionsDataItemAttributesRangelandDataAttributes;
+export type RangelandEcoregionsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesRangeland = {
-  data?: RangelandEcoregionsDataItemAttributesRangelandData;
+export type RangelandEcoregionsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  locale?: RangelandEcoregionsDataItemAttributesTranslationsItemLocale;
+export type RangelandEcoregionsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type RangelandEcoregionsDataItemAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type RangelandEcoregionsDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: RangelandEcoregionsDataItemAttributesCreatedByDataAttributes;
-};
-
-export type RangelandEcoregionsDataItemAttributesCreatedBy = {
-  data?: RangelandEcoregionsDataItemAttributesCreatedByData;
-};
-
-export type RangelandEcoregionsDataItemAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type RangelandEcoregionsDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: RangelandEcoregionsDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type RangelandEcoregionsDataItemAttributesUpdatedBy = {
-  data?: RangelandEcoregionsDataItemAttributesUpdatedByData;
-};
-
-export type RangelandEcoregionsDataItemAttributes = {
+export type RangelandEcoregionsItem = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   slug?: string;
   code?: string;
-  rangeland?: RangelandEcoregionsDataItemAttributesRangeland;
+  rangeland?: RangelandEcoregionsItemRangeland;
   color?: string;
-  translations?: RangelandEcoregionsDataItemAttributesTranslationsItem[];
+  translations?: TranslationsEcoregionTranslationComponent[];
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: RangelandEcoregionsDataItemAttributesCreatedBy;
-  updatedBy?: RangelandEcoregionsDataItemAttributesUpdatedBy;
-};
-
-export type RangelandEcoregionsDataItem = {
-  id?: number;
-  attributes?: RangelandEcoregionsDataItemAttributes;
-};
-
-export type RangelandEcoregions = {
-  data?: RangelandEcoregionsDataItem[];
-};
-
-export type RangelandCreatedByDataAttributes = { [key: string]: unknown };
-
-export type RangelandCreatedByData = {
-  id?: number;
-  attributes?: RangelandCreatedByDataAttributes;
+  createdBy?: RangelandEcoregionsItemCreatedBy;
+  updatedBy?: RangelandEcoregionsItemUpdatedBy;
+  locale?: string;
+  localizations?: RangelandEcoregionsItemLocalizationsItem[];
 };
 
 export type RangelandCreatedBy = {
-  data?: RangelandCreatedByData;
-};
-
-export type RangelandUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type RangelandUpdatedByData = {
-  id?: number;
-  attributes?: RangelandUpdatedByDataAttributes;
+  id?: string | number;
+  documentId?: string;
 };
 
 export type RangelandUpdatedBy = {
-  data?: RangelandUpdatedByData;
+  id?: string | number;
+  documentId?: string;
+};
+
+export type RangelandLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
 export interface Rangeland {
+  id?: string | number;
+  documentId?: string;
   title: string;
   slug?: string;
   code?: string;
   color?: string;
-  ecoregions?: RangelandEcoregions;
+  ecoregions?: RangelandEcoregionsItem[];
   translations?: TranslationsRangelandTranslationComponent[];
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
   createdBy?: RangelandCreatedBy;
   updatedBy?: RangelandUpdatedBy;
-}
-
-export interface RangelandListResponseDataItem {
-  id?: number;
-  attributes?: Rangeland;
+  locale?: string;
+  localizations?: RangelandLocalizationsItem[];
 }
 
 export interface RangelandListResponse {
-  data?: RangelandListResponseDataItem[];
+  data?: Rangeland[];
   meta?: RangelandListResponseMeta;
 }
 
 export type RangelandResponseMeta = { [key: string]: unknown };
 
-export interface RangelandResponseDataObject {
-  id?: number;
-  attributes?: Rangeland;
-}
-
 export interface RangelandResponse {
-  data?: RangelandResponseDataObject;
+  data?: Rangeland;
   meta?: RangelandResponseMeta;
 }
 
@@ -2815,6 +2163,8 @@ export type RangelandRequestData = {
   color?: string;
   ecoregions?: (number | string)[];
   translations?: TranslationsRangelandTranslationComponent[];
+  locale?: string;
+  localizations?: (number | string)[];
 };
 
 export interface RangelandRequest {
@@ -2834,605 +2184,68 @@ export type StoryListResponseMeta = {
   pagination?: StoryListResponseMetaPagination;
 };
 
-export type StoryDatasetsDataItemAttributesType =
-  (typeof StoryDatasetsDataItemAttributesType)[keyof typeof StoryDatasetsDataItemAttributesType];
+export type StoryDatasetsItemType =
+  (typeof StoryDatasetsItemType)[keyof typeof StoryDatasetsItemType];
 
-export const StoryDatasetsDataItemAttributesType = {
+export const StoryDatasetsItemType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
   "Temporal-Group": "Temporal-Group",
 } as const;
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType =
-  (typeof StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType)[keyof typeof StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType];
-
-export const StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType = {
-  Basic: "Basic",
-  Gradient: "Gradient",
-  Choropleth: "Choropleth",
-  Rangeland: "Rangeland",
-} as const;
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle =
-  (typeof StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle)[keyof typeof StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle];
-
-export const StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle = {
-  filled: "filled",
-  outline: "outline",
-} as const;
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale =
-  (typeof StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale)[keyof typeof StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale];
-
-export const StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type StoryDatasetsDataItemAttributesTranslationsItemLocale =
-  (typeof StoryDatasetsDataItemAttributesTranslationsItemLocale)[keyof typeof StoryDatasetsDataItemAttributesTranslationsItemLocale];
-
-export const StoryDatasetsDataItemAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale =
-  (typeof StoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale)[keyof typeof StoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale];
-
-export const StoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType =
-  (typeof StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType)[keyof typeof StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType];
-
-export const StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType = {
-  link: "link",
-  paper: "paper",
-  video: "video",
-} as const;
-
-export type TranslationsStoryTranslationComponentLocale =
-  (typeof TranslationsStoryTranslationComponentLocale)[keyof typeof TranslationsStoryTranslationComponentLocale];
-
-export const TranslationsStoryTranslationComponentLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export interface TranslationsStoryTranslationComponent {
-  id?: number;
-  title?: string;
-  description?: string;
-  notes?: string;
-  locale?: TranslationsStoryTranslationComponentLocale;
-}
-
-export type DefaultFurtherInfoComponentType =
-  (typeof DefaultFurtherInfoComponentType)[keyof typeof DefaultFurtherInfoComponentType];
-
-export const DefaultFurtherInfoComponentType = {
-  link: "link",
-  paper: "paper",
-  video: "video",
-} as const;
-
-export interface DefaultFurtherInfoComponent {
-  id?: number;
-  url?: string;
-  content?: string;
-  content_es?: string;
-  content_fr?: string;
-  type?: DefaultFurtherInfoComponentType;
-}
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem = {
-  id?: number;
-  name?: string;
-  color?: string;
-  name_es?: string;
-  name_fr?: string;
-  group?: string;
-  style?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle;
+export type StoryDatasetsItemStoryDatasetsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegend = {
-  id?: number;
-  type?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType;
-  items?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem[];
-  unit?: string;
-  unit_es?: string;
-  unit_fr?: string;
+export type StoryDatasetsItemStoryImageRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  description?: string;
-  locale?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale;
+export type StoryDatasetsItemStoryImageFolderParent = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
-  {
-    action?: string;
-    actionParameters?: unknown;
-    subject?: string;
-    properties?: unknown;
-    conditions?: unknown;
-    role?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-    updatedBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes =
-  {
-    name?: string;
-    code?: string;
-    description?: string;
-    users?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
-    permissions?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-    updatedBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItem =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRoles =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItem[];
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributes = {
-  firstname?: string;
-  lastname?: string;
-  username?: string;
-  email?: string;
-  resetPasswordToken?: string;
-  registrationToken?: string;
-  isActive?: boolean;
-  roles?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRoles;
-  blocked?: boolean;
-  preferedLanguage?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  createdBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedBy;
-  updatedBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedBy;
+export type StoryDatasetsItemStoryImageFolderChildrenItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributes;
+export type StoryDatasetsItemStoryImageFolderFilesItemRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedBy = {
-  data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByData;
+export type StoryDatasetsItemStoryImageFolderFilesItemFolder = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
+export type StoryDatasetsItemStoryImageFolderFilesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByDataAttributes;
+export type StoryDatasetsItemStoryImageFolderFilesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedBy = {
-  data?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByData;
+export type StoryDatasetsItemStoryImageFolderFilesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesLayersItemLayerDataAttributes = {
-  title?: string;
-  description?: string;
-  config?: unknown;
-  params_config?: unknown;
-  legend?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesLegend;
-  interaction_config?: unknown;
-  slug?: string;
-  translations?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItem[];
-  createdAt?: string;
-  updatedAt?: string;
-  publishedAt?: string;
-  createdBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedBy;
-  updatedBy?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedBy;
-};
-
-export type StoryDatasetsDataItemAttributesLayersItemLayerData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesLayersItemLayerDataAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesLayersItemLayer = {
-  data?: StoryDatasetsDataItemAttributesLayersItemLayerData;
-};
-
-export type StoryDatasetsDataItemAttributesLayersItem = {
-  id?: number;
-  layer?: StoryDatasetsDataItemAttributesLayersItemLayer;
-  type?: string;
-  group?: string;
-  group_es?: string;
-  group_fr?: string;
-};
-
-export type StoryDatasetsDataItemAttributesCitationsItem = {
-  id?: number;
-  content?: string;
-  url?: string;
-};
-
-export type StoryDatasetsDataItemAttributesSources = {
-  id?: number;
-  name?: string;
-  url?: string;
-};
-
-export type StoryDatasetsDataItemAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  description?: string;
-  locale?: StoryDatasetsDataItemAttributesTranslationsItemLocale;
-  short_description?: string;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItemAttributes = {
-  [key: string]: unknown;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItem = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItemAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesDatasets = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesDatasetsDataItem[];
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItemAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItem = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItemAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelated = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelatedDataItem[];
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParent =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParentData;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItem =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildren =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildrenDataItem[];
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem[];
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes =
-  {
-    name?: string;
-    alternativeText?: string;
-    caption?: string;
-    width?: number;
-    height?: number;
-    formats?: unknown;
-    hash?: string;
-    ext?: string;
-    mime?: string;
-    size?: number;
-    url?: string;
-    previewUrl?: string;
-    provider?: string;
-    provider_metadata?: unknown;
-    related?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated;
-    folder?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder;
-    folderPath?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy;
-    updatedBy?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItem =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFiles =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFilesDataItem[];
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedBy =
-  {
-    data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedByData;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributes =
-  {
-    name?: string;
-    pathId?: number;
-    parent?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesParent;
-    children?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesChildren;
-    files?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesFiles;
-    path?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesCreatedBy;
-    updatedBy?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributesUpdatedBy;
-  };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderDataAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolder = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolderData;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByDataAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedBy = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedByData;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByDataAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedBy = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedByData;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributes = {
+export type StoryDatasetsItemStoryImageFolderFilesItem = {
+  id?: string | number;
+  documentId?: string;
   name?: string;
   alternativeText?: string;
   caption?: string;
+  focalPoint?: unknown;
   width?: number;
   height?: number;
   formats?: unknown;
@@ -3444,191 +2257,202 @@ export type StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttribute
   previewUrl?: string;
   provider?: string;
   provider_metadata?: unknown;
-  related?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesRelated;
-  folder?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesFolder;
+  related?: StoryDatasetsItemStoryImageFolderFilesItemRelatedItem[];
+  folder?: StoryDatasetsItemStoryImageFolderFilesItemFolder;
   folderPath?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesCreatedBy;
-  updatedBy?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: StoryDatasetsItemStoryImageFolderFilesItemCreatedBy;
+  updatedBy?: StoryDatasetsItemStoryImageFolderFilesItemUpdatedBy;
+  locale?: string;
+  localizations?: StoryDatasetsItemStoryImageFolderFilesItemLocalizationsItem[];
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImageData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesImageDataAttributes;
+export type StoryDatasetsItemStoryImageFolderCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesImage = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesImageData;
+export type StoryDatasetsItemStoryImageFolderUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  description?: string;
-  notes?: string;
-  locale?: StoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItemLocale;
+export type StoryDatasetsItemStoryImageFolderLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItem = {
-  id?: number;
+export type StoryDatasetsItemStoryImageFolder = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  pathId?: number;
+  parent?: StoryDatasetsItemStoryImageFolderParent;
+  children?: StoryDatasetsItemStoryImageFolderChildrenItem[];
+  files?: StoryDatasetsItemStoryImageFolderFilesItem[];
+  path?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryDatasetsItemStoryImageFolderCreatedBy;
+  updatedBy?: StoryDatasetsItemStoryImageFolderUpdatedBy;
+  locale?: string;
+  localizations?: StoryDatasetsItemStoryImageFolderLocalizationsItem[];
+};
+
+export type StoryDatasetsItemStoryImageCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryImageUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryImageLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryImage = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
   url?: string;
-  content?: string;
-  content_es?: string;
-  content_fr?: string;
-  type?: StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItemType;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: StoryDatasetsItemStoryImageRelatedItem[];
+  folder?: StoryDatasetsItemStoryImageFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryDatasetsItemStoryImageCreatedBy;
+  updatedBy?: StoryDatasetsItemStoryImageUpdatedBy;
+  locale?: string;
+  localizations?: StoryDatasetsItemStoryImageLocalizationsItem[];
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
+export type StoryDatasetsItemStoryCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesCreatedByDataAttributes;
+export type StoryDatasetsItemStoryUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesCreatedBy = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesCreatedByData;
+export type StoryDatasetsItemStoryLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByDataAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributesUpdatedBy = {
-  data?: StoryDatasetsDataItemAttributesStoryDataAttributesUpdatedByData;
-};
-
-export type StoryDatasetsDataItemAttributesStoryDataAttributes = {
+export type StoryDatasetsItemStory = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   description?: string;
   notes?: string;
   latitude?: number;
   longitude?: number;
-  datasets?: StoryDatasetsDataItemAttributesStoryDataAttributesDatasets;
-  image?: StoryDatasetsDataItemAttributesStoryDataAttributesImage;
-  translations?: StoryDatasetsDataItemAttributesStoryDataAttributesTranslationsItem[];
-  further_information?: StoryDatasetsDataItemAttributesStoryDataAttributesFurtherInformationItem[];
+  datasets?: StoryDatasetsItemStoryDatasetsItem[];
+  image?: StoryDatasetsItemStoryImage;
+  translations?: TranslationsStoryTranslationComponent[];
+  further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: StoryDatasetsDataItemAttributesStoryDataAttributesCreatedBy;
-  updatedBy?: StoryDatasetsDataItemAttributesStoryDataAttributesUpdatedBy;
+  createdBy?: StoryDatasetsItemStoryCreatedBy;
+  updatedBy?: StoryDatasetsItemStoryUpdatedBy;
+  locale?: string;
+  localizations?: StoryDatasetsItemStoryLocalizationsItem[];
 };
 
-export type StoryDatasetsDataItemAttributesStoryData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesStoryDataAttributes;
+export type StoryDatasetsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesStory = {
-  data?: StoryDatasetsDataItemAttributesStoryData;
+export type StoryDatasetsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesCreatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesCreatedByDataAttributes;
+export type StoryDatasetsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasetsDataItemAttributesCreatedBy = {
-  data?: StoryDatasetsDataItemAttributesCreatedByData;
-};
-
-export type StoryDatasetsDataItemAttributesUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryDatasetsDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type StoryDatasetsDataItemAttributesUpdatedBy = {
-  data?: StoryDatasetsDataItemAttributesUpdatedByData;
-};
-
-export type StoryDatasetsDataItemAttributes = {
+export type StoryDatasetsItem = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
-  type?: StoryDatasetsDataItemAttributesType;
-  layers?: StoryDatasetsDataItemAttributesLayersItem[];
-  citations?: StoryDatasetsDataItemAttributesCitationsItem[];
-  sources?: StoryDatasetsDataItemAttributesSources;
+  type?: StoryDatasetsItemType;
+  layers?: DefaultLayerComponent[];
+  citations?: DefaultCitationsComponent[];
+  sources?: DefaultSourceComponent;
   slug?: string;
   description?: string;
-  translations?: StoryDatasetsDataItemAttributesTranslationsItem[];
-  story?: StoryDatasetsDataItemAttributesStory;
+  translations?: TranslationsDatasetTranslationComponent[];
+  story?: StoryDatasetsItemStory;
   short_description?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: StoryDatasetsDataItemAttributesCreatedBy;
-  updatedBy?: StoryDatasetsDataItemAttributesUpdatedBy;
+  createdBy?: StoryDatasetsItemCreatedBy;
+  updatedBy?: StoryDatasetsItemUpdatedBy;
+  locale?: string;
+  localizations?: StoryDatasetsItemLocalizationsItem[];
 };
 
-export type StoryDatasetsDataItem = {
-  id?: number;
-  attributes?: StoryDatasetsDataItemAttributes;
+export type StoryImageRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryDatasets = {
-  data?: StoryDatasetsDataItem[];
+export type StoryImageFolder = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryImageDataAttributesRelatedDataItemAttributes = { [key: string]: unknown };
-
-export type StoryImageDataAttributesRelatedDataItem = {
-  id?: number;
-  attributes?: StoryImageDataAttributesRelatedDataItemAttributes;
+export type StoryImageCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryImageDataAttributesRelated = {
-  data?: StoryImageDataAttributesRelatedDataItem[];
+export type StoryImageUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryImageDataAttributesFolderDataAttributes = { [key: string]: unknown };
-
-export type StoryImageDataAttributesFolderData = {
-  id?: number;
-  attributes?: StoryImageDataAttributesFolderDataAttributes;
+export type StoryImageLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryImageDataAttributesFolder = {
-  data?: StoryImageDataAttributesFolderData;
-};
-
-export type StoryImageDataAttributesCreatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryImageDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryImageDataAttributesCreatedByDataAttributes;
-};
-
-export type StoryImageDataAttributesCreatedBy = {
-  data?: StoryImageDataAttributesCreatedByData;
-};
-
-export type StoryImageDataAttributesUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryImageDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryImageDataAttributesUpdatedByDataAttributes;
-};
-
-export type StoryImageDataAttributesUpdatedBy = {
-  data?: StoryImageDataAttributesUpdatedByData;
-};
-
-export type StoryImageDataAttributes = {
+export type StoryImage = {
+  id?: string | number;
+  documentId?: string;
   name?: string;
   alternativeText?: string;
   caption?: string;
+  focalPoint?: unknown;
   width?: number;
   height?: number;
   formats?: unknown;
@@ -3640,53 +2464,42 @@ export type StoryImageDataAttributes = {
   previewUrl?: string;
   provider?: string;
   provider_metadata?: unknown;
-  related?: StoryImageDataAttributesRelated;
-  folder?: StoryImageDataAttributesFolder;
+  related?: StoryImageRelatedItem[];
+  folder?: StoryImageFolder;
   folderPath?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: StoryImageDataAttributesCreatedBy;
-  updatedBy?: StoryImageDataAttributesUpdatedBy;
-};
-
-export type StoryImageData = {
-  id?: number;
-  attributes?: StoryImageDataAttributes;
-};
-
-export type StoryImage = {
-  data?: StoryImageData;
-};
-
-export type StoryCreatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryCreatedByData = {
-  id?: number;
-  attributes?: StoryCreatedByDataAttributes;
+  publishedAt?: string;
+  createdBy?: StoryImageCreatedBy;
+  updatedBy?: StoryImageUpdatedBy;
+  locale?: string;
+  localizations?: StoryImageLocalizationsItem[];
 };
 
 export type StoryCreatedBy = {
-  data?: StoryCreatedByData;
-};
-
-export type StoryUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryUpdatedByData = {
-  id?: number;
-  attributes?: StoryUpdatedByDataAttributes;
+  id?: string | number;
+  documentId?: string;
 };
 
 export type StoryUpdatedBy = {
-  data?: StoryUpdatedByData;
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
 export interface Story {
+  id?: string | number;
+  documentId?: string;
   title: string;
   description?: string;
   notes?: string;
   latitude?: number;
   longitude?: number;
-  datasets?: StoryDatasets;
+  datasets?: StoryDatasetsItem[];
   image?: StoryImage;
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
@@ -3696,27 +2509,19 @@ export interface Story {
   publishedAt?: string;
   createdBy?: StoryCreatedBy;
   updatedBy?: StoryUpdatedBy;
-}
-
-export interface StoryListResponseDataItem {
-  id?: number;
-  attributes?: Story;
+  locale?: string;
+  localizations?: StoryLocalizationsItem[];
 }
 
 export interface StoryListResponse {
-  data?: StoryListResponseDataItem[];
+  data?: Story[];
   meta?: StoryListResponseMeta;
 }
 
 export type StoryResponseMeta = { [key: string]: unknown };
 
-export interface StoryResponseDataObject {
-  id?: number;
-  attributes?: Story;
-}
-
 export interface StoryResponse {
-  data?: StoryResponseDataObject;
+  data?: Story;
   meta?: StoryResponseMeta;
 }
 
@@ -3731,6 +2536,8 @@ export type StoryRequestData = {
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug: string;
+  locale?: string;
+  localizations?: (number | string)[];
 };
 
 export interface StoryRequest {
@@ -3750,69 +2557,14 @@ export type StoryCategoryListResponseMeta = {
   pagination?: StoryCategoryListResponseMetaPagination;
 };
 
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesType =
-  (typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesType)[keyof typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesType];
+export type StoryCategoryStoriesItemDatasetsItemType =
+  (typeof StoryCategoryStoriesItemDatasetsItemType)[keyof typeof StoryCategoryStoriesItemDatasetsItemType];
 
-export const StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesType = {
+export const StoryCategoryStoriesItemDatasetsItemType = {
   Group: "Group",
   Temporal: "Temporal",
   Simple: "Simple",
   "Temporal-Group": "Temporal-Group",
-} as const;
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType =
-  (typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType)[keyof typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType];
-
-export const StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType =
-  {
-    Basic: "Basic",
-    Gradient: "Gradient",
-    Choropleth: "Choropleth",
-    Rangeland: "Rangeland",
-  } as const;
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle =
-  (typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle)[keyof typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle];
-
-export const StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle =
-  {
-    filled: "filled",
-    outline: "outline",
-  } as const;
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale =
-  (typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale)[keyof typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale];
-
-export const StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale =
-  {
-    es: "es",
-    fr: "fr",
-  } as const;
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesTranslationsItemLocale =
-  (typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesTranslationsItemLocale)[keyof typeof StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesTranslationsItemLocale];
-
-export const StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesTranslationsItemLocale =
-  {
-    es: "es",
-    fr: "fr",
-  } as const;
-
-export type StoryCategoryStoriesDataItemAttributesTranslationsItemLocale =
-  (typeof StoryCategoryStoriesDataItemAttributesTranslationsItemLocale)[keyof typeof StoryCategoryStoriesDataItemAttributesTranslationsItemLocale];
-
-export const StoryCategoryStoriesDataItemAttributesTranslationsItemLocale = {
-  es: "es",
-  fr: "fr",
-} as const;
-
-export type StoryCategoryStoriesDataItemAttributesFurtherInformationItemType =
-  (typeof StoryCategoryStoriesDataItemAttributesFurtherInformationItemType)[keyof typeof StoryCategoryStoriesDataItemAttributesFurtherInformationItemType];
-
-export const StoryCategoryStoriesDataItemAttributesFurtherInformationItemType = {
-  link: "link",
-  paper: "paper",
-  video: "video",
 } as const;
 
 export type TranslationsStoryCategoryTranslationComponentLocale =
@@ -3825,574 +2577,100 @@ export const TranslationsStoryCategoryTranslationComponentLocale = {
 } as const;
 
 export interface TranslationsStoryCategoryTranslationComponent {
-  id?: number;
+  id?: string | number;
   title?: string;
   locale?: TranslationsStoryCategoryTranslationComponentLocale;
 }
 
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem =
-  {
-    id?: number;
-    name?: string;
-    color?: string;
-    name_es?: string;
-    name_fr?: string;
-    group?: string;
-    style?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItemStyle;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegend =
-  {
-    id?: number;
-    type?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendType;
-    items?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegendItemsItem[];
-    unit?: string;
-    unit_es?: string;
-    unit_fr?: string;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItem =
-  {
-    id?: number;
-    title?: string;
-    description?: string;
-    locale?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItemLocale;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItemAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsersDataItem[];
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRoleData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes =
-  {
-    action?: string;
-    actionParameters?: unknown;
-    subject?: string;
-    properties?: unknown;
-    conditions?: unknown;
-    role?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesRole;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesCreatedBy;
-    updatedBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributesUpdatedBy;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItemAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissionsDataItem[];
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes =
-  {
-    name?: string;
-    code?: string;
-    description?: string;
-    users?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUsers;
-    permissions?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesPermissions;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesCreatedBy;
-    updatedBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributesUpdatedBy;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItem =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItemAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRoles =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRolesDataItem[];
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributes =
-  {
-    firstname?: string;
-    lastname?: string;
-    username?: string;
-    email?: string;
-    resetPasswordToken?: string;
-    registrationToken?: string;
-    isActive?: boolean;
-    roles?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesRoles;
-    blocked?: boolean;
-    preferedLanguage?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesCreatedBy;
-    updatedBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributesUpdatedBy;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributes =
-  {
-    title?: string;
-    description?: string;
-    config?: unknown;
-    params_config?: unknown;
-    legend?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesLegend;
-    interaction_config?: unknown;
-    slug?: string;
-    translations?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesTranslationsItem[];
-    createdAt?: string;
-    updatedAt?: string;
-    publishedAt?: string;
-    createdBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesCreatedBy;
-    updatedBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributesUpdatedBy;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerDataAttributes;
+export type StoryCategoryStoriesItemDatasetsItemStory = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayer = {
-  data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayerData;
+export type StoryCategoryStoriesItemDatasetsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItem = {
-  id?: number;
-  layer?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItemLayer;
-  type?: string;
-  group?: string;
-  group_es?: string;
-  group_fr?: string;
+export type StoryCategoryStoriesItemDatasetsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCitationsItem = {
-  id?: number;
-  content?: string;
-  url?: string;
+export type StoryCategoryStoriesItemDatasetsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesSources = {
-  id?: number;
-  name?: string;
-  url?: string;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesTranslationsItem = {
-  id?: number;
+export type StoryCategoryStoriesItemDatasetsItem = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
-  description?: string;
-  locale?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesTranslationsItemLocale;
-  short_description?: string;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesStoryDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesStoryData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesStoryDataAttributes;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesStory = {
-  data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesStoryData;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCreatedByDataAttributes;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCreatedBy = {
-  data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCreatedByData;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesUpdatedBy = {
-  data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesUpdatedByData;
-};
-
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributes = {
-  title?: string;
-  type?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesType;
-  layers?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesLayersItem[];
-  citations?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCitationsItem[];
-  sources?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesSources;
+  type?: StoryCategoryStoriesItemDatasetsItemType;
+  layers?: DefaultLayerComponent[];
+  citations?: DefaultCitationsComponent[];
+  sources?: DefaultSourceComponent;
   slug?: string;
   description?: string;
-  translations?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesTranslationsItem[];
-  story?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesStory;
+  translations?: TranslationsDatasetTranslationComponent[];
+  story?: StoryCategoryStoriesItemDatasetsItemStory;
   short_description?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesCreatedBy;
-  updatedBy?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributesUpdatedBy;
+  createdBy?: StoryCategoryStoriesItemDatasetsItemCreatedBy;
+  updatedBy?: StoryCategoryStoriesItemDatasetsItemUpdatedBy;
+  locale?: string;
+  localizations?: StoryCategoryStoriesItemDatasetsItemLocalizationsItem[];
 };
 
-export type StoryCategoryStoriesDataItemAttributesDatasetsDataItem = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesDatasetsDataItemAttributes;
+export type StoryCategoryStoriesItemImageRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesDatasets = {
-  data?: StoryCategoryStoriesDataItemAttributesDatasetsDataItem[];
+export type StoryCategoryStoriesItemImageFolderParent = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesRelatedDataItemAttributes = {
-  [key: string]: unknown;
+export type StoryCategoryStoriesItemImageFolderChildrenItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesRelatedDataItem = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesRelatedDataItemAttributes;
+export type StoryCategoryStoriesItemImageFolderFilesItemRelatedItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesRelated = {
-  data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesRelatedDataItem[];
+export type StoryCategoryStoriesItemImageFolderFilesItemFolder = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesParentDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesParentData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesParentDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesParent = {
-  data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesParentData;
+export type StoryCategoryStoriesItemImageFolderFilesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesChildrenDataItem =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesChildrenDataItemAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesChildren =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesChildrenDataItem[];
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItemAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelatedDataItem[];
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolderData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes =
-  {
-    name?: string;
-    alternativeText?: string;
-    caption?: string;
-    width?: number;
-    height?: number;
-    formats?: unknown;
-    hash?: string;
-    ext?: string;
-    mime?: string;
-    size?: number;
-    url?: string;
-    previewUrl?: string;
-    provider?: string;
-    provider_metadata?: unknown;
-    related?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesRelated;
-    folder?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesFolder;
-    folderPath?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    createdBy?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesCreatedBy;
-    updatedBy?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributesUpdatedBy;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItem =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItemAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFiles = {
-  data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFilesDataItem[];
+export type StoryCategoryStoriesItemImageFolderFilesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesCreatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesCreatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesCreatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesCreatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes =
-  { [key: string]: unknown };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesUpdatedByData =
-  {
-    id?: number;
-    attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesUpdatedByDataAttributes;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesUpdatedBy =
-  {
-    data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesUpdatedByData;
-  };
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributes = {
-  name?: string;
-  pathId?: number;
-  parent?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesParent;
-  children?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesChildren;
-  files?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesFiles;
-  path?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  createdBy?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesCreatedBy;
-  updatedBy?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributesUpdatedBy;
+export type StoryCategoryStoriesItemImageFolderFilesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderDataAttributes;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesFolder = {
-  data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolderData;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesCreatedByDataAttributes;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesCreatedBy = {
-  data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesCreatedByData;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributesUpdatedByDataAttributes;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributesUpdatedBy = {
-  data?: StoryCategoryStoriesDataItemAttributesImageDataAttributesUpdatedByData;
-};
-
-export type StoryCategoryStoriesDataItemAttributesImageDataAttributes = {
+export type StoryCategoryStoriesItemImageFolderFilesItem = {
+  id?: string | number;
+  documentId?: string;
   name?: string;
   alternativeText?: string;
   caption?: string;
+  focalPoint?: unknown;
   width?: number;
   height?: number;
   formats?: unknown;
@@ -4404,119 +2682,184 @@ export type StoryCategoryStoriesDataItemAttributesImageDataAttributes = {
   previewUrl?: string;
   provider?: string;
   provider_metadata?: unknown;
-  related?: StoryCategoryStoriesDataItemAttributesImageDataAttributesRelated;
-  folder?: StoryCategoryStoriesDataItemAttributesImageDataAttributesFolder;
+  related?: StoryCategoryStoriesItemImageFolderFilesItemRelatedItem[];
+  folder?: StoryCategoryStoriesItemImageFolderFilesItemFolder;
   folderPath?: string;
   createdAt?: string;
   updatedAt?: string;
-  createdBy?: StoryCategoryStoriesDataItemAttributesImageDataAttributesCreatedBy;
-  updatedBy?: StoryCategoryStoriesDataItemAttributesImageDataAttributesUpdatedBy;
+  publishedAt?: string;
+  createdBy?: StoryCategoryStoriesItemImageFolderFilesItemCreatedBy;
+  updatedBy?: StoryCategoryStoriesItemImageFolderFilesItemUpdatedBy;
+  locale?: string;
+  localizations?: StoryCategoryStoriesItemImageFolderFilesItemLocalizationsItem[];
 };
 
-export type StoryCategoryStoriesDataItemAttributesImageData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesImageDataAttributes;
+export type StoryCategoryStoriesItemImageFolderCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesImage = {
-  data?: StoryCategoryStoriesDataItemAttributesImageData;
+export type StoryCategoryStoriesItemImageFolderUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesTranslationsItem = {
-  id?: number;
-  title?: string;
-  description?: string;
-  notes?: string;
-  locale?: StoryCategoryStoriesDataItemAttributesTranslationsItemLocale;
+export type StoryCategoryStoriesItemImageFolderLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesFurtherInformationItem = {
-  id?: number;
+export type StoryCategoryStoriesItemImageFolder = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  pathId?: number;
+  parent?: StoryCategoryStoriesItemImageFolderParent;
+  children?: StoryCategoryStoriesItemImageFolderChildrenItem[];
+  files?: StoryCategoryStoriesItemImageFolderFilesItem[];
+  path?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryCategoryStoriesItemImageFolderCreatedBy;
+  updatedBy?: StoryCategoryStoriesItemImageFolderUpdatedBy;
+  locale?: string;
+  localizations?: StoryCategoryStoriesItemImageFolderLocalizationsItem[];
+};
+
+export type StoryCategoryStoriesItemImageCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemImageUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemImageLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemImage = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
   url?: string;
-  content?: string;
-  content_es?: string;
-  content_fr?: string;
-  type?: StoryCategoryStoriesDataItemAttributesFurtherInformationItemType;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: StoryCategoryStoriesItemImageRelatedItem[];
+  folder?: StoryCategoryStoriesItemImageFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryCategoryStoriesItemImageCreatedBy;
+  updatedBy?: StoryCategoryStoriesItemImageUpdatedBy;
+  locale?: string;
+  localizations?: StoryCategoryStoriesItemImageLocalizationsItem[];
 };
 
-export type StoryCategoryStoriesDataItemAttributesCreatedByDataAttributes = {
-  [key: string]: unknown;
+export type StoryCategoryStoriesItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesCreatedByData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesCreatedByDataAttributes;
+export type StoryCategoryStoriesItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesCreatedBy = {
-  data?: StoryCategoryStoriesDataItemAttributesCreatedByData;
+export type StoryCategoryStoriesItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
 };
 
-export type StoryCategoryStoriesDataItemAttributesUpdatedByDataAttributes = {
-  [key: string]: unknown;
-};
-
-export type StoryCategoryStoriesDataItemAttributesUpdatedByData = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributesUpdatedByDataAttributes;
-};
-
-export type StoryCategoryStoriesDataItemAttributesUpdatedBy = {
-  data?: StoryCategoryStoriesDataItemAttributesUpdatedByData;
-};
-
-export type StoryCategoryStoriesDataItemAttributes = {
+export type StoryCategoryStoriesItem = {
+  id?: string | number;
+  documentId?: string;
   title?: string;
   description?: string;
   notes?: string;
   latitude?: number;
   longitude?: number;
-  datasets?: StoryCategoryStoriesDataItemAttributesDatasets;
-  image?: StoryCategoryStoriesDataItemAttributesImage;
-  translations?: StoryCategoryStoriesDataItemAttributesTranslationsItem[];
-  further_information?: StoryCategoryStoriesDataItemAttributesFurtherInformationItem[];
+  datasets?: StoryCategoryStoriesItemDatasetsItem[];
+  image?: StoryCategoryStoriesItemImage;
+  translations?: TranslationsStoryTranslationComponent[];
+  further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: StoryCategoryStoriesDataItemAttributesCreatedBy;
-  updatedBy?: StoryCategoryStoriesDataItemAttributesUpdatedBy;
-};
-
-export type StoryCategoryStoriesDataItem = {
-  id?: number;
-  attributes?: StoryCategoryStoriesDataItemAttributes;
-};
-
-export type StoryCategoryStories = {
-  data?: StoryCategoryStoriesDataItem[];
-};
-
-export type StoryCategoryCreatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryCategoryCreatedByData = {
-  id?: number;
-  attributes?: StoryCategoryCreatedByDataAttributes;
+  createdBy?: StoryCategoryStoriesItemCreatedBy;
+  updatedBy?: StoryCategoryStoriesItemUpdatedBy;
+  locale?: string;
+  localizations?: StoryCategoryStoriesItemLocalizationsItem[];
 };
 
 export type StoryCategoryCreatedBy = {
-  data?: StoryCategoryCreatedByData;
-};
-
-export type StoryCategoryUpdatedByDataAttributes = { [key: string]: unknown };
-
-export type StoryCategoryUpdatedByData = {
-  id?: number;
-  attributes?: StoryCategoryUpdatedByDataAttributes;
+  id?: string | number;
+  documentId?: string;
 };
 
 export type StoryCategoryUpdatedBy = {
-  data?: StoryCategoryUpdatedByData;
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryLocalizationsItemStoriesItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryLocalizationsItemCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryLocalizationsItemUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryLocalizationsItemLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+  title?: string;
+  stories?: StoryCategoryLocalizationsItemStoriesItem[];
+  translations?: TranslationsStoryCategoryTranslationComponent[];
+  slug?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryCategoryLocalizationsItemCreatedBy;
+  updatedBy?: StoryCategoryLocalizationsItemUpdatedBy;
+  locale?: string;
+  localizations?: StoryCategoryLocalizationsItemLocalizationsItem[];
 };
 
 export interface StoryCategory {
+  id?: string | number;
+  documentId?: string;
   title: string;
-  stories?: StoryCategoryStories;
+  stories?: StoryCategoryStoriesItem[];
   translations?: TranslationsStoryCategoryTranslationComponent[];
   slug: string;
   createdAt?: string;
@@ -4524,27 +2867,19 @@ export interface StoryCategory {
   publishedAt?: string;
   createdBy?: StoryCategoryCreatedBy;
   updatedBy?: StoryCategoryUpdatedBy;
-}
-
-export interface StoryCategoryListResponseDataItem {
-  id?: number;
-  attributes?: StoryCategory;
+  locale?: string;
+  localizations?: StoryCategoryLocalizationsItem[];
 }
 
 export interface StoryCategoryListResponse {
-  data?: StoryCategoryListResponseDataItem[];
+  data?: StoryCategory[];
   meta?: StoryCategoryListResponseMeta;
 }
 
 export type StoryCategoryResponseMeta = { [key: string]: unknown };
 
-export interface StoryCategoryResponseDataObject {
-  id?: number;
-  attributes?: StoryCategory;
-}
-
 export interface StoryCategoryResponse {
-  data?: StoryCategoryResponseDataObject;
+  data?: StoryCategory;
   meta?: StoryCategoryResponseMeta;
 }
 
@@ -4553,6 +2888,8 @@ export type StoryCategoryRequestData = {
   stories?: (number | string)[];
   translations?: TranslationsStoryCategoryTranslationComponent[];
   slug: string;
+  locale?: string;
+  localizations?: (number | string)[];
 };
 
 export interface StoryCategoryRequest {

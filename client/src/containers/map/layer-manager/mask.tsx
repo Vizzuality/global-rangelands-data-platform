@@ -29,9 +29,7 @@ const Mask = ({ id, beforeId }: MaskProps) => {
     "pagination[pageSize]": 1,
   });
 
-  const tilesetUrl = (
-    layersResponse?.data?.[0]?.attributes?.config as { data?: string } | undefined
-  )?.data;
+  const tilesetUrl = (layersResponse?.data?.[0]?.config as { data?: string } | undefined)?.data;
 
   const data = tilesetUrl ? `${tilesetUrl}?access_token=${env.NEXT_PUBLIC_MAPBOX_TOKEN}` : null;
 
