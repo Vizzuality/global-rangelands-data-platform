@@ -25,7 +25,7 @@ const MARKER_GLOW_BY_CATEGORY: Record<string, StoryMarkerVariant> = {
     halo: "bg-orange-bright/30",
     border: "border-orange-bright",
   },
-  "rangelands-restorations-champions": {
+  "restorations-champions": {
     glow: "bg-green-light",
     halo: "bg-green-light/20",
     border: "border-green-light",
