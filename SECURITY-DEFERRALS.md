@@ -182,6 +182,12 @@ Full reachability tiering and the migration record are in **`CMS-VULN-ASSESSMENT
 All four are pinned by `@google/earthengine@0.1.405`, which depends on the old
 `googleapis@92` → `google-auth-library@7` → `googleapis-common@5` → `uuid@8` chain.
 
+> **Update 2026-07-09** (branch `fix/deps/audit-2026-07-09`): the tiler's newly-surfaced
+> dev-tooling advisories were cleared — `shell-quote` 1.8.1→1.9.0 (critical, GHSA #626, via
+> `concurrently`), `form-data` 4.0.0→4.0.6 (via `@types/node-fetch`), `tmp` 0.0.33→0.2.6
+> (scoped override on `external-editor`), `js-yaml` 4.1.0→4.3.0 (via `eslint`). The
+> googleapis-tree deferrals below (incl. `uuid`) are unaffected and remain deferred.
+
 ### Why deferred
 
 - The clean fix is upgrading `@google/earthengine` to its current release, which is a
@@ -219,4 +225,4 @@ declared by this repository, so it is not fixable via the lockfile.
 
 ---
 
-_Last updated: 2026-07-08 — §2 (Strapi) resolved via the Strapi 5.50.0 upgrade on branch `feat/strapi-5-migration` (PR #167). §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
+_Last updated: 2026-07-09 — §3 (earth_engine_tiler) dev-tooling advisories cleared on branch `fix/deps/audit-2026-07-09`. §2 (Strapi) resolved via the Strapi 5.50.0 upgrade on branch `feat/strapi-5-migration` (PR #167). §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
