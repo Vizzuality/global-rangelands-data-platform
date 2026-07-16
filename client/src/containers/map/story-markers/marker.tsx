@@ -58,10 +58,10 @@ const StoryMarker = ({
           <motion.span
             key={`glow-${slug}`}
             initial={{ scale: 0.6, opacity: 0.5 }}
-            animate={{ scale: 3.5, opacity: 0 }}
+            animate={{ scale: 2.1, opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className={cn("absolute h-9 w-9 rounded-full", variant.glow)}
+            className={cn("absolute h-[68px] w-[68px] rounded-full", variant.glow)}
           />
         )}
       </AnimatePresence>
@@ -69,12 +69,12 @@ const StoryMarker = ({
         className={cn(
           "absolute rounded-full transition-all duration-150",
           variant.halo,
-          isHovered && !isActive ? "h-12 w-12" : "h-0 w-0",
+          isHovered && !isActive ? "h-20 w-20" : "h-0 w-0",
         )}
       />
       <span
         className={cn(
-          "relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 transition-all duration-150",
+          "relative flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-full border-4 transition-all duration-150",
           variant.border,
           isActive && "shadow-md",
         )}
