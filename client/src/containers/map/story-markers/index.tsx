@@ -15,23 +15,23 @@ const STORIES_MODE_PREFIXES = ["/map/stories", "/map/story"];
 const STORY_SLUG_RE = /^\/map\/story\/([^/]+)/;
 
 const MARKER_GLOW_BY_CATEGORY: Record<string, StoryMarkerVariant> = {
-  "rangelands-atlas-stories": {
+  "atlas-stories": {
     glow: "bg-brown-dark",
     halo: "bg-brown-dark/20",
     border: "border-brown-dark",
   },
-  "investment-cases": {
+  "restoration-investments": {
     glow: "bg-orange-bright",
     halo: "bg-orange-bright/30",
     border: "border-orange-bright",
   },
-  "restorations-champions": {
+  "restoration-champions": {
     glow: "bg-green-light",
     halo: "bg-green-light/20",
     border: "border-green-light",
   },
 };
-const DEFAULT_MARKER_GLOW = MARKER_GLOW_BY_CATEGORY["rangelands-atlas-stories"];
+const DEFAULT_MARKER_GLOW = MARKER_GLOW_BY_CATEGORY["atlas-stories"];
 
 const resolveVisibleStories = ({
   stories,
