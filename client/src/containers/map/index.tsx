@@ -11,6 +11,7 @@ import { useSyncMapStyle } from "@/store/map";
 import MapTooltip from "./popups";
 import OpenStreetMapAttribution from "@/components/ui/openstreetmap-attribution";
 import useSyncLayersOrder from "@/hooks/use-sync-layers-order";
+import StoryMarkers from "./story-markers";
 
 const Map = () => {
   const [mapStyle] = useSyncMapStyle();
@@ -29,7 +30,7 @@ const Map = () => {
         <AttributionControl style={{ fontSize: "10px" }} position="bottom-right" />
         <LayerManager />
         <Controls />
-
+        <StoryMarkers />
         <MapTooltip />
       </MapComponent>
 

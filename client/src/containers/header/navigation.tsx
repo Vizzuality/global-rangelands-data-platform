@@ -26,7 +26,7 @@ const HeaderNavigation = () => {
     },
   ];
 
-  const isMap = pathname === "/map";
+  const isMap = pathname === "/map" || pathname.startsWith("/map/");
 
   return (
     <div className="flex-1">
@@ -39,7 +39,9 @@ const HeaderNavigation = () => {
           </NavigationMenuItem>
           <div className="flex gap-10">
             {NAVIGATION_ITEMS.map((item) => {
-              const isActive = item.href === pathname;
+              const isActive =
+                item.href === pathname ||
+                (item.href !== "/" && pathname.startsWith(`${item.href}/`));
               return (
                 <NavigationMenuItem
                   key={item.href}

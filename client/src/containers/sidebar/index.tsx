@@ -1,19 +1,16 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
-import { useAtom, useAtomValue } from "jotai";
-import { sidebarModeAtom, sidebarOpenAtom } from "@/store/map";
+import { useAtom } from "jotai";
+import { sidebarOpenAtom } from "@/store/map";
 import { ScrollAreaWithThumb } from "@/components/ui/scroll-area";
-import Datasets from "../datasets";
-import Stories from "../stories";
 
-import type { JSX } from "react";
+import type { JSX, PropsWithChildren } from "react";
 
-const Sidebar = (): JSX.Element => {
+const Sidebar = ({ children }: PropsWithChildren): JSX.Element => {
   const [open, setOpen] = useAtom(sidebarOpenAtom);
 
   const toggleOpen = () => setOpen((prev) => !prev);
-  const sidebarMode = useAtomValue(sidebarModeAtom);
 
   return (
     <aside
@@ -41,7 +38,7 @@ const Sidebar = (): JSX.Element => {
         </button>
       </div>
       <ScrollAreaWithThumb className="relative z-10 h-[var(--content-height)] w-[400px] bg-white">
-        {sidebarMode === "layers" ? <Datasets /> : <Stories />}
+        {children}
       </ScrollAreaWithThumb>
     </aside>
   );

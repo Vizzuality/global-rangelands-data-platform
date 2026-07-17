@@ -2,25 +2,28 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useGetLocalizedList } from "@/lib/localized-query";
 import {
-  sidebarModeAtom,
   useSyncLayers,
   useSyncRangelandRegions,
   useSyncRangelandType,
+  useSyncSearchParams,
 } from "@/store/map";
 import { useGetEcoregions } from "@/types/generated/ecoregion";
 import { useGetRangelands } from "@/types/generated/rangeland";
-import { useAtom } from "jotai";
+import { usePathname } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 const MapLayers = () => {
   const t = useTranslations();
 
   const [layers] = useSyncLayers();
-  const [sidebarMode, setSidebarMode] = useAtom(sidebarModeAtom);
+  const pathname = usePathname();
+  const searchParams = useSyncSearchParams();
   const [rangelandRegion] = useSyncRangelandRegions();
-
   const [rangelandType] = useSyncRangelandType();
+
+  const isStoriesMode = pathname.startsWith("/map/stories") || pathname.startsWith("/map/story");
 
   const biomesQuery = useGetRangelands(
     {
@@ -86,40 +89,36 @@ const MapLayers = () => {
     {
       title: t("Rangelands Layers"),
       id: "layers",
+      href: `/map${searchParams}` as const,
       color: "global",
       badge: layers.length - 1 > 0 ? layers.length - 1 : undefined,
       badgeTooltip: layersBadgeTooltip,
+      isActive: !isStoriesMode,
     },
     {
-      title: t("Rangelands Stories"),
+      title: t("Stories"),
       id: "stories",
+      href: `/map/stories${searchParams}` as const,
       color: "stories",
+      isActive: isStoriesMode,
     },
   ];
-
-  const handleClick = useCallback(
-    (id: typeof sidebarMode) => {
-      // setSidebarOpen((prev) => !prev);
-      setSidebarMode(id);
-    },
-    [setSidebarMode],
-  );
 
   return (
     <div className="flex gap-2">
       {tabs.map((tab) => (
-        <button
+        <Link
           key={`map-tab-${tab.id}`}
-          className="group flex h-10 items-center gap-2 rounded-[20px] border-2 border-orange-100/0 px-2.5 text-sm transition-colors duration-300 hover:bg-background focus-visible:border-2 focus-visible:border-orange-100 focus-visible:bg-background focus-visible:outline-0 data-[state=open]:rounded-b-none "
+          href={tab.href}
+          className="group flex h-10 items-center gap-2 rounded-[20px] border-2 border-orange-100/0 px-2.5 text-sm transition-colors duration-300 hover:bg-background focus-visible:border-2 focus-visible:border-orange-100 focus-visible:bg-background focus-visible:outline-0 data-[state=open]:rounded-b-none"
           style={{
-            backgroundColor: sidebarMode === tab.id ? `rgb(var(--${tab.color}-rgb))` : undefined,
-            color: sidebarMode === tab.id ? "white" : "var(--foreground)",
+            backgroundColor: tab.isActive ? `rgb(var(--${tab.color}-rgb))` : undefined,
+            color: tab.isActive ? "white" : "var(--foreground)",
           }}
-          data-state={sidebarMode === tab.id ? "active" : "inactive"}
-          onClick={() => handleClick(tab.id as typeof sidebarMode)}
+          data-state={tab.isActive ? "active" : "inactive"}
         >
           {tab.title}
-          {tab.badge && (
+          {"badge" in tab && tab.badge && (
             <TooltipProvider>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
@@ -137,7 +136,7 @@ const MapLayers = () => {
               </Tooltip>
             </TooltipProvider>
           )}
-        </button>
+        </Link>
       ))}
     </div>
   );

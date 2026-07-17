@@ -2,7 +2,7 @@ import { atom } from "jotai";
 import { createSerializer, useQueryState } from "nuqs";
 
 import {
-  bboxParser,
+  categoryParser,
   datasetsParser,
   layersParser,
   layersSettingsParser,
@@ -25,10 +25,6 @@ export const useSyncLayersSettings = () => {
   return useQueryState("layers-settings", layersSettingsParser);
 };
 
-export const useSyncBbox = () => {
-  return useQueryState("bbox", bboxParser);
-};
-
 export const useSyncMapStyle = () => {
   return useQueryState("map-style", mapStyleParser);
 };
@@ -41,8 +37,12 @@ export const useSyncRangelandRegions = () => {
   return useQueryState("rangeland-regions", rangelandRegionsParser);
 };
 
+export const useSyncCategory = () => {
+  return useQueryState("category", categoryParser);
+};
+
 const searchParams = {
-  bbox: bboxParser,
+  category: categoryParser,
   datasets: datasetsParser,
   layers: layersParser,
   layersSettings: layersSettingsParser,
@@ -54,7 +54,7 @@ const searchParams = {
 const serialize = createSerializer(searchParams);
 
 export const useSyncSearchParams = () => {
-  const [bbox] = useSyncBbox();
+  const [category] = useSyncCategory();
   const [datasets] = useSyncDatasets();
   const [layers] = useSyncLayers();
   const [layersSettings] = useSyncLayersSettings();
@@ -63,10 +63,10 @@ export const useSyncSearchParams = () => {
   const [rangelandRegion] = useSyncRangelandRegions();
 
   return serialize({
+    category,
     datasets,
     layers,
     layersSettings,
-    bbox,
     mapStyle,
     rangelandRegion,
     rangelangType,
@@ -85,4 +85,3 @@ export type LandmarkCandidate = {
 export const landmarkCandidatesAtom = atom<LandmarkCandidate[]>([]);
 export const landmarkActiveFidAtom = atom<string | null>(null);
 export const layersInteractiveIdsAtom = atom<(number | string)[]>([]);
-export const sidebarModeAtom = atom<"layers" | "stories">("layers");
