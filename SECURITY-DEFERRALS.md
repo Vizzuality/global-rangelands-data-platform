@@ -166,6 +166,24 @@ required Strapi 5 because:
 
 Full reachability tiering and the migration record are in **`CMS-VULN-ASSESSMENT.md`** (repo root).
 
+> **Update 2026-07-17** (branch `fix/deps-braces-minimatch-advisories`): a fresh Peek batch
+> flagged two `cms` items post-dating the Strapi 5 upgrade.
+> - **`braces` cleared** — [CVE-2024-4068](https://github.com/advisories/GHSA-grv7-fg5c-xmjg):
+>   `braces@3.0.2` (pulled by `chokidar@3.6.0` + `micromatch@4.0.5`, Strapi admin build/watch
+>   tooling) pinned to **3.0.3** via pnpm override. Within-major patch, build-time only.
+> - **`nodemailer` deferred** — [GHSA-p6gq-j5cr-w38f](https://github.com/advisories/GHSA-p6gq-j5cr-w38f)
+>   (message-level `raw` option bypasses `disableFileAccess`/`disableUrlAccess` → arbitrary
+>   file read + SSRF; patched **9.0.1**). Installed `nodemailer@8.0.9` is pinned by
+>   `@strapi/provider-email-sendmail@5.50.0` (Strapi's **default** email provider — no custom
+>   provider is configured in `config/plugins.js`). Deferred because the fix is an **8→9 major
+>   bump** of a transitive pinned by the Strapi provider; forcing it risks the provider.
+>   **Reachability — low:** the vulnerable path requires a caller passing an untrusted
+>   message-level `raw` option; Strapi's email service API never exposes `raw` to external
+>   input, and `email_confirmation` is `false` / `email_reset_password` is `null`, so the
+>   sendmail paths are barely exercised. **Remediation:** bump nodemailer to ≥9.0.1 once
+>   `@strapi/provider-email-sendmail` declares compatibility (verify email send in a dedicated
+>   change), or swap to a provider on a patched nodemailer line.
+
 ---
 
 ## 3. `cloud_functions/earth_engine_tiler` — googleapis tree (deferred)
@@ -199,6 +217,15 @@ All four are pinned by `@google/earthengine@0.1.405`, which depends on the old
 > **Still deferred:** `minimatch`→10.2.3, `picomatch`→4.0.4 and `uuid`→12.0.1 are
 > major-version bumps of transitives pinned by `googleapis`/`gts`; `minimatch`/`picomatch`
 > are dev-only and unreachable, `uuid` stays as in the googleapis-tree section below.
+>
+> **Update 2026-07-17** (branch `fix/deps-braces-minimatch-advisories`): **`minimatch`
+> cleared** — [CVE-2026-27903](https://nvd.nist.gov/vuln/detail/CVE-2026-27903) (unbounded
+> recursive backtracking in `matchOne()` on multiple non-adjacent `**` segments). The two
+> resolved copies were bumped **within their majors** via npm overrides — top-level
+> `minimatch@3.1.2 → 3.1.3`, and `@typescript-eslint/typescript-estree`'s `9.0.4 → 9.0.7`.
+> Both are patch-level, so this supersedes the earlier "minimatch→10.2.3 major, deferred"
+> note above: the CVE fix does **not** need the 10.x major. Both copies are `development`
+> scope (eslint/gts tooling), not shipped in the deployed function; `tsc` compile unaffected.
 
 ### Why deferred
 
@@ -237,4 +264,4 @@ declared by this repository, so it is not fixable via the lockfile.
 
 ---
 
-_Last updated: 2026-07-16 — §3 (earth_engine_tiler) three more dev-tooling advisories (flatted, lodash, tmp) cleared on branch `fix/deps/audit-2026-07-16`; minimatch/picomatch/uuid majors remain deferred. §2 (Strapi) resolved via the Strapi 5.50.0 upgrade on branch `feat/strapi-5-migration` (PR #167). §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
+_Last updated: 2026-07-17 — new Peek batch: §2 (cms) `braces` cleared (CVE-2024-4068, pnpm override 3.0.3) and `nodemailer` deferred (GHSA-p6gq-j5cr-w38f, 8→9 major pinned by Strapi's sendmail provider, low reachability); §3 (earth_engine_tiler) `minimatch` cleared (CVE-2026-27903, within-major overrides 3.1.3 / 9.0.7) on branch `fix/deps-braces-minimatch-advisories`. Prior: 2026-07-16 §3 dev-tooling (flatted, lodash, tmp); §2 (Strapi) resolved via Strapi 5.50.0 (PR #167); §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
