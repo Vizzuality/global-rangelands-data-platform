@@ -16,6 +16,7 @@ import { sidebarOpenAtom, useSyncSearchParams } from "@/store/map";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
 import FurtherInfo from "./further-info";
 import RelatedDatasets from "./related-datasets";
+import KeepExploring from "./keep-exploring";
 
 type StoryDetailProps = {
   slug: string;
@@ -38,7 +39,7 @@ const StoryDescription = ({ description }: StoryDescriptionProps) => {
       <div
         ref={measureRef}
         className={
-          expanded ? "text-sm leading-relaxed" : "max-h-56 overflow-hidden text-sm leading-relaxed"
+          expanded ? "text-sm leading-6" : "max-h-[560px] overflow-hidden text-sm leading-6"
         }
       >
         <RichText>{description}</RichText>
@@ -48,7 +49,7 @@ const StoryDescription = ({ description }: StoryDescriptionProps) => {
         <button
           type="button"
           onClick={() => setExpanded((prev) => !prev)}
-          className="text-sm font-medium text-brown-light underline-offset-2 hover:underline"
+          className="text-sm font-medium text-brown-light underline underline-offset-2"
         >
           {expanded ? t("Read less") : t("Read more")}
         </button>
@@ -108,23 +109,25 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="border-b border-foreground px-6 py-4">
-        <Link
-          href={`/map/stories${searchParams}`}
-          className="inline-flex items-center gap-1 text-sm font-medium hover:text-green-light"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          {t("Stories")}
-        </Link>
-      </div>
+      <div className="flex flex-col gap-8 border-b border-foreground px-6 pb-6 pt-8">
+        <div className="space-y-4">
+          <Link
+            href={`/map/stories${searchParams}`}
+            className="inline-flex items-center gap-1 text-xs font-medium uppercase underline underline-offset-2 hover:text-green-light"
+          >
+            <ArrowLeft className="h-5 w-5" />
+            {t("Stories")}
+          </Link>
 
-      <div className="space-y-6 p-6">
-        {title && (
-          <h1 className="font-serif text-2xl font-light leading-tight text-green-dark">{title}</h1>
-        )}
+          {title && (
+            <h1 className="font-sans text-[28px] font-bold leading-[34px] text-green-dark">
+              {title}
+            </h1>
+          )}
+        </div>
 
         {imageUrl && (
-          <div className="relative h-48 w-full shrink-0">
+          <div className="relative h-[140px] w-full shrink-0">
             <Image
               src={`${CMS_MEDIA_BASE}${imageUrl}`}
               alt={title ?? ""}
@@ -140,14 +143,14 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
         )}
       </div>
 
-      <div className="border-b border-foreground" />
-
       <div className="space-y-6 p-6">
         {description && <StoryDescription key={slug} description={description} />}
 
+        <RelatedDatasets datasets={storyDatasets} />
+
         <FurtherInfo items={story?.further_information ?? []} locale={locale} />
 
-        <RelatedDatasets datasets={storyDatasets} />
+        <KeepExploring slug={slug} />
       </div>
     </div>
   );

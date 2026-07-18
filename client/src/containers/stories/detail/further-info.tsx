@@ -15,7 +15,7 @@ const FurtherInfo = ({ items, locale }: FurtherInfoProps) => {
 
   return (
     <div className="space-y-2">
-      <h2 className="text-sm font-semibold uppercase tracking-wide">{t("Further information")}</h2>
+      <h2 className="text-base font-medium">{t("Further information")}</h2>
       <div className="space-y-2">
         {items.map((item, i) => (
           <FurtherInfoItem key={item.id ?? i} item={item} locale={locale} />
