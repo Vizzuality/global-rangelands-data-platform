@@ -17,8 +17,14 @@ type KeepExploringProps = {
   slug: string;
 };
 
-const pickRandomSiblings = <T,>(siblings: T[]): T[] =>
-  [...siblings].sort(() => Math.random() - 0.5).slice(0, 2);
+const pickRandomSiblings = <T,>(siblings: T[]): T[] => {
+  const shuffled = [...siblings];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled.slice(0, 2);
+};
 
 const KeepExploring = ({ slug }: KeepExploringProps) => {
   const t = useTranslations();
