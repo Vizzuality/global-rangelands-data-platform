@@ -11,6 +11,8 @@ import { useSyncSearchParams } from "@/store/map";
 import StoryCardSmall from "@/components/story-card-small";
 import type { StoryCategory } from "@/types/generated/strapi.schemas";
 
+import { STORY_CARD_VARIANTS, STORY_CARD_DEFAULT_VARIANT } from "../categories";
+
 type StoryItem = NonNullable<StoryCategory["stories"]>[number];
 
 type KeepExploringProps = {
@@ -42,6 +44,8 @@ const KeepExploring = ({ slug }: KeepExploringProps) => {
       (s): s is StoryItem & { slug: string } => !!s.slug && s.slug !== slug,
     ) ?? [];
   const siblingsKey = siblings.map((s) => s.slug).join(",");
+  const variant =
+    (category?.slug && STORY_CARD_VARIANTS[category.slug]) || STORY_CARD_DEFAULT_VARIANT;
 
   // Keyed on `siblingsKey` (not `siblings`) so the random pick is stable across re-renders and only reshuffles when the sibling set changes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,6 +64,7 @@ const KeepExploring = ({ slug }: KeepExploringProps) => {
           return (
             <StoryCardSmall
               key={story.slug}
+              variant={variant}
               className="flex-1"
               href={`/map/story/${story.slug}${searchParams}`}
               title={localizedTitle ?? t("Untitled")}

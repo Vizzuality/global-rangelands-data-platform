@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
 
 type StoryCardSmallProps = {
+  variant: string;
   href: string;
   title: string;
   imageUrl?: string;
@@ -12,10 +13,17 @@ type StoryCardSmallProps = {
   className?: string;
 };
 
-const StoryCardSmall = ({ href, title, imageUrl, imageAlt, className }: StoryCardSmallProps) => (
+const StoryCardSmall = ({
+  variant,
+  href,
+  title,
+  imageUrl,
+  imageAlt,
+  className,
+}: StoryCardSmallProps) => (
   <Link href={href} className={cn("flex h-40 flex-col overflow-hidden", className)}>
-    <div className="bg-brown-dark p-4">
-      <p className="line-clamp-3 text-xs font-medium leading-4 text-white">{title}</p>
+    <div className={cn("p-4", variant)}>
+      <p className="line-clamp-3 text-xs font-medium leading-4">{title}</p>
     </div>
     {imageUrl && (
       <div className="relative flex-1">
