@@ -2,23 +2,19 @@
 
 import { useTranslations } from "next-intl";
 
-import { Link } from "@/i18n/navigation";
-import { useSyncSearchParams } from "@/store/map";
+import { useSyncDatasets, useSyncLayers } from "@/store/map";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 import type { StoryDatasetsItem } from "@/types/generated/strapi.schemas";
 
 type RelatedDatasetsProps = {
   datasets: StoryDatasetsItem[];
 };
 
-const buildDatasetHref = (searchParams: string, slug: string) => {
-  const params = new URLSearchParams(searchParams);
-  params.set("datasets", slug);
-  return `/map?${params.toString()}`;
-};
-
 const RelatedDatasets = ({ datasets }: RelatedDatasetsProps) => {
   const t = useTranslations();
-  const searchParams = useSyncSearchParams();
+  const [syncedDatasets, setDatasets] = useSyncDatasets();
+  const [, setLayers] = useSyncLayers();
 
   const linkableDatasets = datasets.filter(
     (d): d is StoryDatasetsItem & { slug: string } => !!d.slug,
@@ -26,20 +22,43 @@ const RelatedDatasets = ({ datasets }: RelatedDatasetsProps) => {
 
   if (linkableDatasets.length === 0) return null;
 
+  const handleToggleDataset = (datasetSlug: string, layerSlugs: string[], checked: boolean) => {
+    if (checked) {
+      setDatasets((prev) => (prev.includes(datasetSlug) ? prev : [datasetSlug, ...prev]));
+      setLayers((prev) => [...prev, ...layerSlugs.filter((s) => !prev.includes(s))]);
+    } else {
+      setDatasets((prev) => prev.filter((x) => x !== datasetSlug));
+      setLayers((prev) => prev.filter((x) => !layerSlugs.includes(x)));
+    }
+  };
+
   return (
-    <div className="space-y-2">
-      <h2 className="text-sm font-semibold uppercase tracking-wide">{t("Related datasets")}</h2>
-      <ul className="space-y-2">
-        {linkableDatasets.map((d) => (
-          <li key={d.id}>
-            <Link
-              href={buildDatasetHref(searchParams, d.slug)}
-              className="block rounded-lg bg-green-medium px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-green-light"
+    <div className="space-y-4">
+      <h2 className="text-base font-medium">{t("Related datasets")}</h2>
+      <ul className="space-y-2.5">
+        {linkableDatasets.map((d) => {
+          const layerSlugs =
+            d.layers?.map((l) => l.layer?.slug).filter((s): s is string => !!s) ?? [];
+          const checked = syncedDatasets.includes(d.slug);
+
+          return (
+            <li
+              key={d.id}
+              className={cn(
+                "flex items-start justify-between gap-6 px-6 py-4 text-base font-medium leading-6",
+                checked ? "bg-green-light text-white" : "border border-green-dark text-green-dark",
+              )}
             >
-              {d.title ?? d.slug}
-            </Link>
-          </li>
-        ))}
+              <label htmlFor={`related-dataset-toggle-${d.slug}`}>{d.title ?? d.slug}</label>
+              <Switch
+                id={`related-dataset-toggle-${d.slug}`}
+                className="mt-1 shrink-0 data-[state=checked]:border-green-medium data-[state=checked]:bg-green-medium"
+                checked={checked}
+                onCheckedChange={(c) => handleToggleDataset(d.slug, layerSlugs, c)}
+              />
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
