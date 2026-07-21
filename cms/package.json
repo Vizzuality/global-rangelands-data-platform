@@ -39,7 +39,27 @@
   "pnpm": {
     "overrides": {
       "shell-quote": "1.9.0",
-      "braces": "3.0.3"
+      "braces": "3.0.3",
+      "@strapi/data-transfer>ws": "8.21.1",
+      "jsonwebtoken>jws": "3.2.3",
+      "grant>jws": "4.0.1",
+      "strapi-plugin-config-sync>adm-zip": "0.6.0",
+      "z-schema>validator": "13.15.35",
+      "jscodeshift>@babel/core": "7.29.7",
+      "cosmiconfig>yaml": "1.10.3",
+      "git-diff>diff": "3.5.1",
+      "react-diff-viewer-continued>diff": "5.2.2",
+      "tar@7": "7.5.20",
+      "lodash-es@4": "4.18.1",
+      "qs@6": "6.15.3",
+      "bn.js@4": "4.12.5",
+      "@babel/runtime@7": "7.29.7",
+      "minimatch@3": "3.1.5",
+      "picomatch@2": "2.3.2",
+      "micromatch@4": "4.0.8",
+      "brace-expansion@1": "1.1.16",
+      "ajv@6": "6.15.0",
+      "ajv@8": "8.20.0"
     },
     "onlyBuiltDependencies": [
       "@strapi/strapi",

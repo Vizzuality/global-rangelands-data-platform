@@ -121,6 +121,15 @@ Do this as a dedicated, tested piece of work:
 4. Smoke-test the map and datasets views against a live Strapi to confirm population still
    works end-to-end.
 
+> **Update 2026-07-21** (branch `fix/deps/audit-2026-07-21`): `client` swept to **0 advisories**
+> (was 4 high / 2 low) via within-major pnpm overrides: `orval>js-yaml`→4.3.0
+> ([GHSA-52cp-r559-cp3m](https://github.com/advisories/GHSA-52cp-r559-cp3m)), `brace-expansion`
+> 1/2/5→1.1.16/2.1.2/5.0.7 ([GHSA-3jxr-9vmj-r5cp](https://github.com/advisories/GHSA-3jxr-9vmj-r5cp)),
+> `express>body-parser`→1.20.6 ([GHSA-v422-hmwv-36x6](https://github.com/advisories/GHSA-v422-hmwv-36x6)),
+> `eslint-plugin-react-hooks>@babel/core`→7.29.7
+> ([GHSA-4x5r-pxfx-6jf8](https://github.com/advisories/GHSA-4x5r-pxfx-6jf8)). `pnpm check-types`,
+> `eslint`, and `next build` all green. No client deferrals remain.
+
 ---
 
 ## 2. `cms` — Strapi 5 upgrade (✅ RESOLVED 2026-07-08)
@@ -183,6 +192,42 @@ Full reachability tiering and the migration record are in **`CMS-VULN-ASSESSMENT
 >   sendmail paths are barely exercised. **Remediation:** bump nodemailer to ≥9.0.1 once
 >   `@strapi/provider-email-sendmail` declares compatibility (verify email send in a dedicated
 >   change), or swap to a provider on a patched nodemailer line.
+
+> **Update 2026-07-21** (branch `fix/deps/audit-2026-07-21`): full audit sweep. `cms` went
+> from **1 critical / 14 high / 18 moderate / 8 low (41)** to **0 critical / 2 high / 4
+> moderate / 3 low (9)** via within-major pnpm overrides. **Cleared:** `tar`→7.5.20
+> ([GHSA-23hp-3jrh-7fpw](https://github.com/advisories/GHSA-23hp-3jrh-7fpw) critical +
+> [GHSA-8x88-c5mf-7j5w](https://github.com/advisories/GHSA-8x88-c5mf-7j5w) high + 2 moderate),
+> `jws`→3.2.3/4.0.1 ([GHSA-869p-cjfg-cm3x](https://github.com/advisories/GHSA-869p-cjfg-cm3x)),
+> `adm-zip`→0.6.0 ([GHSA-xcpc-8h2w-3j85](https://github.com/advisories/GHSA-xcpc-8h2w-3j85)),
+> `ws`→8.21.1 ([GHSA-96hv-2xvq-fx4p](https://github.com/advisories/GHSA-96hv-2xvq-fx4p)),
+> `lodash-es`→4.18.1, `validator`→13.15.35
+> ([GHSA-vghf-hv5q-vc2g](https://github.com/advisories/GHSA-vghf-hv5q-vc2g)), `minimatch`→3.1.5,
+> `picomatch`→2.3.2, `micromatch`→4.0.8, `brace-expansion`→1.1.16, `bn.js`→4.12.5, `ajv`→6.15.0/8.20.0,
+> `qs`→6.15.3, `yaml`→1.10.3, `diff`→3.5.1/5.2.2, `@babel/runtime`→7.29.7, `@babel/core`→7.29.7.
+> Strapi build + admin panel build verified green. **Newly deferred (5):**
+> - **`vite`** ([GHSA-fx2h-pf6j-xcff](https://github.com/advisories/GHSA-fx2h-pf6j-xcff) high +
+>   2 moderate; patched ≥6.4.3). Installed `5.4.21`, pinned by `@strapi/strapi@5.50.0`; the fix is
+>   only on the **6.x line** — a major bump of Strapi's admin bundler. Build-time/admin-only, not
+>   on the production runtime surface. Remediation: bump when Strapi ships vite 6, or in a dedicated
+>   admin-build change.
+> - **`esbuild`** ([GHSA-67mh-4wv8-2f99](https://github.com/advisories/GHSA-67mh-4wv8-2f99)
+>   moderate via `vite>esbuild`; [GHSA-g7r4-m6w7-qqqr](https://github.com/advisories/GHSA-g7r4-m6w7-qqqr)
+>   low via `esbuild-loader>esbuild`, Windows dev-server file read). Both are build-time; forcing the
+>   patched minor conflicts with vite/esbuild-loader's declared esbuild range. Deferred with vite;
+>   Linux CI/build unaffected.
+> - **`uuid`** ([GHSA-w5hq-g745-h8pq](https://github.com/advisories/GHSA-w5hq-g745-h8pq) moderate).
+>   Installed `8.3.2` via `grant>request-oauth>uuid`; patched **≥11.1.1** — an 8→11 major bump.
+>   **Reachability — low:** the flaw needs a caller passing `buf`; `request-oauth` calls `uuid.v4()`
+>   with no buffer. Remediation: bump when `grant`/`request-oauth` move off uuid 8.
+> - **`elliptic`** ([GHSA-848j-6mx2-7j84](https://github.com/advisories/GHSA-848j-6mx2-7j84) low)
+>   via `@strapi/plugin-users-permissions>jwk-to-pem>elliptic`. **No patched version published**
+>   (advisory `patched: <0.0.0`) — nothing to bump to. Monitor for a fix.
+> - **`@ai-sdk/provider-utils`** ([GHSA-866g-f22w-33x8](https://github.com/advisories/GHSA-866g-f22w-33x8)
+>   low) via `@strapi/content-type-builder`'s AI feature. **No patched version published**
+>   (`patched: <0.0.0`); admin-only. Monitor for a fix.
+>
+> `nodemailer` remains deferred as recorded above. `client` was also swept the same day — see §1.
 
 ---
 
@@ -264,4 +309,4 @@ declared by this repository, so it is not fixable via the lockfile.
 
 ---
 
-_Last updated: 2026-07-17 — new Peek batch: §2 (cms) `braces` cleared (CVE-2024-4068, pnpm override 3.0.3) and `nodemailer` deferred (GHSA-p6gq-j5cr-w38f, 8→9 major pinned by Strapi's sendmail provider, low reachability); §3 (earth_engine_tiler) `minimatch` cleared (CVE-2026-27903, within-major overrides 3.1.3 / 9.0.7) on branch `fix/deps-braces-minimatch-advisories`. Prior: 2026-07-16 §3 dev-tooling (flatted, lodash, tmp); §2 (Strapi) resolved via Strapi 5.50.0 (PR #167); §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
+_Last updated: 2026-07-21 — full audit sweep (branch `fix/deps/audit-2026-07-21`): `client` → 0 advisories (§1 update); `cms` 41 → 9, critical `tar` cleared (§2 update); newly deferred in `cms`: `vite`/`esbuild` (build-time, major/coupled), `uuid` (8→11 major, unreachable), `elliptic` + `@ai-sdk/provider-utils` (no patch published). Prior: 2026-07-17 — Peek batch: §2 (cms) `braces` cleared (CVE-2024-4068, pnpm override 3.0.3) and `nodemailer` deferred (GHSA-p6gq-j5cr-w38f, 8→9 major pinned by Strapi's sendmail provider, low reachability); §3 (earth_engine_tiler) `minimatch` cleared (CVE-2026-27903, within-major overrides 3.1.3 / 9.0.7) on branch `fix/deps-braces-minimatch-advisories`. Prior: 2026-07-16 §3 dev-tooling (flatted, lodash, tmp); §2 (Strapi) resolved via Strapi 5.50.0 (PR #167); §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
