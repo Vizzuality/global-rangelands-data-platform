@@ -130,7 +130,13 @@
       "axios>form-data": "4.0.6",
       "express>qs": "6.15.3",
       "cosmiconfig>js-yaml": "4.3.0",
-      "@svgr/webpack>@babel/core": "7.29.7"
+      "@svgr/webpack>@babel/core": "7.29.7",
+      "orval>js-yaml": "4.3.0",
+      "eslint-plugin-react-hooks>@babel/core": "7.29.7",
+      "express>body-parser": "1.20.6",
+      "brace-expansion@1": "1.1.16",
+      "brace-expansion@2": "2.1.2",
+      "brace-expansion@5": "5.0.7"
     }
   }
 }
