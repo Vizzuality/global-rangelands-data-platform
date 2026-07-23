@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useState } from "react";
+import { ChevronDown, Languages } from "lucide-react";
 
 const MIN_SCROLL = 150;
 
@@ -55,11 +56,17 @@ const Header = () => {
           transition: "ease-in-out",
           transitionDuration: "0.5s",
         }}
-        className="flex w-full justify-between bg-white px-8 py-4 text-sm font-medium text-brown-dark sm:w-auto sm:items-center sm:gap-10"
+        className="flex w-full items-center justify-between bg-white px-8 py-4 font-sans text-body-14 font-medium text-brown-dark sm:w-auto sm:gap-10"
       >
         <Link className="transition-colors duration-300 hover:text-brown-light" href="/map">
           {t("Explore map")}
         </Link>
+        <div className="h-5 w-px bg-brown-dark" aria-hidden="true" />
+        <div className="flex items-center gap-2">
+          <Languages aria-hidden="true" className="size-5" />
+          <span>{t("English")}</span>
+          <ChevronDown aria-hidden="true" className="size-5" />
+        </div>
       </motion.div>
     </motion.div>
   );

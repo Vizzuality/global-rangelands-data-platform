@@ -17,7 +17,7 @@ const ResourcesBox = ({ title, content }: ResourcesBoxProps) => {
       />
       <div className="space-y-4 p-10">
         <h3 className="font-serif text-[32px] leading-[36px]">{title}</h3>
-        <p>{content}.</p>
+        <p className="text-base leading-6">{content}.</p>
       </div>
     </div>
   );
