@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import { useTranslations } from "@/i18n";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import Marquee, { type MarqueeHandle } from "@/components/ui/marquee";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import Marquee from "@/components/ui/marquee";
 import GMVLogo from "@/assets/images/gmv-logo-color.png";
 import VizzLogo from "@/assets/images/vizzuality-logo-color.png";
 import GizLogo from "@/assets/images/partners/giz.png";
@@ -31,7 +31,9 @@ import UnccdLogo from "@/assets/images/partners/unccd.png";
 
 const Footer = () => {
   const t = useTranslations();
-  const marqueeRef = useRef<MarqueeHandle>(null);
+  const [scrub, setScrub] = useState(0);
+
+  const stopScrub = () => setScrub(0);
 
   const LINKS = [
     {
@@ -119,44 +121,41 @@ const Footer = () => {
         <div className="flex items-center gap-4 pb-10">
           <button
             type="button"
-            aria-label={t("Scroll partner logos left")}
-            className="shrink-0 opacity-60 transition-opacity hover:opacity-100"
-            onPointerDown={() => marqueeRef.current?.scrub(-1)}
-            onPointerUp={() => marqueeRef.current?.release()}
-            onPointerLeave={() => marqueeRef.current?.release()}
-            onPointerCancel={() => marqueeRef.current?.release()}
+            aria-label={t("Hold to scroll partner logos left")}
+            className={`shrink-0 transition-opacity ${scrub > 0 ? "opacity-100" : "opacity-40 hover:opacity-70"}`}
+            onPointerDown={() => setScrub(1)}
+            onPointerUp={stopScrub}
+            onPointerLeave={stopScrub}
+            onPointerCancel={stopScrub}
           >
-            <ChevronLeft aria-hidden="true" className="size-5" />
+            <ArrowLeft aria-hidden="true" className="size-5" />
           </button>
           <Marquee
-            ref={marqueeRef}
             ariaLabel={t("Our partners")}
+            scrub={scrub}
+            fade
             className="flex-1"
             gapClassName="gap-16"
           >
             {PARTNERS.map((partner) => (
-              <span
+              <Image
                 key={partner.src.src}
-                className="flex h-12 w-32 shrink-0 items-center justify-center"
-              >
-                <Image
-                  src={partner.src}
-                  alt={partner.alt}
-                  className="max-h-10 w-auto max-w-full object-contain"
-                />
-              </span>
+                src={partner.src}
+                alt={partner.alt}
+                className="h-10 w-auto max-w-none object-contain"
+              />
             ))}
           </Marquee>
           <button
             type="button"
-            aria-label={t("Scroll partner logos right")}
-            className="shrink-0 opacity-60 transition-opacity hover:opacity-100"
-            onPointerDown={() => marqueeRef.current?.scrub(1)}
-            onPointerUp={() => marqueeRef.current?.release()}
-            onPointerLeave={() => marqueeRef.current?.release()}
-            onPointerCancel={() => marqueeRef.current?.release()}
+            aria-label={t("Hold to scroll partner logos right")}
+            className={`shrink-0 transition-opacity ${scrub < 0 ? "opacity-100" : "opacity-40 hover:opacity-70"}`}
+            onPointerDown={() => setScrub(-1)}
+            onPointerUp={stopScrub}
+            onPointerLeave={stopScrub}
+            onPointerCancel={stopScrub}
           >
-            <ChevronRight aria-hidden="true" className="size-5" />
+            <ArrowRight aria-hidden="true" className="size-5" />
           </button>
         </div>
 
