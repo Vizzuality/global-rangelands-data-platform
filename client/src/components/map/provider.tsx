@@ -76,7 +76,7 @@ export const DeckMapboxOverlayProvider = ({ children }: PropsWithChildren) => {
   const withValidBeforeId = useCallback(
     (layers: any[]) => {
       const mapInstance = map?.getMap?.();
-      if (!mapInstance) return layers;
+      if (!mapInstance || !mapInstance.isStyleLoaded?.()) return layers;
       return layers.map((layer) => {
         const beforeId = layer?.props?.beforeId;
         if (beforeId && !mapInstance.getLayer(beforeId)) {
