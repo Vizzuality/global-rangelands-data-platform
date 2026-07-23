@@ -1,39 +1,36 @@
 "use client";
 
-import { forwardRef, useEffect, useImperativeHandle, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
-
-export interface MarqueeHandle {
-  scrub: (direction: number) => void;
-  release: () => void;
-}
 
 interface MarqueeProps {
   children: ReactNode;
   ariaLabel: string;
   speed?: number;
+  scrubSpeed?: number;
+  scrub?: number;
+  fade?: boolean;
   className?: string;
   gapClassName?: string;
 }
 
-const SCRUB_MULTIPLIER = 6;
-
-const Marquee = forwardRef<MarqueeHandle, MarqueeProps>(function Marquee(
-  { children, ariaLabel, speed = 0.5, className, gapClassName },
-  ref,
-) {
+const Marquee = ({
+  children,
+  ariaLabel,
+  speed = 0.5,
+  scrubSpeed = 8,
+  scrub = 0,
+  fade = false,
+  className,
+  gapClassName,
+}: MarqueeProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const hoveringRef = useRef(false);
-  const scrubDirRef = useRef(0);
+  const scrubRef = useRef(scrub);
 
-  useImperativeHandle(ref, () => ({
-    scrub: (direction) => {
-      scrubDirRef.current = direction;
-    },
-    release: () => {
-      scrubDirRef.current = 0;
-    },
-  }));
+  useEffect(() => {
+    scrubRef.current = scrub;
+  }, [scrub]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -47,28 +44,32 @@ const Marquee = forwardRef<MarqueeHandle, MarqueeProps>(function Marquee(
 
     let frame = 0;
     const tick = () => {
-      const scrub = scrubDirRef.current;
-      const delta =
-        scrub !== 0 ? scrub * speed * SCRUB_MULTIPLIER : hoveringRef.current ? 0 : speed;
       const loop = loopWidth();
-      if (loop > 0) {
-        el.scrollLeft += delta;
+      const scrubbing = scrubRef.current !== 0;
+      if (loop > 0 && (scrubbing || !hoveringRef.current)) {
+        el.scrollLeft += scrubbing ? scrubSpeed * scrubRef.current : speed;
         if (el.scrollLeft >= loop) el.scrollLeft -= loop;
-        else if (el.scrollLeft < 0) el.scrollLeft += loop;
+        else if (el.scrollLeft <= 0) el.scrollLeft += loop;
       }
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [speed]);
+  }, [speed, scrubSpeed]);
 
   return (
     <section
       aria-label={ariaLabel}
-      className={cn("overflow-hidden", className)}
+      className={cn("relative overflow-hidden", className)}
       onMouseEnter={() => (hoveringRef.current = true)}
       onMouseLeave={() => (hoveringRef.current = false)}
     >
+      {fade && (
+        <>
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-background to-transparent" />
+        </>
+      )}
       <div ref={scrollRef} className={cn("flex flex-nowrap overflow-x-hidden", gapClassName)}>
         <div className={cn("flex shrink-0 items-center", gapClassName)}>{children}</div>
         <div className={cn("flex shrink-0 items-center", gapClassName)} aria-hidden="true">
@@ -77,6 +78,6 @@ const Marquee = forwardRef<MarqueeHandle, MarqueeProps>(function Marquee(
       </div>
     </section>
   );
-});
+};
 
 export default Marquee;
