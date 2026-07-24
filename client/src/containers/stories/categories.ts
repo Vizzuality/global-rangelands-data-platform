@@ -11,6 +11,9 @@ export const STORY_CARD_VARIANTS: Record<string, string> = {
 };
 export const STORY_CARD_DEFAULT_VARIANT = "bg-brown-dark text-white";
 
+/** Card variant for the standalone landing/detail pages (Figma node 5071:76087) — always white, unlike the map-sidebar's category-colored cards. */
+export const STORY_CARD_LANDING_VARIANT = "bg-white text-green-dark";
+
 export const CATEGORY_TITLE_COLOR: Record<string, string> = {
   "atlas-stories": "text-brown-dark",
   "restoration-investments": "text-brown-dark",
