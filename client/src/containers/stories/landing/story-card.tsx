@@ -3,6 +3,7 @@
 import { useLocale } from "next-intl";
 
 import { useTranslations } from "@/i18n";
+import { cn } from "@/lib/utils";
 import type { StoryCategory } from "@/types/generated/strapi.schemas";
 import StoryCardContent from "@/components/story-card-content";
 
@@ -12,9 +13,10 @@ type LandingStoryCardProps = {
   story: StoryItem;
   category: string;
   variant: string;
+  className?: string;
 };
 
-const LandingStoryCard = ({ story, category, variant }: LandingStoryCardProps) => {
+const LandingStoryCard = ({ story, category, variant, className }: LandingStoryCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -26,7 +28,7 @@ const LandingStoryCard = ({ story, category, variant }: LandingStoryCardProps) =
   const imageAttrs = story.image;
 
   return (
-    <article className="group relative">
+    <article className={cn("group relative", className)}>
       <StoryCardContent
         variant={variant}
         href={`/stories/${category}/${storySlug}`}

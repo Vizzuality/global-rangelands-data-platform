@@ -28,7 +28,7 @@ const StoryCardContent = ({
       {categoryTitle && (
         <p className="text-[10px] font-medium uppercase leading-5">{categoryTitle}</p>
       )}
-      <h3 className="text-base font-medium leading-6">
+      <h3 className="line-clamp-2 min-h-12 text-base font-medium leading-6">
         <Link
           href={href}
           className="before:absolute before:inset-0 focus-visible:underline focus-visible:outline-none"

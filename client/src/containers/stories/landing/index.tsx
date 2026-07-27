@@ -35,6 +35,14 @@ const CategoryLanding = ({ category }: CategoryLandingProps) => {
   const title = activeCategory?.title ?? "";
   const description = CATEGORY_DESCRIPTIONS[category] ?? "";
 
+  const storyRows = useMemo(
+    () =>
+      Array.from({ length: Math.ceil(stories.length / 3) }, (_, index) =>
+        stories.slice(index * 3, index * 3 + 3),
+      ),
+    [stories],
+  );
+
   return (
     <main
       className={cn("relative overflow-hidden pt-[var(--header-height)]", theme.pageBackground)}
@@ -78,14 +86,35 @@ const CategoryLanding = ({ category }: CategoryLandingProps) => {
         </section>
 
         <section className="container mx-auto px-6 py-16 sm:px-[100px]">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {stories.map((story) => (
-              <LandingStoryCard
-                key={story.id}
-                story={story}
-                category={category}
-                variant={theme.cardVariant}
-              />
+          <div className="flex flex-col gap-6 sm:gap-2">
+            {storyRows.map((row, rowIndex) => (
+              <div key={rowIndex} className="flex flex-col gap-6 sm:flex-row sm:gap-0">
+                <div aria-hidden className="hidden w-8 shrink-0 bg-green-dark sm:my-8 sm:block" />
+                {row.map((story, cardIndex) => (
+                  <div key={story.id} className="flex flex-1 sm:contents">
+                    {cardIndex > 0 && (
+                      <div
+                        aria-hidden
+                        className="hidden w-2 shrink-0 bg-green-dark sm:my-8 sm:block"
+                      />
+                    )}
+                    <LandingStoryCard
+                      story={story}
+                      category={category}
+                      variant={theme.cardVariant}
+                      className="flex-1"
+                    />
+                  </div>
+                ))}
+                <div aria-hidden className="hidden w-8 shrink-0 bg-green-dark sm:my-8 sm:block" />
+                {Array.from({ length: 3 - row.length }).map((_, spacerIndex) => (
+                  <div
+                    key={`spacer-${spacerIndex}`}
+                    aria-hidden
+                    className="hidden flex-1 sm:block"
+                  />
+                ))}
+              </div>
             ))}
           </div>
           {stories.length === 0 && (
