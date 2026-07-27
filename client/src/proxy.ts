@@ -24,7 +24,7 @@ export default function proxy(request: NextRequest) {
   if (HUB_PATH_PATTERN.test(request.nextUrl.pathname)) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = HUB_DESTINATION;
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(redirectUrl, 308);
   }
 
   const response = intlMiddleware(request);
