@@ -1,13 +1,13 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
-import { DEFAULT_LOCALE, DISABLED_LOCALES, routing } from "@/i18n/routing";
+import { DEFAULT_LOCALE, DISABLED_LOCALES, LOCALES, routing } from "@/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
 const DISABLED_LOCALE_PATTERN = new RegExp(`^/(${DISABLED_LOCALES.join("|")})(/|$)`);
 
-const HUB_PATH_PATTERN = new RegExp(`^/(?:${DEFAULT_LOCALE}/)?stelarr/?$`);
+const HUB_PATH_PATTERN = new RegExp(`^/(?:(?:${LOCALES.join("|")})/)?stelarr/?$`);
 const HUB_DESTINATION = `/${DEFAULT_LOCALE}/stories/restoration-investments`;
 
 export default function proxy(request: NextRequest) {
