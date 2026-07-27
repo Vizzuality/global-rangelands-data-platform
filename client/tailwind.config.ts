@@ -37,6 +37,7 @@ const config: Config = {
         "label-16": ["16px", { lineHeight: "24px", fontWeight: "500" }],
         "body-16": ["16px", { lineHeight: "24px", fontWeight: "400" }],
         "body-14": ["14px", { lineHeight: "26px", fontWeight: "400" }],
+        "body-12": ["12px", { lineHeight: "20px", fontWeight: "400" }],
       },
       keyframes: {
         "dropdown-in": {

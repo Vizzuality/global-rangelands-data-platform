@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useGetLocalizedList } from "@/lib/localized-query";
 import { useGetStoryCategories } from "@/types/generated/story-category";
 
-import { CATEGORY_DESCRIPTIONS } from "../categories";
+import { CATEGORY_DESCRIPTIONS, CATEGORY_DETAILS } from "../categories";
 import { getCategoryTheme } from "../theme";
 import LandingStoryCard from "./story-card";
 
@@ -34,6 +34,7 @@ const CategoryLanding = ({ category }: CategoryLandingProps) => {
   const stories = activeCategory?.stories ?? [];
   const title = activeCategory?.title ?? "";
   const description = CATEGORY_DESCRIPTIONS[category] ?? "";
+  const details = CATEGORY_DETAILS[category] ?? "";
 
   const storyRows = useMemo(
     () =>
@@ -64,13 +65,16 @@ const CategoryLanding = ({ category }: CategoryLandingProps) => {
             />
             <div aria-hidden className="relative z-10 my-8 w-8 shrink-0 bg-green-dark" />
             <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:px-24">
-              <h1 className="max-w-2xl font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl">
+              <h1 className="max-w-[542px] font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl">
                 {title}
               </h1>
               {description && (
-                <p className="max-w-2xl text-body-22-tight text-green-dark/80 sm:text-body-22">
+                <p className="max-w-[740px] text-body-22-tight text-green-dark/80 sm:text-body-22">
                   {description}
                 </p>
+              )}
+              {details && (
+                <p className="max-w-[740px] text-left text-body-12 text-green-dark">{details}</p>
               )}
               <Image
                 src="/images/stories/story-category-accent.png"

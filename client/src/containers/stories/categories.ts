@@ -35,3 +35,12 @@ export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   "restoration-champions":
     "People and organizations leading rangeland restoration and protecting these landscapes and the communities they sustain.",
 };
+
+export const CATEGORY_DETAILS: Record<string, string> = {
+  "atlas-stories":
+    "These stories trace how climate shifts, land-use change and management decisions are reshaping rangelands, and what that means for the communities and livestock that depend on them. Each one draws on local knowledge and open data to make long-term change visible.",
+  "restoration-investments":
+    "Every investment case is developed with livestock producers and their partners, following shared principles of transparent stewardship, social equity, animal welfare and measurable environmental returns — forming a portfolio that connects restoration on the ground with the finance to sustain it.",
+  "restoration-champions":
+    "Meet the people and organizations turning rangeland restoration into daily practice: herders, cooperatives, scientists and local institutions protecting these landscapes and the livelihoods they support. Their work shows what stewardship looks like at scale.",
+};
