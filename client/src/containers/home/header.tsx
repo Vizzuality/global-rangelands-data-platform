@@ -74,7 +74,7 @@ const Header = () => {
         className="flex w-full items-center justify-between bg-white px-8 py-4 font-sans text-body-14 font-medium text-brown-dark sm:w-auto sm:gap-10"
       >
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-1 outline-none transition-colors duration-300 hover:text-brown-light data-[state=open]:text-brown-light [&[data-state=open]>svg]:rotate-180">
+          <DropdownMenuTrigger className="flex items-center gap-1 outline-none transition-colors duration-300 hover:text-brown-light focus-visible:ring focus-visible:ring-brown-light focus-visible:ring-offset-2 data-[state=open]:text-brown-light [&[data-state=open]>svg]:rotate-180">
             {t("Stories")}
             <ChevronDown aria-hidden="true" className="size-5 transition-transform duration-300" />
           </DropdownMenuTrigger>
