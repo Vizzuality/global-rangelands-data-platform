@@ -1,10 +1,9 @@
 "use client";
 
 import { useTranslations } from "@/i18n";
-import { useGetLocalizedList } from "@/lib/localized-query";
-import { useGetStoryCategories } from "@/types/generated/story-category";
 import LandingStoryCard from "@/containers/stories/landing/story-card";
 import { getCategoryTheme } from "@/containers/stories/theme";
+import { useStoryCategory } from "@/containers/stories/use-story-category";
 
 type KeepExploringGridProps = {
   category: string;
@@ -14,13 +13,7 @@ type KeepExploringGridProps = {
 const KeepExploringGrid = ({ category, slug }: KeepExploringGridProps) => {
   const t = useTranslations();
 
-  const storyCategoriesQuery = useGetStoryCategories({
-    populate: ["translations", "stories", "stories.image", "stories.translations"],
-    sort: "id:asc",
-  });
-  const { data: storyCategoriesData } = useGetLocalizedList(storyCategoriesQuery);
-
-  const activeCategory = storyCategoriesData?.data?.find((item) => item.slug === category);
+  const activeCategory = useStoryCategory(category);
   const theme = getCategoryTheme(category);
   const otherStories = (activeCategory?.stories ?? []).filter((story) => story.slug !== slug);
 

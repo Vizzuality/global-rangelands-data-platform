@@ -7,21 +7,23 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "@/i18n";
 import { Link } from "@/i18n/navigation";
 import { useGetStories } from "@/types/generated/story";
-import { useGetStoryCategories } from "@/types/generated/story-category";
+import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 import FurtherInfo from "@/containers/stories/detail/further-info";
 import { getCategoryTheme } from "@/containers/stories/theme";
+import { useStoryCategory } from "@/containers/stories/use-story-category";
 import StoryBody from "./story-body";
 import KeepExploringGrid from "./keep-exploring-grid";
 
-type StoryLandingProps = {
+type StoryDetailPageProps = {
   category: string;
   slug: string;
+  initialCategoryData?: StoryCategoryListResponse;
 };
 
-const StoryLanding = ({ category, slug }: StoryLandingProps) => {
+const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPageProps) => {
   const locale = useLocale();
   const t = useTranslations();
   const theme = getCategoryTheme(category);
@@ -35,25 +37,16 @@ const StoryLanding = ({ category, slug }: StoryLandingProps) => {
     { query: { enabled: !!slug } },
   );
 
-  const { data: categoryData } = useGetStoryCategories({
-    filters: { slug: { $eq: category } },
-    populate: ["translations"],
-    "pagination[limit]": 1,
-  });
+  const activeCategory = useStoryCategory(category, initialCategoryData);
 
   const story = storyData?.data?.[0];
-  const activeCategory = categoryData?.data?.[0];
 
   const localizedStory =
     locale !== DEFAULT_LOCALE ? story?.translations?.find((tr) => tr.locale === locale) : undefined;
-  const localizedCategory =
-    locale !== DEFAULT_LOCALE
-      ? activeCategory?.translations?.find((tr) => tr.locale === locale)
-      : undefined;
 
   const title = localizedStory?.title ?? story?.title;
   const description = localizedStory?.description ?? story?.description;
-  const categoryTitle = localizedCategory?.title ?? activeCategory?.title ?? "";
+  const categoryTitle = activeCategory?.title ?? "";
 
   const imageUrl = story?.image?.url;
   const imageCaption = story?.image?.caption;
@@ -69,7 +62,7 @@ const StoryLanding = ({ category, slug }: StoryLandingProps) => {
       <div className="relative">
         <section className="container mx-auto px-6 pt-16 sm:px-[100px]">
           <div className="flex items-stretch justify-center">
-            <div aria-hidden className="relative z-10 my-8 w-8 shrink-0 bg-green-dark" />
+            <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
             <div className="relative z-10 min-w-0 flex-1 space-y-8 bg-white px-6 py-16 sm:px-24">
               <div className="flex flex-col items-center gap-6 text-center">
                 <Link
@@ -96,7 +89,7 @@ const StoryLanding = ({ category, slug }: StoryLandingProps) => {
                     className="object-cover"
                   />
                   {imageCaption && (
-                    <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
+                    <span className="absolute bottom-2 left-2 rounded bg-foreground/60 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
                       {imageCaption}
                     </span>
                   )}
@@ -108,7 +101,7 @@ const StoryLanding = ({ category, slug }: StoryLandingProps) => {
                 <FurtherInfo items={story?.further_information ?? []} locale={locale} />
               </div>
             </div>
-            <div aria-hidden className="relative z-10 my-8 w-8 shrink-0 bg-green-dark" />
+            <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
           </div>
         </section>
 
@@ -120,4 +113,4 @@ const StoryLanding = ({ category, slug }: StoryLandingProps) => {
   );
 };
 
-export default StoryLanding;
+export default StoryDetailPage;

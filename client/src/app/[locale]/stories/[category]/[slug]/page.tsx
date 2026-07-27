@@ -1,21 +1,38 @@
+import { cache } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import Footer from "@/containers/footer";
 import Header from "@/containers/header";
-import StoryLanding from "@/containers/stories/story-detail";
+import StoryDetailPage from "@/containers/stories/story-detail";
 import { CATEGORY_ORDER } from "@/containers/stories/categories";
 import { getTranslations } from "@/i18n";
 import { getStoryCategories } from "@/types/generated/story-category";
 
-async function resolveCategoryStorySlugs(category: string) {
-  const response = await getStoryCategories({
-    filters: { slug: { $eq: category } },
-    populate: ["stories"],
-    "pagination[limit]": 1,
-  });
+/**
+ * Populate shape must match `useStoryCategory`'s client params exactly — the
+ * fetched response is handed to the client hook as `initialData`, so a
+ * mismatched shape would seed the wrong react-query cache key and be ignored.
+ */
+const getStoryCategoriesList = cache(async () =>
+  getStoryCategories({
+    populate: ["translations", "stories", "stories.image", "stories.translations"],
+    sort: "id:asc",
+  }),
+);
 
-  return response.data?.[0]?.stories ?? [];
+async function resolveCategoryStorySlugs(category: string) {
+  const response = await getStoryCategoriesList();
+  return response.data?.find((item) => item.slug === category)?.stories ?? [];
+}
+
+async function getStoryCategoriesListOrNotFound() {
+  try {
+    return await getStoryCategoriesList();
+  } catch (error) {
+    console.error("Failed to load story categories:", error);
+    notFound();
+  }
 }
 
 export async function generateMetadata(props: {
@@ -23,6 +40,10 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { category, slug, locale } = await props.params;
   const t = await getTranslations({ locale });
+
+  if (!CATEGORY_ORDER.includes(category)) {
+    return { title: t("Rangelands Stories") };
+  }
 
   try {
     const stories = await resolveCategoryStorySlugs(category);
@@ -39,7 +60,7 @@ export async function generateMetadata(props: {
   }
 }
 
-export default async function StoryDetailPage(props: {
+export default async function StoryDetailRoute(props: {
   params: Promise<{ category: string; slug: string; locale: string }>;
 }) {
   const { category, slug } = await props.params;
@@ -48,19 +69,17 @@ export default async function StoryDetailPage(props: {
     notFound();
   }
 
-  try {
-    const stories = await resolveCategoryStorySlugs(category);
-    if (!stories.some((item) => item.slug === slug)) {
-      notFound();
-    }
-  } catch {
+  const response = await getStoryCategoriesListOrNotFound();
+  const stories = response.data?.find((item) => item.slug === category)?.stories ?? [];
+
+  if (!stories.some((item) => item.slug === slug)) {
     notFound();
   }
 
   return (
-    <div className="h-auto min-h-screen w-[100vsw] overflow-x-hidden">
+    <div className="h-auto min-h-screen w-full overflow-x-hidden">
       <Header />
-      <StoryLanding category={category} slug={slug} />
+      <StoryDetailPage category={category} slug={slug} initialCategoryData={response} />
       <Footer />
     </div>
   );

@@ -1,8 +1,4 @@
-import {
-  CATEGORY_TITLE_COLOR,
-  CATEGORY_TITLE_DEFAULT_COLOR,
-  STORY_CARD_LANDING_VARIANT,
-} from "./categories";
+import { STORY_CARD_LANDING_VARIANT } from "./categories";
 
 export type CategoryTheme = {
   /** Full-page background class for the category landing/detail chrome. */
@@ -11,8 +7,6 @@ export type CategoryTheme = {
   heroAccent: string;
   /** Bg + text classes for story cards on the standalone landing/detail pages. */
   cardVariant: string;
-  /** Text color class for headings rendered outside the white hero card. */
-  titleColor: string;
 };
 
 const PAGE_BACKGROUND: Record<string, string> = {
@@ -29,6 +23,5 @@ export function getCategoryTheme(slug: string): CategoryTheme {
     pageBackground: PAGE_BACKGROUND[slug] ?? PAGE_BACKGROUND_DEFAULT,
     heroAccent: HERO_ACCENT,
     cardVariant: STORY_CARD_LANDING_VARIANT,
-    titleColor: CATEGORY_TITLE_COLOR[slug] ?? CATEGORY_TITLE_DEFAULT_COLOR,
   };
 }

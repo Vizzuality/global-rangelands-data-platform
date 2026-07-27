@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { useTranslations } from "@/i18n";
 import RichText from "@/components/ui/rich-text";
@@ -13,8 +13,21 @@ const StoryBody = ({ description }: StoryBodyProps) => {
   const t = useTranslations();
   const [expanded, setExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const observerRef = useRef<ResizeObserver | null>(null);
+
   const measureRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) setIsOverflowing(el.scrollHeight > el.clientHeight);
+    observerRef.current?.disconnect();
+    observerRef.current = null;
+
+    if (!el) return;
+
+    const measure = () => setIsOverflowing(el.scrollHeight > el.clientHeight);
+    measure();
+
+    // Async images inside RichText can grow the content after mount, so
+    // re-measure whenever the element's own size changes (e.g. an <img> loads).
+    observerRef.current = new ResizeObserver(measure);
+    observerRef.current.observe(el);
   }, []);
 
   return (
