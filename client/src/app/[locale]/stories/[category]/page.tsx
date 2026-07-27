@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Footer from "@/containers/footer";
 import Header from "@/containers/header";
 import CategoryLanding from "@/containers/stories/landing";
-import { CATEGORY_ORDER } from "@/containers/stories/categories";
+import { CATEGORY_DESCRIPTIONS, CATEGORY_ORDER } from "@/containers/stories/categories";
 import { getTranslations } from "@/i18n";
 import { getStoryCategories } from "@/types/generated/story-category";
 
@@ -13,6 +13,8 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { category, locale } = await props.params;
   const t = await getTranslations({ locale });
+  const canonical = `/${locale}/stories/${category}`;
+  const description = CATEGORY_DESCRIPTIONS[category];
 
   try {
     const response = await getStoryCategories({
@@ -23,6 +25,14 @@ export async function generateMetadata(props: {
 
     return {
       title: `${title} | ${t("Rangelands Data Platform")}`,
+      description,
+      alternates: { canonical },
+      openGraph: {
+        type: "website",
+        url: canonical,
+        title,
+        description,
+      },
     };
   } catch {
     return {

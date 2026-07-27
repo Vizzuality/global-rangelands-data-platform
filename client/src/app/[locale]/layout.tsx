@@ -5,12 +5,14 @@ import { getTranslations } from "@/i18n";
 import LayoutProviders from "./layout-providers";
 import NextIntlProvider from "./next-intl-provider";
 import { eyesForSerifs, wotfard } from "@/assets/fonts";
+import { env } from "@/env.mjs";
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const { locale } = await props.params;
   const t = await getTranslations({ locale });
 
   return {
+    metadataBase: new URL(env.NEXT_PUBLIC_URL),
     title: t("Rangelands Data Platform"),
     description: t(
       "Diverse ecosystems crucial for both wildlife and people. Explore their beauty and significance with our Vital Ecosystem Atlas, advocating for their protection and restoration.",
