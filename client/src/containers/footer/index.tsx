@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { useTranslations } from "@/i18n";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,8 +32,21 @@ import UnccdLogo from "@/assets/images/partners/unccd.png";
 const Footer = () => {
   const t = useTranslations();
   const [scrub, setScrub] = useState(0);
+  const [partnersFocused, setPartnersFocused] = useState(false);
 
   const stopScrub = () => setScrub(0);
+
+  const handleScrubKeyDown = (direction: 1 | -1) => (event: KeyboardEvent) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    if (event.repeat) return;
+    setScrub(direction);
+  };
+
+  const handleScrubKeyUp = (event: KeyboardEvent) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    stopScrub();
+  };
 
   const LINKS = [
     {
@@ -118,7 +131,15 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 pb-10">
+        <div
+          className="flex items-center gap-4 pb-10"
+          onFocus={() => setPartnersFocused(true)}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              setPartnersFocused(false);
+            }
+          }}
+        >
           <button
             type="button"
             aria-label={t("Hold to scroll partner logos left")}
@@ -127,12 +148,16 @@ const Footer = () => {
             onPointerUp={stopScrub}
             onPointerLeave={stopScrub}
             onPointerCancel={stopScrub}
+            onKeyDown={handleScrubKeyDown(1)}
+            onKeyUp={handleScrubKeyUp}
+            onBlur={stopScrub}
           >
             <ArrowLeft aria-hidden="true" className="size-5" />
           </button>
           <Marquee
             ariaLabel={t("Our partners")}
             scrub={scrub}
+            paused={partnersFocused}
             fade
             className="flex-1"
             gapClassName="gap-16"
@@ -154,6 +179,9 @@ const Footer = () => {
             onPointerUp={stopScrub}
             onPointerLeave={stopScrub}
             onPointerCancel={stopScrub}
+            onKeyDown={handleScrubKeyDown(-1)}
+            onKeyUp={handleScrubKeyUp}
+            onBlur={stopScrub}
           >
             <ArrowRight aria-hidden="true" className="size-5" />
           </button>
