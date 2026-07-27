@@ -4,6 +4,12 @@ export const CATEGORY_ORDER: string[] = [
   "restoration-champions",
 ];
 
+export const STORY_CATEGORY_LABELS: Record<string, string> = {
+  "atlas-stories": "Atlas Stories",
+  "restoration-investments": "Investment Cases",
+  "restoration-champions": "Restoration Champions",
+};
+
 export const STORY_CARD_VARIANTS: Record<string, string> = {
   "atlas-stories": "bg-brown-dark text-white",
   "restoration-investments": "bg-orange-bright text-brown-dark",

@@ -11,14 +11,8 @@ import {
 } from "@radix-ui/react-navigation-menu";
 import { useTranslations } from "@/i18n";
 import HomeLink from "@/components/ui/home-link";
-import { CATEGORY_ORDER } from "@/containers/stories/categories";
+import { CATEGORY_ORDER, STORY_CATEGORY_LABELS } from "@/containers/stories/categories";
 import { ChevronDown, Languages } from "lucide-react";
-
-const STORY_CATEGORY_LABELS: Record<string, string> = {
-  "atlas-stories": "Atlas Stories",
-  "restoration-investments": "Investment Cases",
-  "restoration-champions": "Restoration Champions",
-};
 
 const HeaderNavigation = () => {
   const pathname = usePathname();
