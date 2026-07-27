@@ -68,8 +68,9 @@ const StoryLanding = ({ category, slug }: StoryLandingProps) => {
       />
       <div className="relative">
         <section className="container mx-auto px-6 pt-16 sm:px-[100px]">
-          <div className={cn("flex justify-center p-8", theme.heroAccent)}>
-            <div className="w-full space-y-8 bg-white px-6 py-16 sm:px-24">
+          <div className="flex items-stretch justify-center">
+            <div aria-hidden className="relative z-10 my-8 w-8 shrink-0 bg-green-dark" />
+            <div className="relative z-10 min-w-0 flex-1 space-y-8 bg-white px-6 py-16 sm:px-24">
               <div className="flex flex-col items-center gap-6 text-center">
                 <Link
                   href={`/stories/${category}`}
@@ -107,6 +108,7 @@ const StoryLanding = ({ category, slug }: StoryLandingProps) => {
                 <FurtherInfo items={story?.further_information ?? []} locale={locale} />
               </div>
             </div>
+            <div aria-hidden className="relative z-10 my-8 w-8 shrink-0 bg-green-dark" />
           </div>
         </section>
 

@@ -44,17 +44,18 @@ const CategoryLanding = ({ category }: CategoryLandingProps) => {
         className="pointer-events-none absolute inset-0 bg-[url(/images/stories-pattern.png)] bg-repeat opacity-20 [background-size:640px_480px]"
       />
       <div className="relative">
-        <section className="container relative mx-auto px-6 pt-16 sm:px-[100px]">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-16 z-0 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rotate-45 border-2 border-green-light bg-green-dark"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 left-1/2 z-0 h-20 w-20 -translate-x-1/2 translate-y-1/2 rotate-45 border-2 border-green-light bg-green-dark"
-          />
-          <div className={cn("flex justify-center p-8", theme.heroAccent)}>
-            <div className="relative z-10 flex w-full flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:px-24">
+        <section className="container mx-auto px-6 py-44 sm:px-[100px]">
+          <div className="relative flex items-stretch justify-center">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[495px] w-[495px] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-green-dark"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[447px] w-[447px] -translate-x-1/2 -translate-y-1/2 rotate-45 border-[5px] border-green-light"
+            />
+            <div aria-hidden className="relative z-10 my-8 w-8 shrink-0 bg-green-dark" />
+            <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:px-24">
               <h1 className="max-w-2xl font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl">
                 {title}
               </h1>
@@ -72,6 +73,7 @@ const CategoryLanding = ({ category }: CategoryLandingProps) => {
                 className="h-auto w-[180px] sm:w-[207px]"
               />
             </div>
+            <div aria-hidden className="relative z-10 my-8 w-8 shrink-0 bg-green-dark" />
           </div>
         </section>
 

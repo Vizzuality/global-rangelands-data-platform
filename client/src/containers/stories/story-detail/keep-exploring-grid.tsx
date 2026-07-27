@@ -28,7 +28,7 @@ const KeepExploringGrid = ({ category, slug }: KeepExploringGridProps) => {
 
   return (
     <section className="space-y-8">
-      <h2 className="font-serif text-3xl font-light leading-tight text-green-dark">
+      <h2 className="text-center font-serif text-3xl font-light leading-tight text-green-dark">
         {t("Keep exploring")}
       </h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
