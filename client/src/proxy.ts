@@ -7,6 +7,9 @@ const intlMiddleware = createMiddleware(routing);
 
 const DISABLED_LOCALE_PATTERN = new RegExp(`^/(${DISABLED_LOCALES.join("|")})(/|$)`);
 
+const HUB_PATH_PATTERN = new RegExp(`^/(?:${DEFAULT_LOCALE}/)?stelarr/?$`);
+const HUB_DESTINATION = `/${DEFAULT_LOCALE}/stories/restoration-investments`;
+
 export default function proxy(request: NextRequest) {
   const disabledMatch = request.nextUrl.pathname.match(DISABLED_LOCALE_PATTERN);
   if (disabledMatch) {
@@ -15,6 +18,12 @@ export default function proxy(request: NextRequest) {
       DISABLED_LOCALE_PATTERN,
       `/${DEFAULT_LOCALE}$2`,
     );
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (HUB_PATH_PATTERN.test(request.nextUrl.pathname)) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = HUB_DESTINATION;
     return NextResponse.redirect(redirectUrl);
   }
 
