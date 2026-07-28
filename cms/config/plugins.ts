@@ -14,6 +14,8 @@ module.exports = ({ env }) => ({
           publicFiles: true,
           uniform: true,
           basePath: "",
+          // objectAdmin has no storage.buckets.get; the pre-flight probe 403s and kills the container
+          skipCheckBucket: true,
         },
       },
     },
