@@ -1,11 +1,14 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
-import { DEFAULT_LOCALE, DISABLED_LOCALES, routing } from "@/i18n/routing";
+import { DEFAULT_LOCALE, DISABLED_LOCALES, LOCALES, routing } from "@/i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
 const DISABLED_LOCALE_PATTERN = new RegExp(`^/(${DISABLED_LOCALES.join("|")})(/|$)`);
+
+const HUB_PATH_PATTERN = new RegExp(`^/(?:(?:${LOCALES.join("|")})/)?stelarr/?$`);
+const HUB_DESTINATION = `/${DEFAULT_LOCALE}/stories/restoration-investments`;
 
 export default function proxy(request: NextRequest) {
   const disabledMatch = request.nextUrl.pathname.match(DISABLED_LOCALE_PATTERN);
@@ -16,6 +19,12 @@ export default function proxy(request: NextRequest) {
       `/${DEFAULT_LOCALE}$2`,
     );
     return NextResponse.redirect(redirectUrl);
+  }
+
+  if (HUB_PATH_PATTERN.test(request.nextUrl.pathname)) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = HUB_DESTINATION;
+    return NextResponse.redirect(redirectUrl, 308);
   }
 
   const response = intlMiddleware(request);

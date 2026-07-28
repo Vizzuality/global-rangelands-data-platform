@@ -35,7 +35,23 @@ const config: Config = {
         "body-22": ["22px", { lineHeight: "38px", fontWeight: "400" }],
         "body-22-tight": ["22px", { lineHeight: "30px", fontWeight: "400" }],
         "label-16": ["16px", { lineHeight: "24px", fontWeight: "500" }],
+        "body-16": ["16px", { lineHeight: "24px", fontWeight: "400" }],
         "body-14": ["14px", { lineHeight: "26px", fontWeight: "400" }],
+        "body-12": ["12px", { lineHeight: "20px", fontWeight: "400" }],
+      },
+      keyframes: {
+        "dropdown-in": {
+          from: { opacity: "0", transform: "translateY(-4px) scale(0.98)" },
+          to: { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
+        "dropdown-out": {
+          from: { opacity: "1", transform: "translateY(0) scale(1)" },
+          to: { opacity: "0", transform: "translateY(-4px) scale(0.98)" },
+        },
+      },
+      animation: {
+        "dropdown-in": "dropdown-in 0.18s ease-out",
+        "dropdown-out": "dropdown-out 0.15s ease-in",
       },
     },
     container: {
