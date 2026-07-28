@@ -5,6 +5,19 @@ module.exports = ({ env }) => ({
   "import-export-data": {
     enabled: true,
   },
+  ...(env("GCS_BUCKET_NAME") && {
+    upload: {
+      config: {
+        provider: "@strapi-community/strapi-provider-upload-google-cloud-storage",
+        providerOptions: {
+          bucketName: env("GCS_BUCKET_NAME"),
+          publicFiles: true,
+          uniform: true,
+          basePath: "",
+        },
+      },
+    },
+  }),
   documentation: {
     config: {
       "x-strapi-config": {
