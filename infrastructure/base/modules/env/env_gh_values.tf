@@ -79,7 +79,8 @@ locals {
   }
 */
   cms_variable_map_with_unprefixed_keys = {
-    CMS_URL = local.cms_lb_url
+    CMS_URL         = local.cms_lb_url
+    GCS_BUCKET_NAME = google_storage_bucket.media.name
   }
   cms_secret_map_with_unprefixed_keys = {
     HOST = "0.0.0.0"

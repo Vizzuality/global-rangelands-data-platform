@@ -9,7 +9,7 @@ import { Link } from "@/i18n/navigation";
 import { useGetStories } from "@/types/generated/story";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
-import { CMS_MEDIA_BASE } from "@/lib/cms";
+import { mediaUrl } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 import FurtherInfo from "@/containers/stories/detail/further-info";
 import { getCategoryTheme } from "@/containers/stories/theme";
@@ -82,12 +82,7 @@ const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPag
 
               {imageUrl && (
                 <div className="relative -mx-6 h-[420px] sm:-mx-24">
-                  <Image
-                    src={`${CMS_MEDIA_BASE}${imageUrl}`}
-                    alt={title ?? ""}
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src={mediaUrl(imageUrl)} alt={title ?? ""} fill className="object-cover" />
                   {imageCaption && (
                     <span className="absolute bottom-2 left-2 rounded bg-foreground/60 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
                       {imageCaption}

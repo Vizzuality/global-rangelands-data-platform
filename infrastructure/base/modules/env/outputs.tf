@@ -13,3 +13,7 @@ output "api_url" {
 output "eet_function_url" {
   value = local.eet_cf_lb_url
 }
+
+output "media_bucket_name" {
+  value = google_storage_bucket.media.name
+}

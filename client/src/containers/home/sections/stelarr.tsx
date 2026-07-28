@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
-import { CMS_MEDIA_BASE } from "@/lib/cms";
+import { mediaUrl } from "@/lib/cms";
 import { useCategorizedStories } from "@/containers/stories/use-story-category";
 
 const INVESTMENT_CASE_SLUGS = [
@@ -122,7 +122,7 @@ export function Stelarr() {
                   <div className="relative h-[176px] w-full overflow-hidden">
                     {project.image?.url && (
                       <Image
-                        src={`${CMS_MEDIA_BASE}${project.image.url}`}
+                        src={mediaUrl(project.image.url)}
                         alt={project.image.alternativeText ?? project.title ?? ""}
                         fill
                         className="object-cover"

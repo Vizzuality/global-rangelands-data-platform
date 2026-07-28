@@ -13,7 +13,7 @@ import { useGetStories } from "@/types/generated/story";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
 import RichText from "@/components/ui/rich-text";
 import { sidebarOpenAtom, useSyncSearchParams } from "@/store/map";
-import { CMS_MEDIA_BASE } from "@/lib/cms";
+import { mediaUrl } from "@/lib/cms";
 import FurtherInfo from "./further-info";
 import RelatedDatasets from "./related-datasets";
 import KeepExploring from "./keep-exploring";
@@ -128,12 +128,7 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
 
         {imageUrl && (
           <div className="relative h-[140px] w-full shrink-0">
-            <Image
-              src={`${CMS_MEDIA_BASE}${imageUrl}`}
-              alt={title ?? ""}
-              fill
-              className="object-cover"
-            />
+            <Image src={mediaUrl(imageUrl)} alt={title ?? ""} fill className="object-cover" />
             {imageCaption && (
               <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
                 {imageCaption}
