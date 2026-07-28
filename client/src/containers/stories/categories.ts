@@ -6,7 +6,7 @@ export const CATEGORY_ORDER: string[] = [
 
 export const STORY_CATEGORY_LABELS: Record<string, string> = {
   "atlas-stories": "Atlas Stories",
-  "restoration-investments": "Investment Cases",
+  "restoration-investments": "Restoration Investments",
   "restoration-champions": "Restoration Champions",
 };
 
