@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { CMS_MEDIA_BASE } from "@/lib/cms";
+import { mediaUrl } from "@/lib/cms";
 
 type StoryCardSmallProps = {
   variant: string;
@@ -28,7 +28,7 @@ const StoryCardSmall = ({
     {imageUrl && (
       <div className="relative flex-1">
         <Image
-          src={`${CMS_MEDIA_BASE}${imageUrl}`}
+          src={mediaUrl(imageUrl)}
           alt={imageAlt}
           fill
           className="object-cover"
