@@ -8,8 +8,8 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
-import { useGetStories } from "@/types/generated/story";
-import type { Story } from "@/types/generated/strapi.schemas";
+import { useCategorizedStories } from "@/containers/stories/use-story-category";
+import type { CategorizedStory } from "@/containers/stories/use-story-category";
 
 const FEATURED_CARDS = [
   {
@@ -26,15 +26,17 @@ const FEATURED_CARDS = [
   },
 ];
 
-type FeaturedCard = (typeof FEATURED_CARDS)[number] & { story: Story };
+const FEATURED_SLUGS = FEATURED_CARDS.map((card) => card.slug);
 
-function StoryCard({ label, ctaLabel, category, story }: FeaturedCard) {
+type FeaturedCard = (typeof FEATURED_CARDS)[number] & CategorizedStory;
+
+function StoryCard({ slug, label, ctaLabel, category, categorySlug, story }: FeaturedCard) {
   const t = useTranslations();
   const image = story.image;
 
   return (
     <div className="flex w-full max-w-[514px] flex-col gap-6">
-      <Link href={`/map/story/${story.slug}`} className="group flex flex-col">
+      <Link href={`/stories/${categorySlug}/${slug}`} className="group flex flex-col">
         <div className="flex flex-col gap-[10px] bg-white p-8">
           <p className="text-[10px] font-medium uppercase leading-5 text-green-dark">{t(label)}</p>
           <p className="text-label-16 text-green-dark group-hover:underline">{story.title}</p>
@@ -43,7 +45,7 @@ function StoryCard({ label, ctaLabel, category, story }: FeaturedCard) {
           <div className="relative h-[176px] w-full overflow-hidden">
             <Image
               src={`${CMS_MEDIA_BASE}${image.url}`}
-              alt={image.alternativeText ?? story.title}
+              alt={image.alternativeText ?? story.title ?? ""}
               fill
               className="object-cover"
               sizes="(min-width: 1280px) 514px, 100vw"
@@ -58,7 +60,7 @@ function StoryCard({ label, ctaLabel, category, story }: FeaturedCard) {
       </Link>
 
       <Link
-        href={{ pathname: "/map/stories", query: { category } }}
+        href={`/stories/${category}`}
         className="group flex items-center gap-2 text-white transition-colors duration-300 hover:text-hunter-green-200"
       >
         <span className="text-[12px] font-medium leading-5">{t(ctaLabel)}</span>
@@ -77,14 +79,11 @@ export function StoriesCards() {
     once: true,
   });
 
-  const { data } = useGetStories({
-    filters: { slug: { $in: FEATURED_CARDS.map((card) => card.slug) } },
-    populate: ["image"],
-  });
+  const categorizedStories = useCategorizedStories(FEATURED_SLUGS);
 
   const cards = FEATURED_CARDS.map((card) => {
-    const story = data?.data?.find((item) => item.slug === card.slug);
-    return story ? { ...card, story } : null;
+    const match = categorizedStories.find(({ story }) => story.slug === card.slug);
+    return match ? { ...card, ...match } : null;
   }).filter((card): card is FeaturedCard => Boolean(card));
 
   return (

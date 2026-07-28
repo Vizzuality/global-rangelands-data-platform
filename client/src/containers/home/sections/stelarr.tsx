@@ -7,8 +7,7 @@ import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
 import { CMS_MEDIA_BASE } from "@/lib/cms";
-import { useGetStories } from "@/types/generated/story";
-import type { Story } from "@/types/generated/strapi.schemas";
+import { useCategorizedStories } from "@/containers/stories/use-story-category";
 
 const INVESTMENT_CASE_SLUGS = [
   "ol-pejeta-conservancy-kenya",
@@ -23,14 +22,7 @@ export function Stelarr() {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true });
 
-  const { data } = useGetStories({
-    filters: { slug: { $in: INVESTMENT_CASE_SLUGS } },
-    populate: ["image"],
-  });
-
-  const projects = INVESTMENT_CASE_SLUGS.map((slug) =>
-    data?.data?.find((story) => story.slug === slug),
-  ).filter((story): story is Story => Boolean(story));
+  const projects = useCategorizedStories(INVESTMENT_CASE_SLUGS);
 
   return (
     <section id="stelarr" ref={sectionRef} className="bg-white py-14 sm:py-20">
@@ -113,13 +105,13 @@ export function Stelarr() {
 
           <div className="relative z-10 mt-12 flex flex-col gap-2 sm:-mx-[116px] sm:mt-16 sm:flex-row sm:gap-0">
             <div className="hidden w-8 shrink-0 bg-brown-dark sm:my-8 sm:block" />
-            {projects.map((project, index) => (
+            {projects.map(({ story: project, categorySlug }, index) => (
               <div key={project.slug} className="flex flex-1 sm:contents">
                 {index > 0 && (
                   <div className="hidden w-2 shrink-0 bg-brown-dark sm:my-8 sm:block" />
                 )}
                 <Link
-                  href={`/map/story/${project.slug}`}
+                  href={`/stories/${categorySlug}/${project.slug}`}
                   className="group flex flex-1 flex-col bg-white"
                 >
                   <div className="flex flex-1 items-center p-8">
@@ -131,7 +123,7 @@ export function Stelarr() {
                     {project.image?.url && (
                       <Image
                         src={`${CMS_MEDIA_BASE}${project.image.url}`}
-                        alt={project.image.alternativeText ?? project.title}
+                        alt={project.image.alternativeText ?? project.title ?? ""}
                         fill
                         className="object-cover"
                         sizes="(min-width: 640px) 33vw, 100vw"

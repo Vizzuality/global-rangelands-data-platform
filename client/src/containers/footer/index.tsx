@@ -59,7 +59,7 @@ const Footer = () => {
     },
     {
       title: t("Stories"),
-      href: "/map/stories",
+      href: "/stories/atlas-stories",
     },
   ];
 
