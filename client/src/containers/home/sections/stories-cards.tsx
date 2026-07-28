@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
-import { CMS_MEDIA_BASE } from "@/lib/cms";
+import { mediaUrl } from "@/lib/cms";
 import { useGetStories } from "@/types/generated/story";
 import type { Story } from "@/types/generated/strapi.schemas";
 
@@ -42,7 +42,7 @@ function StoryCard({ label, ctaLabel, category, story }: FeaturedCard) {
         {image?.url && (
           <div className="relative h-[176px] w-full overflow-hidden">
             <Image
-              src={`${CMS_MEDIA_BASE}${image.url}`}
+              src={mediaUrl(image.url)}
               alt={image.alternativeText ?? story.title}
               fill
               className="object-cover"

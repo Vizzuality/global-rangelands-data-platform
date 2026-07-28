@@ -17,6 +17,16 @@ const nextConfig = {
         pathname: "/rdp-landing-bucket/**",
       },
       {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/rdp-staging-media/**",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/rdp-prod-media/**",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "1337",

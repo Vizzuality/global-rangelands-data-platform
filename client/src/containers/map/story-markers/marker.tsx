@@ -4,7 +4,7 @@ import { Marker } from "react-map-gl/mapbox";
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
-import { CMS_MEDIA_BASE } from "@/lib/cms";
+import { mediaUrl } from "@/lib/cms";
 
 export type StoryMarkerVariant = { glow: string; halo: string; border: string };
 
@@ -82,7 +82,7 @@ const StoryMarker = ({
         {imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={`${CMS_MEDIA_BASE}${imageUrl}`}
+            src={mediaUrl(imageUrl)}
             alt={title ?? ""}
             className="h-full w-full object-cover"
             draggable={false}
