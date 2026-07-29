@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 
+import EmailLinkedText from "@/components/email-linked-text";
 import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
@@ -63,7 +64,9 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
               {details.length > 0 && (
                 <div className="max-w-[740px] space-y-4 text-left text-body-12 text-green-dark">
                   {details.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
+                    <p key={paragraph}>
+                      <EmailLinkedText text={paragraph} />
+                    </p>
                   ))}
                 </div>
               )}

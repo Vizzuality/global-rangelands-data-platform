@@ -5,6 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 
+import EmailLinkedText from "@/components/email-linked-text";
 import { Link } from "@/i18n/navigation";
 import { mediaUrl } from "@/lib/cms";
 import { useCategorizedStories } from "@/containers/stories/use-story-category";
@@ -83,9 +84,11 @@ export function Stelarr() {
                         .
                       </p>
                       <p>
-                        {t(
-                          "If you are an investor looking to invest in rangeland restoration, or are a rangelands livestock producer wanting to develop an investment case, please contact Fiona Flintan, Investment Hub Lead, ILRI: f.flintan@cgiar.org",
-                        )}
+                        <EmailLinkedText
+                          text={t(
+                            "If you are an investor looking to invest in rangeland restoration, or are a rangelands livestock producer wanting to develop an investment case, please contact Fiona Flintan, Investment Hub Lead, ILRI: f.flintan@cgiar.org",
+                          )}
+                        />
                       </p>
                     </div>
                   </div>
