@@ -25,7 +25,12 @@ const RelatedDatasets = ({ datasets }: RelatedDatasetsProps) => {
   const handleToggleDataset = (datasetSlug: string, layerSlugs: string[], checked: boolean) => {
     if (checked) {
       setDatasets((prev) => (prev.includes(datasetSlug) ? prev : [datasetSlug, ...prev]));
-      setLayers((prev) => [...prev, ...layerSlugs.filter((s) => !prev.includes(s))]);
+      // Only the first layer: a dataset holds one active layer at a time, and
+      // mounting them all overloads the map before use-sync-layers-order trims it
+      const [firstLayerSlug] = layerSlugs;
+      if (firstLayerSlug) {
+        setLayers((prev) => (prev.includes(firstLayerSlug) ? prev : [...prev, firstLayerSlug]));
+      }
     } else {
       setDatasets((prev) => prev.filter((x) => x !== datasetSlug));
       setLayers((prev) => prev.filter((x) => !layerSlugs.includes(x)));

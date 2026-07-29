@@ -81,7 +81,6 @@ const LayerManager = () => {
         {layers.map((l) => {
           const id = l;
           const beforeId = `${l}-background-layer`;
-          console.log(layersSettings?.[id], layersSettings);
           return (
             <LayerManagerItem
               key={id}
