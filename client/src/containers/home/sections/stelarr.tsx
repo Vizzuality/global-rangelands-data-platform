@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
+import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { mediaUrl } from "@/lib/cms";
@@ -134,6 +135,18 @@ export function Stelarr() {
               </div>
             ))}
             <div className="hidden w-8 shrink-0 bg-brown-dark sm:my-8 sm:block" />
+          </div>
+
+          <div className="relative z-10 mt-8 flex justify-center sm:mt-12">
+            <Link
+              href="/stories/restoration-investments"
+              className="group flex items-center gap-2 text-white transition-colors duration-300 hover:text-hunter-green-200"
+            >
+              <span className="text-[12px] font-medium leading-5">
+                {t("Explore the Investment Hub")}
+              </span>
+              <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </Link>
           </div>
         </div>
       </div>
