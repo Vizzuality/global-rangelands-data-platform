@@ -36,11 +36,17 @@ export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
     "People and organizations leading rangeland restoration and protecting these landscapes and the communities they sustain.",
 };
 
-export const CATEGORY_DETAILS: Record<string, string> = {
-  "atlas-stories":
+export const CATEGORY_DETAILS: Record<string, string[]> = {
+  "atlas-stories": [
     "These stories trace how climate shifts, land-use change and management decisions are reshaping rangelands, and what that means for the communities and livestock that depend on them. Each one draws on local knowledge and open data to make long-term change visible.",
-  "restoration-investments":
-    "Every investment case is developed with livestock producers and their partners, following shared principles of transparent stewardship, social equity, animal welfare and measurable environmental returns — forming a portfolio that connects restoration on the ground with the finance to sustain it.",
-  "restoration-champions":
+  ],
+  "restoration-investments": [
+    "Currently funded by Global Environment Facility, it is led by the International Livestock Research Institute (ILRI) and IUCN, with supporting partners UNCCD Rangelands Initiative and Business4Land, Global Landscapes Forum Rio Changemakers, the Rangelands Stewardship Council and other CGIAR centers.",
+    "The Hub presents a portfolio of technically-sound rangeland restoration investment cases that have been developed with livestock producers and supporting stakeholders, with support from STELARR. All investment cases follow a set of guiding principles that consider and support transparent and accountable rangeland stewardship practices, social equity, evidenced metrics, high degree of animal welfare and clearly defined financial and environmental targets.",
+    "Whilst also being a gateway to investment, the Hub also offers technical support for further investment case development, expertise on livestock and rangelands including optimizing environmental benefits and reducing costs, and impact monitoring and evaluation.",
+    "If you are an investor looking to invest in rangeland restoration, or are a rangelands livestock producer wanting to develop an investment case, please contact Fiona Flintan, Investment Hub Lead, ILRI: f.flintan@cgiar.org",
+  ],
+  "restoration-champions": [
     "Meet the people and organizations turning rangeland restoration into daily practice: herders, cooperatives, scientists and local institutions protecting these landscapes and the livelihoods they support. Their work shows what stewardship looks like at scale.",
+  ],
 };
