@@ -44,9 +44,16 @@ export const CATEGORY_DETAILS: Record<string, string[]> = {
     "Currently funded by Global Environment Facility, it is led by the International Livestock Research Institute (ILRI) and IUCN, with supporting partners UNCCD Rangelands Initiative and Business4Land, Global Landscapes Forum Rio Changemakers, the Rangelands Stewardship Council and other CGIAR centers.",
     "The Hub presents a portfolio of technically-sound rangeland restoration investment cases that have been developed with livestock producers and supporting stakeholders, with support from STELARR. All investment cases follow a set of guiding principles that consider and support transparent and accountable rangeland stewardship practices, social equity, evidenced metrics, high degree of animal welfare and clearly defined financial and environmental targets.",
     "Whilst also being a gateway to investment, the Hub also offers technical support for further investment case development, expertise on livestock and rangelands including optimizing environmental benefits and reducing costs, and impact monitoring and evaluation.",
-    "If you are an investor looking to invest in rangeland restoration, or are a rangelands livestock producer wanting to develop an investment case, please contact Fiona Flintan, Investment Hub Lead, ILRI: f.flintan@cgiar.org",
   ],
   "restoration-champions": [
     "Meet the people and organizations turning rangeland restoration into daily practice: herders, cooperatives, scientists and local institutions protecting these landscapes and the livelihoods they support. Their work shows what stewardship looks like at scale.",
   ],
+};
+
+export const CATEGORY_CONTACTS: Record<string, { intro: string; email: string }> = {
+  "restoration-investments": {
+    intro:
+      "If you are an investor looking to invest in rangeland restoration, or are a rangelands livestock producer wanting to develop an investment case, please contact Fiona Flintan, Investment Hub Lead, ILRI",
+    email: "f.flintan@cgiar.org",
+  },
 };
