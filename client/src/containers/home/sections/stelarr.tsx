@@ -85,8 +85,15 @@ export function Stelarr() {
                       </p>
                       <p>
                         {t(
-                          "If you are an investor looking to invest in rangeland restoration, or are a rangelands livestock producer wanting to develop an investment case, please contact Fiona Flintan, Investment Hub Lead, ILRI: f.flintan@cgiar.org",
+                          "If you are an investor looking to invest in rangeland restoration, or are a rangelands livestock producer wanting to develop an investment case, please contact Fiona Flintan, Investment Hub Lead, ILRI",
                         )}
+                        :{" "}
+                        <a
+                          href="mailto:f.flintan@cgiar.org"
+                          className="underline underline-offset-2 transition-opacity hover:opacity-80"
+                        >
+                          f.flintan@cgiar.org
+                        </a>
                       </p>
                     </div>
                   </div>

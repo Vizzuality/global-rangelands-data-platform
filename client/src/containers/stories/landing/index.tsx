@@ -6,7 +6,7 @@ import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
 
-import { CATEGORY_DESCRIPTIONS, CATEGORY_DETAILS } from "../categories";
+import { CATEGORY_CONTACTS, CATEGORY_DESCRIPTIONS, CATEGORY_DETAILS } from "../categories";
 import { getCategoryTheme } from "../theme";
 import { useStoryCategory } from "../use-story-category";
 import LandingStoryCard from "./story-card";
@@ -25,7 +25,8 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
   const stories = activeCategory?.stories ?? [];
   const title = activeCategory?.title ?? "";
   const description = CATEGORY_DESCRIPTIONS[category] ?? "";
-  const details = CATEGORY_DETAILS[category] ?? "";
+  const details = CATEGORY_DETAILS[category] ?? [];
+  const contact = CATEGORY_CONTACTS[category];
 
   const storyRows = Array.from({ length: Math.ceil(stories.length / 3) }, (_, index) =>
     stories.slice(index * 3, index * 3 + 3),
@@ -60,8 +61,23 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
                   {description}
                 </p>
               )}
-              {details && (
-                <p className="max-w-[740px] text-left text-body-12 text-green-dark">{details}</p>
+              {(details.length > 0 || contact) && (
+                <div className="max-w-[740px] space-y-4 text-left text-body-12 text-green-dark">
+                  {details.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                  {contact && (
+                    <p>
+                      {contact.intro}:{" "}
+                      <a
+                        href={`mailto:${contact.email}`}
+                        className="underline underline-offset-2 transition-opacity hover:opacity-80"
+                      >
+                        {contact.email}
+                      </a>
+                    </p>
+                  )}
+                </div>
               )}
               <Image
                 src="/images/stories/story-category-accent.png"
