@@ -45,11 +45,11 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
           <div className="relative flex items-stretch justify-center">
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[495px] w-[495px] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-green-dark"
+              className="pointer-events-none absolute left-1/2 top-1/2 aspect-square h-[495px] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-green-dark xl:h-[calc(70.71%+180px)]"
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[447px] w-[447px] -translate-x-1/2 -translate-y-1/2 rotate-45 border-[5px] border-green-light"
+              className="pointer-events-none absolute left-1/2 top-1/2 aspect-square h-[447px] -translate-x-1/2 -translate-y-1/2 rotate-45 border-[5px] border-green-light xl:h-[calc(70.71%+132px)]"
             />
             <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
             <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:px-24">
