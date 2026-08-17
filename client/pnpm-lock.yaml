@@ -13,9 +13,9 @@ overrides:
   '@stoplight/spectral-core>minimatch': 3.1.5
   axios>form-data: 4.0.6
   express>qs: 6.15.3
-  cosmiconfig>js-yaml: 4.3.0
+  cosmiconfig>js-yaml: 4.3.1
   '@svgr/webpack>@babel/core': 7.29.7
-  orval>js-yaml: 4.3.0
+  orval>js-yaml: 4.3.1
   eslint-plugin-react-hooks>@babel/core: 7.29.7
   express>body-parser: 1.20.6
   brace-expansion@1: 1.1.18
@@ -5123,8 +5123,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@4.3.0:
-    resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
+  js-yaml@4.3.1:
+    resolution: {integrity: sha512-CY6crGq313MX8GkwvB7tzgp99vjQxY1++5y10/BKN/GUfHqWaOGQMNZkBvqSzsZKWk/ijwHlWzzkLulsGHhjWQ==}
     hasBin: true
 
   jsep@0.3.5:
@@ -10927,7 +10927,7 @@ snapshots:
   cosmiconfig@8.3.6(typescript@5.4.5):
     dependencies:
       import-fresh: 3.3.0
-      js-yaml: 4.3.0
+      js-yaml: 4.3.1
       parse-json: 5.2.0
       path-type: 4.0.0
     optionalDependencies:
@@ -12438,7 +12438,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@4.3.0:
+  js-yaml@4.3.1:
     dependencies:
       argparse: 2.0.1
 
@@ -13224,7 +13224,7 @@ snapshots:
       fs-extra: 11.3.6
       get-tsconfig: 4.14.0
       jiti: 2.7.0
-      js-yaml: 4.3.0
+      js-yaml: 4.3.1
       remeda: 2.39.0
       string-argv: 0.3.2
       typedoc: 0.28.20(typescript@5.4.5)
