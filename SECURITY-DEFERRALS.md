@@ -18,7 +18,9 @@ code path is low. Each entry below states which applies.
 |------|--------------------|------------|-------------|
 | `client` — orval | ✅ **Resolved 2026-07-07** (was 3: 1 critical, 1 high, 1 moderate) | orval 6→8 is a breaking major upgrade | Done — bumped to orval [8.20.0](https://github.com/orval-labs/orval/releases/tag/v8.20.0); see §1 |
 | `cms` — Strapi tree | ✅ **Resolved 2026-07-08** (post-4.26.2 was 5 critical, 51 high) | transitive deps pinned by Strapi's dependency tree | Done — upgraded to Strapi [5.50.0](https://github.com/strapi/strapi/releases/tag/v5.50.0); see §2 |
-| `cloud_functions/earth_engine_tiler` — googleapis tree | 4 (moderate) | pinned by `@google/earthengine@0.1.x` → `googleapis@92` | `@google/earthengine` 0.x→1.x major upgrade |
+| `client` — `image-size` | 2 (high) | `deck.gl` → `@loaders.gl/textures` → `texture-compressor` pins `image-size@2.0.2`; both advisories publish `patched: <0.0.0` — no fixed release exists | await an upstream `image-size` fix; see §5 |
+| `cms` — `react-router` / `uuid` / `@ai-sdk/provider-utils` | 6 (5 moderate, 1 low) | `@strapi/admin@5.52.0` peer-pins `react-router-dom@^6.30.3` and no 6.x patch exists; `uuid` path unreachable; `@ai-sdk/provider-utils` unpatched | Strapi 5 must adopt react-router 7; see §2 |
+| `cloud_functions/earth_engine_tiler` — googleapis tree | 6 (moderate) | pinned by `@google/earthengine@0.1.x` → `googleapis@92`, and by `@google-cloud/functions-framework@3.4.0` → `cloudevents` → `uuid` | `@google/earthengine` 0.x→1.x and `@google-cloud/functions-framework` 3→5 major upgrades |
 | `data-processing` — global `uv` tool | 5 | outdated **local** `uv` install, not a repo dependency | `uv self update` (developer/CI environment) |
 
 Everything **not** listed here was fixed on the branch (Python tornado/jupyter-server/
@@ -160,6 +162,33 @@ Coordinated CMS + client upgrade (PR [#167](https://github.com/Vizzuality/global
    `concurrently` dev-tooling transitive, `GHSA-w7jw-789q-3m8p`).
 5. Migrated the client to the v5 flat API response shape and regenerated the orval types.
 
+> **Update 2026-08-17** (branch `fix/deps/audit-2026-08-17`): `@strapi/*`
+> 5.50.0→[5.52.0](https://github.com/strapi/strapi/releases/tag/v5.52.0) plus scoped pnpm
+> overrides took `cms` from 45 → 6 advisories, **0 high**. The parent bump alone cleared
+> `js-yaml`, `nodemailer` ([GHSA-p6gq-j5cr-w38f](https://github.com/advisories/GHSA-p6gq-j5cr-w38f),
+> the 8→9 major deferred on 2026-07-17 — Strapi's sendmail provider now ships it),
+> `sharp`, `dompurify` and `elliptic`. Overrides then pinned `vite` →6.4.3
+> ([GHSA-fx2h-pf6j-xcff](https://github.com/advisories/GHSA-fx2h-pf6j-xcff), which also carries
+> `esbuild` ^0.25.0 and clears the coupled build-time deferral from 2026-07-21), `undici` →7.29.0,
+> `postcss` →8.5.26 under both `css-loader` and `vite`, `hono` →4.13.2, `@hono/node-server`
+> →1.19.17, `ip-address` →10.5.0, `tar` →7.5.22, `ajv > fast-uri` →3.1.5 and `brace-expansion`
+> →1.1.18 / 2.1.4 / 5.0.9. `strapi build` verified (admin panel bundles).
+>
+> **Newly deferred here:** `react-router` ×2 +
+> `react-router-dom` ([GHSA-jjmj-jmhj-qwj2](https://github.com/advisories/GHSA-jjmj-jmhj-qwj2),
+> which publishes `patched: <0.0.0` for the 6.x line). `@strapi/admin@5.52.0` declares
+> `peerDependencies.react-router-dom: ^6.30.3`, so 7.x cannot be adopted until Strapi 5 migrates;
+> `react-router-dom` is declared in `cms/package.json` solely to satisfy that peer and is imported
+> nowhere in `cms/src`. `uuid` remains deferred on reachability grounds
+> ([GHSA-w5hq-g745-h8pq](https://github.com/advisories/GHSA-w5hq-g745-h8pq) affects `v3`/`v5`/`v6`
+> with an explicit `buf` argument; `gaxios` and `exceljs` both call `v4`), and
+> `@ai-sdk/provider-utils` still has no published patch.
+>
+> A stale nested `node_modules` directory can survive a Strapi bump under this project's
+> `node-linker=hoisted` setting and surface as a rollup build error
+> (`"lazyValidator" is not exported by @ai-sdk/provider-utils`) even when `pnpm-lock.yaml` is
+> correct. `rm -rf node_modules && pnpm install` resolves it; the lockfile needs no change.
+
 ### Why deferred (historical)
 
 Before the upgrade, all `@strapi/*` packages were bumped within major 4 (`4.24.2 → 4.26.2`,
@@ -272,6 +301,23 @@ All four are pinned by `@google/earthengine@0.1.405`, which depends on the old
 > note above: the CVE fix does **not** need the 10.x major. Both copies are `development`
 > scope (eslint/gts tooling), not shipped in the deployed function; `tsc` compile unaffected.
 
+> **Update 2026-08-17** (branch `fix/deps/audit-2026-08-17`): the tiler's dev chain was
+> cleared, 16 → 6 advisories. `gts` 5.3.0→[5.3.1](https://github.com/google/gts/releases/tag/v5.3.1)
+> and `nodemon` 3.1.3→[3.1.14](https://github.com/remy/nodemon/releases/tag/v3.1.14) as direct
+> bumps; scoped npm overrides for `minimatch` 3.1.3→3.1.5 and 9.0.7→9.0.9, `brace-expansion`
+> →1.1.18 ([GHSA-rgw5-rvv9-x895](https://github.com/advisories/GHSA-rgw5-rvv9-x895),
+> [GHSA-mh99-v99m-4gvg](https://github.com/advisories/GHSA-mh99-v99m-4gvg)), `ajv` →6.15.0 /
+> 8.20.0, `js-yaml` →4.3.1, `picomatch` →2.3.2, `micromatch` →4.0.8, `cross-spawn` →7.0.6,
+> `semver` →5.7.2 / 6.3.1 / 7.8.5, `@babel/runtime` →7.29.7, and `express > body-parser`
+> →1.20.6. All are `development` scope except `body-parser`; `tsc` compile verified. `gts lint`
+> remains red (607 prettier errors) identically on the pre-change dependency tree — pre-existing,
+> unrelated to this branch.
+>
+> **Newly deferred here:** `@google-cloud/functions-framework` 3.4.0→**5.0.5** is the only route
+> to a patched `cloudevents` → `uuid`, and it is a major upgrade of the function runtime itself.
+> It joins the `@google/earthengine` deferral below; the remaining 6 advisories are all in these
+> two chains (`uuid`, `googleapis`, `googleapis-common`, `cloudevents`).
+
 ### Why deferred
 
 - The clean fix is upgrading `@google/earthengine` to its current release, which is a
@@ -309,4 +355,34 @@ declared by this repository, so it is not fixable via the lockfile.
 
 ---
 
-_Last updated: 2026-07-21 — full audit sweep (branch `fix/deps/audit-2026-07-21`): `client` → 0 advisories (§1 update); `cms` 41 → 9, critical `tar` cleared (§2 update); newly deferred in `cms`: `vite`/`esbuild` (build-time, major/coupled), `uuid` (8→11 major, unreachable), `elliptic` + `@ai-sdk/provider-utils` (no patch published). Prior: 2026-07-17 — Peek batch: §2 (cms) `braces` cleared (CVE-2024-4068, pnpm override 3.0.3) and `nodemailer` deferred (GHSA-p6gq-j5cr-w38f, 8→9 major pinned by Strapi's sendmail provider, low reachability); §3 (earth_engine_tiler) `minimatch` cleared (CVE-2026-27903, within-major overrides 3.1.3 / 9.0.7) on branch `fix/deps-braces-minimatch-advisories`. Prior: 2026-07-16 §3 dev-tooling (flatted, lodash, tmp); §2 (Strapi) resolved via Strapi 5.50.0 (PR #167); §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
+## 5. `client` — `image-size` (deferred)
+
+**Deferred advisories**
+
+| Package | Severity | Advisory | Path |
+|---------|----------|----------|------|
+| `image-size` | **High** | [GHSA-w3rx-r6r6-pgpr](https://github.com/advisories/GHSA-w3rx-r6r6-pgpr) — ICNS parser infinite loop | `@deck.gl/geo-layers > @deck.gl/mesh-layers > @loaders.gl/gltf > @loaders.gl/textures > texture-compressor > image-size` |
+| `image-size` | **High** | [GHSA-5p2g-fcmc-qvqq](https://github.com/advisories/GHSA-5p2g-fcmc-qvqq) — JXL and HEIF parsers infinite loop | same path |
+
+### Why deferred
+
+Both advisories publish `patched: <0.0.0` — **no fixed `image-size` release exists**, so neither
+a direct upgrade nor an override can clear them. The version is pinned by
+`texture-compressor@1.6.2`, an unmaintained transitive of `@loaders.gl/textures`.
+
+### Reachability — low
+
+`image-size` is reached only through `texture-compressor`'s image-dimension probing for
+compressed-texture conversion. The advisories are denial-of-service loops in the **ICNS, JXL and
+HEIF** parsers; the client's deck.gl layers render MVT and raster tiles and never feed
+attacker-supplied files of those formats into that path.
+
+### Remediation path
+
+Track upstream `image-size` for a patched release, then override it. Alternatively drop the
+`@loaders.gl/textures` path if the mesh/glTF layers stay unused — `@deck.gl/geo-layers` pulls it
+in transitively, so this needs confirmation that no scene requires compressed textures.
+
+---
+
+_Last updated: 2026-08-17 — full audit sweep (branch `fix/deps/audit-2026-08-17`): 88 → 14 advisories across the three Node projects, **0 critical / 0 high** remaining. `client` 27 → 2 (`next` [16.3.1](https://github.com/vercel/next.js/releases/tag/v16.3.1) clearing 9 advisories, `postcss` 8.5.26, `sharp` 0.35.3, plus refreshed `brace-expansion` / `js-yaml` overrides and new `ajv > fast-uri` / `svgo` pins; the stale `next>postcss` override forcing 8.5.14 was removed — `next` 16.3.1 pins 8.5.23 itself); `cms` 45 → 6 (§2 update); `earth_engine_tiler` 16 → 6 (§3 update); newly deferred: `image-size` ×2 in `client` (§5, no patch published), `react-router`/`react-router-dom` ×3 in `cms` (§2, blocked by `@strapi/admin` peer range), `@google-cloud/functions-framework` 3→5 major in the tiler (§3). Prior: 2026-07-21 — full audit sweep (branch `fix/deps/audit-2026-07-21`): `client` → 0 advisories (§1 update); `cms` 41 → 9, critical `tar` cleared (§2 update); newly deferred in `cms`: `vite`/`esbuild` (build-time, major/coupled), `uuid` (8→11 major, unreachable), `elliptic` + `@ai-sdk/provider-utils` (no patch published). Prior: 2026-07-17 — Peek batch: §2 (cms) `braces` cleared (CVE-2024-4068, pnpm override 3.0.3) and `nodemailer` deferred (GHSA-p6gq-j5cr-w38f, 8→9 major pinned by Strapi's sendmail provider, low reachability); §3 (earth_engine_tiler) `minimatch` cleared (CVE-2026-27903, within-major overrides 3.1.3 / 9.0.7) on branch `fix/deps-braces-minimatch-advisories`. Prior: 2026-07-16 §3 dev-tooling (flatted, lodash, tmp); §2 (Strapi) resolved via Strapi 5.50.0 (PR #167); §1 (orval) resolved 2026-07-07 via orval 8.20.0. Original audit: 2026-07-02, branch `fix/deps/audit-2026-07-02`._
