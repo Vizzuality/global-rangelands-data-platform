@@ -47,20 +47,6 @@
           "sortable": false
         }
       },
-      "further_information": {
-        "edit": {
-          "label": "further_information",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "further_information",
-          "searchable": false,
-          "sortable": false
-        }
-      },
       "notes": {
         "edit": {
           "label": "notes",
@@ -75,16 +61,30 @@
           "sortable": false
         }
       },
-      "location": {
+      "latitude": {
         "edit": {
-          "label": "location",
+          "label": "latitude",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "location",
+          "label": "latitude",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "longitude": {
+        "edit": {
+          "label": "longitude",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "longitude",
           "searchable": true,
           "sortable": true
         }
@@ -118,6 +118,20 @@
           "sortable": false
         }
       },
+      "document": {
+        "edit": {
+          "label": "document",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "document",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "translations": {
         "edit": {
           "label": "translations",
@@ -130,6 +144,34 @@
           "label": "translations",
           "searchable": false,
           "sortable": false
+        }
+      },
+      "further_information": {
+        "edit": {
+          "label": "further_information",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "further_information",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "slug",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "slug",
+          "searchable": true,
+          "sortable": true
         }
       },
       "createdAt": {
@@ -189,14 +231,22 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
       "list": [
         "id",
         "title",
-        "location",
-        "datasets"
+        "datasets",
+        "latitude"
       ],
       "edit": [
         [
@@ -225,10 +275,6 @@
         ],
         [
           {
-            "name": "location",
-            "size": 6
-          },
-          {
             "name": "datasets",
             "size": 6
           }
@@ -241,8 +287,30 @@
         ],
         [
           {
+            "name": "document",
+            "size": 6
+          }
+        ],
+        [
+          {
             "name": "translations",
             "size": 12
+          }
+        ],
+        [
+          {
+            "name": "latitude",
+            "size": 4
+          },
+          {
+            "name": "longitude",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "slug",
+            "size": 6
           }
         ]
       ]

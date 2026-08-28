@@ -288,6 +288,7 @@ export type DefaultLayerComponentLayerCreatedBy = {
   username?: string;
   email?: string;
   resetPasswordToken?: string;
+  resetPasswordTokenExpiresAt?: string;
   registrationToken?: string;
   isActive?: boolean;
   roles?: DefaultLayerComponentLayerCreatedByRolesItem[];
@@ -604,6 +605,61 @@ export type DatasetStoryImage = {
   localizations?: DatasetStoryImageLocalizationsItem[];
 };
 
+export type DatasetStoryDocumentRelatedItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryDocumentFolder = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryDocumentCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryDocumentUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryDocumentLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetStoryDocument = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
+  url?: string;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: DatasetStoryDocumentRelatedItem[];
+  folder?: DatasetStoryDocumentFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DatasetStoryDocumentCreatedBy;
+  updatedBy?: DatasetStoryDocumentUpdatedBy;
+  locale?: string;
+  localizations?: DatasetStoryDocumentLocalizationsItem[];
+};
+
 export type DatasetStoryCreatedBy = {
   id?: string | number;
   documentId?: string;
@@ -629,6 +685,7 @@ export type DatasetStory = {
   longitude?: number;
   datasets?: DatasetStoryDatasetsItem[];
   image?: DatasetStoryImage;
+  document?: DatasetStoryDocument;
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
@@ -926,6 +983,61 @@ export type DatasetCategoryDatasetsItemStoryImage = {
   localizations?: DatasetCategoryDatasetsItemStoryImageLocalizationsItem[];
 };
 
+export type DatasetCategoryDatasetsItemStoryDocumentRelatedItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryDocumentFolder = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryDocumentCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryDocumentUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryDocumentLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type DatasetCategoryDatasetsItemStoryDocument = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
+  url?: string;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: DatasetCategoryDatasetsItemStoryDocumentRelatedItem[];
+  folder?: DatasetCategoryDatasetsItemStoryDocumentFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: DatasetCategoryDatasetsItemStoryDocumentCreatedBy;
+  updatedBy?: DatasetCategoryDatasetsItemStoryDocumentUpdatedBy;
+  locale?: string;
+  localizations?: DatasetCategoryDatasetsItemStoryDocumentLocalizationsItem[];
+};
+
 export type DatasetCategoryDatasetsItemStoryCreatedBy = {
   id?: string | number;
   documentId?: string;
@@ -951,6 +1063,7 @@ export type DatasetCategoryDatasetsItemStory = {
   longitude?: number;
   datasets?: DatasetCategoryDatasetsItemStoryDatasetsItem[];
   image?: DatasetCategoryDatasetsItemStoryImage;
+  document?: DatasetCategoryDatasetsItemStoryDocument;
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
@@ -1346,6 +1459,7 @@ export type EcoregionRangelandEcoregionsItemCreatedBy = {
   username?: string;
   email?: string;
   resetPasswordToken?: string;
+  resetPasswordTokenExpiresAt?: string;
   registrationToken?: string;
   isActive?: boolean;
   roles?: EcoregionRangelandEcoregionsItemCreatedByRolesItem[];
@@ -1700,6 +1814,7 @@ export type LayerCreatedBy = {
   username?: string;
   email?: string;
   resetPasswordToken?: string;
+  resetPasswordTokenExpiresAt?: string;
   registrationToken?: string;
   isActive?: boolean;
   roles?: LayerCreatedByRolesItem[];
@@ -2035,6 +2150,7 @@ export type RangelandEcoregionsItemRangelandCreatedBy = {
   username?: string;
   email?: string;
   resetPasswordToken?: string;
+  resetPasswordTokenExpiresAt?: string;
   registrationToken?: string;
   isActive?: boolean;
   roles?: RangelandEcoregionsItemRangelandCreatedByRolesItem[];
@@ -2347,6 +2463,61 @@ export type StoryDatasetsItemStoryImage = {
   localizations?: StoryDatasetsItemStoryImageLocalizationsItem[];
 };
 
+export type StoryDatasetsItemStoryDocumentRelatedItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryDocumentFolder = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryDocumentCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryDocumentUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryDocumentLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDatasetsItemStoryDocument = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
+  url?: string;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: StoryDatasetsItemStoryDocumentRelatedItem[];
+  folder?: StoryDatasetsItemStoryDocumentFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryDatasetsItemStoryDocumentCreatedBy;
+  updatedBy?: StoryDatasetsItemStoryDocumentUpdatedBy;
+  locale?: string;
+  localizations?: StoryDatasetsItemStoryDocumentLocalizationsItem[];
+};
+
 export type StoryDatasetsItemStoryCreatedBy = {
   id?: string | number;
   documentId?: string;
@@ -2372,6 +2543,7 @@ export type StoryDatasetsItemStory = {
   longitude?: number;
   datasets?: StoryDatasetsItemStoryDatasetsItem[];
   image?: StoryDatasetsItemStoryImage;
+  document?: StoryDatasetsItemStoryDocument;
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
@@ -2476,6 +2648,61 @@ export type StoryImage = {
   localizations?: StoryImageLocalizationsItem[];
 };
 
+export type StoryDocumentRelatedItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDocumentFolder = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDocumentCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDocumentUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDocumentLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryDocument = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
+  url?: string;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: StoryDocumentRelatedItem[];
+  folder?: StoryDocumentFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryDocumentCreatedBy;
+  updatedBy?: StoryDocumentUpdatedBy;
+  locale?: string;
+  localizations?: StoryDocumentLocalizationsItem[];
+};
+
 export type StoryCreatedBy = {
   id?: string | number;
   documentId?: string;
@@ -2501,6 +2728,7 @@ export interface Story {
   longitude?: number;
   datasets?: StoryDatasetsItem[];
   image?: StoryImage;
+  document?: StoryDocument;
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug: string;
@@ -2533,6 +2761,7 @@ export type StoryRequestData = {
   longitude?: number;
   datasets?: (number | string)[];
   image?: number | string;
+  document?: number | string;
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug: string;
@@ -2772,6 +3001,61 @@ export type StoryCategoryStoriesItemImage = {
   localizations?: StoryCategoryStoriesItemImageLocalizationsItem[];
 };
 
+export type StoryCategoryStoriesItemDocumentRelatedItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemDocumentFolder = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemDocumentCreatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemDocumentUpdatedBy = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemDocumentLocalizationsItem = {
+  id?: string | number;
+  documentId?: string;
+};
+
+export type StoryCategoryStoriesItemDocument = {
+  id?: string | number;
+  documentId?: string;
+  name?: string;
+  alternativeText?: string;
+  caption?: string;
+  focalPoint?: unknown;
+  width?: number;
+  height?: number;
+  formats?: unknown;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
+  url?: string;
+  previewUrl?: string;
+  provider?: string;
+  provider_metadata?: unknown;
+  related?: StoryCategoryStoriesItemDocumentRelatedItem[];
+  folder?: StoryCategoryStoriesItemDocumentFolder;
+  folderPath?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  createdBy?: StoryCategoryStoriesItemDocumentCreatedBy;
+  updatedBy?: StoryCategoryStoriesItemDocumentUpdatedBy;
+  locale?: string;
+  localizations?: StoryCategoryStoriesItemDocumentLocalizationsItem[];
+};
+
 export type StoryCategoryStoriesItemCreatedBy = {
   id?: string | number;
   documentId?: string;
@@ -2797,6 +3081,7 @@ export type StoryCategoryStoriesItem = {
   longitude?: number;
   datasets?: StoryCategoryStoriesItemDatasetsItem[];
   image?: StoryCategoryStoriesItemImage;
+  document?: StoryCategoryStoriesItemDocument;
   translations?: TranslationsStoryTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug?: string;
