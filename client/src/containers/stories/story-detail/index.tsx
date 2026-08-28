@@ -10,6 +10,7 @@ import { useGetStories } from "@/types/generated/story";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
 import { mediaUrl } from "@/lib/cms";
+import StoryDocumentLink from "@/components/story-document-link";
 import { cn } from "@/lib/utils";
 import FurtherInfo from "@/containers/stories/detail/further-info";
 import { getCategoryTheme } from "@/containers/stories/theme";
@@ -31,7 +32,7 @@ const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPag
   const { data: storyData } = useGetStories(
     {
       filters: { slug: { $eq: slug } },
-      populate: ["image", "translations", "further_information"],
+      populate: ["image", "document", "translations", "further_information"],
       "pagination[limit]": 1,
     },
     { query: { enabled: !!slug } },
@@ -92,6 +93,7 @@ const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPag
               )}
 
               <div className="mx-auto max-w-2xl space-y-8">
+                <StoryDocumentLink document={story?.document} slug={slug} variant="page" />
                 {description && <StoryBody key={slug} description={description} />}
                 <FurtherInfo items={story?.further_information ?? []} locale={locale} />
               </div>

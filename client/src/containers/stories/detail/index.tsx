@@ -12,6 +12,7 @@ import { Link } from "@/i18n/navigation";
 import { useGetStories } from "@/types/generated/story";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
 import RichText from "@/components/ui/rich-text";
+import StoryDocumentLink from "@/components/story-document-link";
 import { sidebarOpenAtom, useSyncSearchParams } from "@/store/map";
 import { mediaUrl } from "@/lib/cms";
 import FurtherInfo from "./further-info";
@@ -71,6 +72,7 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
       filters: { slug: { $eq: slug } },
       populate: [
         "image",
+        "document",
         "datasets",
         "datasets.layers",
         "datasets.layers.layer",
@@ -124,6 +126,8 @@ const StoryDetail = ({ slug }: StoryDetailProps) => {
               {title}
             </h1>
           )}
+
+          <StoryDocumentLink document={story?.document} slug={slug} variant="panel" />
         </div>
 
         {imageUrl && (
