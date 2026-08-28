@@ -47,6 +47,20 @@
           "sortable": false
         }
       },
+      "further_information": {
+        "edit": {
+          "label": "further_information",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "further_information",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "notes": {
         "edit": {
           "label": "notes",
@@ -61,30 +75,16 @@
           "sortable": false
         }
       },
-      "latitude": {
+      "location": {
         "edit": {
-          "label": "latitude",
+          "label": "location",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "latitude",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "longitude": {
-        "edit": {
-          "label": "longitude",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "longitude",
+          "label": "location",
           "searchable": true,
           "sortable": true
         }
@@ -146,34 +146,6 @@
           "sortable": false
         }
       },
-      "further_information": {
-        "edit": {
-          "label": "further_information",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "further_information",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "slug": {
-        "edit": {
-          "label": "slug",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "slug",
-          "searchable": true,
-          "sortable": true
-        }
-      },
       "createdAt": {
         "edit": {
           "label": "createdAt",
@@ -231,22 +203,14 @@
           "searchable": true,
           "sortable": true
         }
-      },
-      "documentId": {
-        "edit": {},
-        "list": {
-          "label": "documentId",
-          "searchable": true,
-          "sortable": true
-        }
       }
     },
     "layouts": {
       "list": [
         "id",
         "title",
-        "datasets",
-        "latitude"
+        "location",
+        "datasets"
       ],
       "edit": [
         [
@@ -275,6 +239,10 @@
         ],
         [
           {
+            "name": "location",
+            "size": 6
+          },
+          {
             "name": "datasets",
             "size": 6
           }
@@ -295,22 +263,6 @@
           {
             "name": "translations",
             "size": 12
-          }
-        ],
-        [
-          {
-            "name": "latitude",
-            "size": 4
-          },
-          {
-            "name": "longitude",
-            "size": 4
-          }
-        ],
-        [
-          {
-            "name": "slug",
-            "size": 6
           }
         ]
       ]
