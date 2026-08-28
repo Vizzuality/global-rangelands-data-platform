@@ -49,6 +49,14 @@
         "images"
       ]
     },
+    "document": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
     "translations": {
       "type": "component",
       "repeatable": true,

@@ -118,6 +118,20 @@
           "sortable": false
         }
       },
+      "document": {
+        "edit": {
+          "label": "document",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "document",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "translations": {
         "edit": {
           "label": "translations",
@@ -236,6 +250,12 @@
         [
           {
             "name": "image",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "document",
             "size": 6
           }
         ],
