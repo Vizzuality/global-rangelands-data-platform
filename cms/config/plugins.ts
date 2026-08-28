@@ -1,3 +1,14 @@
+const CACHE_MAX_AGE = 3600;
+
+const isInlineSafeImage = (mime) => mime.startsWith("image/") && mime !== "image/svg+xml";
+
+const getSafeFilename = (name) => name.replace(/[\r\n"]/g, "");
+
+const getContentDisposition = (file) => {
+  const disposition = isInlineSafeImage(file.mime ?? "") ? "inline" : "attachment";
+  return `${disposition}; filename="${getSafeFilename(file.name)}"`;
+};
+
 module.exports = ({ env }) => ({
   "config-sync": {
     enabled: true,
@@ -16,6 +27,10 @@ module.exports = ({ env }) => ({
           basePath: "",
           // objectAdmin has no storage.buckets.get; the pre-flight probe 403s and kills the container
           skipCheckBucket: true,
+          metadata: (file) => ({
+            cacheControl: `public, max-age=${CACHE_MAX_AGE}`,
+            contentDisposition: getContentDisposition(file),
+          }),
         },
       },
     },
