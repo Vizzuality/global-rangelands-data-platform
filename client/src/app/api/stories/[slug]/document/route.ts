@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { env } from "@/env.mjs";
-import { CMS_MEDIA_BASE, mediaUrl } from "@/lib/cms";
+import { CMS_API_BASE, CMS_MEDIA_BASE, mediaUrl } from "@/lib/cms";
 
 type StoriesDocumentResponse = {
   data?: { document?: { url?: string; name?: string; mime?: string } | null }[];
@@ -30,7 +29,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     "pagination[limit]": "1",
   });
 
-  const storyResponse = await fetch(`${env.NEXT_PUBLIC_API_URL}/stories?${query.toString()}`);
+  const storyResponse = await fetch(`${CMS_API_BASE}/stories?${query.toString()}`);
 
   if (!storyResponse.ok) {
     return new NextResponse(null, { status: 502 });
