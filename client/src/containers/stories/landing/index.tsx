@@ -32,6 +32,11 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
     stories.slice(index * 3, index * 3 + 3),
   );
 
+  const [leadDetail, ...columnDetails] = details;
+  const columnMidpoint = Math.ceil(columnDetails.length / 2);
+  const leftColumnDetails = columnDetails.slice(0, columnMidpoint);
+  const rightColumnDetails = columnDetails.slice(columnMidpoint);
+
   return (
     <main
       className={cn("relative overflow-hidden pt-[var(--header-height)]", theme.pageBackground)}
@@ -58,8 +63,8 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
               )}
             />
             <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
-            <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:px-24">
-              <h1 className="max-w-[542px] font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl">
+            <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:px-24 sm:py-[100px]">
+              <h1 className="max-w-[606px] font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl sm:leading-[56px]">
                 {title}
               </h1>
               {description && (
@@ -68,20 +73,32 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
                 </p>
               )}
               {(details.length > 0 || contact) && (
-                <div className="max-w-[740px] space-y-4 text-left text-body-12 text-green-dark">
-                  {details.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                  {contact && (
-                    <p>
-                      {contact.intro}:{" "}
-                      <a
-                        href={`mailto:${contact.email}`}
-                        className="underline underline-offset-2 transition-opacity hover:opacity-80"
-                      >
-                        {contact.email}
-                      </a>
-                    </p>
+                <div className="w-full max-w-[740px] space-y-6 text-left text-body-16-loose text-green-dark">
+                  {leadDetail && <p>{leadDetail}</p>}
+                  {(columnDetails.length > 0 || contact) && (
+                    <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+                      <div className="flex-1 space-y-4">
+                        {leftColumnDetails.map((paragraph) => (
+                          <p key={paragraph}>{paragraph}</p>
+                        ))}
+                      </div>
+                      <div className="flex-1 space-y-4">
+                        {rightColumnDetails.map((paragraph) => (
+                          <p key={paragraph}>{paragraph}</p>
+                        ))}
+                        {contact && (
+                          <p>
+                            {contact.intro}:{" "}
+                            <a
+                              href={`mailto:${contact.email}`}
+                              className="underline underline-offset-2 transition-opacity hover:opacity-80"
+                            >
+                              {contact.email}
+                            </a>
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
               )}
