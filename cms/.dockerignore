@@ -1,0 +1,21 @@
+# NOTE: .env is NOT excluded — Dockerfile.prod copies it.
+
+node_modules
+dist
+build
+.cache
+.tmp
+
+.git
+.gitignore
+.idea
+.vscode
+
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.DS_Store
+
+# Exclude uploaded media but keep the directory (mirrors cms/.gitignore).
+public/uploads/*
+!public/uploads/.gitkeep

@@ -4,6 +4,10 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Traces only the files the server actually reaches, so the production image
+  // ships ~150-250 MB instead of a full 1.3 GB node_modules. Requires the
+  // runner to start via `node server.js` (see entrypoint.sh).
+  output: "standalone",
   images: {
     dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
     remotePatterns: [

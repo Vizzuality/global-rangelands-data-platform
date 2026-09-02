@@ -1,17 +1,22 @@
+# syntax=docker/dockerfile:1
+# Development image. ENTRYPOINT resolves through the compose mount
+# (./cms:/app/cms).
 FROM node:22.23.1-bookworm-slim
-# Install dependencies
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y \
+
+# Native toolchain for sharp.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
       build-essential \
-      gcc autoconf \
+      gcc \
+      autoconf \
       automake \
       libc6 \
       zlib1g-dev \
       libpng-dev \
-      nasm bash \
+      nasm \
+      bash \
       libvips-dev \
-    && apt-get clean
+    && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=development
 
@@ -19,22 +24,12 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app/
 
-COPY config ./config
-COPY database ./database
-COPY public ./public
-COPY src ./src
-
-COPY .env \
-     .nvmrc \
-     .npmrc \
-     favicon.png \
-     package.json \
-     pnpm-lock.yaml \
-     entrypoint.sh \
-     tsconfig.json \
-     ./
+# Lockfile only, so source edits don't reinstall dependencies.
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 RUN pnpm install --frozen-lockfile
+
+COPY . .
 
 ENV PATH=/app/node_modules/.bin:$PATH
 

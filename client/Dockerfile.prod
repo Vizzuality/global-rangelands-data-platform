@@ -1,9 +1,7 @@
-# Build all the things
-FROM node:24.15.0-bookworm-slim AS build
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y libc6 && \
-    apt-get clean
+# syntax=docker/dockerfile:1
+
+# deps — lockfile only, so source edits don't reinstall dependencies.
+FROM node:24.15.0-bookworm-slim AS deps
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -12,51 +10,53 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
-COPY public ./public
-COPY src ./src
-
-COPY .browserslistrc \
-     .npmrc \
-     entrypoint.sh \
-     index.js \
-     logger.ts \
-     components.json \
-     next.config.mjs \
-     package.json \
-     pnpm-lock.yaml \
-     postcss.config.mjs \
-     README.md \
-     tailwind.config.ts \
-     tsconfig.json \
-     .env.local \
-     ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 RUN pnpm install --frozen-lockfile
 
-RUN pnpm build
+# build
+FROM node:24.15.0-bookworm-slim AS build
 
-# Copy only the built files into the final image
-FROM node:24.15.0-bookworm-slim AS runner
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
-COPY --from=build --chown=nextjs:nodejs /app/.next ./.next
+RUN pnpm build
+
+# runner — standalone output only; see `output: "standalone"` in next.config.mjs.
+FROM node:24.15.0-bookworm-slim AS runner
+
+# Patch the image that ships. Build stages are discarded, so don't patch there.
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+# server.js binds HOSTNAME; without this it can bind loopback only.
+ENV HOSTNAME=0.0.0.0
+
+WORKDIR /app
+
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=build --chown=nextjs:nodejs /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/entrypoint.sh ./entrypoint.sh
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/public ./public
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/next.config.mjs ./next.config.mjs
-COPY --from=build /app/index.js ./index.js
-COPY --from=build /app/.env.local ./.env.local
+COPY --from=build --chown=nextjs:nodejs /app/next.config.mjs ./next.config.mjs
+# Config is baked in: Cloud Run passes no runtime env vars, so this file is the
+# only source. CI generates it from GH secrets (generate-env-file-from-json).
+COPY --from=build --chown=nextjs:nodejs /app/.env.local ./.env.local
 
 USER nextjs
 
 EXPOSE 3000
-ENV PORT=3000
 
 ENTRYPOINT ["/app/entrypoint.sh"]
