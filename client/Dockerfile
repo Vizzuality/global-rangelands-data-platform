@@ -1,9 +1,7 @@
+# syntax=docker/dockerfile:1
+# Development image. Source is bind-mounted at runtime; ENTRYPOINT resolves
+# through the compose mount (./client:/app/client).
 FROM node:24.15.0-bookworm-slim
-
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y libc6 && \
-    apt-get clean
 
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -13,26 +11,12 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
-COPY public ./public
-COPY src ./src
-
-COPY .browserslistrc \
-     .env.local \
-     .npmrc \
-     entrypoint.sh \
-     components.json \
-     index.js \
-     logger.ts \
-     next.config.mjs \
-     package.json \
-     pnpm-lock.yaml \
-     postcss.config.mjs \
-     README.md \
-     tailwind.config.ts \
-     tsconfig.json \
-     ./
+# Lockfile only, so source edits don't reinstall dependencies.
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 RUN pnpm install --frozen-lockfile
+
+COPY . .
 
 RUN chown -R node:node /app
 USER node
