@@ -113,7 +113,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="container mx-auto mb-[75px] mt-[130px] flex flex-col gap-12 py-10 sm:flex-row sm:gap-[120px] sm:px-[100px] sm:py-[100px]">
+      <div className="container mx-auto mt-[130px] flex flex-col gap-12 py-10 sm:flex-row sm:gap-[120px] sm:px-[100px] sm:pb-10 sm:pt-[100px]">
         <div className="flex-1 space-y-3">
           <Image src="/images/home/icon-color.png" alt={t("logo")} width={207} height={58} />
           <h2 className="font-serif text-4xl font-light leading-tight sm:text-5xl">
