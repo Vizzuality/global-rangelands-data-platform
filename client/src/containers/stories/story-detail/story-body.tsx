@@ -35,7 +35,7 @@ const StoryBody = ({ description }: StoryBodyProps) => {
       <div
         ref={measureRef}
         className={
-          expanded ? "text-sm leading-6" : "max-h-[592px] overflow-hidden text-sm leading-6"
+          expanded ? "text-body-16-loose" : "max-h-[592px] overflow-hidden text-body-16-loose"
         }
       >
         <RichText>{description}</RichText>

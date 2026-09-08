@@ -14,9 +14,9 @@ const FurtherInfo = ({ items, locale }: FurtherInfoProps) => {
   if (items.length === 0) return null;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <h2 className="text-base font-medium">{t("Further information")}</h2>
-      <div className="space-y-2">
+      <div className="space-y-4">
         {items.map((item, i) => (
           <FurtherInfoItem key={item.id ?? i} item={item} locale={locale} />
         ))}

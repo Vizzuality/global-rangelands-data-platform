@@ -22,7 +22,7 @@ type RichTextProps = {
 
 const RichText = ({ children, className }: RichTextProps) => {
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn("space-y-4", className)}>
       <Markdown
         components={{
           a: (props) => (
