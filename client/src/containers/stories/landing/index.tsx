@@ -46,7 +46,7 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
         className="pointer-events-none absolute inset-0 bg-[url(/images/stories-pattern-tile.svg)] bg-repeat opacity-10 [background-size:1280px_960px]"
       />
       <div className="relative">
-        <section className="container mx-auto px-6 py-44 sm:px-[100px]">
+        <section className="container mx-auto px-6 pb-20 pt-44 sm:px-[100px] xl:pb-[127px] xl:pt-[207px]">
           <div className="relative flex items-stretch justify-center">
             <div
               aria-hidden
@@ -115,7 +115,7 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
           </div>
         </section>
 
-        <section className="container mx-auto px-6 py-16 sm:px-[100px]">
+        <section className="container mx-auto px-6 pb-16 pt-20 sm:px-[100px]">
           <div className="flex flex-col gap-6 sm:gap-2">
             {storyRows.map((row, rowIndex) => (
               <div key={rowIndex} className="flex flex-col gap-6 sm:flex-row sm:gap-0">
