@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "@/i18n";
+import { cn } from "@/lib/utils";
 import LandingStoryCard from "@/containers/stories/landing/story-card";
 import { getCategoryTheme } from "@/containers/stories/theme";
 import { useStoryCategory } from "@/containers/stories/use-story-category";
@@ -21,7 +22,12 @@ const KeepExploringGrid = ({ category, slug }: KeepExploringGridProps) => {
 
   return (
     <section className="space-y-8">
-      <h2 className="text-center font-serif text-3xl font-light leading-tight text-green-dark">
+      <h2
+        className={cn(
+          "text-center font-serif text-4xl font-light leading-tight sm:text-5xl sm:leading-[56px]",
+          theme.chromeText,
+        )}
+      >
         {t("Keep exploring")}
       </h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
