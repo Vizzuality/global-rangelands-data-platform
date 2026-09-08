@@ -3,7 +3,6 @@
 import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
-import Image from "next/image";
 
 type HomeLinkProps = {
   className?: string;
@@ -12,17 +11,12 @@ type HomeLinkProps = {
 const HomeLink = ({ className }: HomeLinkProps) => {
   const t = useTranslations();
   return (
-    <Link href="/" className="flex gap-4">
-      <Image
-        src="/images/rangelands-logo-white.png"
-        className="h-[26px] w-[72px]"
-        height={26}
-        width={72}
-        alt="Rangelands"
+    <Link href="/" className={cn("flex gap-4", className)}>
+      <span
+        aria-hidden
+        className="h-[26px] w-[72px] bg-current [mask-image:url(/images/rangelands-logo-white.png)] [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain]"
       />
-      <h1 className={cn("text-balance font-serif text-[28px] leading-[24px]", className)}>
-        {t("Data Rangelands")}
-      </h1>
+      <h1 className="text-balance font-serif text-[28px] leading-[24px]">{t("Data Rangelands")}</h1>
     </Link>
   );
 };

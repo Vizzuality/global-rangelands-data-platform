@@ -9,6 +9,8 @@ export type CategoryTheme = {
   heroDiamondOutline: string;
   /** Bg + text classes for story cards on the standalone landing/detail pages. */
   cardVariant: string;
+  /** Text color class for content drawn straight over the page background (header chrome, section headings). */
+  chromeText: string;
 };
 
 type CategoryPalette = Omit<CategoryTheme, "cardVariant">;
@@ -18,16 +20,19 @@ const PALETTES: Record<string, CategoryPalette> = {
     pageBackground: "bg-brown-dark",
     heroAccent: "bg-green-dark",
     heroDiamondOutline: "border-green-bright",
+    chromeText: "text-white",
   },
   "restoration-investments": {
     pageBackground: "bg-orange-bright",
     heroAccent: "bg-brown-dark",
     heroDiamondOutline: "border-orange-bright",
+    chromeText: "text-brown-dark",
   },
   "restoration-champions": {
     pageBackground: "bg-green-light",
     heroAccent: "bg-green-medium",
     heroDiamondOutline: "border-gold",
+    chromeText: "text-white",
   },
 };
 
