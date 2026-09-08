@@ -58,7 +58,11 @@ const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPag
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[url(/images/stories-pattern-tile.svg)] bg-repeat opacity-10 [background-size:1280px_960px]"
+        className={cn(
+          "pointer-events-none absolute inset-0 opacity-10",
+          "[mask-image:url(/images/stories-pattern-tile.svg)] [mask-repeat:repeat] [mask-size:1280px_960px]",
+          theme.patternColor,
+        )}
       />
       <div className="relative">
         <section className="container mx-auto px-6 pt-16 xl:px-[100px]">

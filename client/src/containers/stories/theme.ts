@@ -11,6 +11,8 @@ export type CategoryTheme = {
   cardVariant: string;
   /** Text color class for content drawn straight over the page background (header chrome, section headings). */
   chromeText: string;
+  /** Bg color class painted through the background pattern mask. */
+  patternColor: string;
 };
 
 type CategoryPalette = Omit<CategoryTheme, "cardVariant">;
@@ -21,18 +23,21 @@ const PALETTES: Record<string, CategoryPalette> = {
     heroAccent: "bg-green-dark",
     heroDiamondOutline: "border-green-bright",
     chromeText: "text-white",
+    patternColor: "bg-green-medium",
   },
   "restoration-investments": {
     pageBackground: "bg-orange-bright",
     heroAccent: "bg-brown-dark",
     heroDiamondOutline: "border-orange-bright",
     chromeText: "text-brown-dark",
+    patternColor: "bg-brown-dark",
   },
   "restoration-champions": {
     pageBackground: "bg-green-light",
     heroAccent: "bg-green-medium",
     heroDiamondOutline: "border-gold",
     chromeText: "text-white",
+    patternColor: "bg-green-medium",
   },
 };
 
