@@ -47,6 +47,13 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
           theme.patternColor,
         )}
       />
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-0 h-[188px] bg-gradient-to-b to-transparent",
+          theme.headerGradient,
+        )}
+      />
       <div className="relative">
         <section className="container mx-auto px-6 pb-20 pt-40 xl:px-[100px]">
           <div className="relative flex items-stretch justify-center">

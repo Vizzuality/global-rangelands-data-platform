@@ -64,6 +64,13 @@ const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPag
           theme.patternColor,
         )}
       />
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-0 h-[188px] bg-gradient-to-b to-transparent",
+          theme.headerGradient,
+        )}
+      />
       <div className="relative">
         <section className="container mx-auto px-6 pt-16 xl:px-[100px]">
           <div className="flex items-stretch justify-center">

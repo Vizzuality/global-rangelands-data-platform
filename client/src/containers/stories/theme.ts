@@ -13,6 +13,8 @@ export type CategoryTheme = {
   chromeText: string;
   /** Bg color class painted through the background pattern mask. */
   patternColor: string;
+  /** Gradient start color class for the band that fades the pattern out behind the header. */
+  headerGradient: string;
 };
 
 type CategoryPalette = Omit<CategoryTheme, "cardVariant">;
@@ -24,6 +26,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     heroDiamondOutline: "border-green-bright",
     chromeText: "text-white",
     patternColor: "bg-green-medium",
+    headerGradient: "from-brown-dark",
   },
   "restoration-investments": {
     pageBackground: "bg-orange-bright",
@@ -31,6 +34,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     heroDiamondOutline: "border-orange-bright",
     chromeText: "text-brown-dark",
     patternColor: "bg-brown-dark",
+    headerGradient: "from-orange-bright",
   },
   "restoration-champions": {
     pageBackground: "bg-green-light",
@@ -38,6 +42,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     heroDiamondOutline: "border-gold",
     chromeText: "text-white",
     patternColor: "bg-green-medium",
+    headerGradient: "from-green-light",
   },
 };
 
