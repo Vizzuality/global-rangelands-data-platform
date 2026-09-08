@@ -6,6 +6,8 @@ import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
 
+import StoryIntroTip from "@/components/story-intro-tip";
+
 import { CATEGORY_CONTACTS, CATEGORY_DESCRIPTIONS, CATEGORY_DETAILS } from "../categories";
 import StoryCardRows from "../story-card-rows";
 import { getCategoryTheme } from "../theme";
@@ -42,21 +44,17 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
         className="pointer-events-none absolute inset-0 bg-[url(/images/stories-pattern-tile.svg)] bg-repeat opacity-10 [background-size:1280px_960px]"
       />
       <div className="relative">
-        <section className="container mx-auto px-6 pb-20 pt-44 xl:px-[100px] xl:pb-[127px] xl:pt-[207px]">
+        <section className="container mx-auto px-6 pb-20 pt-40 xl:px-[100px]">
           <div className="relative flex items-stretch justify-center">
-            <div
-              aria-hidden
-              className={cn(
-                "pointer-events-none absolute left-1/2 top-1/2 aspect-square h-[495px] -translate-x-1/2 -translate-y-1/2 rotate-45 xl:h-[calc(70.71%+180px)]",
-                theme.heroAccent,
-              )}
+            <StoryIntroTip
+              edge="top"
+              accentClassName={theme.heroAccent}
+              outlineClassName={theme.heroDiamondOutline}
             />
-            <div
-              aria-hidden
-              className={cn(
-                "pointer-events-none absolute left-1/2 top-1/2 aspect-square h-[447px] -translate-x-1/2 -translate-y-1/2 rotate-45 border-[5px] xl:h-[calc(70.71%+132px)]",
-                theme.heroDiamondOutline,
-              )}
+            <StoryIntroTip
+              edge="bottom"
+              accentClassName={theme.heroAccent}
+              outlineClassName={theme.heroDiamondOutline}
             />
             <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
             <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:py-[100px] xl:px-24">
