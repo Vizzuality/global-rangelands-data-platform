@@ -15,6 +15,8 @@ export type CategoryTheme = {
   patternColor: string;
   /** Gradient start color class for the band that fades the pattern out behind the header. */
   headerGradient: string;
+  /** Text-stroke utility painting the page background color around section headings. */
+  chromeStroke: string;
 };
 
 type CategoryPalette = Omit<CategoryTheme, "cardVariant">;
@@ -27,6 +29,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     chromeText: "text-white",
     patternColor: "bg-green-medium",
     headerGradient: "from-brown-dark",
+    chromeStroke: "[-webkit-text-stroke:2px_theme(colors.brown-dark)] [paint-order:stroke_fill]",
   },
   "restoration-investments": {
     pageBackground: "bg-orange-bright",
@@ -35,6 +38,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     chromeText: "text-brown-dark",
     patternColor: "bg-brown-dark",
     headerGradient: "from-orange-bright",
+    chromeStroke: "[-webkit-text-stroke:2px_theme(colors.orange-bright)] [paint-order:stroke_fill]",
   },
   "restoration-champions": {
     pageBackground: "bg-green-light",
@@ -43,6 +47,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     chromeText: "text-white",
     patternColor: "bg-green-medium",
     headerGradient: "from-green-light",
+    chromeStroke: "[-webkit-text-stroke:2px_theme(colors.green-light)] [paint-order:stroke_fill]",
   },
 };
 

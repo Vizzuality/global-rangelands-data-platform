@@ -26,6 +26,7 @@ const KeepExploringGrid = ({ category, slug }: KeepExploringGridProps) => {
         className={cn(
           "text-center font-serif text-4xl font-light leading-tight sm:text-5xl sm:leading-[56px]",
           theme.chromeText,
+          theme.chromeStroke,
         )}
       >
         {t("Keep exploring")}
