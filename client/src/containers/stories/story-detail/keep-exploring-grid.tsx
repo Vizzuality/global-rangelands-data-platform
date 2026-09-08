@@ -2,7 +2,7 @@
 
 import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
-import LandingStoryCard from "@/containers/stories/landing/story-card";
+import StoryCardRows from "@/containers/stories/story-card-rows";
 import { getCategoryTheme } from "@/containers/stories/theme";
 import { useStoryCategory } from "@/containers/stories/use-story-category";
 
@@ -30,16 +30,7 @@ const KeepExploringGrid = ({ category, slug }: KeepExploringGridProps) => {
       >
         {t("Keep exploring")}
       </h2>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {otherStories.map((story) => (
-          <LandingStoryCard
-            key={story.id}
-            story={story}
-            category={category}
-            variant={theme.cardVariant}
-          />
-        ))}
-      </div>
+      <StoryCardRows stories={otherStories} category={category} />
     </section>
   );
 };

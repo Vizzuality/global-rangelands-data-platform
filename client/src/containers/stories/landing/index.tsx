@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
 
 import { CATEGORY_CONTACTS, CATEGORY_DESCRIPTIONS, CATEGORY_DETAILS } from "../categories";
+import StoryCardRows from "../story-card-rows";
 import { getCategoryTheme } from "../theme";
 import { useStoryCategory } from "../use-story-category";
-import LandingStoryCard from "./story-card";
 
 type CategoryLandingProps = {
   category: string;
@@ -27,10 +27,6 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
   const description = CATEGORY_DESCRIPTIONS[category] ?? "";
   const details = CATEGORY_DETAILS[category] ?? [];
   const contact = CATEGORY_CONTACTS[category];
-
-  const storyRows = Array.from({ length: Math.ceil(stories.length / 3) }, (_, index) =>
-    stories.slice(index * 3, index * 3 + 3),
-  );
 
   const [leadDetail, ...columnDetails] = details;
   const columnMidpoint = Math.ceil(columnDetails.length / 2);
@@ -116,43 +112,7 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
         </section>
 
         <section className="container mx-auto px-6 pb-16 pt-20 sm:px-[100px]">
-          <div className="flex flex-col gap-6 sm:gap-2">
-            {storyRows.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex flex-col gap-6 sm:flex-row sm:gap-0">
-                <div
-                  aria-hidden
-                  className={cn("hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
-                />
-                {row.map((story, cardIndex) => (
-                  <div key={story.id} className="flex flex-1 sm:contents">
-                    {cardIndex > 0 && (
-                      <div
-                        aria-hidden
-                        className={cn("hidden w-2 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
-                      />
-                    )}
-                    <LandingStoryCard
-                      story={story}
-                      category={category}
-                      variant={theme.cardVariant}
-                      className="flex-1"
-                    />
-                  </div>
-                ))}
-                <div
-                  aria-hidden
-                  className={cn("hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
-                />
-                {Array.from({ length: 3 - row.length }).map((_, spacerIndex) => (
-                  <div
-                    key={`spacer-${spacerIndex}`}
-                    aria-hidden
-                    className="hidden flex-1 sm:block"
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
+          <StoryCardRows stories={stories} category={category} />
           {stories.length === 0 && (
             <p className="mx-auto max-w-md rounded-lg bg-white px-6 py-8 text-center text-green-dark">
               {t("No stories yet")}
