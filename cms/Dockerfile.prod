@@ -56,6 +56,10 @@ RUN apt-get update && \
 
 ENV NODE_ENV=production
 ENV COREPACK_HOME=/opt/corepack
+# adduser --system leaves HOME=/nonexistent, and the Strapi CLI's command loader
+# mkdirs HOME on every boot -- logging an EACCES error and dropping the
+# @strapi/cloud-cli commands, which this deployment does not use.
+ENV HOME=/home/strapi
 
 # entrypoint.sh runs pnpm at runtime, so corepack stays.
 RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
@@ -64,7 +68,8 @@ WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 strapi && \
-    chown -R strapi:nodejs /opt/corepack
+    mkdir -p /home/strapi && \
+    chown -R strapi:nodejs /opt/corepack /home/strapi
 
 # Copied whole: Strapi resolves config and API definitions at runtime.
 COPY --from=build --chown=strapi:nodejs /app ./

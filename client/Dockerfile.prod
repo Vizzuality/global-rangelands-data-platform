@@ -24,6 +24,25 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
+# NEXT_PUBLIC_* are inlined into the bundle by next build, so they must be set
+# here, not just at runtime. compose passes them from .env.prod; CI supplies
+# them via the generated .env.local, which COPY . . picks up.
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_URL
+ARG NEXT_PUBLIC_MAPBOX_TOKEN
+ARG CMS_INTERNAL_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
+    NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL \
+    NEXT_PUBLIC_MAPBOX_TOKEN=$NEXT_PUBLIC_MAPBOX_TOKEN \
+    CMS_INTERNAL_API_URL=$CMS_INTERNAL_API_URL
+
+# src/env.mjs declares TRANSIFEX_TOKEN as a required server variable and
+# validates it when the module loads, which happens during the build's route
+# analysis. The real token is only ever used per request (src/i18n/request.ts
+# calls tx.init inside getRequestConfig), so a placeholder satisfies the build
+# and no real secret enters it. Verified: a build with a bogus token succeeds.
+ENV TRANSIFEX_TOKEN=build-only-placeholder
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
