@@ -2,7 +2,15 @@ import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 import { env } from "@/env.mjs";
 
-export const AXIOS_INSTANCE = Axios.create({ baseURL: env.NEXT_PUBLIC_API_URL });
+// On the server a relative URL has no origin to resolve against, and routing a
+// server-side request out through nginx would be a pointless round trip. In the
+// browser, relative keeps the bundle domain-agnostic.
+const baseURL =
+  typeof window === "undefined"
+    ? process.env.CMS_INTERNAL_API_URL || env.NEXT_PUBLIC_API_URL
+    : env.NEXT_PUBLIC_API_URL;
+
+export const AXIOS_INSTANCE = Axios.create({ baseURL });
 
 export const API = <T>(config: AxiosRequestConfig, options?: AxiosRequestConfig): Promise<T> => {
   const source = Axios.CancelToken.source();
