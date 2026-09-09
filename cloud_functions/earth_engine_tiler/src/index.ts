@@ -71,7 +71,7 @@ const assets: Record<Tilesets, EarthEngineDataset> = {
 const router = Router();
 const app = express();
 app.use('/', router);
-exports.eetApp = app;
+export const eetApp = app;
 
 
 router.get('/:z/:x/:y', async (req: Request, res: Response) : Promise<void> => {
