@@ -1,0 +1,104 @@
+server {
+    listen 80 default_server;
+    server_name ${SERVER_NAME};
+
+    # Issued with certbot --webroot, never --standalone: certbot runs on the
+    # host and --standalone would bind this port out from under the container.
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl default_server;
+    http2 on;
+    server_name ${SERVER_NAME};
+
+    ssl_certificate     /etc/nginx/certs/fullchain.pem;
+    ssl_certificate_key /etc/nginx/certs/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+    ssl_session_cache   shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    # Trailing slash on proxy_pass strips the location prefix, matching
+    # path_prefix_rewrite = "/" in
+    # infrastructure/base/modules/load-balancer/main.tf:107 and :117.
+    location /cms/ {
+        proxy_pass http://cms:1337/;
+    }
+
+    location /functions/eet/ {
+        proxy_pass http://tiler:8080/;
+
+        proxy_cache tiles;
+
+        # $request_uri carries the query string, where the viz params live.
+        # Matches include_query_string = true in load-balancer/main.tf.
+        proxy_cache_key "$scheme$request_method$host$request_uri";
+
+        # The tiler emits no Cache-Control at all, so without this nothing is
+        # ever cached and every tile reaches metered Earth Engine. This is the
+        # cache_mode = "FORCE_CACHE_ALL" equivalent.
+        proxy_ignore_headers Cache-Control Expires Set-Cookie X-Accel-Expires;
+        proxy_cache_valid 200 1w;
+        proxy_cache_valid 404 1m;
+
+        # Request collapsing, which Cloud CDN did implicitly. Without it N
+        # concurrent misses become N Earth Engine calls against a single
+        # unscaled instance.
+        proxy_cache_lock on;
+        proxy_cache_lock_timeout 30s;
+        proxy_cache_lock_age 30s;
+
+        proxy_cache_use_stale updating error timeout
+                              http_500 http_502 http_503 http_504;
+        proxy_cache_background_update on;
+
+        add_header X-Cache-Status $upstream_cache_status always;
+    }
+
+    # No trailing slash: the full path is preserved, including /_next assets.
+    location / {
+        proxy_pass http://client:3000;
+    }
+}
+
+# Canonical-domain redirect. The platform answers on two domains; one must be
+# canonical and the other must 301, or they compete for SEO and cookies.
+# REDIRECT_SERVER_NAME lists the non-canonical names -- point it at a name that
+# never resolves to disable this. envsubst cannot omit a block, only fail to
+# match one.
+server {
+    listen 80;
+    server_name ${REDIRECT_SERVER_NAME};
+
+    # Also served here, not only on the canonical name: certbot validates every
+    # name in the SAN list separately, so a 301 on this path fails issuance for
+    # the whole certificate -- including the name the block below needs.
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://${CANONICAL_HOST}$request_uri;
+    }
+}
+
+# Not optional: a browser completes the TLS handshake before nginx can redirect,
+# so the certificate must cover the non-canonical names too.
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${REDIRECT_SERVER_NAME};
+
+    ssl_certificate     /etc/nginx/certs/fullchain.pem;
+    ssl_certificate_key /etc/nginx/certs/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+
+    return 301 https://${CANONICAL_HOST}$request_uri;
+}
