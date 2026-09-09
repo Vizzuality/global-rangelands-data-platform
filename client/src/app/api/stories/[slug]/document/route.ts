@@ -1,17 +1,17 @@
 import { NextResponse } from "next/server";
 
-import { CMS_API_BASE, CMS_MEDIA_BASE, mediaUrl } from "@/lib/cms";
+import { cmsInternalApiBase, cmsInternalMediaBase, internalMediaUrl } from "@/lib/cms.server";
 
 type StoriesDocumentResponse = {
   data?: { document?: { url?: string; name?: string; mime?: string } | null }[];
 };
 
-const ALLOWED_MEDIA_HOSTS = [new URL(CMS_MEDIA_BASE).hostname, "storage.googleapis.com"];
-
 const isAllowedMediaUrl = (url: string) => {
   try {
     const { protocol, hostname } = new URL(url);
-    return /^https?:$/.test(protocol) && ALLOWED_MEDIA_HOSTS.includes(hostname);
+    // The CMS origin, plus GCS for content still pointing at the old buckets.
+    const allowed = [new URL(cmsInternalMediaBase()).hostname, "storage.googleapis.com"];
+    return /^https?:$/.test(protocol) && allowed.includes(hostname);
   } catch {
     return false;
   }
@@ -29,7 +29,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     "pagination[limit]": "1",
   });
 
-  const storyResponse = await fetch(`${CMS_API_BASE}/stories?${query.toString()}`);
+  const storyResponse = await fetch(`${cmsInternalApiBase()}/stories?${query.toString()}`);
 
   if (!storyResponse.ok) {
     return new NextResponse(null, { status: 502 });
@@ -42,7 +42,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     return new NextResponse(null, { status: 404 });
   }
 
-  const documentUrl = mediaUrl(document.url);
+  const documentUrl = internalMediaUrl(document.url);
 
   if (!isAllowedMediaUrl(documentUrl)) {
     return new NextResponse(null, { status: 502 });
