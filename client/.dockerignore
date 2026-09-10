@@ -1,0 +1,23 @@
+# NOTE: .env.local is NOT excluded — Dockerfile.prod copies it to inline
+# NEXT_PUBLIC_* at build time.
+
+node_modules
+.next
+out
+
+.git
+.gitignore
+.husky
+.idea
+.vscode
+
+next-env.d.ts
+*.log
+npm-debug.log*
+pnpm-debug.log*
+coverage
+.nyc_output
+.DS_Store
+
+playwright-report
+test-results
