@@ -23,19 +23,15 @@ const StoryCardContent = ({
   imageAlt,
   imageCaption,
 }: StoryCardContentProps) => (
-  <div className="overflow-hidden">
+  <Link
+    href={href}
+    className="block overflow-hidden focus-visible:underline focus-visible:outline-none"
+  >
     <div className={cn("flex flex-col gap-2.5 px-8 pb-5 pt-8", variant)}>
       {categoryTitle && (
         <p className="text-[10px] font-medium uppercase leading-5">{categoryTitle}</p>
       )}
-      <h3 className="line-clamp-2 min-h-12 text-base font-medium leading-6">
-        <Link
-          href={href}
-          className="before:absolute before:inset-0 focus-visible:underline focus-visible:outline-none"
-        >
-          {title}
-        </Link>
-      </h3>
+      <h3 className="line-clamp-2 min-h-12 text-base font-medium leading-6">{title}</h3>
     </div>
     {imageUrl && (
       <div className="relative h-44">
@@ -53,7 +49,7 @@ const StoryCardContent = ({
         )}
       </div>
     )}
-  </div>
+  </Link>
 );
 
 export default StoryCardContent;

@@ -10,7 +10,7 @@ import PeopleIcon from "@/svgs/dataset-categories/people.svg";
 import { CATEGORY_DESCRIPTIONS, CATEGORY_ORDER, STORY_CATEGORY_LABELS } from "./categories";
 
 export const storyCategoriesTriggerClassName = cn(
-  "relative isolate gap-2 px-4 font-medium",
+  "relative isolate cursor-pointer gap-2 px-4 font-medium",
   "data-[state=open]:border-t-transparent data-[state=open]:text-white",
   "[&[data-state=open]>span]:w-[336px] [&[data-state=open]>span]:opacity-100",
   "[&[data-state=open]>svg]:rotate-180",

@@ -6,10 +6,12 @@ import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
 
+import StoryIntroTip from "@/components/story-intro-tip";
+
 import { CATEGORY_CONTACTS, CATEGORY_DESCRIPTIONS, CATEGORY_DETAILS } from "../categories";
+import StoryCardRows from "../story-card-rows";
 import { getCategoryTheme } from "../theme";
 import { useStoryCategory } from "../use-story-category";
-import LandingStoryCard from "./story-card";
 
 type CategoryLandingProps = {
   category: string;
@@ -28,10 +30,6 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
   const details = CATEGORY_DETAILS[category] ?? [];
   const contact = CATEGORY_CONTACTS[category];
 
-  const storyRows = Array.from({ length: Math.ceil(stories.length / 3) }, (_, index) =>
-    stories.slice(index * 3, index * 3 + 3),
-  );
-
   const [leadDetail, ...columnDetails] = details;
   const columnMidpoint = Math.ceil(columnDetails.length / 2);
   const leftColumnDetails = columnDetails.slice(0, columnMidpoint);
@@ -43,27 +41,34 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[url(/images/stories-pattern-tile.svg)] bg-repeat opacity-10 [background-size:1280px_960px]"
+        className={cn(
+          "pointer-events-none absolute inset-0 opacity-10",
+          "[mask-image:url(/images/stories-pattern-tile.svg)] [mask-repeat:repeat] [mask-size:1280px_960px]",
+          theme.patternColor,
+        )}
+      />
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-0 h-[188px] bg-gradient-to-b to-transparent",
+          theme.headerGradient,
+        )}
       />
       <div className="relative">
-        <section className="container mx-auto px-6 py-44 sm:px-[100px]">
+        <section className="container mx-auto px-6 pb-20 pt-40 xl:px-[100px]">
           <div className="relative flex items-stretch justify-center">
-            <div
-              aria-hidden
-              className={cn(
-                "pointer-events-none absolute left-1/2 top-1/2 aspect-square h-[495px] -translate-x-1/2 -translate-y-1/2 rotate-45 xl:h-[calc(70.71%+180px)]",
-                theme.heroAccent,
-              )}
+            <StoryIntroTip
+              edge="top"
+              accentClassName={theme.heroAccent}
+              outlineClassName={theme.heroDiamondOutline}
             />
-            <div
-              aria-hidden
-              className={cn(
-                "pointer-events-none absolute left-1/2 top-1/2 aspect-square h-[447px] -translate-x-1/2 -translate-y-1/2 rotate-45 border-[5px] xl:h-[calc(70.71%+132px)]",
-                theme.heroDiamondOutline,
-              )}
+            <StoryIntroTip
+              edge="bottom"
+              accentClassName={theme.heroAccent}
+              outlineClassName={theme.heroDiamondOutline}
             />
             <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
-            <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:px-24 sm:py-[100px]">
+            <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:py-[100px] xl:px-24">
               <h1 className="max-w-[606px] font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl sm:leading-[56px]">
                 {title}
               </h1>
@@ -115,44 +120,8 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
           </div>
         </section>
 
-        <section className="container mx-auto px-6 py-16 sm:px-[100px]">
-          <div className="flex flex-col gap-6 sm:gap-2">
-            {storyRows.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex flex-col gap-6 sm:flex-row sm:gap-0">
-                <div
-                  aria-hidden
-                  className={cn("hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
-                />
-                {row.map((story, cardIndex) => (
-                  <div key={story.id} className="flex flex-1 sm:contents">
-                    {cardIndex > 0 && (
-                      <div
-                        aria-hidden
-                        className={cn("hidden w-2 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
-                      />
-                    )}
-                    <LandingStoryCard
-                      story={story}
-                      category={category}
-                      variant={theme.cardVariant}
-                      className="flex-1"
-                    />
-                  </div>
-                ))}
-                <div
-                  aria-hidden
-                  className={cn("hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
-                />
-                {Array.from({ length: 3 - row.length }).map((_, spacerIndex) => (
-                  <div
-                    key={`spacer-${spacerIndex}`}
-                    aria-hidden
-                    className="hidden flex-1 sm:block"
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
+        <section className="container mx-auto px-6 pb-16 pt-20 xl:px-[100px]">
+          <StoryCardRows stories={stories} category={category} />
           {stories.length === 0 && (
             <p className="mx-auto max-w-md rounded-lg bg-white px-6 py-8 text-center text-green-dark">
               {t("No stories yet")}

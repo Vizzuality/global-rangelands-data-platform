@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "@/i18n";
 import HomeLink from "@/components/ui/home-link";
+import { getCategoryTheme } from "@/containers/stories/theme";
 import StoryCategoriesMenu, {
   StoryCategoriesMenuScrim,
   StoryCategoriesTriggerBlock,
@@ -27,12 +28,21 @@ const HeaderNavigation = () => {
   const isMap = pathname === "/map" || pathname.startsWith("/map/");
   const isStories = pathname.startsWith("/stories");
   const whiteChrome = isMap || isStories;
+  const storyCategory = isStories ? pathname.split("/")[2] : undefined;
+
+  const getChromeClassName = () => {
+    if (storyCategory) return getCategoryTheme(storyCategory).chromeText;
+    if (isMap) return "text-white";
+    return "text-foreground";
+  };
+  const chromeClassName = getChromeClassName();
 
   const itemClassName = (active: boolean) =>
     cn(
       "flex h-[var(--header-height)] items-center border-t-4 border-t-transparent pb-1 text-sm outline-none transition-[color,opacity] duration-300 focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-1",
-      active && "border-white text-global",
-      whiteChrome ? "text-white hover:text-white/70" : "text-foreground",
+      active && "border-t-current",
+      chromeClassName,
+      whiteChrome && "hover:opacity-70",
     );
 
   return (
@@ -49,7 +59,7 @@ const HeaderNavigation = () => {
         <div className="mx-6 flex items-center justify-between gap-7">
           <div className="flex-1">
             <nav className="flex w-full items-center justify-between">
-              <HomeLink className={whiteChrome ? "text-white" : "text-global"} />
+              <HomeLink className={whiteChrome ? chromeClassName : "text-global"} />
               <div className="flex gap-10">
                 <DropdownMenu open={storiesOpen} onOpenChange={setStoriesOpen}>
                   <DropdownMenuTrigger
