@@ -13,11 +13,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
     notFound();
   }
 
-  tx.init({
-    token: env.TRANSIFEX_TOKEN,
-  });
+  const token = env.TRANSIFEX_TOKEN;
+  if (LOCALES.length > 1 && token) {
+    tx.init({ token });
+    await tx.fetchTranslations(locale as string, { refresh: true });
+  }
 
-  await tx.fetchTranslations(locale as string, { refresh: true });
   const translations = Object.fromEntries(
     Object.entries(tx.cache.getTranslations(locale as string)).map(([key, value]) => [
       key.replaceAll(".", "{{dot}}"),
