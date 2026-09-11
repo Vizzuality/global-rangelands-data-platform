@@ -16,7 +16,11 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const token = env.TRANSIFEX_TOKEN;
   if (LOCALES.length > 1 && token) {
     tx.init({ token });
-    await tx.fetchTranslations(locale as string, { refresh: true });
+    try {
+      await tx.fetchTranslations(locale as string, { refresh: true });
+    } catch (error) {
+      console.error("Failed to fetch Transifex translations:", error);
+    }
   }
 
   const translations = Object.fromEntries(
