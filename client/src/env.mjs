@@ -6,7 +6,7 @@ export const env = createEnv({
   clientPrefix: "NEXT_PUBLIC_",
 
   server: {
-    TRANSIFEX_TOKEN: z.string(),
+    TRANSIFEX_TOKEN: z.string().optional(),
   },
 
   client: {
