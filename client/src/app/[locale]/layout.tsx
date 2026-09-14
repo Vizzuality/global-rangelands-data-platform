@@ -20,7 +20,6 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     manifest: "/images/metadata/site.webmanifest",
     icons: [
       { rel: "shortcut icon", url: "/favicon.ico", type: "image/x-icon" },
-      { rel: "icon", url: "/images/metadata/favicon.svg", type: "image/x-icon" },
       {
         rel: "icon",
         url: "/images/metadata/favicon-32x32.png",
