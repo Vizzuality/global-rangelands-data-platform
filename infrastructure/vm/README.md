@@ -210,6 +210,35 @@ Remove them — along with the `staging.rangelandsdata.org` pattern and the
 `rdp-landing-bucket` one, which is referenced by neither code nor content — once
 staging is decommissioned.
 
+## Relative tile URLs
+
+Layer configs store the tiler template as `/functions/eet/{z}/{x}/{y}/`, with no
+host. The browser resolves it against whatever origin served the page, so the
+same database works on `localhost`, a spare hostname and the apex domains
+without a rewrite.
+
+Verified in a real browser against the live stack: the template resolves to the
+page origin, the request reaches nginx, and four different tilesets
+(`anthropogenic_biomes`, `livestock_production_systems`, `forest_loss`,
+`gridded_livestock_buffalo`) each return `200 image/png` decoding to a 256×256
+`ImageBitmap` — what `BitmapLayer` consumes. `setRasterTiles`
+(`client/src/lib/json-converter/utils/setters.ts:90`) is plain string
+concatenation and nothing in the map code calls `new URL()`, so the relative
+string reaches `TileLayer.data` untouched.
+
+Only raster layers are affected. All 16 `MVTLayer` rows source
+`https://api.mapbox.com/v4/...` and are deliberately left absolute — they are
+third-party tiles, not ours to relocate.
+
+> When testing a tile by hand, pick a tileset that takes no `startYear` /
+> `endYear`. `modis_net_primary_production` requires them and answers `400`,
+> which reads like a routing failure and is not one.
+
+> The full deck.gl render path is still unverified: `NEXT_PUBLIC_MAPBOX_TOKEN`
+> is a placeholder locally, so the basemap 401s and the overlay never mounts.
+> With a valid token, a browser probe of `/en/map` should record same-origin
+> `/functions/eet/` requests returning 200.
+
 ## Content baseline
 
 Recorded 2026-09-07 from the live staging API. These are the assertion targets
@@ -399,16 +428,51 @@ bucket-name check while wiping the column.
 > `/en/map` render. `CMS_INTERNAL_API_URL` is already supplied to the container
 > and awaits being consumed.
 
+## Acceptance, measured from cold
+
+`docker compose down -v`, then rebuilt and re-migrated from nothing. Results are
+observations from that run, not claims.
+
+| # | Criterion | Result |
+|---|---|---|
+| 1 | Stack reaches healthy with no manual intervention | **125 s**, all five services |
+| 2 | Both prefix-stripped routes answer | frontend 307→200, CMS API 200, admin 200, tile 200 |
+| 2 | CMS never sees the `/cms` prefix | receives `/api`, `/admin`, `/_health` only |
+| 3 | Tile cache stores, serves and collapses | MISS→HIT; **1** upstream fetch for 10 concurrent |
+| 4 | Media survives a container recreate | 200 before and after `--force-recreate` |
+| 6 | Content matches the staging baseline | all 7 entity counts exact |
+| 7 | URL rewrites are idempotent | 52→0 then 0→0; media 0/0/0 twice |
+| 8 | No stale hostname in delivered content | 0 GCS / 0 staging / 0 `cms:1337` across three pages and the database |
+| — | HTTP redirects to HTTPS, ACME still served | 301, and `token-ok` on the challenge path |
+| — | Canonical redirect preserves path and query | `alias.localhost/x?y=1` → `https://localhost/x?y=1` |
+
+> `down -v` also removes the `certs` volume. nginx fails its configuration test
+> without `fullchain.pem`, so regenerate the certificate **between** teardown and
+> bring-up — not after. The same applies on the VM whenever the volume is
+> recreated.
+
+> The cold sequence must also re-run `migrate-media-from-gcs.sh`; the `media`
+> volume is destroyed with the rest, and without it every image 404s while the
+> database still references the files.
+
+### Not yet verified
+
+The deck.gl render path. `NEXT_PUBLIC_MAPBOX_TOKEN` is a placeholder locally, so
+the basemap returns 401, the overlay never mounts, and a browser probe of
+`/en/map` records zero tile requests — inconclusive rather than failing. The
+relative tile URL itself is verified (see **Relative tile URLs**); what remains
+is observing `TileLayer` issue the request. Re-run the probe with a valid token.
+
 ## Image sizes
 
-Measured with `docker image ls`, each asserted alongside a working cold boot
+Both units are given because `docker image ls` reports MB while the build output reports MiB; 293 MiB and 308 MB are the same image. Each size was asserted alongside a working cold boot
 (health endpoint plus a real 256×256 PNG tile), not in isolation.
 
 | Image | Size |
 |---|---|
 | `rdp-tiler:local` | **355 MB** — `node:22.23.1-bookworm-slim`, new here |
-| `rdp-client:local` | 293 MiB (was 1391 MiB) |
-| `rdp-cms:local` | 939 MiB (was 1516 MiB) |
+| `rdp-client:local` | 293 MiB / 308 MB (was 1391 MiB) |
+| `rdp-cms:local` | 939 MiB / 984 MB (was 1516 MiB) |
 
 ### Why the tiler is 355 MB
 

@@ -46,6 +46,10 @@ ENV TRANSIFEX_TOKEN=build-only-placeholder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# CI writes .env.local before the build; a clean checkout has none, and the
+# runner stage copies it unconditionally. touch is a no-op when it exists.
+RUN touch .env.local
+
 RUN pnpm build
 
 # runner — standalone output only; see `output: "standalone"` in next.config.mjs.

@@ -7,6 +7,10 @@ export const env = createEnv({
 
   server: {
     TRANSIFEX_TOKEN: z.string(),
+    // Runtime override for metadataBase. Optional: NEXT_PUBLIC_URL is inlined
+    // at build time and stays the fallback, so environments with no runtime env
+    // channel keep working unchanged.
+    SITE_URL: z.string().url().optional(),
   },
 
   client: {
@@ -27,6 +31,7 @@ export const env = createEnv({
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
     TRANSIFEX_TOKEN: process.env.TRANSIFEX_TOKEN,
+    SITE_URL: process.env.SITE_URL,
   },
 
   emptyStringAsUndefined: true,
