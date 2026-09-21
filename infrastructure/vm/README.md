@@ -210,6 +210,35 @@ Remove them — along with the `staging.rangelandsdata.org` pattern and the
 `rdp-landing-bucket` one, which is referenced by neither code nor content — once
 staging is decommissioned.
 
+## Relative tile URLs
+
+Layer configs store the tiler template as `/functions/eet/{z}/{x}/{y}/`, with no
+host. The browser resolves it against whatever origin served the page, so the
+same database works on `localhost`, a spare hostname and the apex domains
+without a rewrite.
+
+Verified in a real browser against the live stack: the template resolves to the
+page origin, the request reaches nginx, and four different tilesets
+(`anthropogenic_biomes`, `livestock_production_systems`, `forest_loss`,
+`gridded_livestock_buffalo`) each return `200 image/png` decoding to a 256×256
+`ImageBitmap` — what `BitmapLayer` consumes. `setRasterTiles`
+(`client/src/lib/json-converter/utils/setters.ts:90`) is plain string
+concatenation and nothing in the map code calls `new URL()`, so the relative
+string reaches `TileLayer.data` untouched.
+
+Only raster layers are affected. All 16 `MVTLayer` rows source
+`https://api.mapbox.com/v4/...` and are deliberately left absolute — they are
+third-party tiles, not ours to relocate.
+
+> When testing a tile by hand, pick a tileset that takes no `startYear` /
+> `endYear`. `modis_net_primary_production` requires them and answers `400`,
+> which reads like a routing failure and is not one.
+
+> The full deck.gl render path is still unverified: `NEXT_PUBLIC_MAPBOX_TOKEN`
+> is a placeholder locally, so the basemap 401s and the overlay never mounts.
+> With a valid token, a browser probe of `/en/map` should record same-origin
+> `/functions/eet/` requests returning 200.
+
 ## Content baseline
 
 Recorded 2026-09-07 from the live staging API. These are the assertion targets
