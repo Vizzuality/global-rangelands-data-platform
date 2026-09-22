@@ -1,16 +1,20 @@
-# Build all the things
-FROM node:22.23.1-bookworm-slim AS build
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y \
+# syntax=docker/dockerfile:1
+
+# deps — native toolchain for sharp; kept out of the runner.
+FROM node:22.23.1-bookworm-slim AS deps
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
       build-essential \
-      gcc autoconf \
+      gcc \
+      autoconf \
       automake \
       zlib1g-dev \
       libpng-dev \
-      nasm bash \
+      nasm \
+      bash \
       libvips-dev \
-    && apt-get clean
+    && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=production
 
@@ -18,46 +22,61 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
-COPY config ./config
-COPY database ./database
-COPY public ./public
-COPY src ./src
-
-COPY .env \
-     .nvmrc \
-     .npmrc \
-     favicon.png \
-     package.json \
-     pnpm-lock.yaml \
-     entrypoint.sh \
-     tsconfig.json \
-     ./
+# Lockfile only, so source edits don't reinstall dependencies.
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 RUN pnpm install --frozen-lockfile
 
+# build
+FROM node:22.23.1-bookworm-slim AS build
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libvips-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV NODE_ENV=production
+
+RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
 RUN pnpm build
 
-# Copy only the built files into the final image
+# runner
 FROM node:22.23.1-bookworm-slim AS runner
-RUN apt-get update -y && \
+
+# libvips42, not libvips-dev — runtime library only. Patch here, not in build.
+RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y libvips-dev && \
-    apt-get clean
+    apt-get install -y --no-install-recommends libvips42 \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=production
 ENV COREPACK_HOME=/opt/corepack
 
+# entrypoint.sh runs pnpm at runtime, so corepack stays.
 RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 strapi
-RUN chown -R strapi:nodejs /opt/corepack
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 strapi && \
+    chown -R strapi:nodejs /opt/corepack
 
+# Copied whole: Strapi resolves config and API definitions at runtime.
 COPY --from=build --chown=strapi:nodejs /app ./
+
+# /app is root-owned, so uid 1001 cannot create these itself.
+# public/uploads: provider-upload-local throws if absent.
+# data/backups: hardcoded by import-export-data (server/utils/fs.js:13).
+RUN mkdir -p /app/public/uploads /app/data/backups && \
+    chown -R strapi:nodejs /app/public/uploads /app/data
 
 USER strapi
 
 EXPOSE 1337
+
 ENTRYPOINT ["/app/entrypoint.sh"]
