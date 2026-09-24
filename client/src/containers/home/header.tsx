@@ -79,7 +79,7 @@ const Header = () => {
               )}
             >
               <StoryCategoriesTriggerBlock className="-inset-y-4" />
-              {t("Stories")}
+              {t("Features")}
               <ChevronDown
                 aria-hidden="true"
                 className="size-5 transition-transform duration-300"

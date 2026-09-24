@@ -96,7 +96,7 @@ const MapLayers = () => {
       isActive: !isStoriesMode,
     },
     {
-      title: t("Stories"),
+      title: t("Features"),
       id: "stories",
       href: `/map/stories${searchParams}` as const,
       color: "stories",
