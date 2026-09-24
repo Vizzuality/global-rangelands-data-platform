@@ -47,6 +47,7 @@ export const CATEGORY_DETAILS: Record<string, string[]> = {
   ],
   "restoration-champions": [
     "Meet the people and organizations turning rangeland restoration into daily practice: herders, cooperatives, scientists and local institutions protecting these landscapes and the livelihoods they support. Their work shows what stewardship looks like at scale.",
+    "Rangeland Restoration Champions were identified through a consultative process in the run-up to the UNCCD COP17 in Mongolia.",
   ],
 };
 

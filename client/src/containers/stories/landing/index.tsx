@@ -30,7 +30,8 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
   const details = CATEGORY_DETAILS[category] ?? [];
   const contact = CATEGORY_CONTACTS[category];
 
-  const [leadDetail, ...columnDetails] = details;
+  const leadDetails = contact ? details.slice(0, 1) : details;
+  const columnDetails = contact ? details.slice(1) : [];
   const columnMidpoint = Math.ceil(columnDetails.length / 2);
   const leftColumnDetails = columnDetails.slice(0, columnMidpoint);
   const rightColumnDetails = columnDetails.slice(columnMidpoint);
@@ -79,8 +80,10 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
               )}
               {(details.length > 0 || contact) && (
                 <div className="w-full max-w-[740px] space-y-6 text-left text-body-16-loose text-green-dark">
-                  {leadDetail && <p>{leadDetail}</p>}
-                  {(columnDetails.length > 0 || contact) && (
+                  {leadDetails.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                  {contact && (
                     <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
                       <div className="flex-1 space-y-4">
                         {leftColumnDetails.map((paragraph) => (
