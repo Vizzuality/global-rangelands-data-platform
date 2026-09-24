@@ -14,9 +14,9 @@ import type { CategorizedStory } from "@/containers/stories/use-story-category";
 const FEATURED_CARDS = [
   {
     slug: "reversing-rangeland-degradation-through-collective-participatory-rangeland-management-in-mongolia",
-    label: "Rangeland Stories",
-    ctaLabel: "See all Rangelands Atlas Stories",
-    category: "atlas-stories",
+    label: "Rangelands Stories",
+    ctaLabel: "See all Rangelands Stories",
+    category: "rangelands-stories",
   },
   {
     slug: "contributing-to-land-degradation-neutrality-ldn-in-the-brazillian-cerrado",

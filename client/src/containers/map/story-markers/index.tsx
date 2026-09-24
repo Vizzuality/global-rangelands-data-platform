@@ -15,7 +15,7 @@ const STORIES_MODE_PREFIXES = ["/map/stories", "/map/story"];
 const STORY_SLUG_RE = /^\/map\/story\/([^/]+)/;
 
 const MARKER_GLOW_BY_CATEGORY: Record<string, StoryMarkerVariant> = {
-  "atlas-stories": {
+  "rangelands-stories": {
     glow: "bg-brown-dark",
     halo: "bg-brown-dark/20",
     border: "border-brown-dark",
@@ -31,7 +31,7 @@ const MARKER_GLOW_BY_CATEGORY: Record<string, StoryMarkerVariant> = {
     border: "border-green-light",
   },
 };
-const DEFAULT_MARKER_GLOW = MARKER_GLOW_BY_CATEGORY["atlas-stories"];
+const DEFAULT_MARKER_GLOW = MARKER_GLOW_BY_CATEGORY["rangelands-stories"];
 
 const resolveVisibleStories = ({
   stories,

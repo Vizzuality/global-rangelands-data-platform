@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useLocale } from "next-intl";
 import { ArrowLeft } from "lucide-react";
 
-import { useTranslations } from "@/i18n";
 import { Link } from "@/i18n/navigation";
 import { useGetStories } from "@/types/generated/story";
 import type { StoryCategoryListResponse } from "@/types/generated/strapi.schemas";
@@ -26,7 +25,6 @@ type StoryDetailPageProps = {
 
 const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPageProps) => {
   const locale = useLocale();
-  const t = useTranslations();
   const theme = getCategoryTheme(category);
 
   const { data: storyData } = useGetStories(
@@ -82,7 +80,7 @@ const StoryDetailPage = ({ category, slug, initialCategoryData }: StoryDetailPag
                   className="inline-flex items-center gap-1 text-xs font-medium uppercase text-green-dark underline underline-offset-2 hover:text-green-light"
                 >
                   <ArrowLeft className="h-5 w-5" />
-                  {t("Rangelands")} {categoryTitle}
+                  {categoryTitle}
                 </Link>
 
                 {title && (
