@@ -22,7 +22,7 @@ export type CategoryTheme = {
 type CategoryPalette = Omit<CategoryTheme, "cardVariant">;
 
 const PALETTES: Record<string, CategoryPalette> = {
-  "atlas-stories": {
+  "rangelands-stories": {
     pageBackground: "bg-brown-dark",
     heroAccent: "bg-green-dark",
     heroDiamondOutline: "border-green-bright",
@@ -51,7 +51,7 @@ const PALETTES: Record<string, CategoryPalette> = {
   },
 };
 
-const PALETTE_DEFAULT = PALETTES["atlas-stories"];
+const PALETTE_DEFAULT = PALETTES["rangelands-stories"];
 
 export function getCategoryTheme(slug: string): CategoryTheme {
   return {

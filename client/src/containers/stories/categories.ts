@@ -1,17 +1,17 @@
 export const CATEGORY_ORDER: string[] = [
-  "atlas-stories",
+  "rangelands-stories",
   "restoration-investments",
   "restoration-champions",
 ];
 
 export const STORY_CATEGORY_LABELS: Record<string, string> = {
-  "atlas-stories": "Atlas Stories",
+  "rangelands-stories": "Rangelands Stories",
   "restoration-investments": "Restoration Investments",
   "restoration-champions": "Restoration Champions",
 };
 
 export const STORY_CARD_VARIANTS: Record<string, string> = {
-  "atlas-stories": "bg-brown-dark text-white",
+  "rangelands-stories": "bg-brown-dark text-white",
   "restoration-investments": "bg-orange-bright text-brown-dark",
   "restoration-champions": "bg-green-light text-white",
 };
@@ -21,14 +21,14 @@ export const STORY_CARD_DEFAULT_VARIANT = "bg-brown-dark text-white";
 export const STORY_CARD_LANDING_VARIANT = "bg-white text-green-dark";
 
 export const CATEGORY_TITLE_COLOR: Record<string, string> = {
-  "atlas-stories": "text-brown-dark",
+  "rangelands-stories": "text-brown-dark",
   "restoration-investments": "text-brown-dark",
   "restoration-champions": "text-green-light",
 };
 export const CATEGORY_TITLE_DEFAULT_COLOR = "text-brown-dark";
 
 export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  "atlas-stories":
+  "rangelands-stories":
     "The impact of changes in rangelands on local communities, their livestock, and natural resources.",
   "restoration-investments":
     "The STELARR Rangeland Restoration Investment Hub is an investment matchmaking platform connecting locally-led investment cases with finance, accompanied by capacity building and technical support.",
@@ -37,7 +37,7 @@ export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
 };
 
 export const CATEGORY_DETAILS: Record<string, string[]> = {
-  "atlas-stories": [
+  "rangelands-stories": [
     "These stories trace how climate shifts, land-use change and management decisions are reshaping rangelands, and what that means for the communities and livestock that depend on them. Each one draws on local knowledge and open data to make long-term change visible.",
   ],
   "restoration-investments": [
