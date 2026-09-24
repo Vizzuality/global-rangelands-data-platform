@@ -66,7 +66,7 @@ const HeaderNavigation = () => {
                     className={cn(itemClassName(isStories), storyCategoriesTriggerClassName)}
                   >
                     <StoryCategoriesTriggerBlock />
-                    {t("Stories")}
+                    {t("Features")}
                     <ChevronDown
                       aria-hidden="true"
                       className="size-5 transition-transform duration-300"

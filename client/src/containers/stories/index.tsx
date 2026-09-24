@@ -132,7 +132,7 @@ const CategoryStories = ({
           onClick={onBack}
           className="text-left font-serif text-[54px] font-light leading-[0.9] tracking-[-2.7px] text-navy"
         >
-          {t("Stories")}
+          {t("Features")}
         </button>
       </div>
       <CategoryFilter categories={categories} activeSlug={activeSlug} onSelect={onSelect} />
@@ -208,10 +208,10 @@ const Stories = () => {
       <div className="relative">
         <header className="space-y-4 px-6 pb-6 pt-10">
           <h1 className="font-serif text-[54px] font-light leading-[0.9] tracking-[-2.7px] text-navy">
-            {t("Stories")}
+            {t("Features")}
           </h1>
           <p className="font-sans text-sm leading-6 text-foreground">
-            {t("Select a story type to start")}
+            {t("Select a feature type to start")}
           </p>
         </header>
         <CategoryList categories={categories} onSelect={setActiveCategory} />
