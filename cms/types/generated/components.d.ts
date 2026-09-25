@@ -131,6 +131,34 @@ export interface TranslationsEcoregionTranslation
   };
 }
 
+export interface TranslationsFeatureCategoryTranslation
+  extends Struct.ComponentSchema {
+  collectionName: 'components_translations_feature_category_translations';
+  info: {
+    displayName: 'feature-category translation';
+  };
+  attributes: {
+    locale: Schema.Attribute.Enumeration<['en', 'es', 'fr']>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface TranslationsFeatureTranslation extends Struct.ComponentSchema {
+  collectionName: 'components_translations_feature_translations';
+  info: {
+    description: '';
+    displayName: 'Feature Translation';
+  };
+  attributes: {
+    description: Schema.Attribute.RichText;
+    locale: Schema.Attribute.Enumeration<['es', 'fr']>;
+    notes: Schema.Attribute.RichText;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+  };
+}
+
 export interface TranslationsLayerTranslation extends Struct.ComponentSchema {
   collectionName: 'components_translations_layer_translations';
   info: {
@@ -158,34 +186,6 @@ export interface TranslationsRangelandTranslation
   };
 }
 
-export interface TranslationsStoryCategoryTranslation
-  extends Struct.ComponentSchema {
-  collectionName: 'components_translations_story_category_translations';
-  info: {
-    displayName: 'story-category translation';
-  };
-  attributes: {
-    locale: Schema.Attribute.Enumeration<['en', 'es', 'fr']>;
-    title: Schema.Attribute.String;
-  };
-}
-
-export interface TranslationsStoryTranslation extends Struct.ComponentSchema {
-  collectionName: 'components_translations_story_translations';
-  info: {
-    description: '';
-    displayName: 'Story Translation';
-  };
-  attributes: {
-    description: Schema.Attribute.RichText;
-    locale: Schema.Attribute.Enumeration<['es', 'fr']>;
-    notes: Schema.Attribute.RichText;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-  };
-}
-
 export interface TranslationsTranslations extends Struct.ComponentSchema {
   collectionName: 'components_translations_translations';
   info: {
@@ -206,10 +206,10 @@ declare module '@strapi/strapi' {
       'translations.dataset-category-translation': TranslationsDatasetCategoryTranslation;
       'translations.dataset-translation': TranslationsDatasetTranslation;
       'translations.ecoregion-translation': TranslationsEcoregionTranslation;
+      'translations.feature-category-translation': TranslationsFeatureCategoryTranslation;
+      'translations.feature-translation': TranslationsFeatureTranslation;
       'translations.layer-translation': TranslationsLayerTranslation;
       'translations.rangeland-translation': TranslationsRangelandTranslation;
-      'translations.story-category-translation': TranslationsStoryCategoryTranslation;
-      'translations.story-translation': TranslationsStoryTranslation;
       'translations.translations': TranslationsTranslations;
     }
   }

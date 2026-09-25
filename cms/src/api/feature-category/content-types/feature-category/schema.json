@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "story_categories",
+  "collectionName": "feature_categories",
   "info": {
-    "singularName": "story-category",
-    "pluralName": "story-categories",
-    "displayName": "Story Category",
+    "singularName": "feature-category",
+    "pluralName": "feature-categories",
+    "displayName": "Feature Category",
     "description": ""
   },
   "options": {
@@ -16,16 +16,16 @@
       "type": "string",
       "required": true
     },
-    "stories": {
+    "features": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::story.story"
+      "target": "api::feature.feature"
     },
     "translations": {
-      "displayName": "story-category translation",
+      "displayName": "feature-category translation",
       "type": "component",
       "repeatable": true,
-      "component": "translations.story-category-translation"
+      "component": "translations.feature-category-translation"
     },
     "slug": {
       "type": "string",

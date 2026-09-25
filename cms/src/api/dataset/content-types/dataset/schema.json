@@ -69,10 +69,10 @@
       "component": "translations.dataset-translation",
       "max": 2
     },
-    "story": {
+    "feature": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::story.story",
+      "target": "api::feature.feature",
       "inversedBy": "datasets"
     },
     "short_description": {

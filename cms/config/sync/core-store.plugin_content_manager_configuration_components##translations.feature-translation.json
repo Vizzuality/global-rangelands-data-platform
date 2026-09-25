@@ -1,5 +1,5 @@
 {
-  "key": "plugin_content_manager_configuration_components::translations.story-translation",
+  "key": "plugin_content_manager_configuration_components::translations.feature-translation",
   "value": {
     "settings": {
       "bulkable": true,
@@ -109,7 +109,7 @@
         ]
       ]
     },
-    "uid": "translations.story-translation",
+    "uid": "translations.feature-translation",
     "isComponent": true
   },
   "type": "object",
