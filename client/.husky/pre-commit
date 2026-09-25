@@ -1,1 +1,1 @@
-cd ./client && pnpm types && pnpm lint --fix && pnpm check-types && git add src/types/generated/
+cd ./client && pnpm types && pnpm lint --fix && pnpm check-types && git -C .. add client/src/types/generated/
