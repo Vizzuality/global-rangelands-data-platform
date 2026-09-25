@@ -1,5 +1,5 @@
 {
-  "/story-categories": {
+  "/feature-categories": {
     "get": {
       "responses": {
         "200": {
@@ -7,7 +7,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StoryCategoryListResponse"
+                "$ref": "#/components/schemas/FeatureCategoryListResponse"
               }
             }
           }
@@ -64,7 +64,7 @@
         }
       },
       "tags": [
-        "Story-category"
+        "Feature-category"
       ],
       "parameters": [
         {
@@ -169,7 +169,7 @@
           }
         }
       ],
-      "operationId": "get/story-categories"
+      "operationId": "get/feature-categories"
     },
     "post": {
       "responses": {
@@ -178,7 +178,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StoryCategoryResponse"
+                "$ref": "#/components/schemas/FeatureCategoryResponse"
               }
             }
           }
@@ -235,23 +235,23 @@
         }
       },
       "tags": [
-        "Story-category"
+        "Feature-category"
       ],
       "parameters": [],
-      "operationId": "post/story-categories",
+      "operationId": "post/feature-categories",
       "requestBody": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/StoryCategoryRequest"
+              "$ref": "#/components/schemas/FeatureCategoryRequest"
             }
           }
         }
       }
     }
   },
-  "/story-categories/{id}": {
+  "/feature-categories/{id}": {
     "get": {
       "responses": {
         "200": {
@@ -259,7 +259,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StoryCategoryResponse"
+                "$ref": "#/components/schemas/FeatureCategoryResponse"
               }
             }
           }
@@ -316,7 +316,7 @@
         }
       },
       "tags": [
-        "Story-category"
+        "Feature-category"
       ],
       "parameters": [
         {
@@ -330,7 +330,7 @@
           }
         }
       ],
-      "operationId": "get/story-categories/{id}"
+      "operationId": "get/feature-categories/{id}"
     },
     "put": {
       "responses": {
@@ -339,7 +339,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/StoryCategoryResponse"
+                "$ref": "#/components/schemas/FeatureCategoryResponse"
               }
             }
           }
@@ -396,7 +396,7 @@
         }
       },
       "tags": [
-        "Story-category"
+        "Feature-category"
       ],
       "parameters": [
         {
@@ -410,13 +410,13 @@
           }
         }
       ],
-      "operationId": "put/story-categories/{id}",
+      "operationId": "put/feature-categories/{id}",
       "requestBody": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/StoryCategoryRequest"
+              "$ref": "#/components/schemas/FeatureCategoryRequest"
             }
           }
         }
@@ -487,7 +487,7 @@
         }
       },
       "tags": [
-        "Story-category"
+        "Feature-category"
       ],
       "parameters": [
         {
@@ -501,7 +501,7 @@
           }
         }
       ],
-      "operationId": "delete/story-categories/{id}"
+      "operationId": "delete/feature-categories/{id}"
     }
   }
 }
