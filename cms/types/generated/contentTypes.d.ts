@@ -498,6 +498,7 @@ export interface ApiDatasetDataset extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.RichText;
+    feature: Schema.Attribute.Relation<'manyToOne', 'api::feature.feature'>;
     layers: Schema.Attribute.Component<'default.layer', true> &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -515,7 +516,6 @@ export interface ApiDatasetDataset extends Struct.CollectionTypeSchema {
     short_description: Schema.Attribute.String;
     slug: Schema.Attribute.String;
     sources: Schema.Attribute.Component<'default.source', false>;
-    story: Schema.Attribute.Relation<'manyToOne', 'api::story.story'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
@@ -580,6 +580,107 @@ export interface ApiEcoregionEcoregion extends Struct.CollectionTypeSchema {
         },
         number
       >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFeatureCategoryFeatureCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'feature_categories';
+  info: {
+    description: '';
+    displayName: 'Feature Category';
+    pluralName: 'feature-categories';
+    singularName: 'feature-category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    features: Schema.Attribute.Relation<'oneToMany', 'api::feature.feature'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::feature-category.feature-category'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    translations: Schema.Attribute.Component<
+      'translations.feature-category-translation',
+      true
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFeatureFeature extends Struct.CollectionTypeSchema {
+  collectionName: 'features';
+  info: {
+    description: '';
+    displayName: 'Feature';
+    pluralName: 'features';
+    singularName: 'feature';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    datasets: Schema.Attribute.Relation<'oneToMany', 'api::dataset.dataset'>;
+    description: Schema.Attribute.RichText;
+    document: Schema.Attribute.Media<'files'>;
+    further_information: Schema.Attribute.Component<
+      'default.further-info',
+      true
+    >;
+    image: Schema.Attribute.Media<'images'>;
+    latitude: Schema.Attribute.Float &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 90;
+          min: -90;
+        },
+        number
+      >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::feature.feature'
+    > &
+      Schema.Attribute.Private;
+    longitude: Schema.Attribute.Float &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 180;
+          min: -180;
+        },
+        number
+      >;
+    notes: Schema.Attribute.RichText;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    translations: Schema.Attribute.Component<
+      'translations.feature-translation',
+      true
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -671,104 +772,6 @@ export interface ApiRangelandRangeland extends Struct.CollectionTypeSchema {
         },
         number
       >;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiStoryCategoryStoryCategory
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'story_categories';
-  info: {
-    description: '';
-    displayName: 'Story Category';
-    pluralName: 'story-categories';
-    singularName: 'story-category';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::story-category.story-category'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    stories: Schema.Attribute.Relation<'oneToMany', 'api::story.story'>;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    translations: Schema.Attribute.Component<
-      'translations.story-category-translation',
-      true
-    >;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiStoryStory extends Struct.CollectionTypeSchema {
-  collectionName: 'stories';
-  info: {
-    description: '';
-    displayName: 'Story';
-    pluralName: 'stories';
-    singularName: 'story';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    datasets: Schema.Attribute.Relation<'oneToMany', 'api::dataset.dataset'>;
-    description: Schema.Attribute.RichText;
-    document: Schema.Attribute.Media<'files'>;
-    further_information: Schema.Attribute.Component<
-      'default.further-info',
-      true
-    >;
-    image: Schema.Attribute.Media<'images'>;
-    latitude: Schema.Attribute.Float &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 90;
-          min: -90;
-        },
-        number
-      >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::story.story'> &
-      Schema.Attribute.Private;
-    longitude: Schema.Attribute.Float &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 180;
-          min: -180;
-        },
-        number
-      >;
-    notes: Schema.Attribute.RichText;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    translations: Schema.Attribute.Component<
-      'translations.story-translation',
-      true
-    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1289,10 +1292,10 @@ declare module '@strapi/strapi' {
       'api::dataset-category.dataset-category': ApiDatasetCategoryDatasetCategory;
       'api::dataset.dataset': ApiDatasetDataset;
       'api::ecoregion.ecoregion': ApiEcoregionEcoregion;
+      'api::feature-category.feature-category': ApiFeatureCategoryFeatureCategory;
+      'api::feature.feature': ApiFeatureFeature;
       'api::layer.layer': ApiLayerLayer;
       'api::rangeland.rangeland': ApiRangelandRangeland;
-      'api::story-category.story-category': ApiStoryCategoryStoryCategory;
-      'api::story.story': ApiStoryStory;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_translations_story_category_translations",
+  "collectionName": "components_translations_feature_category_translations",
   "info": {
-    "displayName": "story-category translation"
+    "displayName": "feature-category translation"
   },
   "options": {},
   "attributes": {

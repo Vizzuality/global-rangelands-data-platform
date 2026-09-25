@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "stories",
+  "collectionName": "features",
   "info": {
-    "singularName": "story",
-    "pluralName": "stories",
-    "displayName": "Story",
+    "singularName": "feature",
+    "pluralName": "features",
+    "displayName": "Feature",
     "description": ""
   },
   "options": {
@@ -39,7 +39,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::dataset.dataset",
-      "mappedBy": "story"
+      "mappedBy": "feature"
     },
     "image": {
       "type": "media",
@@ -60,7 +60,7 @@
     "translations": {
       "type": "component",
       "repeatable": true,
-      "component": "translations.story-translation"
+      "component": "translations.feature-translation"
     },
     "further_information": {
       "type": "component",

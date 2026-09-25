@@ -1,5 +1,5 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::api::story.story",
+  "key": "plugin_content_manager_configuration_content_types::api::feature.feature",
   "value": {
     "settings": {
       "bulkable": true,
@@ -267,7 +267,7 @@
         ]
       ]
     },
-    "uid": "api::story.story"
+    "uid": "api::feature.feature"
   },
   "type": "object",
   "environment": null,
