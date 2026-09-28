@@ -6,8 +6,8 @@ import Header from "@/containers/header";
 import getQueryClient from "@/lib/react-query/getQueryClient";
 import { getGetDatasetCategoriesQueryOptions } from "@/types/generated/dataset-category";
 import { getGetRangelandsQueryOptions } from "@/types/generated/rangeland";
-import { getGetStoryCategoriesQueryOptions } from "@/types/generated/story-category";
-import { getGetStoriesQueryOptions } from "@/types/generated/story";
+import { getGetFeatureCategoriesQueryOptions } from "@/types/generated/feature-category";
+import { getGetFeaturesQueryOptions } from "@/types/generated/feature";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 async function prefetchQueries() {
@@ -44,31 +44,31 @@ async function prefetchQueries() {
       queryFn: rangelandsQueryFn,
     });
 
-    const { queryKey: storyCategoriesQueryKey, queryFn: storyCategoriesQueryFn } =
-      getGetStoryCategoriesQueryOptions({
+    const { queryKey: featureCategoriesQueryKey, queryFn: featureCategoriesQueryFn } =
+      getGetFeatureCategoriesQueryOptions({
         populate: [
           "translations",
-          "stories",
-          "stories.image",
-          "stories.category",
-          "stories.translations",
+          "features",
+          "features.image",
+          "features.category",
+          "features.translations",
         ],
         sort: "id:asc",
       });
 
     await queryClient.prefetchQuery({
-      queryKey: storyCategoriesQueryKey,
-      queryFn: storyCategoriesQueryFn,
+      queryKey: featureCategoriesQueryKey,
+      queryFn: featureCategoriesQueryFn,
     });
 
-    const { queryKey: storiesQueryKey, queryFn: storiesQueryFn } = getGetStoriesQueryOptions({
+    const { queryKey: featuresQueryKey, queryFn: featuresQueryFn } = getGetFeaturesQueryOptions({
       populate: ["translations", "image", "category"],
       sort: "id:asc",
     });
 
     await queryClient.prefetchQuery({
-      queryKey: storiesQueryKey,
-      queryFn: storiesQueryFn,
+      queryKey: featuresQueryKey,
+      queryFn: featuresQueryFn,
     });
 
     return dehydrate(queryClient);

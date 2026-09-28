@@ -1,0 +1,42 @@
+import Image from "next/image";
+
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
+import { mediaUrl } from "@/lib/cms";
+
+type FeatureCardSmallProps = {
+  variant: string;
+  href: string;
+  title: string;
+  imageUrl?: string;
+  imageAlt: string;
+  className?: string;
+};
+
+const FeatureCardSmall = ({
+  variant,
+  href,
+  title,
+  imageUrl,
+  imageAlt,
+  className,
+}: FeatureCardSmallProps) => (
+  <Link href={href} className={cn("flex h-40 flex-col overflow-hidden", className)}>
+    <div className={cn("p-4", variant)}>
+      <p className="line-clamp-3 text-xs font-medium leading-4">{title}</p>
+    </div>
+    {imageUrl && (
+      <div className="relative flex-1">
+        <Image
+          src={mediaUrl(imageUrl)}
+          alt={imageAlt}
+          fill
+          className="object-cover"
+          sizes="176px"
+        />
+      </div>
+    )}
+  </Link>
+);
+
+export default FeatureCardSmall;

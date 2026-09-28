@@ -23,7 +23,7 @@ type LocationOption = {
   bbox: LngLatBoundsLike;
 };
 
-type StoryOption = Omit<LocationOption, "bbox">;
+type FeatureOption = Omit<LocationOption, "bbox">;
 
 type SearchLocationProps = {
   onOpenChange: (open: boolean) => void;
@@ -76,8 +76,8 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
     }, []);
   }, [locationData, debouncedSearch]);
 
-  // TODO: add real stories
-  const storiesOptions: StoryOption[] = [];
+  // TODO: add real features
+  const featuresOptions: FeatureOption[] = [];
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setLocationSearch(e.target.value);
@@ -98,8 +98,8 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
     [map],
   );
 
-  const handleStoryOptionClick = useCallback((option: StoryOption) => {
-    // TODO: handle story option click
+  const handleFeatureOptionClick = useCallback((option: FeatureOption) => {
+    // TODO: handle feature option click
   }, []);
 
   const handleOpenChange = useCallback(
@@ -178,13 +178,13 @@ const SearchLocation = ({ onOpenChange }: SearchLocationProps) => {
             )}
 
             {!!debouncedSearch?.length && (
-              <SearchResultList title={t("Rangelands stories")}>
-                {storiesOptions?.length ? (
-                  storiesOptions.map((option) => (
+              <SearchResultList title={t("Rangelands features")}>
+                {featuresOptions?.length ? (
+                  featuresOptions.map((option) => (
                     <SearchResultItem
                       key={option.value}
                       option={option}
-                      onOptionClick={handleStoryOptionClick}
+                      onOptionClick={handleFeatureOptionClick}
                     >
                       <MapIcon className="mt-0.5 h-4 w-4 shrink-0" />
                     </SearchResultItem>

@@ -58,8 +58,8 @@ const Footer = () => {
       href: "/map",
     },
     {
-      title: t("Stories"),
-      href: "/stories/rangelands-stories",
+      title: t("Features"),
+      href: "/features/rangelands-features",
     },
   ];
 

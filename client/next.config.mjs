@@ -71,6 +71,65 @@ const nextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/:locale(en|es|fr)/stories/rangelands-stories/:path*",
+        destination: "/:locale/features/rangelands-features/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|es|fr)/stories/rangelands-stories",
+        destination: "/:locale/features/rangelands-features",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|es|fr)/stories/:path*",
+        destination: "/:locale/features/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|es|fr)/map/story/:slug",
+        destination: "/:locale/map/feature/:slug",
+        permanent: true,
+      },
+      {
+        source: "/:locale(en|es|fr)/map/stories",
+        destination: "/:locale/map/features",
+        permanent: true,
+      },
+      {
+        source: "/stories/rangelands-stories/:path*",
+        destination: "/en/features/rangelands-features/:path*",
+        permanent: true,
+      },
+      {
+        source: "/stories/rangelands-stories",
+        destination: "/en/features/rangelands-features",
+        permanent: true,
+      },
+      {
+        source: "/stories/:path*",
+        destination: "/en/features/:path*",
+        permanent: true,
+      },
+      {
+        source: "/map/story/:slug",
+        destination: "/en/map/feature/:slug",
+        permanent: true,
+      },
+      {
+        source: "/map/stories",
+        destination: "/en/map/features",
+        permanent: true,
+      },
+      {
+        source: "/api/stories/:slug/document",
+        destination: "/api/features/:slug/document",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

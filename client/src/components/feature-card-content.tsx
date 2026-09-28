@@ -1,0 +1,55 @@
+import Image from "next/image";
+
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
+import { mediaUrl } from "@/lib/cms";
+
+type FeatureCardContentProps = {
+  variant: string;
+  href: string;
+  categoryTitle?: string;
+  title: string;
+  imageUrl?: string;
+  imageAlt: string;
+  imageCaption?: string;
+};
+
+const FeatureCardContent = ({
+  variant,
+  href,
+  categoryTitle,
+  title,
+  imageUrl,
+  imageAlt,
+  imageCaption,
+}: FeatureCardContentProps) => (
+  <Link
+    href={href}
+    className="block overflow-hidden focus-visible:underline focus-visible:outline-none"
+  >
+    <div className={cn("flex flex-col gap-2.5 px-8 pb-5 pt-8", variant)}>
+      {categoryTitle && (
+        <p className="text-[10px] font-medium uppercase leading-5">{categoryTitle}</p>
+      )}
+      <h3 className="line-clamp-2 min-h-12 text-base font-medium leading-6">{title}</h3>
+    </div>
+    {imageUrl && (
+      <div className="relative h-44">
+        <Image
+          src={mediaUrl(imageUrl)}
+          alt={imageAlt}
+          fill
+          className="object-cover"
+          sizes="352px"
+        />
+        {imageCaption && (
+          <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
+            {imageCaption}
+          </span>
+        )}
+      </div>
+    )}
+  </Link>
+);
+
+export default FeatureCardContent;
