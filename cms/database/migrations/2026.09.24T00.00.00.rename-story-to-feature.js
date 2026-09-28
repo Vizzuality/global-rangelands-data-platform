@@ -43,6 +43,11 @@ const IDENTIFIER_RENAMES = {
   story: 'feature',
 };
 
+const FOLDER_RENAMES = [
+  ['Stories', 'Features'],
+  ['Stories PDFs', 'Features PDFs'],
+];
+
 const LEGACY_IDENTIFIER = /(?<!i)(story_categories|story_category|stories|story)/g;
 const LEGACY_PATTERN = '(^|[^i])stor(y|ies)';
 const CONTENT_MANAGER_KEY_PREFIX = 'plugin_content_manager_configuration_content_types::';
@@ -235,6 +240,33 @@ async function renameCategorySlug(knex) {
     .update({ slug: 'rangelands-features', title: 'Rangelands Features' });
 }
 
+async function renameUploadFolders(knex) {
+  const hasFolderTables =
+    (await knex.schema.hasTable('upload_folders')) &&
+    (await knex.schema.hasTable('upload_folders_parent_lnk'));
+  if (!hasFolderTables) {
+    return;
+  }
+  for (const [from, to] of FOLDER_RENAMES) {
+    const { rowCount } = await knex.raw(
+      `UPDATE upload_folders AS folder SET name = ?
+       WHERE folder.name = ? AND NOT EXISTS (
+         SELECT 1 FROM upload_folders AS sibling
+         WHERE sibling.name = ?
+           AND (SELECT lnk.inv_folder_id FROM upload_folders_parent_lnk AS lnk
+                WHERE lnk.folder_id = sibling.id LIMIT 1)
+             IS NOT DISTINCT FROM
+               (SELECT lnk.inv_folder_id FROM upload_folders_parent_lnk AS lnk
+                WHERE lnk.folder_id = folder.id LIMIT 1)
+       )`,
+      [to, from, to]
+    );
+    if (rowCount > 0) {
+      console.info(`[rename-story-to-feature] upload folder ${from} -> ${to} (${rowCount})`);
+    }
+  }
+}
+
 module.exports = {
   async up(knex) {
     await renameTables(knex);
@@ -249,5 +281,6 @@ module.exports = {
     await renamePermissionFields(knex);
     await renameCoreStoreEntries(knex);
     await renameCategorySlug(knex);
+    await renameUploadFolders(knex);
   },
 };
