@@ -43,10 +43,10 @@ export function Livestock() {
                   {t("Keep reading")}
                 </Link>
                 <Link
-                  href="/stories/rangelands-stories"
+                  href="/features/rangelands-features"
                   className="flex h-12 items-center justify-center bg-green-medium px-5 text-label-16 text-white transition-colors duration-300 hover:bg-green-light"
                 >
-                  {t("Explore Rangelands Stories")}
+                  {t("Explore Rangelands Features")}
                 </Link>
               </div>
             </div>

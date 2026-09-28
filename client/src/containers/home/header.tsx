@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import StoryCategoriesMenu, {
-  StoryCategoriesMenuScrim,
-  StoryCategoriesTriggerBlock,
-  storyCategoriesTriggerClassName,
-} from "@/containers/stories/categories-menu";
+import FeatureCategoriesMenu, {
+  FeatureCategoriesMenuScrim,
+  FeatureCategoriesTriggerBlock,
+  featureCategoriesTriggerClassName,
+} from "@/containers/features/categories-menu";
 
 const MIN_SCROLL = 150;
 
@@ -20,7 +20,7 @@ const Header = () => {
   const t = useTranslations();
 
   const [animate, setAnimate] = useState(true);
-  const [storiesOpen, setStoriesOpen] = useState(false);
+  const [featuresOpen, setFeaturesOpen] = useState(false);
 
   const { scrollY } = useScroll();
 
@@ -48,7 +48,7 @@ const Header = () => {
 
   return (
     <>
-      <StoryCategoriesMenuScrim open={storiesOpen} />
+      <FeatureCategoriesMenuScrim open={featuresOpen} />
       <motion.div
         style={{
           transition: "ease-in-out",
@@ -68,36 +68,36 @@ const Header = () => {
           }}
           className={cn(
             "flex w-full items-center justify-between px-8 py-4 font-sans text-body-14 font-medium text-brown-dark transition-colors duration-200 sm:w-auto sm:gap-10",
-            storiesOpen ? "bg-transparent" : "bg-white",
+            featuresOpen ? "bg-transparent" : "bg-white",
           )}
         >
-          <DropdownMenu open={storiesOpen} onOpenChange={setStoriesOpen}>
+          <DropdownMenu open={featuresOpen} onOpenChange={setFeaturesOpen}>
             <DropdownMenuTrigger
               className={cn(
                 "flex items-center outline-none transition-colors duration-300 hover:text-brown-light focus-visible:ring focus-visible:ring-brown-light focus-visible:ring-offset-2",
-                storyCategoriesTriggerClassName,
+                featureCategoriesTriggerClassName,
               )}
             >
-              <StoryCategoriesTriggerBlock className="-inset-y-4" />
+              <FeatureCategoriesTriggerBlock className="-inset-y-4" />
               {t("Features")}
               <ChevronDown
                 aria-hidden="true"
                 className="size-5 transition-transform duration-300"
               />
             </DropdownMenuTrigger>
-            <StoryCategoriesMenu align="center" sideOffset={16} />
+            <FeatureCategoriesMenu align="center" sideOffset={16} />
           </DropdownMenu>
           <div
             className={cn(
               "h-5 w-px bg-brown-dark transition-opacity duration-300",
-              storiesOpen && "opacity-0",
+              featuresOpen && "opacity-0",
             )}
             aria-hidden="true"
           />
           <Link
             className={cn(
               "transition-[color,opacity] duration-300 hover:text-brown-light",
-              storiesOpen && "pointer-events-none opacity-0",
+              featuresOpen && "pointer-events-none opacity-0",
             )}
             href="/map"
           >

@@ -71,7 +71,7 @@ export function Hero() {
                     src="/images/home/home-left.png"
                     width={653.204}
                     height={423.7}
-                    alt={t("Stories screenshot")}
+                    alt={t("Features screenshot")}
                     className="object-cover"
                   />
                   <div className="absolute top-0 h-full w-full bg-orange-light/20"></div>
