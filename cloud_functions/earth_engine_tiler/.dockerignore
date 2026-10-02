@@ -1,0 +1,13 @@
+node_modules
+build
+ee_credentials*.json
+credentials.json
+.env
+.env.*
+.git
+.gitignore
+.eslintrc.json
+.eslintignore
+.editorconfig
+.prettierrc.js
+.gcloudignore
