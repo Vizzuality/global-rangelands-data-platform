@@ -12,7 +12,12 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   const t = await getTranslations({ locale });
 
   return {
-    metadataBase: new URL(env.NEXT_PUBLIC_URL),
+    // SITE_URL is runtime and wins; NEXT_PUBLIC_URL is the inlined build-time
+    // fallback. The platform answers on several names during the migration
+    // (local, a spare name, then the apex domains) and only this value
+    // distinguishes them, so it must not require a rebuild. generateMetadata
+    // runs server-side only, so reading a server-scoped key here is safe.
+    metadataBase: new URL(env.SITE_URL ?? env.NEXT_PUBLIC_URL),
     title: t("Rangelands Data Platform"),
     description: t(
       "Diverse ecosystems crucial for both wildlife and people. Explore their beauty and significance with our Vital Ecosystem Atlas, advocating for their protection and restoration.",

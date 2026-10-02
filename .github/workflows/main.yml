@@ -115,7 +115,6 @@ jobs:
         if: ${{ steps.applicable_check.outputs.flag }}
         run: |
           echo '${{ steps.generate_env_file.outputs.env_file }}' >> $APP_ENV_PATH
-          cat $APP_ENV_PATH
 
       - name: Deploy to Transifex
         working-directory: client
@@ -227,7 +226,6 @@ jobs:
         if: ${{ steps.applicable_check.outputs.flag }}
         run: |
           echo '${{ steps.generate_env_file.outputs.env_file }}' >> $APP_ENV_PATH
-          cat $APP_ENV_PATH
 
       - name: Build and Deploy
         if: ${{ steps.applicable_check.outputs.flag }}
