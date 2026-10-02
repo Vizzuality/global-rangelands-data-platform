@@ -34,16 +34,16 @@
       "action": "api::rangeland.rangeland.findOne"
     },
     {
-      "action": "api::story-category.story-category.find"
+      "action": "api::feature-category.feature-category.find"
     },
     {
-      "action": "api::story-category.story-category.findOne"
+      "action": "api::feature-category.feature-category.findOne"
     },
     {
-      "action": "api::story.story.find"
+      "action": "api::feature.feature.find"
     },
     {
-      "action": "api::story.story.findOne"
+      "action": "api::feature.feature.findOne"
     },
     {
       "action": "plugin::users-permissions.auth.callback"

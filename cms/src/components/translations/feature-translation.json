@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_translations_feature_translations",
+  "info": {
+    "displayName": "Feature Translation",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "notes": {
+      "type": "richtext"
+    },
+    "locale": {
+      "type": "enumeration",
+      "enum": [
+        "es",
+        "fr"
+      ]
+    }
+  }
+}

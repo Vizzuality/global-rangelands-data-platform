@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "features",
+  "info": {
+    "singularName": "feature",
+    "pluralName": "features",
+    "displayName": "Feature",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "notes": {
+      "type": "richtext"
+    },
+    "latitude": {
+      "type": "float",
+      "required": false,
+      "min": -90,
+      "max": 90
+    },
+    "longitude": {
+      "type": "float",
+      "required": false,
+      "min": -180,
+      "max": 180
+    },
+    "datasets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dataset.dataset",
+      "mappedBy": "feature"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "document": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "translations": {
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.feature-translation"
+    },
+    "further_information": {
+      "type": "component",
+      "repeatable": true,
+      "component": "default.further-info"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

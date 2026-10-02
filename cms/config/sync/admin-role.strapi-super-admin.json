@@ -85,7 +85,7 @@
           "translations.description",
           "translations.locale",
           "translations.short_description",
-          "story",
+          "feature",
           "short_description"
         ]
       },
@@ -128,7 +128,7 @@
           "translations.description",
           "translations.locale",
           "translations.short_description",
-          "story",
+          "feature",
           "short_description"
         ]
       },
@@ -157,7 +157,7 @@
           "translations.description",
           "translations.locale",
           "translations.short_description",
-          "story",
+          "feature",
           "short_description"
         ]
       },
@@ -391,7 +391,7 @@
     {
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
-      "subject": "api::story.story",
+      "subject": "api::feature.feature",
       "properties": {
         "fields": [
           "title",
@@ -416,21 +416,21 @@
     {
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
-      "subject": "api::story.story",
+      "subject": "api::feature.feature",
       "properties": {},
       "conditions": []
     },
     {
       "action": "plugin::content-manager.explorer.publish",
       "actionParameters": {},
-      "subject": "api::story.story",
+      "subject": "api::feature.feature",
       "properties": {},
       "conditions": []
     },
     {
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
-      "subject": "api::story.story",
+      "subject": "api::feature.feature",
       "properties": {
         "fields": [
           "title",
@@ -455,7 +455,7 @@
     {
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
-      "subject": "api::story.story",
+      "subject": "api::feature.feature",
       "properties": {
         "fields": [
           "title",

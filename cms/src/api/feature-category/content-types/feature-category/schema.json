@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "feature_categories",
+  "info": {
+    "singularName": "feature-category",
+    "pluralName": "feature-categories",
+    "displayName": "Feature Category",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "features": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::feature.feature"
+    },
+    "translations": {
+      "displayName": "feature-category translation",
+      "type": "component",
+      "repeatable": true,
+      "component": "translations.feature-category-translation"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

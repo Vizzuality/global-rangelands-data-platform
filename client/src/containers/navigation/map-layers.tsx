@@ -23,7 +23,8 @@ const MapLayers = () => {
   const [rangelandRegion] = useSyncRangelandRegions();
   const [rangelandType] = useSyncRangelandType();
 
-  const isStoriesMode = pathname.startsWith("/map/stories") || pathname.startsWith("/map/story");
+  const isFeaturesMode =
+    pathname.startsWith("/map/features") || pathname.startsWith("/map/feature");
 
   const biomesQuery = useGetRangelands(
     {
@@ -93,14 +94,14 @@ const MapLayers = () => {
       color: "global",
       badge: layers.length - 1 > 0 ? layers.length - 1 : undefined,
       badgeTooltip: layersBadgeTooltip,
-      isActive: !isStoriesMode,
+      isActive: !isFeaturesMode,
     },
     {
-      title: t("Stories"),
-      id: "stories",
-      href: `/map/stories${searchParams}` as const,
-      color: "stories",
-      isActive: isStoriesMode,
+      title: t("Features"),
+      id: "features",
+      href: `/map/features${searchParams}` as const,
+      color: "features",
+      isActive: isFeaturesMode,
     },
   ];
 
