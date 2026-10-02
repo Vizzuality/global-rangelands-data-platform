@@ -119,3 +119,8 @@ dist
 
 # pnpm
 .pnpm-store/
+
+# VM migration: local stack config and content dumps. Never committed.
+.env.prod
+dumps/
+*.dump
