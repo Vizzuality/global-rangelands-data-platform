@@ -80,7 +80,9 @@
       "@modelcontextprotocol/sdk>@hono/node-server": "1.19.17",
       "@strapi/admin>axios": "1.20.0",
       "@strapi/cloud-cli>axios": "1.20.0",
-      "@strapi/core>undici": "6.29.0"
+      "@strapi/core>undici": "6.29.0",
+      "typedoc>markdown-it": "14.3.2",
+      "@strapi/content-manager>markdown-it": "14.3.2"
     },
     "onlyBuiltDependencies": [
       "@strapi/strapi",
