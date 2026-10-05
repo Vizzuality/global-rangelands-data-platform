@@ -41,7 +41,7 @@ overrides:
   vite>postcss: 8.5.26
   cheerio>undici: 7.30.0
   '@strapi/strapi>vite': 6.4.3
-  express-rate-limit>ip-address: 10.5.0
+  express-rate-limit>ip-address: 10.7.3
   '@modelcontextprotocol/sdk>hono': 4.13.5
   '@modelcontextprotocol/sdk>@hono/node-server': 1.19.17
   '@strapi/admin>axios': 1.20.0
@@ -4474,8 +4474,8 @@ packages:
     resolution: {integrity: sha512-ehuGcf94bQXhfagULNXrJdfnWO38v070jxSx/qE87Kjzmu2fU7ro5EFAb+OPituLqgfyuQaym5DlrNydW2sJ9A==}
     engines: {node: '>=12.22.0'}
 
-  ip-address@10.5.0:
-    resolution: {integrity: sha512-R5SnVLJmgYYvf2F2ZgwSBnelz5G4q5AxIC277GDfUaNbrZKNANcBC7RHqYYePlszf4kBolVkJauG0ZjHHFh55g==}
+  ip-address@10.7.3:
+    resolution: {integrity: sha512-A1kdq/tSb5QjvKvAMgIoEvDBIgL7qaqVP/jkvSwYYRZ9iEzvPpopxp2wQfu3SuZRHtpHNxMn8Fs0bS+gf5Xmwg==}
     engines: {node: '>= 12'}
 
   ipaddr.js@1.9.1:
@@ -11922,7 +11922,7 @@ snapshots:
   express-rate-limit@8.5.2(express@5.2.1):
     dependencies:
       express: 5.2.1
-      ip-address: 10.5.0
+      ip-address: 10.7.3
 
   express@5.2.1:
     dependencies:
@@ -12696,7 +12696,7 @@ snapshots:
       - supports-color
     optional: true
 
-  ip-address@10.5.0: {}
+  ip-address@10.7.3: {}
 
   ipaddr.js@1.9.1: {}
 
