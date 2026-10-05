@@ -64,7 +64,7 @@
       "ajv@6": "6.15.0",
       "ajv@8": "8.20.0",
       "ajv>fast-uri": "3.1.8",
-      "@strapi/provider-email-sendmail>nodemailer": "9.1.1",
+      "@strapi/provider-email-sendmail>nodemailer": "10.0.14",
       "@strapi/strapi>browserslist": "4.28.9",
       "@strapi/upload>sharp": "0.35.4",
       "load-yaml-file>js-yaml": "4.3.2",
