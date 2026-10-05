@@ -11,6 +11,7 @@
     "start": "next start",
     "check-types": "tsc",
     "lint": "eslint .",
+    "test": "vitest run",
     "types": "orval --config ./orval.config.ts",
     "prepare": "cd .. && husky client/.husky"
   },
@@ -111,7 +112,8 @@
     "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.1",
     "typescript": "^5",
-    "typescript-eslint": "8.59.2"
+    "typescript-eslint": "8.59.2",
+    "vitest": "5.0.3"
   },
   "packageManager": "pnpm@10.33.0",
   "pnpm": {
