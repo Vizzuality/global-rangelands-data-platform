@@ -140,29 +140,47 @@ dependency.
 > bytes posted (here RGBA → 8-bit colormap at the same dimensions). Compare
 > dimensions, not checksums.
 
-### next/image needs the uploads mounted into the client
+### CMS images bypass next/image
 
-`docker-compose.prod.yml` mounts the `media` volume read-only at
-`/app/public/cms/uploads` in the **client** container. That is not redundant with
-nginx, and removing it breaks every CMS image.
+CMS images are rendered with `unoptimized` and a src from `cmsImageSrc`
+(`client/src/lib/cms.ts`), which picks one of Strapi's own resized variants.
+nginx proxies `/cms/*` to Strapi, so the bytes come straight from the CMS and
+the client never reads media from disk. The `media` volume is deliberately
+**not** mounted into the client container.
 
-`next/image` resolves a relative `url` against the **Next server's own origin**,
-because the optimizer fetch happens server-side. The client container does not
-serve `/cms/*` — nginx does — so Next fetches its own 404 page and answers
-`400 The requested resource isn't a valid image`. Measured from inside the
-container: `/cms/uploads/<file>.png` returned **404 text/html** while
-`/_next/static/media/<file>.png` returned 200 `image/png`.
+The optimizer cannot be relied on for these files, for two reasons that stack:
 
-Mounting the volume under `public/` makes those paths genuinely local, so the
-optimizer reads them from disk with no HTTP round trip. Verified: `w=256` and
-`w=3840` both return `200 image/png`, and the output is really optimized
-(26 KB at `w=256` against a 95 KB source, with no upscaling past the source's
-548×279).
+1. It resolves a relative `url` against the **Next server's own origin**,
+   because the optimizer fetch happens server-side. The client container does
+   not serve `/cms/*`, nginx does, so Next fetches its own 404 page and
+   answers `400 The requested resource isn't a valid image`.
+2. Mounting the volume at `/app/public/cms/uploads` makes those paths local and
+   looks like a fix, but Next lists `public/` **when the server starts**. An
+   upload that reaches the volume afterwards still 400s until the client
+   container restarts. In practice that means an editor adding an image in
+   Strapi admin gets a broken image on the live site, with no error anywhere
+   except the browser.
 
-Staging never hits this because its media URLs are absolute GCS URLs matched by
-`images.remotePatterns`. The relative base is what exposes it, so it is specific
-to this deployment — which is why the fix lives in the VM-only compose file and
-not in `client/next.config.mjs`, a file staging shares.
+Measured: a byte-identical copy of a working upload, written to the volume
+under a new name, returns 400 at every width; a plain `docker restart` of the
+client, with no rebuild, turns the same request into a 200.
+
+Dropping the optimizer costs little, because Strapi already resized everything
+at ingest and records the results in `files.formats`. Across the story images:
+`small` (500w) on all of them, `medium` (750w) and `large` (1000w) on all but
+one. `cmsImageSrc` returns the narrowest variant at least as wide as the caller
+asks for, falling back to the original.
+
+One call site keeps the plain `mediaUrl` helper:
+`containers/map/story-markers/marker.tsx` is `"use client"` with a bare `<img>`
+the browser fetches directly, so none of the above applies.
+
+Staging never hit either problem: its media URLs are absolute GCS URLs matched
+by `images.remotePatterns`, so the optimizer could always fetch them. It loses
+optimizer re-encoding for CMS images under this change and serves Strapi's
+variants instead.
+
+`infrastructure/vm/scripts/probe-environment.sh` asserts this end to end.
 
 ### Migrating staging's media off GCS
 
@@ -460,6 +478,7 @@ observations from that run, not claims.
 | 7 | URL rewrites are idempotent | 52→0 then 0→0; media 0/0/0 twice |
 | 8 | No stale hostname in delivered content | 0 GCS / 0 staging / 0 `cms:1337` across three pages and the database |
 | — | HTTP redirects to HTTPS, ACME still served | 301, and `token-ok` on the challenge path |
+| 5 | Basemap and deck.gl overlay render | composite + 2 `grass2024` MVT tilesets, all 200; overlay visible |
 | — | Canonical redirect preserves path and query | `alias.localhost/x?y=1` → `https://localhost/x?y=1` |
 
 > `down -v` also removes the `certs` volume. nginx fails its configuration test
@@ -471,13 +490,25 @@ observations from that run, not claims.
 > volume is destroyed with the rest, and without it every image 404s while the
 > database still references the files.
 
-### Not yet verified
+### The render path, and the token it needs
 
-The deck.gl render path. `NEXT_PUBLIC_MAPBOX_TOKEN` is a placeholder locally, so
-the basemap returns 401, the overlay never mounts, and a browser probe of
-`/en/map` records zero tile requests — inconclusive rather than failing. The
-relative tile URL itself is verified (see **Relative tile URLs**); what remains
-is observing `TileLayer` issue the request. Re-run the probe with a valid token.
+Verified in headless Chrome over the DevTools Protocol against
+`https://localhost/en/map`, recording every request. The basemap fetches the
+comma-joined composite source; the deck.gl layers fetch individual tilesets as
+`grass2024.<id>/{z}/{x}/{y}.mvt`. Those are the `MVTLayer` requests, and they
+are what distinguishes a working overlay from a working basemap. All returned
+200, with no console errors, and the overlay is visible in the capture.
+
+This needs a **public** token. `mapbox-gl` tests the first character of the
+token and throws before issuing any request:
+
+    if ("s" === i[0]) throw new Error(`Use a public access token ...`)
+
+An `sk.` token therefore produces a blank map and **zero** network requests,
+which reads as a tile or network fault rather than a credential one. Unticking
+secret scopes on an existing token does not help: the prefix is fixed when the
+token is issued, so a public token has to be created fresh with no secret scope
+selected. See **Mapbox token**.
 
 ## Image sizes
 
@@ -558,3 +589,49 @@ load-bearing:
   location is served by the redirect block too. Without it the challenge is
   301'd, that one name fails HTTP-01, and issuance fails for the whole
   certificate.
+
+## Mapbox token
+
+`NEXT_PUBLIC_MAPBOX_TOKEN` is a **build arg**, not a runtime variable. It is
+inlined into the browser bundle by `next build`, so changing it means rebuilding
+the client image; setting it in the environment of a running container does
+nothing. It ends up in both the image and the bundle, which is expected for a
+`pk.*` token, where URL restriction is the control rather than secrecy, and is
+one more reason these images never go to a public registry.
+
+Mapbox enforces URL restrictions on the **`Referer` header**, and only for
+**billable** services. Tile requests (`/v4/....mvt`) are gated; style and font
+reads are not, so a token with no working restriction still returns 200 for
+`/styles/v1/...`. Test restrictions against a tile URL or the result is
+meaningless:
+
+    curl -s -o /dev/null -w '%{http_code}\n' -H 'Referer: https://evil.example/' \
+      "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/1/0/0.mvt?access_token=<token>"
+
+Expect `403` there and `200` from the real origin. Matching is exact on scheme,
+host **and port**: an entry of `http://localhost:3000` does not match a browser
+on `https://localhost`, which sends no port for 443. Changes take a couple of
+minutes to propagate.
+
+`localhost` is not implicitly allowed. Mapbox recommends a **separate
+development token** that allows `localhost`, leaving the production token
+restricted to production names.
+
+Names the allowed list needs, matching the states in **Domain states**:
+
+| State | Allowed names |
+|---|---|
+| local | `https://localhost` (development token) |
+| phase 2, spare name | the spare host |
+| phase 3, apex | all four: `www.` and apex for both domains |
+
+A spare DNS record does not have to be requested: the VM's Linode reverse name
+already resolves to it, so something like
+`139-162-197-186.ip.linodeusercontent.com` can serve as the phase-2 host for
+both the certificate and the allowed list. Confirm issuance with
+`certbot renew --dry-run` first — provider-owned domains can hit Let's Encrypt
+rate limits.
+
+> Add the phase-3 names to the token before moving DNS, not after. The map is
+> the one part of the platform that fails on a hostname the token has never
+> seen, and it fails silently.
