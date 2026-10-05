@@ -44,7 +44,7 @@
       "@strapi/data-transfer>ws": "8.21.1",
       "jsonwebtoken>jws": "3.2.3",
       "grant>jws": "4.0.1",
-      "strapi-plugin-config-sync>adm-zip": "0.6.0",
+      "strapi-plugin-config-sync>adm-zip": "0.6.1",
       "z-schema>validator": "13.15.35",
       "jscodeshift>@babel/core": "7.29.7",
       "cosmiconfig>yaml": "1.10.3",
