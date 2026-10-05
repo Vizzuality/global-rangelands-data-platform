@@ -34,6 +34,7 @@ const FeatureCard = ({ feature, categoryTitle, searchParams, variant }: FeatureC
         categoryTitle={categoryTitle}
         title={localizedTitle ?? t("Untitled")}
         imageUrl={imageAttrs?.url}
+        imageFormats={imageAttrs?.formats}
         imageAlt={imageAttrs?.alternativeText ?? localizedTitle ?? ""}
         imageCaption={imageAttrs?.caption}
       />

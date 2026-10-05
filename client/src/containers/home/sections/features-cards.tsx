@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
-import { mediaUrl } from "@/lib/cms";
+import { cmsImageSrc } from "@/lib/cms";
 import { useCategorizedFeatures } from "@/containers/features/use-feature-category";
 import type { CategorizedFeature } from "@/containers/features/use-feature-category";
 
@@ -44,11 +44,12 @@ function FeatureCard({ slug, label, ctaLabel, category, categorySlug, feature }:
         {image?.url && (
           <div className="relative h-[176px] w-full overflow-hidden">
             <Image
-              src={mediaUrl(image.url)}
+              src={cmsImageSrc(image.url, image.formats, 1000)}
               alt={image.alternativeText ?? feature.title ?? ""}
               fill
               className="object-cover"
               sizes="(min-width: 1280px) 514px, 100vw"
+              unoptimized
             />
             {image.caption && (
               <span className="absolute bottom-2 left-2 rounded bg-green-dark/10 px-[10px] py-1 text-[10px] text-white backdrop-blur-sm">

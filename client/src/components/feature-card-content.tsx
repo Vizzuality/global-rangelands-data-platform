@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { mediaUrl } from "@/lib/cms";
+import { cmsImageSrc } from "@/lib/cms";
 
 type FeatureCardContentProps = {
   variant: string;
@@ -10,6 +10,7 @@ type FeatureCardContentProps = {
   categoryTitle?: string;
   title: string;
   imageUrl?: string;
+  imageFormats?: unknown;
   imageAlt: string;
   imageCaption?: string;
 };
@@ -20,6 +21,7 @@ const FeatureCardContent = ({
   categoryTitle,
   title,
   imageUrl,
+  imageFormats,
   imageAlt,
   imageCaption,
 }: FeatureCardContentProps) => (
@@ -36,11 +38,12 @@ const FeatureCardContent = ({
     {imageUrl && (
       <div className="relative h-44">
         <Image
-          src={mediaUrl(imageUrl)}
+          src={cmsImageSrc(imageUrl, imageFormats, 704)}
           alt={imageAlt}
           fill
           className="object-cover"
           sizes="352px"
+          unoptimized
         />
         {imageCaption && (
           <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
