@@ -24,17 +24,20 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
-# NEXT_PUBLIC_* are inlined into the bundle by next build, so they must be set
-# here, not just at runtime. compose passes them from .env.prod; CI supplies
-# them via the generated .env.local, which COPY . . picks up.
+# NEXT_PUBLIC_* are inlined into the bundle by next build, so they must reach
+# the build, not just the runtime. compose passes them as build args from
+# .env.prod; CI passes none and supplies them via the generated .env.local,
+# which COPY . . picks up.
+#
+# Declare them as ARG only. A build arg is already in the environment of RUN
+# when it is passed, and genuinely absent when it is not. Restating them as
+# ENV would define them as empty strings on the CI path, and @next/env only
+# fills in variables that are absent -- an empty string wins over .env.local,
+# so every NEXT_PUBLIC_* would be inlined as "".
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_URL
 ARG NEXT_PUBLIC_MAPBOX_TOKEN
 ARG CMS_INTERNAL_API_URL
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
-    NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL \
-    NEXT_PUBLIC_MAPBOX_TOKEN=$NEXT_PUBLIC_MAPBOX_TOKEN \
-    CMS_INTERNAL_API_URL=$CMS_INTERNAL_API_URL
 
 # src/env.mjs declares TRANSIFEX_TOKEN as a required server variable and
 # validates it when the module loads, which happens during the build's route
