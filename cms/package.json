@@ -63,7 +63,7 @@
       "brace-expansion@5": "5.0.12",
       "ajv@6": "6.15.0",
       "ajv@8": "8.20.0",
-      "ajv>fast-uri": "3.1.6",
+      "ajv>fast-uri": "3.1.8",
       "@strapi/provider-email-sendmail>nodemailer": "9.1.1",
       "@strapi/strapi>browserslist": "4.28.9",
       "@strapi/upload>sharp": "0.35.4",
