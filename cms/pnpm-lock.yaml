@@ -44,6 +44,8 @@ overrides:
   express-rate-limit>ip-address: 10.5.0
   '@modelcontextprotocol/sdk>hono': 4.13.5
   '@modelcontextprotocol/sdk>@hono/node-server': 1.19.17
+  '@strapi/admin>axios': 1.20.0
+  '@strapi/cloud-cli>axios': 1.20.0
 
 importers:
 
@@ -2919,8 +2921,8 @@ packages:
     resolution: {integrity: sha512-0bDNnY/u6pPwHDMoF0FieU354oBi0a8rD9FcsLwzcGWbc8KS8KPIi7y+s13OlVY+gMWc/9xEMUgNE6Qm8ZllYQ==}
     engines: {node: '>=4'}
 
-  axios@1.19.0:
-    resolution: {integrity: sha512-ht/iuYZXEjFxLH/Hkezgd7m6JKlHHXEUSneaDz8uZe1Gj5QZtCnpyDsckvAiEnT89OEbCLmnte4R4sn7P0EKFw==}
+  axios@1.20.0:
+    resolution: {integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==}
 
   b4a@1.8.1:
     resolution: {integrity: sha512-aiqre1Nr0B/6DgE2N5vwTc+2/oQZ4Wh1t4NznYY4E00y8LCt6NqdRv81so00oo27D8MVKTpUa/MwUUtBLXCoDw==}
@@ -9223,7 +9225,7 @@ snapshots:
       '@testing-library/dom': 10.4.1
       '@testing-library/react': 16.3.2(@testing-library/dom@10.4.1)(@types/react@18.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
-      axios: 1.19.0(debug@4.3.4)
+      axios: 1.20.0(debug@4.3.4)
       bcryptjs: 2.4.3
       boxen: 5.1.2
       chalk: 4.1.2
@@ -9308,7 +9310,7 @@ snapshots:
   '@strapi/cloud-cli@5.52.0(@types/node@20.12.11)(ts-toolbelt@9.6.0)':
     dependencies:
       '@strapi/utils': 5.52.0(ts-toolbelt@9.6.0)
-      axios: 1.19.0(debug@4.3.4)
+      axios: 1.20.0(debug@4.3.4)
       boxen: 5.1.2
       chalk: 4.1.2
       cli-progress: 3.12.0
@@ -10936,7 +10938,7 @@ snapshots:
 
   attr-accept@2.2.5: {}
 
-  axios@1.19.0(debug@4.3.4):
+  axios@1.20.0(debug@4.3.4):
     dependencies:
       follow-redirects: 1.16.0(debug@4.3.4)
       form-data: 4.0.6

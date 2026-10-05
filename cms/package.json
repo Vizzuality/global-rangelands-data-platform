@@ -77,7 +77,9 @@
       "@strapi/strapi>vite": "6.4.3",
       "express-rate-limit>ip-address": "10.5.0",
       "@modelcontextprotocol/sdk>hono": "4.13.5",
-      "@modelcontextprotocol/sdk>@hono/node-server": "1.19.17"
+      "@modelcontextprotocol/sdk>@hono/node-server": "1.19.17",
+      "@strapi/admin>axios": "1.20.0",
+      "@strapi/cloud-cli>axios": "1.20.0"
     },
     "onlyBuiltDependencies": [
       "@strapi/strapi",
