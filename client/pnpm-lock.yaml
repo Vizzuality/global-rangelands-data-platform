@@ -11,7 +11,6 @@ overrides:
   jsonpath-plus: 10.4.0
   lodash: 4.18.1
   '@stoplight/spectral-core>minimatch': 3.1.5
-  axios>form-data: 4.0.6
   express>qs: 6.16.0
   cosmiconfig>js-yaml: 4.3.2
   ajv>fast-uri: 3.1.8
