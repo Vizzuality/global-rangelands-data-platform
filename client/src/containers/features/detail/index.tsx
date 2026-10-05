@@ -14,7 +14,7 @@ import { DEFAULT_LOCALE } from "@/i18n/routing";
 import RichText from "@/components/ui/rich-text";
 import FeatureDocumentLink from "@/components/feature-document-link";
 import { sidebarOpenAtom, useSyncSearchParams } from "@/store/map";
-import { mediaUrl } from "@/lib/cms";
+import { cmsImageSrc } from "@/lib/cms";
 import FurtherInfo from "./further-info";
 import RelatedDatasets from "./related-datasets";
 import KeepExploring from "./keep-exploring";
@@ -105,6 +105,7 @@ const FeatureDetail = ({ slug }: FeatureDetailProps) => {
   const description = localized?.description ?? feature?.description;
 
   const imageUrl = feature?.image?.url;
+  const imageFormats = feature?.image?.formats;
   const imageCaption = feature?.image?.caption;
 
   const featureDatasets = feature?.datasets ?? [];
@@ -132,7 +133,13 @@ const FeatureDetail = ({ slug }: FeatureDetailProps) => {
 
         {imageUrl && (
           <div className="relative h-[140px] w-full shrink-0">
-            <Image src={mediaUrl(imageUrl)} alt={title ?? ""} fill className="object-cover" />
+            <Image
+              src={cmsImageSrc(imageUrl, imageFormats, 1000)}
+              alt={title ?? ""}
+              fill
+              className="object-cover"
+              unoptimized
+            />
             {imageCaption && (
               <span className="absolute bottom-2 left-2 rounded bg-foreground/10 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
                 {imageCaption}

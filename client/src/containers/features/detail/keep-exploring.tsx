@@ -69,6 +69,7 @@ const KeepExploring = ({ slug }: KeepExploringProps) => {
               href={`/map/feature/${feature.slug}${searchParams}`}
               title={localizedTitle ?? t("Untitled")}
               imageUrl={feature.image?.url}
+              imageFormats={feature.image?.formats}
               imageAlt={feature.image?.alternativeText ?? localizedTitle ?? ""}
             />
           );

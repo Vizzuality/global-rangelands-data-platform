@@ -8,7 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { useGetFeatures } from "@/types/generated/feature";
 import type { FeatureCategoryListResponse } from "@/types/generated/strapi.schemas";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
-import { mediaUrl } from "@/lib/cms";
+import { cmsImageSrc } from "@/lib/cms";
 import FeatureDocumentLink from "@/components/feature-document-link";
 import { cn } from "@/lib/utils";
 import FurtherInfo from "@/containers/features/detail/further-info";
@@ -94,7 +94,13 @@ const FeatureDetailPage = ({ category, slug, initialCategoryData }: FeatureDetai
 
               {imageUrl && (
                 <div className="relative -mx-6 h-[420px] xl:-mx-24">
-                  <Image src={mediaUrl(imageUrl)} alt={title ?? ""} fill className="object-cover" />
+                  <Image
+                    src={cmsImageSrc(imageUrl)}
+                    alt={title ?? ""}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
                   {imageCaption && (
                     <span className="absolute bottom-2 left-2 rounded bg-foreground/60 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
                       {imageCaption}

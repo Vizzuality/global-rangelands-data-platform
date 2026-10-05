@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
-import { mediaUrl } from "@/lib/cms";
+import { cmsImageSrc } from "@/lib/cms";
 import { useCategorizedFeatures } from "@/containers/features/use-feature-category";
 
 const INVESTMENT_CASE_SLUGS = [
@@ -130,11 +130,12 @@ export function Stelarr() {
                   <div className="relative h-[176px] w-full overflow-hidden">
                     {project.image?.url && (
                       <Image
-                        src={mediaUrl(project.image.url)}
+                        src={cmsImageSrc(project.image.url, project.image.formats, 1000)}
                         alt={project.image.alternativeText ?? project.title ?? ""}
                         fill
                         className="object-cover"
                         sizes="(min-width: 640px) 33vw, 100vw"
+                        unoptimized
                       />
                     )}
                   </div>

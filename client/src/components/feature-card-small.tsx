@@ -2,13 +2,14 @@ import Image from "next/image";
 
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { mediaUrl } from "@/lib/cms";
+import { cmsImageSrc } from "@/lib/cms";
 
 type FeatureCardSmallProps = {
   variant: string;
   href: string;
   title: string;
   imageUrl?: string;
+  imageFormats?: unknown;
   imageAlt: string;
   className?: string;
 };
@@ -18,6 +19,7 @@ const FeatureCardSmall = ({
   href,
   title,
   imageUrl,
+  imageFormats,
   imageAlt,
   className,
 }: FeatureCardSmallProps) => (
@@ -28,11 +30,12 @@ const FeatureCardSmall = ({
     {imageUrl && (
       <div className="relative flex-1">
         <Image
-          src={mediaUrl(imageUrl)}
+          src={cmsImageSrc(imageUrl, imageFormats, 352)}
           alt={imageAlt}
           fill
           className="object-cover"
           sizes="176px"
+          unoptimized
         />
       </div>
     )}

@@ -101,11 +101,12 @@ services:
       NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
     volumes:
       - ./infrastructure/vm/scripts/healthcheck.js:/healthcheck.js:ro
-      # next/image resolves a relative url against the Next server's own origin,
-      # which does not serve /cms/* -- nginx does. Exposing the uploads under
-      # public/ makes them genuinely local, so the optimizer reads them from
-      # disk instead of fetching its own 404 page.
-      - media:/app/public/cms/uploads:ro
+      # The upload volume is deliberately NOT mounted here. nginx proxies
+      # /cms/* to Strapi, so the client never reads media from disk, and
+      # CMS images bypass the Next optimizer entirely (see lib/cms.ts
+      # cmsImageSrc). Mounting it under public/ only ever half-worked: Next
+      # lists public/ when the server starts, so uploads added afterwards
+      # answered 400 until the container was restarted.
     networks: [platform]
     depends_on:
       cms:

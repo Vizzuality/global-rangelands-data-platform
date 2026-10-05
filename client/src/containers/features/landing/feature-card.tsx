@@ -34,6 +34,7 @@ const LandingFeatureCard = ({ feature, category, variant, className }: LandingFe
         href={`/features/${category}/${featureSlug}`}
         title={localizedTitle ?? t("Untitled")}
         imageUrl={imageAttrs?.url}
+        imageFormats={imageAttrs?.formats}
         imageAlt={imageAttrs?.alternativeText ?? localizedTitle ?? ""}
         imageCaption={imageAttrs?.caption}
       />
