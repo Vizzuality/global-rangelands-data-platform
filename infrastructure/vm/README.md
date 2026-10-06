@@ -313,10 +313,10 @@ third-party tiles, not ours to relocate.
 > `endYear`. `modis_net_primary_production` requires them and answers `400`,
 > which reads like a routing failure and is not one.
 
-> The full deck.gl render path is still unverified: `NEXT_PUBLIC_MAPBOX_TOKEN`
-> is a placeholder locally, so the basemap 401s and the overlay never mounts.
-> With a valid token, a browser probe of `/en/map` should record same-origin
-> `/functions/eet/` requests returning 200.
+> Verified 2026-10-05 with a real `pk.` token: a browser probe of `/en/map`
+> records the basemap composite source and the `grass2024` MVT tilesets all
+> returning 200, with the overlay visible. See "The render path, and the token
+> it needs".
 
 ## Content baseline
 
