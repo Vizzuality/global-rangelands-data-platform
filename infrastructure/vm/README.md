@@ -756,10 +756,22 @@ images that embed `.env.prod` should live in a registry ILRI's wider org can
 read; see GRASS-392. On the VM the trust boundary is a shell on the box,
 which is where `.env.prod` already is, so the local registry does not widen it.
 
-Worth noting for that conversation: a **private GHCR package does not require
-a private repo** -- package visibility is its own setting. The real constraint
-is the org's plan, since ~400 MB per release counts against private-package
-storage.
+Two facts for that conversation, both checked against GitHub's docs rather
+than assumed:
+
+- A **private GHCR package does not require a private repo**. The Container
+  registry supports granular permissions, so package visibility is its own
+  setting and a new package defaults to private.
+- **Cost is not the deciding factor.** "Container image storage and bandwidth
+  for the Container registry is currently free", with a month's notice before
+  that changes. Even under the standard Packages rates it would be about a
+  dollar a month at ten retained releases.
+
+What does matter is that making a package public is **irreversible**: "once
+you make a package public, you cannot make it private again". For images that
+embed `.env.prod` that is a one-way door onto production credentials, and it
+belongs on the handover checklist as an explicit instruction rather than an
+inherited default.
 
 ## Deferred to phase 2
 
