@@ -178,6 +178,22 @@ services:
         condition: service_healthy
       tiler:
         condition: service_healthy
+    healthcheck:
+      # Checked THROUGH nginx, not at nginx. The failure this exists to catch
+      # is nginx holding a stale upstream IP after a container is recreated:
+      # every route 502s while all three upstreams report healthy, so nothing
+      # else in this file can see it. `nginx -s reload` is the fix.
+      #
+      # busybox wget propagates an HTTP error status as a non-zero exit, so a
+      # 502 fails the check. --no-check-certificate because the request goes
+      # to 127.0.0.1 and the certificate is issued for the public name.
+      # /en is served from Next's route cache in ~25ms; this is not load.
+      test: ["CMD", "wget", "-q", "-O", "/dev/null",
+             "--no-check-certificate", "https://127.0.0.1/en"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   pgdata:
