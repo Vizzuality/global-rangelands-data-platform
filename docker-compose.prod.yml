@@ -5,6 +5,14 @@ name: rdp-prod
 # `node -e` one-liner per service, and it can be corrected without rebuilding
 # the images.
 
+# Image references are addressable so the same file can build locally or pull
+# from a registry. Unset, IMAGE_PREFIX and IMAGE_TAG give the previous
+# `rdp-<svc>:local`, so `docker compose build` is unchanged. To pull instead:
+#
+#   IMAGE_PREFIX=ghcr.io/<org>/ IMAGE_TAG=sha-<commit> docker compose pull
+#
+# The prefix carries its own trailing slash; a registry is a prefix, not a
+# separate field, so an empty value has to collapse to nothing.
 services:
   db:
     image: postgres:16-alpine
@@ -26,7 +34,7 @@ services:
     build:
       context: cms
       dockerfile: Dockerfile.prod
-    image: rdp-cms:local
+    image: ${IMAGE_PREFIX:-}rdp-cms:${IMAGE_TAG:-local}
     restart: unless-stopped
     environment:
       DATABASE_CLIENT: postgres
@@ -59,7 +67,7 @@ services:
   tiler:
     build:
       context: cloud_functions/earth_engine_tiler
-    image: rdp-tiler:local
+    image: ${IMAGE_PREFIX:-}rdp-tiler:${IMAGE_TAG:-local}
     restart: unless-stopped
     environment:
       PORT: "8080"
@@ -85,7 +93,7 @@ services:
         NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
         NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
         CMS_INTERNAL_API_URL: ${CMS_INTERNAL_API_URL}
-    image: rdp-client:local
+    image: ${IMAGE_PREFIX:-}rdp-client:${IMAGE_TAG:-local}
     restart: unless-stopped
     environment:
       PORT: "3000"
