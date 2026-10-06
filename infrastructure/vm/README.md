@@ -44,6 +44,52 @@ unscaled instance.
 The cache lives on the `tilecache` volume, so it survives container restarts;
 a one-week TTL would otherwise be discarded on every deploy.
 
+### Under load
+
+`load-tile-cache.sh` walks a grid of tiles over East Africa, where the
+rangelands layers actually have data, and measures the cache twice. It costs
+money, because every cold tile is a metered Earth Engine call, so the defaults
+are small (2 zooms x 4x4) and the warm pass reuses the same URLs.
+
+Measured on the rehearsal stack, 32 tiles:
+
+| | cold | warm |
+|---|---|---|
+| median | 2.545 s | **0.009 s** |
+| p95 | 3.387 s | 0.014 s |
+| cache status | 32 MISS | 32 HIT |
+
+A cached tile comes back roughly **270x faster** than a cold one. The cold p95
+of 3.4 s is the number that matters for a first pan across a fresh zoom level,
+and it is why request collapsing is load-bearing.
+
+### The key zone binds before `max_size` does
+
+The two ceilings on the cache are `max_size=30g` and `keys_zone=100m`, and
+nginx indexes roughly 8000 keys per megabyte of zone, so the zone tops out
+near **800,000 tiles**. They cross at a mean tile of **40 KB**: below that the
+key zone runs out first, above it the bytes do.
+
+The sampled mean is **2978 bytes**, so on this evidence the key zone binds by
+more than a factor of ten: the cache would stop around 2.3 GB of a 30 GB
+allowance. That is not a fault, but `max_size=30g` is not buying what it looks
+like it is buying. Raising the zone to index 30 GB of 3 KB tiles would cost
+over a gigabyte of resident memory on an 8 GB box, so the realistic choice is
+to lower `max_size` and keep the memory. Worth revisiting with tile sizes
+measured from the real layer mix rather than one tileset.
+
+### Surviving a tiler outage
+
+With the tiler stopped, an already-cached tile still returns **200** and an
+uncached one returns **504** rather than something wrong. So an Earth Engine
+or tiler failure degrades to "the map works where people have already been",
+which is the right shape of failure.
+
+This does **not** exercise `proxy_cache_use_stale`. Entries stay valid for a
+week, so a short test only ever sees a fresh `HIT`; the stale path would need
+an entry past `proxy_cache_valid` to trigger. Untested, and only reachable
+after a week of uptime.
+
 ## Health endpoints
 
 All three Node services share `infrastructure/vm/scripts/healthcheck.js`,
@@ -622,10 +668,13 @@ how long they are kept), and the answer affects the retention setting above.
 
 ## Deferred to phase 2
 
-Real TLS issuance and renewal, cache behaviour under realistic tile load, Earth
-Engine latency from London, ILRI firewall rules, the image registry and its
-garbage-collection cron, off-box backup storage, monitoring, and the
-operational handover.
+Real TLS issuance and renewal, Earth Engine latency from London, ILRI firewall
+rules, the image registry and its garbage-collection cron, off-box backup
+storage, monitoring, and the operational handover.
+
+Two findings from the phase-2 work above are decisions rather than tasks, and
+need someone to make them: whether to lower `max_size` now that the key zone
+is known to bind first, and where off-box backups live.
 
 ## Domain states
 
