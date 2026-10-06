@@ -699,6 +699,46 @@ know which tag is oldest and a git sha sorts by hex. `registry-gc.sh` only
 touches tags matching the stamped shape and leaves anything else alone, so a
 hand-pushed tag is not collected by surprise.
 
+### Releasing
+
+    bash infrastructure/vm/scripts/release.sh                  # build and deploy
+    DOCKER_CONTEXT=rdp bash infrastructure/vm/scripts/release.sh
+
+Six steps, in the order that works: build, verify image hygiene, push, deploy,
+**reload nginx**, smoke-test through nginx. Each one is there because leaving
+it out costs something concrete:
+
+- Hygiene runs **before** the push. Once a layer carrying an env file is in a
+  registry, deleting the tag does not recall what was already pulled.
+- nginx is reloaded **after** the containers come up, for the reason below.
+- The smoke test goes **through nginx**, not at the containers, because the
+  502 below is invisible to a container health check.
+
+It tags `<utc-stamp>-<short-sha>`, and appends `-dirty` when `client/`,
+`cms/`, `cloud_functions/` or the compose file have uncommitted changes:
+a release that cannot be reproduced from git should say so in its name.
+Changes elsewhere, such as `terraform.tfvars`, do not count.
+
+### Rolling back
+
+Every release prints the command to undo it:
+
+    RELEASE_TAG=<previous> SKIP_BUILD=1 bash infrastructure/vm/scripts/release.sh
+
+That pulls the named tag rather than building, skips the push, and runs the
+same deploy, reload and smoke test. Only a stamped tag is ever offered: a
+locally built `:local` image is not in the registry, so suggesting it would
+hand over a command that cannot work.
+
+**A tag predating the `STRIP_ENV_FILES` change will fail the hygiene gate**,
+because those images really do carry an env file. Blocking is right for a
+normal release and wrong for an emergency, so the gate can be overridden:
+
+    ALLOW_UNCLEAN_IMAGES=1 RELEASE_TAG=<old> SKIP_BUILD=1 ./release.sh
+
+Verified end to end: a release, a rollback to the previous tag, and a roll
+forward again, with all four smoke checks passing each time.
+
 ### Reload nginx after a deploy, or everything 502s
 
 Recreating `client` or `cms` gives them new container IPs. nginx resolves its
