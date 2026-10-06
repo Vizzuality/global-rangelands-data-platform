@@ -12,6 +12,11 @@ Run it: copy `.env.prod.example` to `.env.prod`, fill it in, then
 Nothing here pushes an image anywhere. The images embed no secrets, but are still
 environment-specific, because `NEXT_PUBLIC_*` are inlined at build time.
 
+This file explains **why** the stack is built the way it is, for whoever
+changes it. For **what to type** when something is wrong (deploy, roll back,
+restore, renew the certificate, triage an outage), see
+[`RUNBOOK.md`](./RUNBOOK.md).
+
 ## Routing contract
 
 Reproduces the GCP load balancer's URL map, including prefix stripping
