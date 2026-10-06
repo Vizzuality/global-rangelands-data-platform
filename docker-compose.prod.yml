@@ -13,6 +13,17 @@ name: rdp-prod
 #
 # The prefix carries its own trailing slash; a registry is a prefix, not a
 # separate field, so an empty value has to collapse to nothing.
+# Docker's json-file driver has no size limit by default, so container logs
+# grow until the disk is full. Measured on this stack: nginx writes ~66 bytes
+# per request, and GRASS-407 makes an idle browser tab issue ~148 requests a
+# second, which is ~800 MB of log a day from one visitor. 10m x 3 caps each
+# service at 30 MB.
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   db:
     image: postgres:16-alpine
@@ -23,6 +34,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    logging: *default-logging
     networks: [platform]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
@@ -57,6 +69,7 @@ services:
       # inherits that ownership.
       - cmsdata:/app/data
       - ./infrastructure/vm/scripts/healthcheck.js:/healthcheck.js:ro
+    logging: *default-logging
     networks: [platform]
     depends_on:
       db:
@@ -78,6 +91,7 @@ services:
       EE_CREDENTIALS_JSON: ${EE_CREDENTIALS_JSON}
     volumes:
       - ./infrastructure/vm/scripts/healthcheck.js:/healthcheck.js:ro
+    logging: *default-logging
     networks: [platform]
     healthcheck:
       test: ["CMD", "node", "/healthcheck.js", "http://127.0.0.1:8080/health"]
@@ -122,6 +136,7 @@ services:
       # cmsImageSrc). Mounting it under public/ only ever half-worked: Next
       # lists public/ when the server starts, so uploads added afterwards
       # answered 400 until the container was restarted.
+    logging: *default-logging
     networks: [platform]
     depends_on:
       cms:
@@ -154,6 +169,7 @@ services:
       - tilecache:/var/cache/nginx/tiles
       - certs:/etc/nginx/certs:ro
       - certbotwww:/var/www/certbot
+    logging: *default-logging
     networks: [platform]
     depends_on:
       client:
