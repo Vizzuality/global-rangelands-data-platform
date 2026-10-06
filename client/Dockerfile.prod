@@ -81,6 +81,14 @@ COPY --from=build --chown=nextjs:nodejs /app/next.config.mjs ./next.config.mjs
 # only source. CI generates it from GH secrets (generate-env-file-from-json).
 COPY --from=build --chown=nextjs:nodejs /app/.env.local ./.env.local
 
+# The VM supplies every runtime value through compose's environment block, so
+# it builds with STRIP_ENV_FILES=1 and ships no env file at all. Without this
+# the image would carry whatever .env.local happened to sit in the build
+# context -- on a developer's machine, their own. Defaults to 0 so the Cloud
+# Run path above is unchanged; see GRASS-392.
+ARG STRIP_ENV_FILES=0
+RUN if [ "$STRIP_ENV_FILES" = "1" ]; then rm -f ./.env.local; fi
+
 USER nextjs
 
 EXPOSE 3000
