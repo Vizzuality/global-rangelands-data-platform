@@ -74,6 +74,13 @@ RUN addgroup --system --gid 1001 nodejs && \
 # Copied whole: Strapi resolves config and API definitions at runtime.
 COPY --from=build --chown=strapi:nodejs /app ./
 
+# The copy above is indiscriminate, so a .env in the build context ships with
+# the image. The VM gets its secrets from compose and builds with
+# STRIP_ENV_FILES=1; Cloud Run has no runtime env channel and needs the file,
+# so the default keeps it. See GRASS-392.
+ARG STRIP_ENV_FILES=0
+RUN if [ "$STRIP_ENV_FILES" = "1" ]; then rm -f ./.env; fi
+
 # /app is root-owned, so uid 1001 cannot create these itself.
 # public/uploads: provider-upload-local throws if absent.
 # data/backups: hardcoded by import-export-data (server/utils/fs.js:13).
