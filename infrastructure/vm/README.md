@@ -713,6 +713,22 @@ containers directly and never notice. A reload restored 200s immediately. This
 is a property of every deploy, not a one-off, so the reload belongs in whatever
 runs the release.
 
+### Container logs are capped
+
+Docker's `json-file` driver has no size limit by default, so container logs
+grow until the disk is full. Every service now sets `max-size: 10m` and
+`max-file: 3`, capping the stack at 150 MB.
+
+The numbers that make this worth doing rather than theoretical: nginx writes
+**66 bytes per request** here (measured over 50 requests), and GRASS-407 makes
+an idle browser tab issue about **148 requests a second**. That is roughly
+**800 MB of nginx log a day from one visitor who has walked away**, before the
+client container's own output. A 160 GB disk does not last long against that,
+and a full disk takes Postgres down with it.
+
+Fixing GRASS-407 removes the cause; the cap removes the consequence. Both are
+worth having, because the next runaway loop will not announce itself either.
+
 ### Image hygiene
 
 The VM takes every secret from compose's `environment:` block, so an image
