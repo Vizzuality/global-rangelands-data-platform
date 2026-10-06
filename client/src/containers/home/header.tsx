@@ -1,12 +1,12 @@
 "use client";
 
-import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
+import { Link } from "@/i18n/navigation";
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import FeatureCategoriesMenu, {
   FeatureCategoriesMenuScrim,
