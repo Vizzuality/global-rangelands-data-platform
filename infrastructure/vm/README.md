@@ -699,6 +699,45 @@ know which tag is oldest and a git sha sorts by hex. `registry-gc.sh` only
 touches tags matching the stamped shape and leaves anything else alone, so a
 hand-pushed tag is not collected by surprise.
 
+### Reload nginx after a deploy, or everything 502s
+
+Recreating `client` or `cms` gives them new container IPs. nginx resolves its
+upstreams once at startup and caches the result, so it keeps proxying to
+addresses nothing answers on any more:
+
+    docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
+
+Measured: after `up -d cms client`, every route returned **502** with all five
+services reporting healthy, because compose health checks talk to the
+containers directly and never notice. A reload restored 200s immediately. This
+is a property of every deploy, not a one-off, so the reload belongs in whatever
+runs the release.
+
+### Image hygiene
+
+The VM takes every secret from compose's `environment:` block, so an image
+that also carries an env file is carrying something it was never asked for.
+Two ways one gets in: `COPY . .` picking up a `.env` left in the build
+context, which makes the contents depend on whose machine built the image; and
+a build arg restated as `ENV`, which persists into `docker inspect` and
+`docker history`.
+
+Both Dockerfiles take `STRIP_ENV_FILES`, default `0`. Compose sets it to `1`,
+so VM images ship no env file. The default is what Cloud Run builds with, and
+that path **needs** the baked file: it has no runtime env channel at all
+(`env_vars` is commented out in the deploy action and Terraform's `env_vars`
+variable is declared but never referenced). That is GRASS-392, and it expires
+with staging.
+
+    bash infrastructure/vm/scripts/verify-image-hygiene.sh
+
+Checks each image for an env file with content, and for any secret-named
+variable baked into the image environment. Run it before pushing anywhere.
+Verified by watching it fail first: with the gate off, `rdp-cms` carried a
+341-byte `/app/.env` and `rdp-client` a 294-byte `/app/.env.local`, both
+picked up from a developer's working tree. With the gate on, 6 of 6 pass and
+the full environment probe still reports no failures.
+
 ### Measured
 
 | | |

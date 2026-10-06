@@ -34,6 +34,10 @@ services:
     build:
       context: cms
       dockerfile: Dockerfile.prod
+      args:
+        # Secrets reach this service through `environment:` below, so the
+        # image must not also carry an env file. See GRASS-392.
+        STRIP_ENV_FILES: "1"
     image: ${IMAGE_PREFIX:-}rdp-cms:${IMAGE_TAG:-local}
     restart: unless-stopped
     environment:
@@ -93,6 +97,9 @@ services:
         NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
         NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
         CMS_INTERNAL_API_URL: ${CMS_INTERNAL_API_URL}
+        # Server-side secrets reach this service through `environment:` below,
+        # so the image must not also carry .env.local. See GRASS-392.
+        STRIP_ENV_FILES: "1"
     image: ${IMAGE_PREFIX:-}rdp-client:${IMAGE_TAG:-local}
     restart: unless-stopped
     environment:
