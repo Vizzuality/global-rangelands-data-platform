@@ -2,8 +2,8 @@
 
 import { useState, type KeyboardEvent } from "react";
 import { useTranslations } from "@/i18n";
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Marquee from "@/components/ui/marquee";
 import GMVLogo from "@/assets/images/gmv-logo-color.png";
