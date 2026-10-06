@@ -555,11 +555,77 @@ Revisit if the base distro is ever unified, where it becomes free.
 `24.x`. A shared base image would violate one of them. The tiler uses 22.23.1 to
 match `cms` rather than introduce a third Node version.
 
+## Backups
+
+`backup.sh` captures the two things on the VM that cannot be rebuilt: the
+database and the Strapi upload volume. Everything else is derived:
+`tilecache` refetches on a miss, `certs` belongs to certbot on the host, and
+`cmsdata` holds the import-export plugin's own dumps.
+
+    bash infrastructure/vm/scripts/backup.sh
+    BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=30 ./backup.sh   # cron form
+
+Each run writes `<BACKUP_DIR>/<stamp>/` containing `db.dump` (custom format),
+`media.tar.gz` and a `manifest.txt`. The manifest exists so a backup can be
+audited without restoring it: if the media file count drops to zero one night,
+that is visible in a one-line diff.
+
+Two properties are deliberate:
+
+- **The directory is built under `.partial-<stamp>` and renamed only on
+  success**, so an interrupted run cannot leave something that looks like a
+  usable backup.
+- **Retention is count-based, not age-based.** A stack that stops producing
+  backups should not also quietly delete the ones it still has.
+
+Nothing is bind-mounted. Both artefacts stream to stdout and are redirected
+by the caller, so the script works unchanged against a remote daemon and
+writes to whichever machine invoked it.
+
+### Restoring
+
+    BACKUP=/var/backups/rdp/20260101T000000Z \
+      bash infrastructure/vm/scripts/restore-backup.sh
+
+Destructive, and restores **both** halves. Restoring only the database would
+leave `files` rows pointing at uploads that are no longer on disk.
+
+### Verifying
+
+`verify-backup.sh` restores a backup into a throwaway Postgres container and a
+throwaway volume, then compares the result against the running stack:
+
+| Check | Measured |
+|---|---|
+| `db.dump` restores into an empty Postgres | pg_restore exit status |
+| Row counts match the live database | `stories`, `datasets`, `files` |
+| Media matches the live volume | file count and total bytes |
+| Uploads keep uid 1001 | Strapi cannot write a root-owned volume |
+
+Measured on the rehearsal stack: **4 of 4 pass**, and negative-tested both
+ways: a truncated `db.dump` and an archive missing 20 files each produce two
+failures, in the half at fault.
+
+It does not cover `restore-backup.sh` writing over the real stack, because
+proving that costs a working environment. Exercise it by hand once before the
+handover.
+
+### Still missing
+
+A backup on the same disk as the data it protects is not a backup. Off-box
+copies are an open question for ILRI (where they go, who can read them, and
+how long they are kept), and the answer affects the retention setting above.
+
+    # /etc/cron.d/rdp-backup
+    0 3 * * * root cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=30 \
+      /bin/bash infrastructure/vm/scripts/backup.sh >> /var/log/rdp-backup.log 2>&1
+
 ## Deferred to phase 2
 
 Real TLS issuance and renewal, cache behaviour under realistic tile load, Earth
 Engine latency from London, ILRI firewall rules, the image registry and its
-garbage-collection cron, backups, monitoring, and the operational handover.
+garbage-collection cron, off-box backup storage, monitoring, and the
+operational handover.
 
 ## Domain states
 
