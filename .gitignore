@@ -124,3 +124,4 @@ dist
 .env.prod
 dumps/
 *.dump
+backups/
