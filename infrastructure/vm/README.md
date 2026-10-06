@@ -666,11 +666,105 @@ how long they are kept), and the answer affects the retention setting above.
     0 3 * * * root cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=30 \
       /bin/bash infrastructure/vm/scripts/backup.sh >> /var/log/rdp-backup.log 2>&1
 
+## The image registry
+
+`docker-compose.registry.yml` runs `registry:2` on the VM, in **its own
+compose project**. That separation is deliberate: `docker compose down -v` on
+the application is the documented way to rebuild from scratch, and if the
+registry shared that project the teardown would also delete every image you
+could roll back to.
+
+    docker compose -f docker-compose.registry.yml up -d
+
+Bound to `127.0.0.1:5000` and never exposed. Docker exempts localhost from its
+HTTPS requirement, so this needs no certificate and no `insecure-registries`
+entry: on the VM the daemon pulls from its own loopback, and from a laptop
+you reach it through a tunnel, which is localhost at both ends:
+
+    ssh -N -L 5000:127.0.0.1:5000 user@vm
+
+Exposing it would mean TLS, authentication and an open port fronting images
+that embed production secrets. The tunnel costs nothing and avoids all three.
+
+### Release tags sort by time, not by hash
+
+    TAG="$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short HEAD)"
+    IMAGE_PREFIX=127.0.0.1:5000/ IMAGE_TAG="$TAG" \
+      docker compose -f docker-compose.prod.yml push cms client tiler
+    IMAGE_PREFIX=127.0.0.1:5000/ IMAGE_TAG="$TAG" \
+      docker compose -f docker-compose.prod.yml up -d
+
+`<utc-stamp>-<short-sha>` rather than a bare sha, because retention has to
+know which tag is oldest and a git sha sorts by hex. `registry-gc.sh` only
+touches tags matching the stamped shape and leaves anything else alone, so a
+hand-pushed tag is not collected by surprise.
+
+### Measured
+
+| | |
+|---|---|
+| Three images on disk | 1.65 GB (client 307 MB, cms 984 MB, tiler 355 MB) |
+| Stored in the registry | **395 MB**, since layers are compressed and the Node bases dedup |
+| First push | 49 s |
+| Re-push of unchanged images | **0.27 s**, +0.1 MB |
+
+At ~400 MB for the first release and very little per release after it, 160 GB
+of disk is not the constraint. Retention is about rollback depth, not space.
+
+### Garbage collection
+
+**Nothing runs this.** It is a command an operator types, usually from RUNBOOK
+§6 when the disk is filling. The nightly backup is the only thing this
+project schedules on the VM, so the registry grows by each release's changed
+layers and nothing ever shrinks it. That is affordable rather than ideal,
+for the reason under **Measured** above: retention here is about rollback
+depth, not space.
+
+    bash infrastructure/vm/scripts/registry-gc.sh      # keep 10 per repo
+    KEEP=5 DRY_RUN=1 ./registry-gc.sh                  # show what would go
+
+Two steps, both required: deleting a manifest only unlinks the tag, and the
+blobs stay until `garbage-collect` runs. Retention without collection reclaims
+nothing.
+
+Two things the script has to get right, both found by testing it:
+
+- **A manifest delete is by digest, and unlinks every tag pointing at it.**
+  Two releases that build an identical image share a digest, so dropping the
+  old tag would silently take the kept one with it. The script collects the
+  digests of kept tags first and skips any deletion that would hit one.
+- **Collection runs with the registry stopped.** `garbage-collect` walks the
+  blob store deciding what is unreferenced; a push landing mid-walk can have
+  its blob collected before the manifest referencing it exists.
+
+To put it on a schedule instead, this is the form. **It is not installed on
+the VM**; confirm with `ls /etc/cron.d/rdp-registry-gc` rather than assuming
+either way. Run it after the nightly backup rather than alongside it, since
+both briefly stop a container:
+
+    # /etc/cron.d/rdp-registry-gc
+    30 3 * * 0 root cd /opt/rdp && KEEP=10 \
+      /bin/bash infrastructure/vm/scripts/registry-gc.sh >> /var/log/rdp-registry-gc.log 2>&1
+
+### Moving to GHCR later
+
+Nothing here is load-bearing for that. `IMAGE_PREFIX` and `IMAGE_TAG` in
+`docker-compose.prod.yml` are the whole interface, so the switch is
+`IMAGE_PREFIX=ghcr.io/<org>/` plus a pull credential on the VM; the stamped
+tag convention works unchanged. What would need deciding first is whether
+images that embed `.env.prod` should live in a registry ILRI's wider org can
+read; see GRASS-392. On the VM the trust boundary is a shell on the box,
+which is where `.env.prod` already is, so the local registry does not widen it.
+
+Worth noting for that conversation: a **private GHCR package does not require
+a private repo** -- package visibility is its own setting. The real constraint
+is the org's plan, since ~400 MB per release counts against private-package
+storage.
+
 ## Deferred to phase 2
 
 Real TLS issuance and renewal, Earth Engine latency from London, ILRI firewall
-rules, the image registry and its garbage-collection cron, off-box backup
-storage, monitoring, and the operational handover.
+rules, off-box backup storage, monitoring, and the operational handover.
 
 Two findings from the phase-2 work above are decisions rather than tasks, and
 need someone to make them: whether to lower `max_size` now that the key zone
