@@ -422,9 +422,11 @@ Open items that an operator cannot resolve alone:
   backup against disk loss. Where off-box copies go, who can read them and
   how long they are kept is an ILRI decision, and it determines the retention
   setting in §4.
-- **The canonical domain is not settled.** See **Domain states** in the
-  README; moving between them needs no config change, only environment
-  values and a certificate covering every name.
+- **The cutover date, and what happens to `/atlas`.** The canonical domain is
+  settled (`www.rangelandsdata.org`, with the other three names redirecting
+  to it), but DNS still points at the old host, repointing it is ILRI's to do,
+  and nobody has decided whether the archived Rangelands Atlas keeps answering
+  on `/atlas`. See **Domain states** in the README.
 - **`restore-backup.sh` has not been run against the real stack**, only
   against throwaway containers (§4.2). Exercise it once, deliberately,
   before you need it.
