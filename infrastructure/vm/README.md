@@ -137,10 +137,39 @@ result.
 certbot is installed on the **host**; nginx runs in a container. That drives
 every decision here.
 
-1. Point the `certs` volume at `/etc/letsencrypt/live/<host>` **read-only**, and
-   `certbotwww` at the host directory certbot uses as its webroot. The container
-   reads `fullchain.pem` and `privkey.pem` by those exact names, which is what
-   certbot already writes.
+1. **Copy** the issued pair into the `certs` volume; do not bind-mount
+   certbot's live directory.
+
+   `live/<host>/` holds no certificates. It holds relative symlinks
+   (`fullchain.pem -> ../../archive/<host>/fullchain1.pem`) so that the name
+   stays stable while each renewal writes a new numbered file into
+   `archive/`. A container only sees what is mounted, so mounting
+   `live/<host>` alone puts `../..` outside the mount: the links dangle and
+   nothing can read them.
+
+   Mount the **whole** tree and `cp -L` reads through the links to the real
+   files, leaving the compose file unchanged:
+
+       docker run --rm -v rdp-prod_certs:/certs -v /etc/letsencrypt:/le:ro \
+         alpine sh -c 'cp -L /le/live/<host>/fullchain.pem \
+                             /le/live/<host>/privkey.pem /certs/'
+
+   > The mount *point* is irrelevant: measured, that command works with the
+   > tree at `/le`, because the links are relative and only need `../..` to
+   > be inside the mount. `cert-deploy-hook.sh` mounts at `/etc/letsencrypt`
+   > for a different reason: certbot hands it `$RENEWED_LINEAGE` as an
+   > absolute host path, which it uses verbatim inside the container, so
+   > there the two paths must agree.
+
+   The container reads `fullchain.pem` and `privkey.pem` by those exact
+   names, which is what certbot already writes, so nothing is renamed.
+
+   Separately, the ACME webroot is `${CERTBOT_WEBROOT}`, required with no
+   default. It has to be the host directory certbot writes the challenge
+   into (`/var/www/certbot` here), because host certbot cannot write into a
+   Docker volume, and a volume there makes every challenge 404. There is
+   deliberately no fallback: one that worked silently on a laptop and failed
+   silently on this machine is worth less than an error naming the variable.
 2. Issue with `--webroot`. **Not `--standalone`**: it binds port 80 itself and
    would contend with the nginx container.
 3. Add a deploy hook, or renewal has no effect: a new file on disk changes

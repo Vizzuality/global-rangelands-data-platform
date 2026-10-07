@@ -168,7 +168,14 @@ services:
       - ./infrastructure/vm/nginx/templates:/etc/nginx/templates:ro
       - tilecache:/var/cache/nginx/tiles
       - certs:/etc/nginx/certs:ro
-      - certbotwww:/var/www/certbot
+      # Where nginx serves the ACME challenge from. Required, with no
+      # default: certbot runs on the HOST and writes the challenge to a host
+      # directory, so on the VM this has to be a bind mount of that same
+      # directory -- a Docker volume is invisible to host certbot and every
+      # challenge 404s. A default that silently worked locally and silently
+      # broke issuance here is not worth the convenience, so every
+      # environment states its own. See .env.prod.example.
+      - ${CERTBOT_WEBROOT:?host path nginx serves /.well-known/acme-challenge from; /var/www/certbot on the VM}:/var/www/certbot
     logging: *default-logging
     networks: [platform]
     depends_on:
@@ -201,7 +208,6 @@ volumes:
   cmsdata:
   tilecache:
   certs:
-  certbotwww:
 
 networks:
   platform:

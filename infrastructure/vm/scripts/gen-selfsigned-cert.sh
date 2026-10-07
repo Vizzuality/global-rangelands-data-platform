@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-# Self-signed cert for local verification only. On the VM these two filenames
-# are certbot's live directory instead, bind-mounted read-only.
+# Write a throwaway certificate pair into OUT_DIR, under the two names nginx
+# expects. Used locally, and as the first step on a VM with no certificate
+# yet: nginx will not start without one, so nothing serves the ACME challenge
+# that would earn it a real one. certbot's deploy hook overwrites both files
+# on first issuance -- it copies them in, never bind-mounts certbot's live
+# directory; see cert-deploy-hook.sh.
 set -euo pipefail
 
 : "${SERVER_NAME:=localhost}"

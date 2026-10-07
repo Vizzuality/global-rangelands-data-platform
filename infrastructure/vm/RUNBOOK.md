@@ -407,7 +407,11 @@ including places that worked a minute ago, is §7.5 instead.
 | `rdp-prod_cmsdata` | the CMS plugin's own exports | regenerated from the database |
 | `rdp-prod_tilecache` | cached map tiles | refetched on demand; only a slowdown |
 | `rdp-prod_certs` | the TLS certificate | reissued by certbot |
-| `rdp-prod_certbotwww` | ACME challenge files | transient |
+
+ACME challenge files are **not** in a volume. nginx serves them from
+`/var/www/certbot` on the host, bind-mounted, because certbot runs on the
+host and cannot write into a Docker volume. The directory is normally empty:
+a challenge exists for a few seconds during validation and is then deleted.
 
 Only the first two are irreplaceable, and §4 is the only thing protecting
 them. Everything else on this machine can be rebuilt from the git repository.
