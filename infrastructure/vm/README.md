@@ -534,13 +534,52 @@ bucket-name check while wiping the column.
 `/uploads/.gitkeep`, a stray Media Library row referenced by no content.
 **staging returns 404 for the same URL**, so this is parity, not a regression.
 
-> Server-rendered pages still 404 until the CMS API base is split.
-> `client/src/lib/cms.ts:3` derives `CMS_API_BASE` from `NEXT_PUBLIC_API_URL` and
-> uses that one value for both browser and server fetches; inside the client
-> container that absolute URL is `ECONNREFUSED`, so SSR falls through to
-> `notFound()`. Client-fetched data is unaffected, which is why `/en` and
-> `/en/map` render. `CMS_INTERNAL_API_URL` is already supplied to the container
-> and awaits being consumed.
+> **No longer true as of the VM run below.** That note described
+> `NEXT_PUBLIC_API_URL` holding an absolute staging URL, which was
+> `ECONNREFUSED` from inside the client container. It is now the relative
+> `/cms/api/`, and every server-rendered route returns 200 with CMS content
+> in the HTML; `/en/stories/<category>` and `/en/map/story/<slug>` were
+> checked with real slugs. `CMS_INTERNAL_API_URL` is still supplied and still
+> unconsumed; splitting the base is worth doing, but it is an optimisation
+> now, not a correctness fix.
+
+### Results on the ILRI VM, 2026-10-07
+
+Restored `staging-20261005T175537Z.dump`, which was confirmed current first:
+its published counts match the live staging API exactly, including the two
+stories added since the 2026-09-07 baseline (19 -> 21).
+
+| Entity | Published | Rows | Live staging |
+|---|---|---|---|
+| datasets | 21 | 42 | 21 |
+| layers | 44 | 88 | 44 |
+| stories | 21 | 42 | 21 |
+| ecoregions | 370 | 740 | 370 |
+| rangelands | 7 | 14 | 7 |
+| dataset-categories | 4 | 8 | 4 |
+| story-categories | 3 | 6 | 3 |
+
+Every total is exactly twice the published count, so draft & publish survived
+intact: the half-restore that still looks right in the admin did not happen.
+
+Media: 130 objects from the bucket (was 118 at the September run), all byte
+counts matching the listing, `chown 1001:1001`. Rewrites: 52 tiler URLs to
+relative, 26 `files.url` and 21 `formats` blobs off GCS, provider `local`,
+and zero `//functions/eet/` or `//uploads/` double-rewrite artefacts. The
+`formats` column was checked for silent destruction rather than for absence
+of the bucket name: 82 derivative keys, 82 with a `url`, zero missing `hash`
+or `width`.
+
+**108 of 109 media URLs serve 200.** The one 404 is `/uploads/.gitkeep`;
+staging returns 404 for the same path, so it is parity.
+
+> The stored URL is `/uploads/<file>`, and **nothing serves that path**.
+> nginx has no `/uploads/` location and it falls through to the client, which
+> deliberately does not mount the upload volume. The application prepends
+> `/cms` via `CMS_MEDIA_BASE` in `client/src/lib/cms.ts`, so the request that
+> actually goes out is `/cms/uploads/<file>`, proxied to Strapi. Testing the
+> stored URL directly gives a 404 for every file and looks like a failed
+> restore. It is not.
 
 ## Acceptance, measured from cold
 
