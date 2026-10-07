@@ -18,16 +18,27 @@ the image registry, runs beside them in its own compose project (§8), so
 > containers are healthy, the certificate is a real Let's Encrypt one, and
 > renewal has been dry-run end to end including the deploy hook.
 >
+> Staging content was restored on the same day: 21 datasets, 44 layers,
+> 21 stories, 370 ecoregions, 131 media files (130 real ones and the stray
+> `.gitkeep` row staging also carries). Pages render it, server-side
+> and in the browser.
+>
 > Three things remain open, and none of them is a procedure in this file:
 >
-> - **The database is empty.** Strapi has no admin user and no content; the
->   staging dump has not been restored. The site serves, but with nothing in
->   it.
+> - **The CMS admin accounts are all Vizzuality's.** The staging dump carried
+>   11 accounts across, every one of them `@vizzuality.com`, every one a
+>   Super Admin with a working password, and not one ILRI account among them.
+>   Before cutover someone has to decide who should actually hold Super Admin
+>   on ILRI's platform, add ILRI accounts, and remove the ones that should
+>   not outlive the engagement. This is an access-control decision, not a
+>   task, which is why it is here and not in §2.
 > - **Backups are on the same disk as the thing they back up.** The nightly
->   job runs, but losing the host loses both. The off-box destination is
->   ILRI's decision and sets `RETENTION_KEEP`.
+>   job runs and has been verified against real content, but losing the host
+>   loses both. The off-box destination is ILRI's decision and sets
+>   `RETENTION_KEEP`.
 > - **§4.3 (destructive restore) has never been run against a real stack.**
->   §4.2 has, and passes. Exercise §4.3 by hand once before relying on it.
+>   §4.2 has, against real content, and passes. Exercise §4.3 by hand once
+>   before relying on it.
 >
 > DNS still points the four production domains at a different host, so
 > nothing here is serving the public yet.
