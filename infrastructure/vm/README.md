@@ -891,15 +891,50 @@ needs no config edit.
 |---|---|---|---|
 | local | `localhost` | `alias.localhost` | `localhost` |
 | phase 2, spare name | `<spare>.rangelandsdata.org` | `disabled.invalid` | `<spare>.rangelandsdata.org` |
-| phase 3, apex | `www.<canonical> <canonical>` | `www.<other> <other>` | `www.<canonical>` |
+| phase 3, production | `www.rangelandsdata.org rangelandsdata.org` | `www.datarangelands.org datarangelands.org` | `www.rangelandsdata.org` |
 
 `envsubst` cannot omit a block, only fail to match one, so the redirect server
 blocks always exist. Pointing `REDIRECT_SERVER_NAME` at a name that never
 resolves (`disabled.invalid`) is how it is switched off.
 
-Which domain is canonical is **ILRI's decision and still open**. Today
-`datarangelands.org` 301s to `rangelandsdata.org`, while ILRI's request listed
-the former first.
+### Which domain is canonical, settled
+
+**`www.rangelandsdata.org`**, with the other three names 301ing to it. Edwin
+Masita (ILRI) confirmed this on the GRASS-384 thread: *"keeping
+rangelandsdata.org as the canonical domain, with datarangelands.org
+redirecting to it"*. Fiona Flintan's requirement is that the platform answer
+on **both** domains, which is what the redirect gives.
+
+This matches what production already does, so cutover changes the content at
+these names and not the relationships between them. Measured:
+
+| Name | Today |
+|---|---|
+| `www.rangelandsdata.org` | serves the site (302 to `/atlas`) |
+| `rangelandsdata.org` | 301 to `www.rangelandsdata.org` |
+| `datarangelands.org` | 301 to `www.rangelandsdata.org` |
+| `www.datarangelands.org` | 301 to `www.rangelandsdata.org` |
+
+All four resolve to `176.58.115.65`, which is the **current** production host,
+not the new VM. DNS is Edwin's to repoint at cutover; he has asked to be told
+when the project owners have agreed a date.
+
+Note the `www.`: the canonical name carries it, because the apex already
+redirects to it. Edwin's wording named the domain, not the host, and taking it
+literally would invert a redirect that production has always had.
+
+Two earlier statements on the thread are worth not acting on. Fiona's 31/07
+message refers to `datarangelands.com` and `rangelandsdata.com`, which have
+**no A record at all**, so the `.com` spelling is a slip and the `.org` pair is
+real. And the same message says *"normally we use www.datarangelands.com"*,
+which points at the opposite canonical from the one since agreed; the 31/08
+message and Edwin's recommendation supersede it.
+
+One cutover consequence, currently unowned: `www.rangelandsdata.org` redirects
+to `/atlas` today, and Fiona has asked for the Rangelands Atlas to be archived.
+Once the platform serves the root, existing `/atlas` links stop working unless
+something preserves them. Edwin offered to archive the old server; whether
+`/atlas` keeps answering is a decision nobody has recorded.
 
 The phase-3 certificate must cover **all four** names. Two reasons, both
 load-bearing:
@@ -944,7 +979,7 @@ Names the allowed list needs, matching the states in **Domain states**:
 |---|---|
 | local | `https://localhost` (development token) |
 | phase 2, spare name | the spare host |
-| phase 3, apex | all four: `www.` and apex for both domains |
+| phase 3, production | all four: `www.rangelandsdata.org`, `rangelandsdata.org`, `www.datarangelands.org`, `datarangelands.org` |
 
 A spare DNS record does not have to be requested: the VM's Linode reverse name
 already resolves to it, so something like
