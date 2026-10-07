@@ -24,7 +24,8 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/../../.."
-COMPOSE="${COMPOSE:-docker compose -f docker-compose.prod.yml --env-file .env.prod}"
+ENV_FILE="${ENV_FILE:-.env.prod}"
+COMPOSE="${COMPOSE:-docker compose -f docker-compose.prod.yml --env-file ${ENV_FILE}}"
 export IMAGE_PREFIX="${IMAGE_PREFIX:-127.0.0.1:5000/}"
 SERVICES="${SERVICES:-cms client tiler}"
 BASE="${BASE:-https://127.0.0.1}"
@@ -50,12 +51,15 @@ fi
 export IMAGE_TAG="$RELEASE_TAG"
 
 # Captured before anything changes, so the rollback hint at the end is real.
-# Only a stamped tag is offered: a local build is not in the registry, so
-# suggesting it would hand over a command that cannot work.
+# Only a tag that is IN THE REGISTRY is offered -- a bare `:local` is a build
+# that exists on one machine, so suggesting it would hand over a command that
+# cannot work. Two shapes qualify: a release version from .github/workflows/
+# release.yml, and a stamped tag from an ad-hoc run of this script.
 previous=$($COMPOSE ps --format '{{.Image}}' 2>/dev/null \
            | grep -oE 'rdp-client:[^ ]+' | cut -d: -f2 | head -1 || true)
 case "$previous" in
   [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]T[0-9][0-9][0-9][0-9][0-9][0-9]Z-*) ;;
+  v[0-9]*) ;;
   *) previous="" ;;
 esac
 
@@ -117,6 +121,32 @@ fi
 echo
 echo "-- 4. deploy --"
 $COMPOSE up -d --wait
+
+# Record what is running, in the file compose reads by default.
+#
+# Without this the stack's identity lives only in this shell. IMAGE_TAG
+# defaults to `local` in docker-compose.prod.yml, so ANY later compose command
+# that does not set it -- `docker compose up -d --force-recreate nginx` to pick
+# up a config change, say -- silently re-resolves every service to rdp-*:local
+# and recreates the stack from whatever happens to be on the host. That has
+# already happened once on the VM: the running containers stopped matching the
+# released tag and the box no longer recorded which commit it served.
+#
+# Written after `up --wait` succeeds, so the file only ever claims a tag the
+# stack really came up on.
+if [ -f "$ENV_FILE" ]; then
+  for pair in "IMAGE_TAG=${IMAGE_TAG}" "IMAGE_PREFIX=${IMAGE_PREFIX}"; do
+    key=${pair%%=*}
+    if grep -q "^${key}=" "$ENV_FILE"; then
+      sed -i "s|^${key}=.*|${pair}|" "$ENV_FILE"
+    else
+      printf '%s\n' "$pair" >> "$ENV_FILE"
+    fi
+  done
+  # sed -i writes a new inode; this file holds every secret on the box.
+  chmod 600 "$ENV_FILE"
+  echo "   recorded IMAGE_TAG=${IMAGE_TAG} in ${ENV_FILE}"
+fi
 
 echo
 echo "-- 5. reload nginx --"
