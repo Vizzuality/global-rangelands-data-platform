@@ -122,6 +122,8 @@ dist
 
 # VM migration: local stack config and content dumps. Never committed.
 .env.prod
+# Placeholder ACME webroot for running the prod stack locally; always empty.
+.certbot-www/
 dumps/
 *.dump
 backups/
