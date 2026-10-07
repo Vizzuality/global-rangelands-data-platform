@@ -7,12 +7,10 @@ name: rdp-prod
 
 # Image references are addressable so the same file can build locally or pull
 # from a registry. Unset, IMAGE_PREFIX and IMAGE_TAG give the previous
-# `rdp-<svc>:local`, so `docker compose build` is unchanged. To pull instead:
-#
-#   IMAGE_PREFIX=ghcr.io/<org>/ IMAGE_TAG=sha-<commit> docker compose pull
-#
-# The prefix carries its own trailing slash; a registry is a prefix, not a
-# separate field, so an empty value has to collapse to nothing.
+# `rdp-<svc>:local`, so `docker compose build` is unchanged; deploy-release.sh
+# sets both and records them in .env.prod. The prefix carries its own trailing
+# slash -- a registry is a prefix, not a separate field, so an empty value has
+# to collapse to nothing.
 # Docker's json-file driver has no size limit by default, so container logs
 # grow until the disk is full. Measured on this stack: nginx writes ~66 bytes
 # per request, and GRASS-407 makes an idle browser tab issue ~148 requests a
