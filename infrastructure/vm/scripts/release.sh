@@ -16,8 +16,11 @@
 #   - The smoke test runs last and through nginx, not against the containers,
 #     because the 502 above is invisible to a container health check.
 #
-# Nothing is bind-mounted and the tag is passed through compose, so this works
-# unchanged against a remote daemon.
+# Run this ON the VM. The compose file bind-mounts nginx.conf, the template
+# directory and healthcheck.js from the repo, and compose resolves those to
+# absolute local paths before the daemon sees them -- over a remote context
+# the VM has no such paths, and Docker mounts an empty directory instead of
+# erroring. DOCKER_CONTEXT is honoured for inspection, not for deploys.
 set -euo pipefail
 
 cd "$(dirname "$0")/../../.."

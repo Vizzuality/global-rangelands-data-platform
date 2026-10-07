@@ -33,13 +33,22 @@ Everything below assumes these two lines, run once per login:
 `rdp` function only saves typing; the scripts build the same command
 internally and need no setup.
 
-To work from your own machine instead of over SSH on the box:
+**Run these on the box, over SSH.** A `docker context` pointed at the VM
+looks like it should work and does not: four services bind-mount a path from
+the repo (`nginx.conf`, the template directory, `healthcheck.js`), and compose
+resolves those to absolute paths on *your* machine before handing them to the
+remote daemon. Docker does not error on a missing bind source: it creates an
+empty directory and mounts that, so nginx gets a directory where its
+configuration file should be. The stack fails in a way that points nowhere
+near the cause.
+
+A context is still fine for read-only inspection (`ps`, `logs`, `stats`),
+which is most of §1:
 
     docker context create rdp-vm --docker host=ssh://<user>@<vm-address>
-    export DOCKER_CONTEXT=rdp-vm
+    docker --context rdp-vm compose -f docker-compose.prod.yml ps
 
-Every script here works unchanged over that context. Nothing bind-mounts a
-host path, so files are written to whichever machine you ran the command on.
+Anything that starts a container (§2, §3, §7.1) belongs on the box.
 
 ---
 
