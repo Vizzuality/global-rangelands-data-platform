@@ -690,15 +690,32 @@ It does not cover `restore-backup.sh` writing over the real stack, because
 proving that costs a working environment. Exercise it by hand once before the
 handover.
 
+### What is actually scheduled
+
+One job, and it is the only thing this project schedules on the VM:
+
+    15 3 * * * cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=14 \
+      /bin/bash infrastructure/vm/scripts/backup.sh >> /var/backups/rdp/backup.log 2>&1
+
+Nightly at 03:15 UTC, keeping 14, logging beside the backups themselves. It
+is read with `sudo crontab -u ksanchez -l` and appears in no file under
+`/etc/cron.d`, which is the problem with it: **it lives in a personal
+crontab**, on a Vizzuality account. A personal crontab is deleted with the
+account and nothing outside it refers to the job, so the backups stop on the
+day that account is closed, and the only symptom is `/var/backups/rdp`
+quietly ceasing to grow. Before handover it belongs in
+`/etc/cron.d/rdp-backup`, owned by root, which is the same line with a user
+field:
+
+    # /etc/cron.d/rdp-backup
+    15 3 * * * root cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=14 \
+      /bin/bash infrastructure/vm/scripts/backup.sh >> /var/backups/rdp/backup.log 2>&1
+
 ### Still missing
 
 A backup on the same disk as the data it protects is not a backup. Off-box
 copies are an open question for ILRI (where they go, who can read them, and
-how long they are kept), and the answer affects the retention setting above.
-
-    # /etc/cron.d/rdp-backup
-    0 3 * * * root cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=30 \
-      /bin/bash infrastructure/vm/scripts/backup.sh >> /var/log/rdp-backup.log 2>&1
+how long they are kept), and the answer affects `RETENTION_KEEP` above.
 
 ## The image registry
 
@@ -902,10 +919,57 @@ embed `.env.prod` that is a one-way door onto production credentials, and it
 belongs on the handover checklist as an explicit instruction rather than an
 inherited default.
 
+## How the VM was provisioned
+
+Done on 2026-10-07 against `139.162.197.186` (`linode50`, Ubuntu 24.04.5,
+4 cores, 7.8 GiB, 157 G disk). Recorded because none of it is in a playbook
+and the host is otherwise Ansible-managed -- see **Not covered** in the
+RUNBOOK.
+
+1. **Docker CE from Docker's own apt repository**, not Ubuntu's `docker.io`.
+   The scripts call `docker compose` (V2, as a plugin) and `release.sh` uses
+   `up -d --wait`; pinning to upstream keeps the VM and the rehearsal stack on
+   the same Compose semantics, which matters because every procedure in the
+   RUNBOOK was measured against the latter. Installed 29.8.2 / Compose 5.6.0.
+
+2. **`ksanchez` added to the `docker` group.** Required for anything that is
+   not interactive -- a deploy hook, a cron job, an SSH context -- because
+   those reach `/var/run/docker.sock` directly with no `sudo`. Worth stating
+   plainly: membership in `docker` is equivalent to root. It grants nothing
+   new here, since the account already has passwordless sudo, so the
+   privilege boundary was already the SSH key.
+
+3. **A 4 G swapfile**, in `/etc/fstab`. The host shipped with 496 M, and a
+   `next build` peaks well above that. The failure it avoids is an OOM kill,
+   which surfaces as a bare `Killed` and exit 137 and reads exactly like a
+   broken Dockerfile. Measured afterwards: the build barely touched it, so
+   this is insurance, not a requirement.
+
+4. **The repository at `/opt/rdp`**, cloned from a git bundle carried over
+   SSH rather than copied as files, so it is a real checkout with history and
+   `origin` set to GitHub. ILRI can attach a read-only deploy key and pull.
+   It must be a checkout on the box, not a remote context -- see the note in
+   `release.sh`.
+
+5. **`.env.prod`, 0600, generated on the host.** Every Strapi and Postgres
+   secret is fresh for this machine; only the three credentials that cannot
+   be regenerated (Earth Engine, Transifex, Mapbox) were carried across, and
+   machine-to-machine at that.
+
+6. **The registry**, in its own compose project, bound to `127.0.0.1:5000`.
+
+Not done, deliberately: the host has a kernel update pending from
+`unattended-upgrades` and has not been rebooted. Everything is
+`restart: unless-stopped` and `nftables` is enabled at boot, so it should
+come back, but that has not been proven and the reboot is ILRI's to schedule.
+
 ## Deferred to phase 2
 
-Real TLS issuance and renewal, Earth Engine latency from London, ILRI firewall
-rules, off-box backup storage, monitoring, and the operational handover.
+Earth Engine latency from London, off-box backup storage, and the operational
+handover. Resolved during phase 2: TLS issuance and renewal (done and
+dry-run verified), ILRI firewall rules (80/443 opened on the host nftables
+ruleset, persisted), and monitoring (Zabbix already runs here; platform-level
+checks still need adding).
 
 Two findings from the phase-2 work above are decisions rather than tasks, and
 need someone to make them: whether to lower `max_size` now that the key zone
