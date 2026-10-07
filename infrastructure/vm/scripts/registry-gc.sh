@@ -33,14 +33,21 @@ repos=$(curl -sf "${REGISTRY}/v2/_catalog" | sed 's/.*"repositories"://' | json_
 
 deleted=0
 for repo in $repos; do
-  tags=$(curl -sf "${REGISTRY}/v2/${repo}/tags/list" | sed 's/.*"tags"://' | json_list \
-         | grep -E '^[0-9]{8}T[0-9]{6}Z-' | sort || true)
+  all_tags=$(curl -sf "${REGISTRY}/v2/${repo}/tags/list" | sed 's/.*"tags"://' | json_list | sort || true)
+  tags=$(printf '%s\n' "$all_tags" | grep -E '^[0-9]{8}T[0-9]{6}Z-' || true)
   total=$(printf '%s\n' "$tags" | grep -c . || true)
   [ "$total" -gt "$KEEP" ] || { echo "${repo}: ${total} stamped tag(s), keeping all"; continue; }
 
   drop=$(printf '%s\n' "$tags" | head -n "-${KEEP}")
-  keep=$(printf '%s\n' "$tags" | tail -n "${KEEP}")
-  echo "${repo}: ${total} stamped tag(s), dropping $(printf '%s\n' "$drop" | grep -c .)"
+  # Everything that is NOT being dropped, which is not the same as the newest
+  # KEEP stamped tags: release tags (v1.2.0) do not match the stamped shape, so
+  # they never enter `drop`, but they DO point at manifests. Leaving them out
+  # of the protected set is how a release gets deleted as collateral -- the
+  # delete below is by digest and unlinks every tag on it.
+  keep=$(comm -23 <(printf '%s\n' "$all_tags" | grep -v '^$' | sort) \
+                  <(printf '%s\n' "$drop" | grep -v '^$' | sort))
+  echo "${repo}: ${total} stamped tag(s), dropping $(printf '%s\n' "$drop" | grep -c .)" \
+       "(protecting $(printf '%s\n' "$keep" | grep -c .))"
 
   digest_of() {
     curl -sfI -H "Accept: ${MANIFEST_ACCEPT}" "${REGISTRY}/v2/${repo}/manifests/$1" \
