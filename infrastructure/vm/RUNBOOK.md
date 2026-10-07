@@ -12,13 +12,25 @@ Five containers on one host: `nginx`, `client`, `cms`, `tiler`, `db`. A sixth,
 the image registry, runs beside them in its own compose project (§8), so
 `docker ps` shows six while `rdp ps` shows five.
 
-> **Status — read once.** Every procedure here has been run and measured, but
-> on a local rehearsal stack, not on the ILRI VM: the machine has refused all
-> connections since the September resize and the stack has never been stood up
-> on it. Expect the commands to behave as described; expect the paths
-> (`/opt/rdp`, `/var/backups/rdp`) to be conventions that whoever installs it
-> confirms or changes. Two things are not merely unverified but **not set up
-> at all** — certificate renewal (§5) and scheduled backups (§4.1).
+> **Status: read once.** The stack is running on the ILRI VM
+> (`139.162.197.186`) as of 2026-10-07, and the paths below are now real:
+> the checkout is at `/opt/rdp`, backups land in `/var/backups/rdp`. All five
+> containers are healthy, the certificate is a real Let's Encrypt one, and
+> renewal has been dry-run end to end including the deploy hook.
+>
+> Three things remain open, and none of them is a procedure in this file:
+>
+> - **The database is empty.** Strapi has no admin user and no content; the
+>   staging dump has not been restored. The site serves, but with nothing in
+>   it.
+> - **Backups are on the same disk as the thing they back up.** The nightly
+>   job runs, but losing the host loses both. The off-box destination is
+>   ILRI's decision and sets `RETENTION_KEEP`.
+> - **§4.3 (destructive restore) has never been run against a real stack.**
+>   §4.2 has, and passes. Exercise §4.3 by hand once before relying on it.
+>
+> DNS still points the four production domains at a different host, so
+> nothing here is serving the public yet.
 
 ---
 
@@ -197,12 +209,29 @@ Writes `./backups/<timestamp>/` containing `db.dump`, `media.tar.gz` and
 stopped. The directory is assembled under a `.partial-` name and renamed only
 on success, so anything you can see is complete.
 
-**Not yet scheduled.** The cron entry to install is in **Backups** in the
-README; until it is in place, backups only happen when someone runs the
-command above. Once installed, check it is actually running:
+**Scheduled** nightly at 03:15 UTC from `ksanchez`'s crontab, writing to
+`/var/backups/rdp` and keeping the last 14. Check it is actually running:
 
     ls -lt /var/backups/rdp | head -5
-    tail -20 /var/log/rdp-backup.log
+    tail -20 /var/backups/rdp/backup.log
+    sudo crontab -u ksanchez -l
+
+Use that form, not a bare `crontab -l`. The job is in a **personal** crontab,
+so `crontab -l` as anyone else prints nothing and reads exactly like "no
+backup is scheduled". The same property is the real problem with it: a
+personal crontab is deleted with the account, and nothing outside it refers
+to the job, so closing that Vizzuality account stops the backups silently.
+It belongs in `/etc/cron.d/rdp-backup` before handover; the line is in
+**What is actually scheduled** in the README.
+
+> **These backups are on the same disk as the stack.** They protect against a
+> bad deploy, a dropped table or a botched content edit. They do not protect
+> against losing the host, which is the case that loses both at once. An
+> off-box destination is still ILRI's decision; it is also what should set
+> `RETENTION_KEEP`.
+
+Retention is count-based, not age-based, on purpose: a stack that silently
+stops producing backups should not also start deleting the ones it has.
 
 ### 4.2 Check a backup is good without restoring it
 
@@ -246,10 +275,18 @@ Check what is actually being served, not what is on disk:
 Renewal is meant to be automatic: certbot runs on the **host**, not in a
 container, and renews roughly 30 days before expiry.
 
-> **Not yet set up.** Issuance and renewal are phase-2 work and have never run
-> against the real VM. Follow **TLS → On the VM** in the README to set them
-> up, and verify with `certbot renew --dry-run` rather than waiting to find
-> out. §5.1 is the failure this most often ships with.
+Set up and verified on 2026-10-07: issued with `--webroot`, the deploy hook
+fired on first issuance, and `certbot renew --dry-run` succeeds. The
+`certbot.timer` systemd unit does the renewing.
+
+> Two notes for whoever inherits this. The certificate currently covers only
+> the Linode reverse-DNS name, because that is what resolved at the time.
+> At DNS cutover it must be reissued for the four production names, all in
+> one certificate (see **Domain states** in the README). And the Let's
+> Encrypt account has **no email registered**, so there are no expiry
+> warnings: set one with `certbot update_account --email <ops-address>`, or
+> better, add a certificate-expiry check to the Zabbix that already monitors
+> this host.
 
 ### 5.1 The certificate renewed but the site still serves the old one
 
@@ -258,10 +295,16 @@ nothing until nginx rereads it:
 
     rdp exec nginx nginx -s reload
 
-If this happens at all, the renewal deploy hook is missing or wrong. It must
-be:
+If this happens at all, the renewal deploy hook is missing or wrong. Check
+it is still registered:
 
-    --deploy-hook 'docker compose -f docker-compose.prod.yml exec nginx nginx -s reload'
+    sudo grep renew_hook /etc/letsencrypt/renewal/*.conf
+
+It should point at `/opt/rdp/infrastructure/vm/scripts/cert-deploy-hook.sh`,
+which copies the renewed pair into the `certs` volume and then reloads the
+container. A bare `nginx -s reload` is not enough on its own: the volume
+holds a *copy*, because certbot's `live/` directory is relative symlinks into
+`archive/` that do not resolve inside a container.
 
 Without it certbot reloads a host nginx that does not exist, exits
 successfully, and the container keeps serving an expiring certificate until
@@ -428,9 +471,25 @@ destroy every rollback target.
 
 Open items that an operator cannot resolve alone:
 
-- **No monitoring or alerting.** Nothing pages anyone. The first signal that
-  the site is down is a person noticing. Who should be alerted, and how, is
-  an ILRI decision.
+- **Nothing watches the platform.** ILRI already runs Zabbix against this
+  host (the agent reports to `41.204.190.131`), so disk, load and reachability
+  are covered — but no check knows the platform exists. The first signal that
+  the *site* is down is a person noticing. Four checks would close it, and
+  all of them are Edwin's to add: `https://<host>/en` returns 200, the
+  certificate is more than 14 days from expiry, `docker compose ps` shows
+  five healthy containers, and `/var/backups/rdp` gained a directory in the
+  last 24 hours.
+
+- **The host is under Ansible management, and this stack is not in it.**
+  `/etc/letsencrypt/renewal-hooks/{pre,post}/` carry files stamped *managed
+  by Ansible*, pushed from `masita.server.com` in June. They stop and start
+  `apache2`, which is not installed here, so they are inert: renewal
+  succeeds with them in place, which was checked. But it means host
+  configuration can be re-applied from outside, and nothing in that playbook
+  knows about Docker, `/opt/rdp`, the swapfile or the firewall rules. Either
+  those should go into the playbook, or ILRI should confirm this host is
+  exempt. (The nftables ruleset and `/etc/fstab` are *not* Ansible-managed
+  today, so the open ports and the swapfile do survive a run.)
 - **Backups are on the same disk as the data they protect.** That is not a
   backup against disk loss. Where off-box copies go, who can read them and
   how long they are kept is an ILRI decision, and it determines the retention
