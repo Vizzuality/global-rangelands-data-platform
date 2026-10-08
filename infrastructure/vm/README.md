@@ -132,6 +132,11 @@ The SAN covers `localhost`, `alias.localhost` and `127.0.0.1`, so the canonical
 redirect can be exercised over TLS without a certificate warning confusing the
 result.
 
+The same script is also the first step on a VM that has no certificate yet;
+see **Standing up a box from scratch**. It is not a local-only convenience:
+nginx will not start without a certificate, so without a throwaway pair there
+is no `:80` listener for certbot to validate through.
+
 ### On the VM
 
 certbot is installed on the **host**; nginx runs in a container. That drives
@@ -1239,12 +1244,49 @@ embed `.env.prod` that is a one-way door onto production credentials, and it
 belongs on the handover checklist as an explicit instruction rather than an
 inherited default.
 
-## How the VM was provisioned
+## Standing up a box from scratch
 
-Done on 2026-10-07 against `139.162.197.186` (`linode50`, Ubuntu 24.04.5,
-4 cores, 7.8 GiB, 157 G disk). Recorded because none of it is in a playbook
-and the host is otherwise Ansible-managed -- see **Not covered** in the
-RUNBOOK.
+Both the record of how `linode50` was provisioned on 2026-10-07
+(`139.162.197.186`, Ubuntu 24.04.5, 4 cores, 7.8 GiB, 157 G disk) and the
+order to repeat it. None of it is in a playbook, and the host was
+Ansible-managed until ILRI exempted it on 2026-10-09; see RUNBOOK §9.
+
+The order below is **the order that works**, not the order this box happened
+through. Two steps were never exercised here: `linode50` ran nginx on a
+self-signed pair for a day before certbot existed, so it never hit the
+deadlock in step 8, and every release so far was built on the box, which
+step 10 stops doing.
+
+**The VM does not build.** That is the point of `generate-release.yml`: Actions builds,
+tests and pushes images, and the VM only pulls and starts them. Nothing below
+runs `docker compose build`.
+
+### What the VM needs on disk, and why it is still a checkout
+
+Not a build tree. Four files, bind-mounted into containers at run time:
+
+    docker-compose.prod.yml
+    infrastructure/vm/nginx/nginx.conf
+    infrastructure/vm/nginx/templates/platform.conf.template
+    infrastructure/vm/scripts/healthcheck.js
+
+plus the scripts an operator runs (`deploy-release.sh`, `verify-image-hygiene.sh`,
+`cert-deploy-hook.sh`, the backup pair). `deploy-release.sh` touches git only to
+invent a tag when `RELEASE_TAG` is unset; a deploy that names its tag never
+shells out to git at all.
+
+So the checkout is **config delivery, not build input**, and it stays because
+`generate-release.yml` tags the commit its images were built from. `git checkout
+v1.0.0` alongside `RELEASE_TAG=v1.0.0` makes the nginx config and the running
+images provably the same tree. Shipping those files any other way, by baking
+them into an image or copying a tarball, means inventing a second version
+number and keeping it in step with the first.
+
+Those four paths are also why a deploy has to be typed on the box; see
+**Deploying a release** above for what a remote Docker context does with
+them.
+
+### Host
 
 1. **Docker CE from Docker's own apt repository**, not Ubuntu's `docker.io`.
    The scripts call `docker compose` (V2, as a plugin) and `deploy-release.sh` uses
@@ -1252,33 +1294,180 @@ RUNBOOK.
    the same Compose semantics, which matters because every procedure in the
    RUNBOOK was measured against the latter. Installed 29.8.2 / Compose 5.6.0.
 
-2. **`ksanchez` added to the `docker` group.** Required for anything that is
-   not interactive -- a deploy hook, a cron job, an SSH context -- because
-   those reach `/var/run/docker.sock` directly with no `sudo`. Worth stating
-   plainly: membership in `docker` is equivalent to root. It grants nothing
-   new here, since the account already has passwordless sudo, so the
+2. **The deploy account added to the `docker` group.** Required for anything
+   that is not interactive (a deploy hook, a cron job, an SSH context),
+   because those reach `/var/run/docker.sock` directly with no `sudo`. Worth
+   stating plainly: membership in `docker` is equivalent to root. It grants
+   nothing new here, since the account already has passwordless sudo, so the
    privilege boundary was already the SSH key.
 
 3. **A 4 G swapfile**, in `/etc/fstab`. The host shipped with 496 M, and a
-   `next build` peaks well above that. The failure it avoids is an OOM kill,
-   which surfaces as a bare `Killed` and exit 137 and reads exactly like a
-   broken Dockerfile. Measured afterwards: the build barely touched it, so
-   this is insurance, not a requirement.
+   `next build` peaks well above that; the OOM kill it avoids surfaces as a
+   bare `Killed` and exit 137, which reads exactly like a broken Dockerfile.
+   Actions does the building now, so this is no longer on the normal path,
+   but it is still what makes the fallback in RUNBOOK §2.0, building here
+   when GitHub is unreachable, survive.
 
-4. **The repository at `/opt/rdp`**, cloned from a git bundle carried over
+4. **Open 80 and 443**, IPv4 and IPv6, in the host `nftables` ruleset, and
+   persist it. Without this nothing reaches nginx and, more quietly, the ACME
+   challenge in step 11 cannot be validated: issuance fails with a
+   connection error that reads like a DNS problem. The ruleset here already
+   carried SSH, mosh and Zabbix (`10050`, from `41.204.190.0/24`).
+
+### The stack
+
+5. **The repository at `/opt/rdp`**, cloned from a git bundle carried over
    SSH rather than copied as files, so it is a real checkout with history and
    `origin` set to GitHub. ILRI can attach a read-only deploy key and pull.
-   It must be a checkout on the box, not a remote context -- see the note in
-   `deploy-release.sh`.
+   Check out the release tag, not a branch.
 
-5. **`.env.prod`, 0600, generated on the host.** Every Strapi and Postgres
-   secret is fresh for this machine; only the three credentials that cannot
-   be regenerated (Earth Engine, Transifex, Mapbox) were carried across, and
-   machine-to-machine at that.
+6. **`.env.prod`, 0600, generated on the host.** Copy `.env.prod.example` and
+   fill in all nineteen variables. **Only five of them are enforced**, and it
+   is worth knowing which: the four build args and `CERTBOT_WEBROOT` are
+   written `${VAR:?...}`, so compose refuses to interpolate the file and
+   names the variable. The other fourteen, the Postgres credentials and every
+   Strapi secret among them, are plain `${VAR}` and resolve to an empty
+   string. Measured with all fourteen absent, `docker compose config` exits
+   **0** and prints a warning per variable, which scrolls past in a terminal.
+   So a missed value here surfaces as a container that will not start, or a
+   Strapi that boots with an empty `APP_KEYS`, rather than as an error at the
+   point of the mistake. Diff the keys before bringing the stack up:
 
-6. **The registry**, in its own compose project, bound to `127.0.0.1:5000`.
+       diff <(grep -oE '^[A-Z_]+' .env.prod.example | sort) \
+            <(grep -oE '^[A-Z_]+' .env.prod | sort)
 
-Not done, deliberately: the host has a kernel update pending from
+   Generate every Strapi and Postgres secret fresh for the machine; only the
+   three credentials that cannot be regenerated (Earth Engine, Transifex,
+   Mapbox) are carried across, and machine-to-machine at that. Two values
+   differ from the example's local defaults:
+   `CERTBOT_WEBROOT=/var/www/certbot` (step 11) and `SERVER_NAME` set to the
+   name the certificate will be issued for. `deploy-release.sh` appends `IMAGE_TAG`
+   and `IMAGE_PREFIX` on its first successful deploy; do not add them by hand.
+
+7. **The registry**, in its own compose project, bound to `127.0.0.1:5000`:
+
+       docker compose -f docker-compose.registry.yml up -d
+
+   It has to exist before CI can push, and CI reaches it through an SSH
+   tunnel; see **Reaching a registry that is bound to loopback**. Keeping it
+   in a separate project is what lets `down -v` on the application leave
+   every rollback target intact.
+
+### A certificate has to be in the volume before nginx starts
+
+8. nginx will not start without one, and until it starts there is no
+   challenge path to issue one through:
+
+   | | needs |
+   |---|---|
+   | nginx starts | `fullchain.pem` in the `certs` volume |
+   | certbot `--webroot` issues one | nginx already answering `:80` |
+
+   `platform.conf.template` declares `ssl_certificate` unconditionally and
+   nginx validates the whole file at startup, so a missing certificate is
+   fatal rather than a warning, and it takes the port 80 server block down
+   with it, challenge path included:
+
+       [emerg] cannot load certificate "/etc/nginx/certs/fullchain.pem":
+               BIO_new_file() failed ... No such file or directory
+       nginx: configuration file /etc/nginx/nginx.conf test failed
+
+   **Rebuilding a box whose `/etc/letsencrypt` survived**, including after
+   `down -v`, which destroys the `certs` volume but not certbot's copy,
+   needs no reissue. Re-publish the real pair and skip to step 10:
+
+       docker run --rm -v rdp-prod_certs:/certs -v /etc/letsencrypt:/le:ro \
+         alpine sh -c 'cp -L /le/live/<name>/fullchain.pem \
+                             /le/live/<name>/privkey.pem /certs/'
+
+9. **Only a box with no certificate anywhere needs a throwaway pair.** It
+   exists to get nginx up so that certbot can validate; the deploy hook in
+   step 11 overwrites both files with the real ones:
+
+       docker run --rm -v rdp-prod_certs:/certs \
+         -v "$PWD/infrastructure/vm/scripts:/s:ro" \
+         -e SERVER_NAME="$(hostname -f)" -e OUT_DIR=/certs \
+         --entrypoint sh alpine/openssl:latest /s/gen-selfsigned-cert.sh
+
+   The next compose command warns `volume "rdp-prod_certs" already exists but
+   was not created by Docker Compose`. Expected, and harmless. Measured:
+   compose adopts the volume and the files written into it are there. Do not
+   "fix" it with `external: true`, which would make the volume something
+   nobody creates.
+
+### Release in CI, deploy on the VM
+
+10. **Cut the release from `staging`**, with `workflow_dispatch` on
+    `.github/workflows/generate-release.yml`, with a version. It builds, tests, pushes
+    `v1.0.0` into the registry through the tunnel, fast-forwards `main` and
+    tags it. See **Generating a release**. Then, on the VM:
+
+        cd /opt/rdp && git fetch --tags && git checkout v1.0.0
+        RELEASE_TAG=v1.0.0 SKIP_BUILD=1 \
+          bash infrastructure/vm/scripts/deploy-release.sh
+
+    `SKIP_BUILD=1` pulls the tag instead of building it and skips the push,
+    since the registry is where it came from; the rest of the script
+    (hygiene, deploy, nginx reload, smoke test through nginx) runs unchanged.
+    This is the same command as a rollback, because deploying a named tag and
+    rolling back to one are the same operation.
+
+    The smoke test passes on a self-signed certificate: it uses `curl -sk`.
+
+### The real certificate
+
+11. **Issue with `--webroot`.** Create the webroot first, then assert the
+    challenge path is reachable. A `301` here means HTTP-01 validation will
+    fail, and the only way to see that before burning a rate limit is to look:
+
+        sudo mkdir -p /var/www/certbot
+        curl -s -o /dev/null -w '%{http_code}\n' \
+          http://<name>/.well-known/acme-challenge/probe
+
+    Expect `404`, never `301`. Then issue, with the deploy hook attached from
+    the start:
+
+        sudo certbot certonly --webroot -w /var/www/certbot -d <name> \
+          --key-type ecdsa \
+          --deploy-hook /opt/rdp/infrastructure/vm/scripts/cert-deploy-hook.sh
+
+    `<name>` must match `SERVER_NAME` in `.env.prod`. Not `--standalone`: it
+    binds port 80 itself and would contend with the nginx container. The hook
+    is not optional: a new file on disk changes nothing until the running
+    container rereads it, and without the hook certbot reloads a host nginx
+    that does not exist, exits 0, and the container serves the old pair until
+    something restarts it.
+
+12. **Check what certbot recorded.** `/etc/letsencrypt/renewal/<name>.conf`
+    is the file renewal actually reads, and `--deploy-hook` is stored in it
+    as `renew_hook =`, the same thing under a different name, which matters
+    when you are grepping for it. Confirm `authenticator = webroot`, the
+    `webroot_path`, and the `renew_hook` line. Renewal runs from
+    `certbot.timer` (certbot 2.9.0 from apt), twice daily. That conf file is
+    also the one to watch if the Ansible exemption ever lapses; see **Not
+    covered** in the RUNBOOK.
+
+### Content
+
+13. **A fresh Postgres volume is an empty CMS**: no pages, no admin user,
+    and `/en` renders a shell. Restoring the content baseline is a separate
+    procedure with its own rehearsal notes; see **Restoring content**.
+
+### Then verify
+
+All four routes through nginx, and the certificate the server actually
+presents rather than the one on disk:
+
+    curl -sk -o /dev/null -w '%{http_code} %{url_effective}\n' \
+      https://<name>/en https://<name>/en/map \
+      https://<name>/cms/admin https://<name>/cms/_health
+    openssl s_client -connect <name>:443 </dev/null 2>/dev/null \
+      | openssl x509 -noout -dates -subject -issuer
+
+Expect `200 200 200 204`, and an issuer that is Let's Encrypt rather than the
+self-signed subject from step 9.
+
+Not done on this box, deliberately: it has a kernel update pending from
 `unattended-upgrades` and has not been rebooted. Everything is
 `restart: unless-stopped` and `nftables` is enabled at boot, so it should
 come back, but that has not been proven and the reboot is ILRI's to schedule.
