@@ -1,0 +1,77 @@
+name: Open an SSH tunnel to the VM image registry
+description: >
+  Forwards a local port to the registry bound to 127.0.0.1:5000 on the VM, and
+  proves the forward actually carries traffic before returning.
+
+# There is no official GitHub action for this -- the actions org publishes
+# nothing for SSH or port forwarding -- and the third-party ones (ssh-agent,
+# ssh-key-action, ssh-action) load keys or run remote commands rather than
+# forward ports. They would replace the few lines that write the key while
+# adding code we do not control to the one step that holds a production
+# credential, so this stays first-party. It lives here rather than inline in
+# the workflow because it is the most security-sensitive part of the release.
+#
+# The key this uses can do exactly one thing, enforced on the VM by
+# infrastructure/vm/scripts/setup-ci-registry-access.sh:
+#   command="/bin/false",restrict,port-forwarding,permitopen="127.0.0.1:5000"
+
+inputs:
+  ssh_key:
+    description: "Private key for the CI account (secrets.VM_REGISTRY_SSH_KEY)"
+    required: true
+  host:
+    description: "VM hostname or address"
+    required: true
+  user:
+    description: "CI account on the VM"
+    required: true
+  host_key:
+    description: "The VM's public host key, pinned -- one known_hosts line"
+    required: true
+  port:
+    description: "Local port to forward from"
+    required: false
+    default: "5000"
+
+runs:
+  using: composite
+  steps:
+    - name: Install the key and pin the host
+      shell: bash
+      env:
+        KEY: ${{ inputs.ssh_key }}
+        HOST_KEY: ${{ inputs.host_key }}
+      run: |
+        mkdir -p ~/.ssh && chmod 700 ~/.ssh
+        umask 077
+        printf '%s\n' "$KEY" > ~/.ssh/vm_registry
+        chmod 600 ~/.ssh/vm_registry
+        # Pinned, not TOFU: accept-new would trust whatever answers.
+        printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+
+    - name: Open the forward and prove it carries traffic
+      shell: bash
+      env:
+        HOST: ${{ inputs.host }}
+        USER_: ${{ inputs.user }}
+        PORT: ${{ inputs.port }}
+      run: |
+        # Without ExitOnForwardFailure a refused forward is silent, and the
+        # push fails later with a confusing connection error.
+        ssh -f -N -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            -o ExitOnForwardFailure=yes -o ConnectTimeout=20 \
+            -i ~/.ssh/vm_registry -L "${PORT}:127.0.0.1:5000" "${USER_}@${HOST}"
+
+        # This probe is not a readiness nicety, it is the only real check.
+        # permitopen is enforced when a CHANNEL OPENS, not at session setup,
+        # so `ssh -N -L` binds the local port whether or not the far end will
+        # ever allow the connection -- "the tunnel came up" proves nothing.
+        # Only a request that actually traverses it does. See
+        # infrastructure/vm/README.md, "What that key can actually do".
+        for _ in $(seq 20); do
+          curl -sf -o /dev/null "http://127.0.0.1:${PORT}/v2/" && break
+          sleep 1
+        done
+        curl -sf -o /dev/null "http://127.0.0.1:${PORT}/v2/" \
+          || { echo "::error::registry not reachable through the tunnel"; exit 1; }
+        echo "registry reachable through the tunnel on 127.0.0.1:${PORT}"

@@ -29,10 +29,34 @@ permissions:
 env:
   # Same default as deploy-release.sh; through the tunnel this is the VM's registry.
   IMAGE_PREFIX: 127.0.0.1:5000/
+  # generate-env-file-from-json declares ENVIRONMENT and APP_ENV_PREFIX as
+  # inputs, but its script reads them as shell variables -- and a composite
+  # action's inputs do not become environment variables. main.yml sets them
+  # as job env and so works by coincidence; passing them only through `with:`
+  # leaves the filter pattern as ^(TF_)?(_)?_ , which matches nothing and
+  # fails the step on grep's empty exit. Set here until that action is fixed.
+  ENVIRONMENT: VM
+  APP_ENV_PREFIX: CLIENT_ENV
+  # Compose interpolates the WHOLE file before it filters by service, so the
+  # nginx volume's ${CERTBOT_WEBROOT:?} has to resolve even though CI only
+  # builds cms, client and tiler and never starts nginx. .env.ci carries the
+  # CLIENT_ENV_ values and nothing else, so it comes from here. The value is
+  # never read -- it only has to be non-empty.
+  CERTBOT_WEBROOT: /unused-in-ci
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Everything this job needs about the VM lives in the `vm` environment,
+    # not at repository level, so no other workflow can see it. That matters
+    # because main.yml -- the staging deploy to GCP -- serialises the whole
+    # secrets context with toJSON(secrets); anything left at repository level
+    # is handed to a job whose business is Vizzuality's GCP, not ILRI's host.
+    #
+    # It is also where a deployment branch policy goes, once staging carries
+    # the stack: restricting this environment to `staging` would stop any
+    # branch that can be dispatched from obtaining the registry key.
+    environment: vm
     steps:
       - uses: actions/checkout@v4
         with:

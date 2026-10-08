@@ -1,26 +1,15 @@
 name: rdp-registry
 
-# Image registry for the VM, in its own compose project on purpose.
-#
-# Keeping it out of docker-compose.prod.yml means `docker compose down -v` on
-# the application -- which the README documents as the way to rebuild from
-# scratch -- cannot take the images with it. Recovering the app from a
-# teardown is routine; recovering it from a teardown that also deleted every
-# image you could roll back to is not.
-#
-#   docker compose -f docker-compose.registry.yml up -d
+# Image registry for the VM, in its own compose project on purpose: `docker
+# compose down -v` on the application is the documented way to rebuild from
+# scratch, and a shared project would let that teardown delete every image
+# you could roll back to.
 #
 # Bound to 127.0.0.1 and never exposed. Docker exempts localhost from its
 # HTTPS requirement, so this needs no certificate and no insecure-registries
-# entry -- on the VM the daemon pulls from its own loopback, and from a laptop
-# you reach it through an SSH tunnel, which is also localhost at both ends:
-#
-#   ssh -N -L 5000:127.0.0.1:5000 user@vm
-#   IMAGE_PREFIX=127.0.0.1:5000/ IMAGE_TAG=sha-abc1234 docker compose \
-#     -f docker-compose.prod.yml push
-#
-# Exposing it would mean TLS, authentication and an open port for images that
-# embed production secrets. The tunnel costs nothing and avoids all three.
+# entry; CI reaches it through an SSH tunnel, which is localhost at both ends.
+# Exposing it would mean TLS, authentication and an open port fronting images
+# that embed production secrets. See the README, "The image registry".
 services:
   registry:
     image: registry:2

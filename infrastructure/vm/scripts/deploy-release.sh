@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
-# Build, verify, push, deploy, reload, smoke-test. One command, in the order
-# that works.
+# Put a release onto this box: pull, verify, start, reload nginx, smoke-test.
 #
-#   bash infrastructure/vm/scripts/release.sh
-#   RELEASE_TAG=<existing-tag> SKIP_BUILD=1 ./release.sh    # roll back
-#   DOCKER_CONTEXT=rdp ./release.sh                          # against the VM
+# Deploy a version generate-release.yml already built and pushed into this
+# machine's registry. Check out the matching tag first, so the bind-mounted
+# nginx config comes from the same tree as the images:
+#
+#   git checkout v1.2.0
+#   RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash .../deploy-release.sh
+#
+# Rolling back is the same command naming an older tag. With no RELEASE_TAG it
+# BUILDS here and pushes what it builds -- the fallback for when GitHub is
+# unreachable.
 #
 # Each step exists because leaving it out has already cost time:
 #
@@ -17,10 +23,9 @@
 #     because the 502 above is invisible to a container health check.
 #
 # Run this ON the VM. The compose file bind-mounts nginx.conf, the template
-# directory and healthcheck.js from the repo, and compose resolves those to
-# absolute local paths before the daemon sees them -- over a remote context
-# the VM has no such paths, and Docker mounts an empty directory instead of
-# erroring. DOCKER_CONTEXT is honoured for inspection, not for deploys.
+# directory and healthcheck.js from the repo; over a remote context those
+# paths do not exist and Docker mounts an empty directory instead of erroring.
+# DOCKER_CONTEXT is honoured for inspection, not for deploys.
 set -euo pipefail
 
 cd "$(dirname "$0")/../../.."
@@ -54,7 +59,7 @@ export IMAGE_TAG="$RELEASE_TAG"
 # Only a tag that is IN THE REGISTRY is offered -- a bare `:local` is a build
 # that exists on one machine, so suggesting it would hand over a command that
 # cannot work. Two shapes qualify: a release version from .github/workflows/
-# release.yml, and a stamped tag from an ad-hoc run of this script.
+# generate-release.yml, and a stamped tag from an ad-hoc run of this script.
 previous=$($COMPOSE ps --format '{{.Image}}' 2>/dev/null \
            | grep -oE 'rdp-client:[^ ]+' | cut -d: -f2 | head -1 || true)
 case "$previous" in
