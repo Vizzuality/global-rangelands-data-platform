@@ -750,11 +750,269 @@ field:
     15 3 * * * root cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=14 \
       /bin/bash infrastructure/vm/scripts/backup.sh >> /var/backups/rdp/backup.log 2>&1
 
+Of the five checks under §9 of the RUNBOOK, the one that covers this is the
+mtime of `backup.log`: it observes the backups stopping, whatever the cause,
+where a check on the crontab would only catch this one.
+
 ### Still missing
 
 A backup on the same disk as the data it protects is not a backup. Off-box
 copies are an open question for ILRI (where they go, who can read them, and
 how long they are kept), and the answer affects `RETENTION_KEEP` above.
+
+## Building in CI
+
+`.github/workflows/generate-release.yml` builds `cms`, `client` and `tiler` and
+pushes them into the registry **on the VM**. It deploys nothing. Deploying is
+a separate command run on the box (RUNBOOK §2), for the reason in
+`deploy-release.sh`: four services bind-mount paths out of the repo, and compose
+resolves those on whichever machine runs the command.
+
+The VM has four cores and serves the site. A `next build` there takes about
+ten minutes and competes with live traffic, which is the whole reason this
+exists.
+
+### Generating a release
+
+**Actions → Generate release → Run workflow**, from `staging`, with a
+version like `v1.2.0`. The run, in order:
+
+1. refuses anything that is not `staging`, a well-formed version, and a
+   version that does not already exist;
+2. asks the server, with `git push --dry-run`, whether `main` can
+   fast-forward to this commit, and stops if it cannot;
+3. installs the client, lints, and runs the tests;
+4. builds the three images tagged `v1.2.0` and runs the hygiene check;
+5. pushes them into the registry on the VM;
+6. fast-forwards `main` and creates the annotated tag.
+
+> **No versioned release has been cut yet**, so steps 1, 2 and 6 have never
+> run. What has is the version-less build below, twice, including the push
+> through the tunnel: the registry holds `20261008T155617Z-273ca16` and
+> `20261009T103500Z-939f7c7` and no `v*` tag. **`main` does not exist on the
+> remote either**, and the first release is what creates it; step 2 passes
+> against a branch that is not there, because creating it is a fast-forward.
+> Expect the first versioned run to be the one that finds anything wrong
+> with steps 1, 2 and 6, and cut it at a time someone can look at it.
+
+Deploying is then one name in two places:
+
+    cd /opt/rdp
+    git fetch origin --tags && git checkout v1.2.0
+    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+
+That is the point of a named version. The checkout supplies the bind-mounted
+`nginx.conf`, templates and `healthcheck.js`; `RELEASE_TAG` selects the
+images they have to match. Under the previous `<utc-stamp>-<short-sha>`
+scheme the operator carried two identifiers and kept them in step by hand.
+
+Leave `version` **empty** to build from any ref without releasing: same tests
+and same build, a `<utc-stamp>-<short-sha>` tag, no branch moved and no git
+tag created. That is how to exercise this pipeline, and how to get an image
+for a branch not ready to be promoted.
+
+> **Why fast-forward and not a merge.** A merge commit is not the commit the
+> images were built from, so the version would name two different trees,
+> exactly the drift this is meant to remove. A plain push to `refs/heads/main`
+> is rejected by the server unless it fast-forwards, so the guarantee is
+> enforced by GitHub rather than by this workflow being careful. If it is ever
+> refused, `main` has a commit `staging` does not, and that is worth going to
+> look at rather than forcing past.
+
+> **Releases are not garbage-collected.** `registry-gc.sh` only collects tags
+> of the stamped shape, so `v1.2.0` stays until someone removes it. That is
+> deliberate, since a rollback target should not expire, but it is unbounded, so
+> prune old releases by hand when the registry grows. Note the workflow pushes
+> *only* the version tag: adding a stamped tag alongside it would buy nothing,
+> because GC deletes by digest and skips any digest a protected tag shares.
+
+> **Tests.** Step 3 is new coverage, not a reorganisation: nothing in CI ran
+> the tests before this workflow. There are ten, in `src/lib/cms.test.ts` and
+> `src/i18n/navigation.test.ts`, and they take under a second. The image build
+> is the stronger gate: `next.config.mjs` does not set `ignoreBuildErrors`,
+> so `next build` type-checks the whole client.
+
+> **`main` and Cloud Run.** Creating `main` would have switched on
+> `main.yml`'s push trigger, which maps that branch to
+> `ENVIRONMENT=PRODUCTION` and deploys to GCP. GCP production was never
+> provisioned (`module "production"` is commented out in
+> `infrastructure/base/main.tf`), so all three jobs would fail on missing
+> `TF_PRODUCTION_*` secrets. `main` has been removed from that trigger;
+> `staging` is untouched. Production is this VM now, and the role left for
+> `main` is to record what was released to it.
+
+### Reaching a registry that is bound to loopback
+
+A push is initiated by the pusher, so CI has to reach the VM. It does it with
+the forward described under **The image registry** below,
+`ssh -L 5000:127.0.0.1:5000`, which is what lets a registry nobody can reach
+take a push from GitHub without being exposed.
+
+Fail2Ban is not an obstacle: it bans on authentication *failures*, and a
+client presenting a valid key authenticates first try. The eight addresses it
+is currently holding are all password brute-forcers.
+
+The tunnel lives in `.github/actions/vm-registry-tunnel`, a first-party
+composite action, not inline in the workflow and not a marketplace one. There
+is no official action for it, since the `actions` org publishes nothing for SSH
+or port forwarding, and the popular third-party ones load keys or run remote
+commands rather than forward ports, so they would replace a few lines while
+adding code we do not control to the one step holding a production
+credential.
+
+> **`ExitOnForwardFailure` is not enough, measured.** Pointed at a VM port
+> where nothing listens, `ssh -f -N -L` exited **0** and bound the local port
+> anyway; every request through it then failed. That is the same shape as a
+> `permitopen` refusal, because `permitopen` is enforced when a channel opens
+> rather than at session setup. So the action probes `/v2/` through the
+> forward and fails if it does not answer. "The tunnel came up" is not
+> evidence; a request that traverses it is.
+
+### The access that grants
+
+A dedicated `rdpci` account, created by
+`infrastructure/vm/scripts/setup-ci-registry-access.sh`, whose single
+capability is forwarding to `127.0.0.1:5000`:
+
+    command="/bin/false",restrict,port-forwarding,permitopen="127.0.0.1:5000"
+
+Two layers, because the key lives in GitHub's secret store and the question
+is not whether the restriction holds but what happens if it does not:
+
+- **The key options.** `command="/bin/false"` is the load-bearing part.
+  `restrict` on its own does **not** prevent command execution: it disables
+  pty, agent, X11, user-rc and forwarding, but `ssh host 'cat /etc/shadow'`
+  still runs. This was got wrong once during setup and caught by testing it
+  rather than reading it: the first attempt returned a shell and the contents
+  of `.env.prod`. With `ssh -N` no session channel is opened, so the forced
+  command never fires and the tunnel is unaffected.
+- **The account.** `rdpci` is a system account with `/usr/sbin/nologin`, no
+  password, no sudo, and deliberately not in `docker`, because membership in
+  that group is root-equivalent. The deploy user (`ksanchez`) has all three, which
+  is exactly why the CI key is not on it.
+
+`sshd` here enforces `AllowUsers`, so the account is added to that list or it
+cannot connect at all, and the refusals would feed Fail2Ban.
+
+### What that key can actually do, measured
+
+Tested by sending traffic, not by reading the config, which is the only
+way that found the gap below. For a `-L` forward, `permitopen` is enforced
+when the **channel opens**, not at session setup, so `ssh -N -L` binds
+locally whether or not the destination is permitted. Checking that the
+tunnel "came up" proves nothing.
+
+| Attempt | Result |
+|---|---|
+| `ssh rdpci@vm 'cat /opt/rdp/.env.prod'` | refused |
+| interactive shell / pty | refused |
+| `-L` to `127.0.0.1:5000` | **allowed**, registry answers 200 |
+| `-L` to `127.0.0.1:22` (sshd listening) | refused |
+| `-L` to `127.0.0.1:9100` (node_exporter listening) | refused |
+| `-L` to `example.com:80` (egress via the VM) | refused |
+| `-D` SOCKS to an external host | refused; to the registry, allowed |
+| agent forwarding, sftp | refused |
+| `docker push` through the tunnel | **lands in the VM registry** |
+
+The deny targets are ports with live listeners on purpose: refusing a port
+where nothing is listening would prove nothing about `permitopen`.
+
+> **`-R` was accepted on the first pass**, and that is why the `Match` block
+> exists. `permitopen` constrains where `-L` and `-D` may connect *to*; it
+> says nothing about `-R`, which binds a listener *on* the host. The VM
+> ended up listening on `127.0.0.1:15998`. Not theoretical: if the registry
+> container is ever stopped, a holder of this key could bind
+> `127.0.0.1:5000` itself and serve poisoned images to the next deploy, so
+> a key for pushing images could become the registry. No `authorized_keys`
+> option expresses "local forwarding only", so it takes
+> `AllowTcpForwarding local` in a `Match User rdpci` block. Confirm with
+> `sshd -T -C user=rdpci`, which reports the effective value rather than
+> what the file appears to say.
+
+### What the workflow needs configured
+
+Build-time values follow the same convention as the staging deploy and are
+collected by the same action, `generate-env-file-from-json`: everything named
+`(TF_)?(VM_)?CLIENT_ENV_<NAME>` is picked up and the prefix stripped. Adding a
+value to the build is a new repository secret or variable, not a change to
+the workflow.
+
+| Name | Value today |
+|---|---|
+| `VM_CLIENT_ENV_NEXT_PUBLIC_API_URL` | `/cms/api/` |
+| `VM_CLIENT_ENV_NEXT_PUBLIC_URL` | `https://139-162-197-186.ip.linodeusercontent.com` |
+| `VM_CLIENT_ENV_CMS_INTERNAL_API_URL` | `http://cms:1337/api/` |
+| `VM_CLIENT_ENV_NEXT_PUBLIC_MAPBOX_TOKEN` | *(secret)* a `pk.` token |
+
+The collected values are written to the file compose reads with `--env-file`,
+**not** to `client/.env.local` as the Cloud Run path does. The VM images build
+with `STRIP_ENV_FILES=1` and take their configuration as build args, so that
+is where the values have to arrive.
+
+> This is the one place the two paths genuinely differ, and the reason is in
+> `client/Dockerfile.prod`: the `NEXT_PUBLIC_*` are declared `ARG` only, never
+> restated as `ENV`. A build arg is in the environment of `RUN` when passed
+> and genuinely absent when not, which is what lets the Cloud Run path fall
+> through to `.env.local`. Restating them as `ENV` would define them as empty
+> strings on that path, and `@next/env` only fills in variables that are
+> *absent*, so `""` would win over `.env.local`.
+
+Which names are required is not listed in the workflow at all.
+`docker-compose.prod.yml` declares each build arg as `${VAR:?...}`, so compose
+refuses to interpolate the file when one is unset **or empty**, and says which:
+
+    error while interpolating services.client.build.args.NEXT_PUBLIC_URL:
+    required variable NEXT_PUBLIC_URL is missing a value: inlined into the
+    browser bundle at build time
+
+The workflow only asks for that interpolation early, with
+`docker compose ... config --quiet`, so the failure costs a second instead
+of arriving at the build step. Because the rule lives in the compose file, it
+holds for a build on the VM or on a laptop as well as in CI, and adding a
+build arg is the same act as requiring it.
+
+> Use `--quiet`. A plain `docker compose config` prints the fully resolved
+> file, which is every secret in the env file; that is the leak 82aab64 fixed
+> for the staging workflow.
+
+One check stays in the workflow, because compose cannot express it: a Mapbox
+token beginning `sk.`. That is not a missing value but a wrong one, and since
+the token is inlined into the public browser bundle, a secret token there is a
+secret published.
+
+> **Correction.** An earlier version of this section said an empty value
+> "ships a bundle that looks built and is broken". Measured, it does not:
+> `client/src/env.mjs` sets `emptyStringAsUndefined: true` and declares all
+> three `NEXT_PUBLIC_*` as required, so `""` becomes `undefined`, zod rejects
+> it, and `next build` fails during route analysis. The failure is loud.
+>
+> What the guard is worth is the second and the variable name, instead of ten
+> minutes of image build answered with a zod trace. It also covers
+> `CMS_INTERNAL_API_URL`, which is a build arg but is **not** in `env.mjs`, so
+> nothing else would catch an empty one.
+>
+> Note compose reports only the **first** offending variable, where the
+> earlier Python check listed all of them at once. For four values set once
+> per environment that is a fair trade for deleting the check.
+
+> `NEXT_PUBLIC_URL` is **baked into the bundle at build time**, so it is not
+> configuration the VM can change. At DNS cutover the variable has to change
+> and the images have to be rebuilt; restarting with a new `.env.prod` will
+> not do it.
+
+Separately, and deliberately outside that convention because they configure
+the workflow rather than the application: `VM_REGISTRY_HOST`,
+`VM_REGISTRY_USER` and `VM_SSH_HOST_KEY` as variables, and
+`VM_REGISTRY_SSH_KEY` as a secret.
+
+### What the VM needs
+
+- A **read-only deploy key**, so `git fetch origin` works. Generated on the
+  box, so the private half has never left it. The checkout has to track the
+  images: a stale checkout pairs new images with old `nginx.conf`.
+- Nothing else. The images arrive in its own registry, and `deploy-release.sh`
+  already defaults `IMAGE_PREFIX` to `127.0.0.1:5000/`, so the deploy command
+  needs no registry argument at all.
 
 ## The image registry
 
@@ -789,14 +1047,18 @@ know which tag is oldest and a git sha sorts by hex. `registry-gc.sh` only
 touches tags matching the stamped shape and leaves anything else alone, so a
 hand-pushed tag is not collected by surprise.
 
-### Releasing
+### Deploying a release
 
-    bash infrastructure/vm/scripts/release.sh                  # build and deploy
-    DOCKER_CONTEXT=rdp bash infrastructure/vm/scripts/release.sh
+On the box, with the version from the run summary. The checkout moves with
+the images so the bind-mounted nginx config comes from the same tree:
 
-Six steps, in the order that works: build, verify image hygiene, push, deploy,
-**reload nginx**, smoke-test through nginx. Each one is there because leaving
-it out costs something concrete:
+    git fetch origin --tags && git checkout v1.2.0
+    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+
+Six steps, in the order that works: pull, verify image hygiene, push (skipped
+here, since the images came from the registry), deploy, **reload nginx**,
+smoke-test through nginx. Each one is there because leaving it out costs
+something concrete:
 
 - Hygiene runs **before** the push. Once a layer carrying an env file is in a
   registry, deleting the tag does not recall what was already pulled.
@@ -804,7 +1066,17 @@ it out costs something concrete:
 - The smoke test goes **through nginx**, not at the containers, because the
   502 below is invisible to a container health check.
 
-It tags `<utc-stamp>-<short-sha>`, and appends `-dirty` when `client/`,
+Run it **on the VM**, never over a remote Docker context. Compose resolves
+those bind-mounted paths on whichever machine runs the command, and a path
+the far side does not have is mounted as an empty directory rather than
+refused, and nginx then comes up healthy with no configuration.
+
+With no `RELEASE_TAG` it builds here instead and pushes what it builds, which
+is the fallback for when GitHub is unreachable (RUNBOOK §2.0):
+
+    bash infrastructure/vm/scripts/deploy-release.sh
+
+That mode tags `<utc-stamp>-<short-sha>`, and appends `-dirty` when `client/`,
 `cms/`, `cloud_functions/` or the compose file have uncommitted changes:
 a release that cannot be reproduced from git should say so in its name.
 Changes elsewhere, such as `terraform.tfvars`, do not count.
@@ -813,7 +1085,7 @@ Changes elsewhere, such as `terraform.tfvars`, do not count.
 
 Every release prints the command to undo it:
 
-    RELEASE_TAG=<previous> SKIP_BUILD=1 bash infrastructure/vm/scripts/release.sh
+    RELEASE_TAG=<previous> SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
 
 That pulls the named tag rather than building, skips the push, and runs the
 same deploy, reload and smoke test. Only a stamped tag is ever offered: a
@@ -824,7 +1096,7 @@ hand over a command that cannot work.
 because those images really do carry an env file. Blocking is right for a
 normal release and wrong for an emergency, so the gate can be overridden:
 
-    ALLOW_UNCLEAN_IMAGES=1 RELEASE_TAG=<old> SKIP_BUILD=1 ./release.sh
+    ALLOW_UNCLEAN_IMAGES=1 RELEASE_TAG=<old> SKIP_BUILD=1 ./deploy-release.sh
 
 Verified end to end: a release, a rollback to the previous tag, and a roll
 forward again, with all four smoke checks passing each time.
@@ -941,6 +1213,15 @@ images that embed `.env.prod` should live in a registry ILRI's wider org can
 read; see GRASS-392. On the VM the trust boundary is a shell on the box,
 which is where `.env.prod` already is, so the local registry does not widen it.
 
+> Settled since this was written: **the VM images embed nothing.** They build
+> with `STRIP_ENV_FILES=1`, take every secret from compose's `environment:`
+> at runtime, and `verify-image-hygiene.sh` asserts both on every release.
+> The embedding concern is specific to the Cloud Run images, which have no
+> runtime env channel. So the blocker above is cleared, but the reason to
+> stay on the VM is now a different one: **rollback stays local.** During an
+> incident the tags you can roll back to should not depend on an external
+> service being reachable.
+
 Two facts for that conversation, both checked against GitHub's docs rather
 than assumed:
 
@@ -966,7 +1247,7 @@ and the host is otherwise Ansible-managed -- see **Not covered** in the
 RUNBOOK.
 
 1. **Docker CE from Docker's own apt repository**, not Ubuntu's `docker.io`.
-   The scripts call `docker compose` (V2, as a plugin) and `release.sh` uses
+   The scripts call `docker compose` (V2, as a plugin) and `deploy-release.sh` uses
    `up -d --wait`; pinning to upstream keeps the VM and the rehearsal stack on
    the same Compose semantics, which matters because every procedure in the
    RUNBOOK was measured against the latter. Installed 29.8.2 / Compose 5.6.0.
@@ -988,7 +1269,7 @@ RUNBOOK.
    SSH rather than copied as files, so it is a real checkout with history and
    `origin` set to GitHub. ILRI can attach a read-only deploy key and pull.
    It must be a checkout on the box, not a remote context -- see the note in
-   `release.sh`.
+   `deploy-release.sh`.
 
 5. **`.env.prod`, 0600, generated on the host.** Every Strapi and Postgres
    secret is fresh for this machine; only the three credentials that cannot
@@ -1022,12 +1303,21 @@ needs no config edit.
 | State | `SERVER_NAME` | `REDIRECT_SERVER_NAME` | `CANONICAL_HOST` |
 |---|---|---|---|
 | local | `localhost` | `alias.localhost` | `localhost` |
-| phase 2, spare name | `<spare>.rangelandsdata.org` | `disabled.invalid` | `<spare>.rangelandsdata.org` |
+| phase 2, the VM today | `139-162-197-186.ip.linodeusercontent.com` | `redirect.invalid` | `139-162-197-186.ip.linodeusercontent.com` |
 | phase 3, production | `www.rangelandsdata.org rangelandsdata.org` | `www.datarangelands.org datarangelands.org` | `www.rangelandsdata.org` |
 
 `envsubst` cannot omit a block, only fail to match one, so the redirect server
 blocks always exist. Pointing `REDIRECT_SERVER_NAME` at a name that never
-resolves (`disabled.invalid`) is how it is switched off.
+resolves is how it is switched off; the VM uses `redirect.invalid`. Any name
+under `.invalid` does, because RFC 2606 reserves the TLD precisely so it can
+never be delegated, and nothing in the repo pins the choice, so read it from
+`.env.prod` rather than from here.
+
+Phase 2 runs on the hostname Linode gives the instance, not on a spare
+`rangelandsdata.org` subdomain: no spare name was ever provisioned, and the
+Linode name already had a public DNS record, which is what Let's Encrypt
+needed to issue against. There is no redirect to switch on yet because there
+is only one name.
 
 ### Which domain is canonical, settled
 
@@ -1110,15 +1400,15 @@ Names the allowed list needs, matching the states in **Domain states**:
 | State | Allowed names |
 |---|---|
 | local | `https://localhost` (development token) |
-| phase 2, spare name | the spare host |
+| phase 2, the VM today | `139-162-197-186.ip.linodeusercontent.com` |
 | phase 3, production | all four: `www.rangelandsdata.org`, `rangelandsdata.org`, `www.datarangelands.org`, `datarangelands.org` |
 
-A spare DNS record does not have to be requested: the VM's Linode reverse name
-already resolves to it, so something like
-`139-162-197-186.ip.linodeusercontent.com` can serve as the phase-2 host for
-both the certificate and the allowed list. Confirm issuance with
-`certbot renew --dry-run` first — provider-owned domains can hit Let's Encrypt
-rate limits.
+No spare DNS record was requested. The VM's Linode reverse name already
+resolves to it, so it is the phase-2 host for both the certificate and
+the allowed list: Let's Encrypt issued against it and renewal is dry-run
+verified, and the `pk.` token was measured working from that origin with the
+map rendering real tiles. Provider-owned domains can hit Let's Encrypt rate
+limits, so confirm with `certbot renew --dry-run` before relying on it.
 
 > Add the phase-3 names to the token before moving DNS, not after. The map is
 > the one part of the platform that fails on a hostname the token has never
