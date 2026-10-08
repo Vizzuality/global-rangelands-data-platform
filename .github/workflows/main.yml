@@ -23,7 +23,15 @@ on:
 
   push:
     branches:
-      - main
+      # `main` is deliberately NOT here. It maps to ENVIRONMENT=PRODUCTION
+      # below, and GCP production was never provisioned -- `module
+      # "production"` is commented out in infrastructure/base/main.tf, so the
+      # TF_PRODUCTION_* secrets this would read do not exist. Production is
+      # the ILRI VM now (GRASS-384); generate-release.yml publishes to it and `main`
+      # exists to record what was released. Pushes made with GITHUB_TOKEN do
+      # not trigger workflows, so generate-release.yml would not fire this anyway --
+      # but a human merging to main would, and failing three deploy jobs to
+      # an environment that does not exist is a bad way to find that out.
       - staging
 
     paths:
