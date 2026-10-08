@@ -53,4 +53,16 @@ docker run --rm -i -v "${MEDIA_VOLUME}:/media" "$ALPINE_IMAGE" \
 
 echo "Starting cms..."
 $COMPOSE start cms
+
+# Without this every /cms/ route 502s while all five containers report
+# healthy. nginx resolves its upstreams once at startup and caches the
+# addresses, and the cms container restarted above may come back on a
+# different one -- the failure mode in RUNBOOK section 7.1, which this
+# script was itself creating. Measured during the 2026-10-08 rehearsal:
+# /en and /en/map stayed 200 while /cms/admin and /cms/_health returned
+# 502 until the reload.
+echo "Reloading nginx so it re-resolves cms..."
+$COMPOSE exec -T nginx nginx -s reload
+sleep 2
+
 echo "Restored from ${BACKUP}. config-sync import runs on boot; watch the logs."
