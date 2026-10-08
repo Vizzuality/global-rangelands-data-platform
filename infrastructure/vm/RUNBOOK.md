@@ -564,6 +564,56 @@ an uncached one returns `504`. So the map keeps working where people have
 already been, and fails visibly elsewhere. A map that is blank *everywhere*,
 including places that worked a minute ago, is §7.5 instead.
 
+### 7.7 Docker cannot create a network or start a container
+
+    Failed to Setup IP tables: Unable to enable ACCEPT OUTGOING rule:
+    iptables: No chain/target/match by that name
+
+The host firewall was reloaded and took Docker's rules with it. `nftables`
+owns the ruleset here, `/etc/nftables.conf` knows nothing about Docker, and
+reloading that service flushes every chain Docker installed. Docker only
+installs them when the daemon starts, so they stay gone.
+
+    sudo systemctl restart docker
+
+Confirm with `sudo iptables -t filter -L -n | grep '^Chain DOCKER'`, which
+should list six chains.
+
+**It is silent while it lasts.** The `FORWARD` policy is `ACCEPT` and running
+containers keep serving, so nothing fails until something needs to create a
+network or publish a port: a deploy, or a `compose up`. Observed on
+2026-10-08: the ruleset was reloaded at 00:55 and the gap was only noticed at
+16:33, when a teardown and rebuild tried to recreate the stack.
+
+**A reboot is the cure, not a casualty.** `nftables.service` is
+`DefaultDependencies=no`, `WantedBy=sysinit.target` and ordered
+`Before=network-pre.target`, so it finishes long before `docker.service`,
+which waits for `network-online.target`. Docker then installs its chains into
+a ruleset that has already settled. Measured on 2026-10-09, rebooting with
+the chains at zero: nftables at 12:05:54, docker at 12:06:00, chains back to
+26 filter and 6 nat, all six containers healthy, 84 seconds from `reboot` to
+HTTP 200.
+
+Check whether this is what bit you:
+
+    systemctl show nftables --property=ActiveEnterTimestamp --value
+    systemctl show docker   --property=ActiveEnterTimestamp --value
+
+If nftables started *after* docker, the chains are missing.
+
+The cause is `update-firehol-nftables.timer`, which fires daily between 00:00
+and 01:00 and ends its script with `systemctl restart nftables.service`. So
+this recurs every night, and `systemctl restart docker` is the only recovery
+-- `reload` does not reinstall the chains. The durable fix is ILRI's to make
+and is the same drop-in they already apply to fail2ban
+(`PartOf=nftables.service`); see §9.
+
+One case where a reboot does *not* save you: that timer is `Persistent=true`
+and its service is `After=network-online.target` with no ordering against
+`docker.service`. A boot that follows a missed 00:00-01:00 window runs the
+blocklist update immediately, and the chains survive only if Docker happens
+to start second.
+
 ---
 
 ## 8. Where the data lives
