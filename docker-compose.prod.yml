@@ -105,10 +105,18 @@ services:
       args:
         # Inlined into the browser bundle by next build, so they must be present
         # at build time -- setting them only at runtime has no effect.
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-        NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
-        NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
-        CMS_INTERNAL_API_URL: ${CMS_INTERNAL_API_URL}
+        #
+        # Declared ${VAR:?...}, which makes compose refuse to interpolate this
+        # file at all when one is unset OR empty, naming the variable. That is
+        # the whole check, and it guards every path -- a build here, in CI, or
+        # on the VM -- rather than only the one a CI step happens to cover.
+        # Empty matters as much as unset: client/src/env.mjs sets
+        # emptyStringAsUndefined and requires all three NEXT_PUBLIC_*, so ""
+        # reaches next build and throws there instead, ten minutes later.
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?inlined into the browser bundle at build time}
+        NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL:?inlined into the browser bundle at build time}
+        NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN:?inlined into the browser bundle at build time; must be a pk. token}
+        CMS_INTERNAL_API_URL: ${CMS_INTERNAL_API_URL:?the build fetches the CMS through it}
         # Server-side secrets reach this service through `environment:` below,
         # so the image must not also carry .env.local. See GRASS-392.
         STRIP_ENV_FILES: "1"
