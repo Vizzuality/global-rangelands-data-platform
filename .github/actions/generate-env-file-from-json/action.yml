@@ -9,10 +9,10 @@ inputs:
     description: "The GH Variables collection in JSON format"
     required: true
   ENVIRONMENT:
-    description: "Environment name"
+    description: "Environment name as it appears in the secret and variable names, upper case: STAGING, PRODUCTION, VM"
     required: true
   APP_ENV_PREFIX:
-    description: "Something"
+    description: "Component prefix in the secret and variable names: CLIENT_ENV or CMS_ENV"
     required: true
 
 outputs:
@@ -41,7 +41,20 @@ runs:
       # Use grep to filter client secrets & vars and save .env file (names starting with (TF_)((PRODUCTION|STAGING|SOMEBRANCH)_)[CLIENT_ENV|CMS_ENV]_
       id: env_entries_filtered
       shell: bash
+      # A composite action's inputs are NOT environment variables, and the
+      # scripts here read them as such. Callers that happen to set the same
+      # names as job env work by coincidence; without this block, one that
+      # passes them only through `with:` filters on ^(TF_)?(_)?_ , which
+      # matches nothing and fails the step on grep's exit 1.
+      env:
+        ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+        APP_ENV_PREFIX: ${{ inputs.APP_ENV_PREFIX }}
       run: |
+        # Empty is not a harmless default: the environment group is optional,
+        # so a missing ENVIRONMENT silently drops every environment-specific
+        # override instead of failing.
+        : "${ENVIRONMENT:?must be passed to generate-env-file-from-json}"
+        : "${APP_ENV_PREFIX:?must be passed to generate-env-file-from-json}"
         {
           echo 'entries_filtered<<EOF'
           echo '${{ steps.env_entries_all.outputs.entries_all }}' | grep -E "^(TF_)?(${ENVIRONMENT}_)?${APP_ENV_PREFIX}_"
@@ -52,6 +65,9 @@ runs:
       # Use sed to strip environment and application prefixes from secret and var names
       id: env_entries_stripped
       shell: bash
+      env:
+        ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+        APP_ENV_PREFIX: ${{ inputs.APP_ENV_PREFIX }}
       run: |
         {
           echo 'entries_stripped<<EOF'

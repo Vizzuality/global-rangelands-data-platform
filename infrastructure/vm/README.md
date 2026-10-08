@@ -934,6 +934,99 @@ where nothing is listening would prove nothing about `permitopen`.
 > `sshd -T -C user=rdpci`, which reports the effective value rather than
 > what the file appears to say.
 
+### Provisioning it, and checking it still holds
+
+One command from a workstation that can already reach the VM as a sudoer and
+is logged in to `gh`:
+
+    DEPLOY_USER=<you> VM_HOST=139.162.197.186 \
+      bash infrastructure/vm/scripts/setup-ci-access.sh
+
+It generates the keypair, runs the host-side script over SSH, pins the host
+key, writes seven settings into the `vm` environment, writes a 0600
+credential record for the password manager, and finishes by verifying the
+result. The seven are the registry key as a secret, the three values the
+workflow needs to reach the host, and the three build-time `VM_CLIENT_ENV_*`
+variables, which it sets **only when they are absent** so that re-running it
+to rotate the key cannot reset a hostname DNS has since moved. The Mapbox
+token would be an eighth, and this script deliberately does not set it: see
+**Setting the build values**.
+
+The keypair is generated on the workstation, not the VM: the private half has
+to reach GitHub anyway, and a key that was never on the host cannot be read
+off it by anyone who later gets in.
+
+**Keep the record.** `VM_REGISTRY_SSH_KEY` cannot be read back: the API
+returns a name and two timestamps and no value, so a key that exists only
+in the secret store exists nowhere you can reach. That was the state until
+this script: the key could neither be filed nor verified, and deleting the
+secret would have meant regenerating it.
+
+Drift is the real risk here. ILRI exempted this host from Ansible on
+2026-10-09, but that is an inventory entry on a machine we do not control, and
+nothing in the playbook ever knew this account exists:
+
+    bash infrastructure/vm/scripts/verify-ci-access.sh
+
+It opens the same forward the workflow opens, with the same pinned host key,
+and makes a request through it. Opening the forward proves nothing on its
+own, since `ssh -f -N -L` returns 0 and binds the local port even when the
+far side refuses the channel. It then asserts the restrictions still hold:
+command execution refused, remote forwarding refused, forwarding to anything
+but the registry refused. A regression in any of those is silent, because
+pushing images keeps working.
+
+What neither script can prove is that GitHub holds the matching private key.
+Only a dispatched run shows that.
+
+Deliberately not Terraform, though `infrastructure/base` already manages
+repository secrets through `modules/github_values`. That module writes
+`plaintext_value` into state in `gs://rangelands-tf-state`, a Vizzuality
+bucket, which is the dependency this migration removes. Terraform also has
+no provider for this machine, so it would own one half of a keypair and
+never see the other. `plan` would report no changes with CI access dead.
+
+#### They live in an environment, not at repository level
+
+Everything named `VM_*` is set on the `vm` **environment**, and
+`generate-release.yml` is the only workflow that declares it. The reason is
+`main.yml`: the staging deploy to GCP serialises the entire secrets context
+with `toJSON(secrets)` in two of its jobs, so anything left at repository
+level is handed to a job whose business is Vizzuality's GCP rather than
+ILRI's host. An environment secret is visible only to jobs that name that
+environment.
+
+The `vars` context already includes environment variables once a job declares
+one, so the existing `^(TF_)?(VM_)?CLIENT_ENV_` filter in the shared
+`generate-env-file-from-json` action keeps working. That action did need one
+additive change: it declares `ENVIRONMENT` and `APP_ENV_PREFIX` as inputs but
+its script reads them as shell variables, and a composite action's inputs do
+not become environment variables, so `main.yml` only works because it also
+sets them as job env. Both steps now map the inputs to those names, and fail
+loudly rather than filter on an empty prefix. `main.yml` passes
+`ENVIRONMENT: ${{ env.ENVIRONMENT }}`, so the input is that same job
+variable and staging's output is unchanged; nothing was removed, which is
+what shared config allows until staging is decommissioned.
+
+| | Where |
+|---|---|
+| `VM_REGISTRY_HOST`, `VM_REGISTRY_USER`, `VM_SSH_HOST_KEY` | `vm` environment, variables |
+| `VM_CLIENT_ENV_*` | `vm` environment, variables; the Mapbox token a secret |
+| `VM_REGISTRY_SSH_KEY` | `vm` environment, secret |
+| `CLIENT_ENV_TRANSIFEX_TOKEN` | repository, shared with staging on purpose |
+
+**No deployment branch policy is set yet.** Adding one restricted to
+`staging` would stop any dispatchable branch obtaining the registry key, and
+it is a settings change rather than a rework, but it would also stop the
+version-less builds that feature branches rely on today. Set it once the
+stack is on `staging` and those builds are no longer the way this is tested.
+
+To reverse the whole arrangement: re-set each value at repository level, drop
+`environment: vm` from the workflow, and delete the environment. The
+variables are readable and can be copied back; the two secrets cannot, so the
+Mapbox token comes from `.env.prod` on the VM and the registry key has to be
+regenerated with `setup-ci-access.sh`.
+
 ### What the workflow needs configured
 
 Build-time values follow the same convention as the staging deploy and are
@@ -948,6 +1041,36 @@ the workflow.
 | `VM_CLIENT_ENV_NEXT_PUBLIC_URL` | `https://139-162-197-186.ip.linodeusercontent.com` |
 | `VM_CLIENT_ENV_CMS_INTERNAL_API_URL` | `http://cms:1337/api/` |
 | `VM_CLIENT_ENV_NEXT_PUBLIC_MAPBOX_TOKEN` | *(secret)* a `pk.` token |
+
+#### Setting the build values
+
+`setup-ci-access.sh` sets the three variables, and only when they are absent
+so that re-running it to rotate the key cannot reset a hostname that DNS has
+since moved. Pass `PUBLIC_URL` to give it a different one:
+
+    PUBLIC_URL=https://www.rangelandsdata.org \
+      DEPLOY_USER=<you> VM_HOST=139.162.197.186 \
+      bash infrastructure/vm/scripts/setup-ci-access.sh
+
+To change one afterwards, or to set them against a different environment:
+
+    gh variable set VM_CLIENT_ENV_NEXT_PUBLIC_URL --env vm \
+      --body 'https://139-162-197-186.ip.linodeusercontent.com'
+    gh variable set VM_CLIENT_ENV_NEXT_PUBLIC_API_URL  --env vm --body '/cms/api/'
+    gh variable set VM_CLIENT_ENV_CMS_INTERNAL_API_URL --env vm --body 'http://cms:1337/api/'
+
+The Mapbox token is set by hand, from a file rather than an argument so it
+does not reach the shell history:
+
+    gh secret set VM_CLIENT_ENV_NEXT_PUBLIC_MAPBOX_TOKEN --env vm < token.txt
+    shred -u token.txt
+
+It has to be a **publishable** `pk.` token: the release workflow rejects an
+`sk.` one, because the value is inlined into the public JavaScript bundle.
+The same token is in `.env.prod` on the VM, which is the only other copy:
+a GitHub secret cannot be read back, and the API returns nothing but the
+name and timestamps. If both are lost the token has to be reissued from the
+Mapbox account and added to the allowlist again.
 
 The collected values are written to the file compose reads with `--env-file`,
 **not** to `client/.env.local` as the Cloud Run path does. The VM images build

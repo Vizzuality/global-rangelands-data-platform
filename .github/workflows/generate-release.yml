@@ -29,14 +29,6 @@ permissions:
 env:
   # Same default as deploy-release.sh; through the tunnel this is the VM's registry.
   IMAGE_PREFIX: 127.0.0.1:5000/
-  # generate-env-file-from-json declares ENVIRONMENT and APP_ENV_PREFIX as
-  # inputs, but its script reads them as shell variables -- and a composite
-  # action's inputs do not become environment variables. main.yml sets them
-  # as job env and so works by coincidence; passing them only through `with:`
-  # leaves the filter pattern as ^(TF_)?(_)?_ , which matches nothing and
-  # fails the step on grep's empty exit. Set here until that action is fixed.
-  ENVIRONMENT: VM
-  APP_ENV_PREFIX: CLIENT_ENV
   # Compose interpolates the WHOLE file before it filters by service, so the
   # nginx volume's ${CERTBOT_WEBROOT:?} has to resolve even though CI only
   # builds cms, client and tiler and never starts nginx. .env.ci carries the
