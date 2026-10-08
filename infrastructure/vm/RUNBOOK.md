@@ -212,6 +212,26 @@ the build. Delete it and build again.
 Do **not** reach for `ALLOW_UNCLEAN_IMAGES=1` here. That override exists for
 rollbacks (§3), not for new builds.
 
+### 2.2 The release workflow failed at the tunnel or the push
+
+Check the host side before the workflow. This box was Ansible-managed from
+`masita.server.com` until ILRI exempted it on 2026-10-09, and nothing in that
+playbook ever knew the `rdpci` account exists. If the exemption lapses, the
+account, its `authorized_keys` entry and the `Match User` block can all be
+reverted without anyone touching the repository. From a
+workstation with the CI key:
+
+    bash infrastructure/vm/scripts/verify-ci-access.sh
+
+It opens the same forward with the same pinned host key, makes a request
+through it, and asserts the restrictions still hold. If it passes and the
+release still cannot authenticate, the repository secret is stale rather
+than the host: re-run `setup-ci-access.sh`. Nothing can compare the two
+directly, because `VM_REGISTRY_SSH_KEY` cannot be read back.
+
+If it fails on the request but the forward opened, the registry itself is
+down: `docker compose -f docker-compose.registry.yml up -d`.
+
 ---
 
 ## 3. Roll back
