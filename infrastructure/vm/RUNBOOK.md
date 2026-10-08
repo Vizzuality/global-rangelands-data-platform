@@ -131,20 +131,67 @@ are already gone**, so do not expect to investigate something from last week.
 
 ## 2. Deploy a new version
 
-    git pull
-    bash infrastructure/vm/scripts/release.sh
+GitHub Actions builds the images; this box only deploys them. **Generate
+release** (Actions → Run workflow, from `staging`, with a version like
+`v1.2.0`) runs the tests, builds `cms`, `client` and `tiler`, refuses to push
+anything that fails the hygiene check, pushes into this machine's own
+registry through an SSH tunnel, then fast-forwards `main` and tags it. It
+deploys nothing; that is this section.
 
-That is the whole procedure. It takes roughly three minutes and does six
-things in an order that matters:
+On the box, with the version from the run summary:
+
+    cd /opt/rdp
+    git fetch origin --tags && git checkout v1.2.0
+    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+
+No registry argument: the images are already in this machine's own registry,
+and `deploy-release.sh` defaults to it.
+
+**The checkout has to move as well as the images.** `nginx.conf`, the
+template directory and `healthcheck.js` are bind-mounted out of the repo, so
+a stale checkout pairs new images with old configuration, a mismatch that
+produces a confusing failure rather than an obvious one.
+The version is the same string in both commands precisely so this cannot be
+got wrong.
+
+> A run dispatched with an **empty** version is a build, not a release: it
+> moves no branch and creates no git tag, and its images carry a
+> `<utc-stamp>-<short-sha>` tag instead. To deploy one of those you must
+> check out the matching commit by hand (`git checkout <sha>`), because
+> nothing in git points at it. Prefer a real release for anything that stays
+> on the box.
+
+`deploy-release.sh` records `IMAGE_TAG` and `IMAGE_PREFIX` into `.env.prod` once the
+stack is up, so a later `docker compose` command that does not set them
+resolves the same images rather than falling back to `rdp-*:local`. To see
+what this box believes it is running:
+
+    grep -E '^IMAGE_(TAG|PREFIX)=' /opt/rdp/.env.prod
+    rdp ps --format '{{.Service}}\t{{.Image}}'
+
+Those two must agree. If they do not, someone ran compose without the tag and
+the stack is not what git says it is. Re-run the deploy above for the version
+you intend.
 
 | | Step | If it fails here |
 |---|---|---|
-| 1 | build the three images | a code or dependency problem — nothing has changed on the running site |
+| 1 | pull the three images from `127.0.0.1:5000` | registry down: `docker compose -f docker-compose.registry.yml up -d`; or the tag does not exist, check the run summary |
 | 2 | check the images carry no config files | §2.1 |
-| 3 | push them to the registry on `127.0.0.1:5000` | registry down — `docker compose -f docker-compose.registry.yml up -d` |
+| 3 | push (skipped: they came from the registry) | |
 | 4 | start the new containers | §7.4 |
 | 5 | reload nginx | §7.1 |
 | 6 | smoke-test the four routes through nginx | **the site may be broken; roll back, §3** |
+
+### 2.0 Building here instead
+
+`deploy-release.sh` with no arguments still builds locally and pushes to the
+loopback registry on `127.0.0.1:5000`, which is what rollback tags live in:
+
+    bash infrastructure/vm/scripts/deploy-release.sh
+
+Use it when GitHub is unreachable or you are testing an unmerged change.
+Expect roughly ten minutes: this box has four cores and is also serving the
+site, which is the whole reason the build moved to CI.
 
 **Steps 1 to 3 change nothing that users can see.** A failure before step 4 is
 safe: the old containers are still serving. From step 4 onward, a failure
@@ -180,7 +227,7 @@ What you can roll back to:
 
 Newest first. Then:
 
-    RELEASE_TAG=<tag> SKIP_BUILD=1 bash infrastructure/vm/scripts/release.sh
+    RELEASE_TAG=<tag> SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
 
 This pulls that tag from the registry, deploys it, reloads nginx and
 smoke-tests it, exactly as a release does. Two or three minutes.
@@ -192,7 +239,7 @@ A tag from before the configuration cleanup will fail the hygiene check
 emergency rollback is worse than the thing being prevented, so:
 
     ALLOW_UNCLEAN_IMAGES=1 RELEASE_TAG=<tag> SKIP_BUILD=1 \
-      bash infrastructure/vm/scripts/release.sh
+      bash infrastructure/vm/scripts/deploy-release.sh
 
 On this stack the baked file is inert, because compose supplies every value and
 those take precedence, so the risk is a stale copy of configuration sitting
@@ -290,14 +337,62 @@ Set up and verified on 2026-10-07: issued with `--webroot`, the deploy hook
 fired on first issuance, and `certbot renew --dry-run` succeeds. The
 `certbot.timer` systemd unit does the renewing.
 
+> **A plain `--dry-run` does not test the deploy hook.** It skips it, and
+> says so only in the log, not on the terminal:
+>
+>     Dry run: skipping deploy hook command: /opt/rdp/.../cert-deploy-hook.sh
+>
+> So a green dry-run tells you the challenge and the issuance work, and
+> nothing about the half that publishes the result, which is precisely the
+> half that fails silently (§5.1). To exercise the whole chain:
+>
+>     sudo certbot renew --dry-run --run-deploy-hooks
+>
+> That flag is real but listed only under `certbot --help all`, not under
+> `renew --help`. Run on 2026-10-08: the hook copied the certificate into the
+> `certs` volume and reloaded nginx, which stayed up and healthy.
+>
+> It takes about five minutes against the staging ACME server. Killing the
+> client does **not** kill certbot: it keeps its lock, and the next run
+> refuses with *"Another instance of Certbot is already running."* Wait it
+> out rather than starting a second one.
+
 > Two notes for whoever inherits this. The certificate currently covers only
 > the Linode reverse-DNS name, because that is what resolved at the time.
 > At DNS cutover it must be reissued for the four production names, all in
-> one certificate (see **Domain states** in the README). And the Let's
-> Encrypt account has **no email registered**, so there are no expiry
-> warnings: set one with `certbot update_account --email <ops-address>`, or
-> better, add a certificate-expiry check to the Zabbix that already monitors
-> this host.
+> one certificate (see **Domain states** in the README).
+>
+> And **nothing will tell you if renewal stops working.** Registering an
+> address on the Let's Encrypt account does not help: Let's Encrypt ended
+> expiration notification emails on 4 June 2025, so `certbot update_account
+> --email` buys nothing. Monitoring is the only option, and it is not in
+> place yet (§9).
+
+Measured on 2026-10-08, these are the ways renewal can fail and what would
+notice:
+
+| Failure | What catches it today |
+|---|---|
+| `certbot.service` fails outright | nothing: `OnFailure=` is empty and the host has no MTA |
+| renewal succeeds, deploy hook not registered | nothing: certbot exits 0 |
+| renewal succeeds, deploy hook fails | nothing: a failing hook is a warning, not an error |
+| the certificate expires and is served | a visitor's browser warning |
+
+> The nginx container healthcheck does **not** cover this, and cannot. It
+> runs `wget --no-check-certificate https://127.0.0.1/en`, and it has to skip
+> validation, because it connects to the loopback address while the
+> certificate is issued for the public name. So the stack reports five
+> healthy containers while serving an expired certificate.
+>
+> The one check that catches every row above is the expiry of the
+> **served** certificate, because it observes the symptom rather than any
+> particular cause:
+>
+>     echo | openssl s_client -connect <public-name>:443 -servername <public-name> 2>/dev/null \
+>       | openssl x509 -noout -enddate
+>
+> Renewal starts at 30 days out and retries twice a day, so alerting below
+> 14 days still leaves a fortnight to act.
 
 ### 5.1 The certificate renewed but the site still serves the old one
 
@@ -313,7 +408,8 @@ it is still registered:
 
 It should point at `/opt/rdp/infrastructure/vm/scripts/cert-deploy-hook.sh`,
 which copies the renewed pair into the `certs` volume and then reloads the
-container. A bare `nginx -s reload` is not enough on its own: the volume
+container. Registered is not the same as working, so prove it with the
+`--run-deploy-hooks` command in §5. A bare `nginx -s reload` is not enough on its own: the volume
 holds a *copy*, because certbot's `live/` directory is relative symlinks into
 `archive/` that do not resolve inside a container.
 
@@ -383,7 +479,7 @@ healthy because they *are* healthy; nginx just is not talking to them.
 nginx's own healthcheck now catches it and marks nginx unhealthy within about
 75 seconds, which is why §1 leads with that line.
 
-`release.sh` does this reload automatically on every deploy. You should only
+`deploy-release.sh` does this reload automatically on every deploy. You should only
 meet this after a manual `docker compose` command or a reboot.
 
 ### 7.2 One of client / cms / tiler is unhealthy
@@ -483,13 +579,27 @@ destroy every rollback target.
 Open items that an operator cannot resolve alone:
 
 - **Nothing watches the platform.** ILRI already runs Zabbix against this
-  host (the agent reports to `41.204.190.131`), so disk, load and reachability
-  are covered — but no check knows the platform exists. The first signal that
-  the *site* is down is a person noticing. Four checks would close it, and
-  all of them are Edwin's to add: `https://<host>/en` returns 200, the
-  certificate is more than 14 days from expiry, `docker compose ps` shows
-  five healthy containers, and `/var/backups/rdp` gained a directory in the
-  last 24 hours.
+  host (`zabbix-agent2` 8.0, hostname `linode50`, reporting to
+  `41.204.190.131`), so disk, load and reachability are covered. But its
+  only custom items are `process.top.cpu`, `process.top.memory`,
+  `users.active` and `users.logged`. Nothing knows the platform exists, so
+  the first signal that the *site* is down is a person noticing, and the
+  renewal failures in §5 are all silent.
+
+  Five checks close it, all Edwin's to add: the certificate on the served
+  port is more than 14 days from expiry; `/en` returns 200; `/cms/_health`
+  returns 204; a tile URL returns 200; and `/var/backups/rdp/backup.log` was
+  modified in the last 25 hours. The three endpoint checks stand in for
+  "five healthy containers" deliberately: they observe what a visitor
+  would, and they need no Docker access. **Do not put the `zabbix` user in
+  the `docker` group for this**: that group is root-equivalent, and it would
+  hand an internet-reachable monitoring agent full control of the host.
+
+  No new access is needed for any of them. The certificate check is a
+  built-in agent2 key, the endpoint checks run from the Zabbix server, and
+  the `zabbix` user can already read `/var/backups/rdp` (verified
+  2026-10-08). Item keys and thresholds for all five are written up for the
+  ILRI side under GRASS-384.
 
 - **The host is under Ansible management, and this stack is not in it.**
   `/etc/letsencrypt/renewal-hooks/{pre,post}/` carry files stamped *managed
@@ -501,6 +611,15 @@ Open items that an operator cannot resolve alone:
   those should go into the playbook, or ILRI should confirm this host is
   exempt. (The nftables ruleset and `/etc/fstab` are *not* Ansible-managed
   today, so the open ports and the swapfile do survive a run.)
+
+  The file to watch is `/etc/letsencrypt/renewal/<name>.conf`. It carries the
+  `renew_hook` line, and a playbook that rewrites it takes the hook with it,
+  after which renewal keeps reporting success while the container serves an
+  expiring certificate (§5.1). The hooks already in
+  `renewal-hooks/{pre,post}/` show that role expects a host apache and the
+  stop-renew-start model, not our `--webroot` one, so this is not a
+  hypothetical collision. Worth asking Edwin to exempt the path, and worth a
+  Zabbix certificate-expiry check either way.
 - **Backups are on the same disk as the data they protect.** That is not a
   backup against disk loss. Where off-box copies go, who can read them and
   how long they are kept is an ILRI decision, and it determines the retention
