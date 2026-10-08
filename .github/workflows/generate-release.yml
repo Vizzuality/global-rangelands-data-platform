@@ -1,0 +1,230 @@
+# Cuts a release of the VM stack: test, build, push the images into the
+# registry ON THE VM, fast-forward `main`, tag it. It does not deploy.
+#
+# Dispatch from `staging` with a version like v1.2.0, or leave the version
+# empty to build from any ref without releasing.
+#
+# What the version buys, why the merge is a fast-forward, and how an operator
+# deploys the result: infrastructure/vm/README.md, "Generating a release".
+name: Generate release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version, e.g. v1.2.0. Empty = build only, no tag, no merge.'
+        required: false
+        type: string
+
+concurrency:
+  # Not cancel-in-progress: a run that has pushed images but not yet tagged
+  # should be allowed to finish.
+  group: vm-release
+  cancel-in-progress: false
+
+permissions:
+  # To push `main` and the tag. A build-only run never uses it.
+  contents: write
+
+env:
+  # Same default as deploy-release.sh; through the tunnel this is the VM's registry.
+  IMAGE_PREFIX: 127.0.0.1:5000/
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The fast-forward push needs real ancestry, not a shallow clone.
+          fetch-depth: 0
+
+      - name: Decide what this run is, and check it can finish
+        id: plan
+        env:
+          VERSION: ${{ inputs.version }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          # The Run workflow dropdown defaults to the default branch and offers
+          # no way to change that, so a dispatch from it is usually someone who
+          # did not pick a branch at all. Nothing should ever be built from it:
+          # Push is not gated on release mode, so even a version-less build
+          # puts images in the VM's registry under a stamped tag.
+          if [ "${GITHUB_REF_NAME}" = "${DEFAULT_BRANCH}" ]; then
+            echo "::error::dispatched from '${GITHUB_REF_NAME}', the default branch -- choose one. Releases are cut from 'staging'; a build runs from the branch you want built"
+            exit 1
+          fi
+
+          if [ -z "$VERSION" ]; then
+            echo "build only: no branch will move and no tag will be created"
+            echo "mode=build" >> "$GITHUB_OUTPUT"
+            # registry-gc.sh only collects tags of this exact shape.
+            echo "tag=$(date -u +%Y%m%dT%H%M%SZ)-$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # A feature branch would fast-forward main just as legitimately, so
+          # nothing downstream would notice code that skipped staging.
+          if [ "${GITHUB_REF_NAME}" != "staging" ]; then
+            echo "::error::dispatched from '${GITHUB_REF_NAME}'; releases are cut from 'staging'"
+            exit 1
+          fi
+
+          if ! printf '%s' "$VERSION" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::'${VERSION}' is not vMAJOR.MINOR.PATCH[-prerelease]"
+            exit 1
+          fi
+
+          # Re-using a version would overwrite the images behind a tag someone
+          # may still roll back to, while the git tag kept its old commit.
+          if [ -n "$(git ls-remote --tags origin "refs/tags/${VERSION}")" ]; then
+            echo "::error::tag ${VERSION} already exists"
+            exit 1
+          fi
+
+          # Same question the real push asks, without the side effect. `main`
+          # may not exist yet; creating it is a fast-forward and passes.
+          if ! git push --dry-run origin "HEAD:refs/heads/main"; then
+            echo "::error::main cannot fast-forward to staging; it has commits staging does not"
+            exit 1
+          fi
+
+          echo "mode=release" >> "$GITHUB_OUTPUT"
+          echo "tag=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.15.0'
+
+      - name: Install client dependencies
+        working-directory: client
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.33.0 --activate
+          pnpm install --frozen-lockfile
+
+      - name: Lint
+        working-directory: client
+        run: pnpm lint
+
+      - name: Test
+        working-directory: client
+        run: pnpm test
+
+      - name: Output secrets and vars as JSON
+        id: env_json
+        # null when empty, or jq fails on an empty string.
+        run: |
+          {
+            echo 'secrets<<EOF'
+            echo '${{ secrets != null && toJSON(secrets) || null }}'
+            echo 'EOF'
+            echo 'vars<<EOF'
+            echo '${{ vars != null && toJSON(vars) || null }}'
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - name: Collect the client build environment
+        id: client_env
+        # (TF_)?(VM_)?CLIENT_ENV_<NAME>, same convention as the staging deploy.
+        uses: ./.github/actions/generate-env-file-from-json
+        with:
+          ENVIRONMENT: VM
+          APP_ENV_PREFIX: CLIENT_ENV
+          secrets_json: ${{ steps.env_json.outputs.secrets }}
+          vars_json: ${{ steps.env_json.outputs.vars }}
+
+      - name: Write it where compose reads it
+        # Not client/.env.local as the Cloud Run path does: these images build
+        # with STRIP_ENV_FILES=1 and take their config as build args.
+        run: |
+          umask 077
+          printf '%s\n' '${{ steps.client_env.outputs.env_file }}' > .env.ci
+          echo "collected $(grep -c '^[A-Z]' .env.ci || true) value(s)"
+
+      - name: Every build arg compose needs must be present and non-empty
+        # The requirement lives in docker-compose.prod.yml as ${VAR:?...}; this
+        # only triggers the interpolation early. --quiet is not cosmetic: plain
+        # `config` prints the resolved file, i.e. every secret. See 82aab64.
+        run: docker compose -f docker-compose.prod.yml --env-file .env.ci config --quiet
+
+      - name: The Mapbox token must be publishable
+        # Not a missing value but a wrong one, so compose cannot catch it.
+        run: |
+          token=$(grep -E '^NEXT_PUBLIC_MAPBOX_TOKEN=' .env.ci | head -1 | cut -d= -f2-)
+          case "$token" in
+            sk.*) echo "::error::NEXT_PUBLIC_MAPBOX_TOKEN is a secret (sk.) token; it is inlined into the public bundle and must be a pk. token"
+                  exit 1 ;;
+          esac
+
+      - name: Build
+        env:
+          IMAGE_TAG: ${{ steps.plan.outputs.tag }}
+        run: docker compose -f docker-compose.prod.yml --env-file .env.ci build cms client tiler
+
+      - name: Image hygiene
+        # Before the push: deleting a tag does not recall what was pulled.
+        env:
+          IMAGE_TAG: ${{ steps.plan.outputs.tag }}
+        run: bash infrastructure/vm/scripts/verify-image-hygiene.sh
+
+      - name: Open the tunnel to the VM registry
+        uses: ./.github/actions/vm-registry-tunnel
+        with:
+          ssh_key: ${{ secrets.VM_REGISTRY_SSH_KEY }}
+          host: ${{ vars.VM_REGISTRY_HOST }}
+          user: ${{ vars.VM_REGISTRY_USER }}
+          host_key: ${{ vars.VM_SSH_HOST_KEY }}
+
+      # Images before git: a failed push leaves images nobody references and
+      # re-dispatching works, where a failed tag-then-push would name a
+      # release with nothing to deploy and block the retry.
+      - name: Push
+        env:
+          IMAGE_TAG: ${{ steps.plan.outputs.tag }}
+        # Only the version tag; registry-gc.sh skips any digest a protected tag
+        # shares, so a stamped twin could never be collected anyway.
+        run: docker compose -f docker-compose.prod.yml --env-file .env.ci push cms client tiler
+
+      - name: Close the tunnel
+        # Not inside the action above: only JavaScript and Docker actions can
+        # declare a post step, composite ones cannot. The runner is ephemeral
+        # so this is belt and braces, but a tunnel left open past the step
+        # that needs it is not something to leave to the VM shutting it down.
+        if: always()
+        run: pkill -f 'L 5000:127.0.0.1:5000' || true
+
+      - name: Fast-forward main and tag the release
+        if: steps.plan.outputs.mode == 'release'
+        env:
+          VERSION: ${{ steps.plan.outputs.tag }}
+        # A merge commit is not the commit the images were built from, so the
+        # version would name two trees. The server enforces this: a plain push
+        # to refs/heads/main is rejected unless it fast-forwards.
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git push origin "HEAD:refs/heads/main"
+          git tag -a "$VERSION" -m "Release ${VERSION}"
+          git push origin "refs/tags/${VERSION}"
+
+      - name: Summary
+        env:
+          TAG: ${{ steps.plan.outputs.tag }}
+          MODE: ${{ steps.plan.outputs.mode }}
+        run: |
+          {
+            if [ "$MODE" = "release" ]; then
+              echo "### Released \`${TAG}\`"
+              echo
+              echo "\`main\` fast-forwarded to \`${GITHUB_SHA}\` and tagged \`${TAG}\`."
+            else
+              echo "### Built \`${TAG}\` — build only"
+              echo
+              echo "No branch moved and no git tag was created, so deploying this one"
+              echo "also needs \`git checkout ${GITHUB_SHA}\` on the box."
+            fi
+            echo
+            echo "Images are in the registry on the VM. **Nothing is deployed yet.**"
+            echo "To deploy: \`infrastructure/vm/RUNBOOK.md\` section 2."
+          } >> "$GITHUB_STEP_SUMMARY"
