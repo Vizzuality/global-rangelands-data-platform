@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+# [ops] manual, nothing schedules it. Deletes images: DRY_RUN=1 first.
+#
 # Retention and garbage collection for the VM image registry.
 #
-#   bash infrastructure/vm/scripts/registry-gc.sh            # keep 10 per repo
+#   bash infrastructure/vm/scripts/ops/registry-gc.sh            # keep 10 per repo
 #   KEEP=5 DRY_RUN=1 ./registry-gc.sh                        # show what would go
 #
 # Two steps, and both are needed. Deleting a manifest only unlinks the tag;
@@ -22,7 +24,11 @@ REGISTRY_VOLUME="${REGISTRY_VOLUME:-rdp-registry_registrydata}"
 REGISTRY_IMAGE="${REGISTRY_IMAGE:-registry:2}"
 MANIFEST_ACCEPT="application/vnd.docker.distribution.manifest.v2+json,application/vnd.oci.image.manifest.v1+json,application/vnd.oci.image.index.v1+json"
 
-cd "$(dirname "$0")/../../.."
+# scripts/<group>/ is four levels down from the repo root. The guard is
+# here because a moved script would otherwise run against the wrong
+# directory and fail somewhere further on, or quietly do nothing.
+cd "$(dirname "$0")/../../../.."
+[ -f docker-compose.prod.yml ] || { echo "ERROR: $PWD is not the repo root" >&2; exit 1; }
 
 # The registry's JSON is a flat list of strings we generate ourselves, so a
 # character-class split is enough and avoids depending on jq being installed.

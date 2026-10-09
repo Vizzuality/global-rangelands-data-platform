@@ -142,7 +142,7 @@ On the box, with the version from the run summary:
 
     cd /opt/rdp
     git fetch origin --tags && git checkout v1.2.0
-    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 No registry argument: the images are already in this machine's own registry,
 and `deploy-release.sh` defaults to it.
@@ -187,7 +187,7 @@ you intend.
 `deploy-release.sh` with no arguments still builds locally and pushes to the
 loopback registry on `127.0.0.1:5000`, which is what rollback tags live in:
 
-    bash infrastructure/vm/scripts/deploy-release.sh
+    bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 Use it when GitHub is unreachable or you are testing an unmerged change.
 Expect roughly ten minutes: this box has four cores and is also serving the
@@ -221,7 +221,7 @@ account, its `authorized_keys` entry and the `Match User` block can all be
 reverted without anyone touching the repository. From a
 workstation with the CI key:
 
-    bash infrastructure/vm/scripts/verify-ci-access.sh
+    bash infrastructure/vm/scripts/checks/verify-ci-access.sh
 
 It opens the same forward with the same pinned host key, makes a request
 through it, and asserts the restrictions still hold. If it passes and the
@@ -247,7 +247,7 @@ What you can roll back to:
 
 Newest first. Then:
 
-    RELEASE_TAG=<tag> SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+    RELEASE_TAG=<tag> SKIP_BUILD=1 bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 This pulls that tag from the registry, deploys it, reloads nginx and
 smoke-tests it, exactly as a release does. Two or three minutes.
@@ -259,7 +259,7 @@ A tag from before the configuration cleanup will fail the hygiene check
 emergency rollback is worse than the thing being prevented, so:
 
     ALLOW_UNCLEAN_IMAGES=1 RELEASE_TAG=<tag> SKIP_BUILD=1 \
-      bash infrastructure/vm/scripts/deploy-release.sh
+      bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 On this stack the baked file is inert, because compose supplies every value and
 those take precedence, so the risk is a stale copy of configuration sitting
@@ -280,7 +280,7 @@ than the code, you want §4.
 
 ### 4.1 Take one now
 
-    bash infrastructure/vm/scripts/backup.sh
+    bash infrastructure/vm/scripts/ops/backup.sh
 
 Writes `./backups/<timestamp>/` containing `db.dump`, `media.tar.gz` and
 `manifest.txt`. Safe to run at any time against the live stack; nothing is
@@ -322,7 +322,7 @@ To actually prove one restores, into throwaway containers that never touch
 the live stack:
 
     BACKUP=/var/backups/rdp/<timestamp> \
-      bash infrastructure/vm/scripts/verify-backup.sh
+      bash infrastructure/vm/scripts/checks/verify-backup.sh
 
 Four checks, takes a minute or two. Worth doing monthly and **essential
 before relying on a backup in an incident**.
@@ -334,7 +334,7 @@ before relying on a backup in an incident**.
 > the current state is broken: it is the only way back to it.
 
     BACKUP=/var/backups/rdp/<timestamp> \
-      bash infrastructure/vm/scripts/restore-backup.sh
+      bash infrastructure/vm/scripts/ops/restore-backup.sh
 
 Both halves are restored together, always. Restoring only the database would
 leave content rows pointing at images that are no longer on disk.
@@ -426,7 +426,7 @@ it is still registered:
 
     sudo grep renew_hook /etc/letsencrypt/renewal/*.conf
 
-It should point at `/opt/rdp/infrastructure/vm/scripts/cert-deploy-hook.sh`,
+It should point at `/opt/rdp/infrastructure/vm/scripts/ops/cert-deploy-hook.sh`,
 which copies the renewed pair into the `certs` volume and then reloads the
 container. Registered is not the same as working, so prove it with the
 `--run-deploy-hooks` command in §5. A bare `nginx -s reload` is not enough on its own: the volume
@@ -463,7 +463,7 @@ Reclaim in this order, safest and usually largest first:
 
     docker builder prune -f            # build cache. Rebuilt on demand. Often tens of GB.
     docker image prune -a -f           # images no containers use. Still in the registry.
-    bash infrastructure/vm/scripts/registry-gc.sh     # old release tags; keeps the newest 10
+    bash infrastructure/vm/scripts/ops/registry-gc.sh     # old release tags; keeps the newest 10
 
 **None of those three run on a schedule.** The backup in §4.1 is the only
 job this stack installs, so the build cache, the unused images and the old

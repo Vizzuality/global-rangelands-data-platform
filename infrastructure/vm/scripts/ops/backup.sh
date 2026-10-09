@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+# [ops] daily at 03:15 from cron, or by hand. Prunes past RETENTION_KEEP.
+#
 # Point-in-time backup of everything on the VM that cannot be rebuilt: the
 # database and the Strapi upload volume.
 #
-#   bash infrastructure/vm/scripts/backup.sh
+#   bash infrastructure/vm/scripts/ops/backup.sh
 #   BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=30 ./backup.sh     # cron form
 #
 # Not backed up, deliberately:
@@ -15,7 +17,11 @@
 # daemon (DOCKER_CONTEXT=rdp), writing to whichever machine invoked it.
 set -euo pipefail
 
-cd "$(dirname "$0")/../../.."
+# scripts/<group>/ is four levels down from the repo root. The guard is
+# here because a moved script would otherwise run against the wrong
+# directory and fail somewhere further on, or quietly do nothing.
+cd "$(dirname "$0")/../../../.."
+[ -f docker-compose.prod.yml ] || { echo "ERROR: $PWD is not the repo root" >&2; exit 1; }
 COMPOSE="${COMPOSE:-docker compose -f docker-compose.prod.yml --env-file .env.prod}"
 set -a
 # shellcheck source=/dev/null

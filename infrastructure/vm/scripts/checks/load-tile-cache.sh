@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
+# [checks] any time, but the only one here that COSTS MONEY: every cold tile
+# is a metered Earth Engine call. Leaves the caches warm.
+#
 # Measures the tile cache under a realistic pan/zoom load, and checks what
 # happens to it when the tiler goes away.
 #
-#   bash infrastructure/vm/scripts/load-tile-cache.sh
+#   bash infrastructure/vm/scripts/checks/load-tile-cache.sh
 #   GRID=6 ZOOMS="5 6 7" CONCURRENCY=12 ./load-tile-cache.sh
 #
 # COSTS MONEY. Every cold tile is an Earth Engine call against a metered
@@ -15,7 +18,11 @@
 # cache look far smaller than it will be.
 set -euo pipefail
 
-cd "$(dirname "$0")/../../.."
+# scripts/<group>/ is four levels down from the repo root. The guard is
+# here because a moved script would otherwise run against the wrong
+# directory and fail somewhere further on, or quietly do nothing.
+cd "$(dirname "$0")/../../../.."
+[ -f docker-compose.prod.yml ] || { echo "ERROR: $PWD is not the repo root" >&2; exit 1; }
 COMPOSE="${COMPOSE:-docker compose -f docker-compose.prod.yml --env-file .env.prod}"
 BASE="${BASE:-https://127.0.0.1}"
 TILESET="${TILESET:-anthropogenic_biomes}"

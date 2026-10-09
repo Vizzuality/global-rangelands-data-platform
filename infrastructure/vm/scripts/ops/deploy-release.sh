@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# [ops] once per release. Restarts containers. Prints a rollback command
+# on failure; it does not roll back for you.
+#
 # Put a release onto this box: pull, verify, start, reload nginx, smoke-test.
 #
 # Deploy a version generate-release.yml already built and pushed into this
@@ -28,7 +31,11 @@
 # DOCKER_CONTEXT is honoured for inspection, not for deploys.
 set -euo pipefail
 
-cd "$(dirname "$0")/../../.."
+# scripts/<group>/ is four levels down from the repo root. The guard is
+# here because a moved script would otherwise run against the wrong
+# directory and fail somewhere further on, or quietly do nothing.
+cd "$(dirname "$0")/../../../.."
+[ -f docker-compose.prod.yml ] || { echo "ERROR: $PWD is not the repo root" >&2; exit 1; }
 ENV_FILE="${ENV_FILE:-.env.prod}"
 COMPOSE="${COMPOSE:-docker compose -f docker-compose.prod.yml --env-file ${ENV_FILE}}"
 export IMAGE_PREFIX="${IMAGE_PREFIX:-127.0.0.1:5000/}"
@@ -97,7 +104,7 @@ echo "-- 2. image hygiene --"
 # than the thing being prevented -- and a tag predating the STRIP_ENV_FILES
 # change will always fail this. The override is deliberately verbose so it
 # cannot be used by accident or by habit.
-if ! bash infrastructure/vm/scripts/verify-image-hygiene.sh; then
+if ! bash infrastructure/vm/scripts/checks/verify-image-hygiene.sh; then
   if [ "${ALLOW_UNCLEAN_IMAGES:-0}" = "1" ]; then
     echo
     echo "  !! proceeding anyway: ALLOW_UNCLEAN_IMAGES=1"

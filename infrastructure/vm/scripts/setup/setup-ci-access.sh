@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [setup] once per host, re-run to rotate. Writes GitHub settings.
+#
 # Bootstrap everything GitHub Actions needs to build and push images to the
 # VM's registry: the keypair, the restricted account on the host, the seven
 # settings in the `vm` environment, and a credential record for the password
@@ -6,7 +8,7 @@
 # the build values" in infrastructure/vm/README.md.
 #
 #   DEPLOY_USER=ksanchez VM_HOST=139.162.197.186 \
-#     bash infrastructure/vm/scripts/setup-ci-access.sh
+#     bash infrastructure/vm/scripts/setup/setup-ci-access.sh
 #
 # Run it from a workstation that can already SSH to the VM as a sudoer and
 # is logged in to `gh`. Idempotent: an existing key is reused, and the
@@ -55,7 +57,7 @@ scp -q "${CI_KEY}.pub" "${DEPLOY_USER}@${VM_HOST}:/tmp/${CI_USER}.pub"
 # shellcheck disable=SC2029
 ssh -o ConnectTimeout=20 "${DEPLOY_USER}@${VM_HOST}" \
   "sudo CI_PUBKEY_FILE=/tmp/${CI_USER}.pub CI_USER=${CI_USER} \
-     bash ${REPO_DIR}/infrastructure/vm/scripts/setup-ci-registry-access.sh \
+     bash ${REPO_DIR}/infrastructure/vm/scripts/setup/setup-ci-registry-access.sh \
    && rm -f /tmp/${CI_USER}.pub"
 
 # 3. The host key, pinned. Captured now and shown as a fingerprint so it can
@@ -80,7 +82,7 @@ gh secret   set VM_REGISTRY_SSH_KEY --env "$GH_ENV" < "$CI_KEY"
 gh variable set VM_REGISTRY_HOST    --env "$GH_ENV" --body "$VM_HOST"
 gh variable set VM_REGISTRY_USER    --env "$GH_ENV" --body "$CI_USER"
 gh variable set VM_SSH_HOST_KEY     --env "$GH_ENV" --body "$host_key"
-echo "set 1 secret and 3 variables in the '${GH_ENV}' environment"
+echo "set the registry key and 3 registry variables in '${GH_ENV}'"
 
 # A repository-level copy would still be visible to every other workflow and
 # would shadow nothing, so it is removed rather than left to rot.
@@ -156,4 +158,4 @@ echo "password manager, then shred it. It contains the private key."
 echo
 CI_KEY="$CI_KEY" VM_REGISTRY_HOST="$VM_HOST" VM_REGISTRY_USER="$CI_USER" \
   VM_SSH_HOST_KEY="$host_key" \
-  bash "$(dirname "$0")/verify-ci-access.sh"
+  bash "$(dirname "$0")/../checks/verify-ci-access.sh"
