@@ -375,13 +375,32 @@ fired on first issuance, and `certbot renew --dry-run` succeeds. The
 >     sudo certbot renew --dry-run --run-deploy-hooks
 >
 > That flag is real but listed only under `certbot --help all`, not under
-> `renew --help`. Run on 2026-10-08: the hook copied the certificate into the
-> `certs` volume and reloaded nginx, which stayed up and healthy.
+> `renew --help`. Run on 2026-10-08 and again on 2026-10-09: the hook copied
+> the certificate into the `certs` volume and reloaded nginx, which stayed up
+> and healthy.
 >
-> It takes about five minutes against the staging ACME server. Killing the
-> client does **not** kill certbot: it keeps its lock, and the next run
-> refuses with *"Another instance of Certbot is already running."* Wait it
-> out rather than starting a second one.
+> **It publishes the real certificate, not the simulated one**, which is the
+> thing worth checking before you trust this on a live box: `--run-deploy-hooks`
+> hands the hook the live lineage, so a dry run cannot put a staging
+> certificate in front of visitors. Confirmed both times by comparing what the
+> volume holds against the lineage, rather than by reasoning about it:
+>
+>     docker run --rm -v rdp-prod_certs:/c alpine cat /c/fullchain.pem \
+>       | openssl x509 -noout -dates -issuer
+>     sudo openssl x509 -noout -dates -issuer \
+>       -in /etc/letsencrypt/live/<public-name>/fullchain.pem
+>
+> It takes about five minutes against the staging ACME server, and **most of
+> that is certbot sleeping on purpose**: `renew` is non-interactive, so it
+> applies a random delay of up to eight minutes before doing anything. It
+> prints nothing while it waits, which looks exactly like a hang. Confirm it
+> is only sleeping rather than starting a second one:
+>
+>     sudo tail -3 /var/log/letsencrypt/letsencrypt.log   # "random delay of N seconds"
+>
+> Killing the client does **not** kill certbot: it keeps its lock, and the
+> next run refuses with *"Another instance of Certbot is already running."*
+> Wait it out.
 
 > Two notes for whoever inherits this. The certificate currently covers only
 > the Linode reverse-DNS name, because that is what resolved at the time.

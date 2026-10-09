@@ -89,24 +89,37 @@ certbot `renew_hook`, which leaves renewal reporting success while nginx
 serves an expiring certificate, and the backup cron, which just stops
 producing backups.
 
-**This grouping has not reached the VM yet.** The checkout there is still on
-a commit predating it, and both references point at the flat paths, which is
-why nothing is broken today. They have to move in one sitting, because the
-checkout is what makes the old paths disappear:
+Neither moves with a checkout, so both move in the same sitting as one. These
+groups reached the VM on **2026-10-09** that way; this is the shape for the
+next time, with the old and new paths substituted:
 
     cd /opt/rdp && git fetch origin && git reset --hard <ref>
-    sudo sed -i 's#scripts/cert-deploy-hook.sh#scripts/ops/cert-deploy-hook.sh#' \
-      /etc/letsencrypt/renewal/*.conf
-    crontab -l | sed 's#scripts/backup.sh#scripts/ops/backup.sh#' | crontab -
+    sudo sed -i 's#<old>#<new>#' /etc/letsencrypt/renewal/*.conf
+    crontab -l | sed 's#<old>#<new>#' | crontab -
 
 Run that last line **as `ksanchez`**, whose crontab holds the job. `crontab`
 always edits the invoking user's own, so the same command under `sudo` reads
 an empty root crontab and installs nothing, reporting no error.
 
-Then prove both, rather than assuming, since neither announces a failure:
+**A third thing moves, and it is the one that bites.** Compose resolves a
+bind mount when a container is *created*, so the three services mounting
+`container/healthcheck.js` keep pointing at wherever the file was when they
+started. They stay healthy on the old path after the checkout deletes it,
+and the damage only lands on the next restart, when Docker finds nothing
+there and creates a **directory** at `/healthcheck.js`. Recreate them in the
+same sitting, with the tag already running, so there is no window:
 
-    sudo grep -h renew_hook /etc/letsencrypt/renewal/*.conf   # must name ops/
-    crontab -l | grep backup.sh                               # must name ops/
+    cd /opt/rdp
+    RELEASE_TAG=$(grep '^IMAGE_TAG=' .env.prod | cut -d= -f2) SKIP_BUILD=1 \
+      bash infrastructure/vm/scripts/ops/deploy-release.sh
+
+Then prove all three, rather than assuming, since none of them announces a
+failure:
+
+    sudo grep -h renew_hook /etc/letsencrypt/renewal/*.conf   # must name the new path
+    crontab -l | grep backup.sh                               # must name the new path
+    docker inspect rdp-prod-client-1 rdp-prod-cms-1 rdp-prod-tiler-1 \
+      --format '{{.Name}} {{range .HostConfig.Binds}}{{.}} {{end}}' | tr ' ' '\n' | grep healthcheck
     sudo certbot renew --dry-run --run-deploy-hooks           # exercises the hook
     bash infrastructure/vm/scripts/ops/backup.sh              # exercises the cron line
 
