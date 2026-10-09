@@ -35,9 +35,12 @@ ALPINE_IMAGE="${ALPINE_IMAGE:-alpine:3.21}"
 
 SCRATCH_DB="rdp-verify-db-$$"
 SCRATCH_VOL="rdp-verify-media-$$"
+LIVE_ROWS="$(mktemp)"
+RESTORED_ROWS="$(mktemp)"
 cleanup() {
   docker rm -f "$SCRATCH_DB"      > /dev/null 2>&1 || true
   docker volume rm "$SCRATCH_VOL" > /dev/null 2>&1 || true
+  rm -f "$LIVE_ROWS" "$RESTORED_ROWS"
 }
 trap cleanup EXIT
 
@@ -51,11 +54,27 @@ fi
 echo "Verifying ${BACKUP}"
 echo
 
+# Row counts for EVERY public table, rather than three named ones. A hand-
+# picked list quietly stops testing what it names as soon as a content type is
+# renamed: `stories` became `features` in 2026-09, and because the same literal
+# was interpolated into both sides, the query failed on both and `set -e`
+# aborted the drill before it printed anything. Counting whatever is actually
+# there also catches a table the restore dropped outright, which naming three
+# never could.
+#
+# query_to_xml is the portable way to count a table whose name is only known at
+# runtime. It needs a libxml-enabled Postgres, which postgres:16-alpine is;
+# confirmed against the VM on 2026-10-09.
+ROW_SQL="select relname || '=' || (xpath('/row/c/text()',
+           query_to_xml(format('select count(*) as c from public.%I', relname),
+                        false, true, '')))[1]::text
+         from pg_stat_user_tables where schemaname = 'public' order by relname;"
+tally() { awk -F= '{n += $2} END {printf "%d tables, %d rows", NR, n}' "$1"; }
+
 echo "== the live stack, for comparison =="
-live_rows=$($COMPOSE exec -T db psql -tAq -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c \
-  "select 'stories=' || (select count(*) from stories)
-       || ' datasets=' || (select count(*) from datasets)
-       || ' files=' || (select count(*) from files);")
+$COMPOSE exec -T db psql -tAq -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "$ROW_SQL" \
+  | sed '/^$/d' > "$LIVE_ROWS"
+live_rows="$(tally "$LIVE_ROWS")"
 live_media=$(docker run --rm -v "rdp-prod_media:/m:ro" "$ALPINE_IMAGE" sh -c \
   'printf "files=%s bytes=%s" "$(find /m -type f | wc -l)" "$(find /m -type f -exec cat {} + | wc -c)"')
 echo "  db    ${live_rows}"
@@ -76,15 +95,18 @@ if docker exec -i "$SCRATCH_DB" pg_restore --no-owner --no-privileges \
 else
   bad "db.dump failed to restore"
 fi
-restored_rows=$(docker exec "$SCRATCH_DB" psql -tAq -U postgres -d verify -c \
-  "select 'stories=' || (select count(*) from stories)
-       || ' datasets=' || (select count(*) from datasets)
-       || ' files=' || (select count(*) from files);" 2>/dev/null || echo "unreadable")
+docker exec "$SCRATCH_DB" psql -tAq -U postgres -d verify -c "$ROW_SQL" 2>/dev/null \
+  | sed '/^$/d' > "$RESTORED_ROWS" || true
+restored_rows="$(tally "$RESTORED_ROWS")"
 echo "  restored db ${restored_rows}"
-if [ "$restored_rows" = "$live_rows" ]; then
-  ok "row counts match the live database"
+if diff -q "$LIVE_ROWS" "$RESTORED_ROWS" > /dev/null 2>&1; then
+  ok "every table matches the live database (${live_rows})"
 else
   bad "row counts differ: live [${live_rows}] vs restored [${restored_rows}]"
+  # Name the tables, so a benign difference can be told from a lost one. A
+  # backup taken before someone touched the admin legitimately differs in
+  # strapi_history_versions; a missing content table does not.
+  diff "$LIVE_ROWS" "$RESTORED_ROWS" | grep -E '^[<>]' | sed 's/^/        /' | head -20
 fi
 echo
 

@@ -259,13 +259,13 @@ under a new name, returns 400 at every width; a plain `docker restart` of the
 client, with no rebuild, turns the same request into a 200.
 
 Dropping the optimizer costs little, because Strapi already resized everything
-at ingest and records the results in `files.formats`. Across the story images:
+at ingest and records the results in `files.formats`. Across the feature images:
 `small` (500w) on all of them, `medium` (750w) and `large` (1000w) on all but
 one. `cmsImageSrc` returns the narrowest variant at least as wide as the caller
 asks for, falling back to the original.
 
 One call site keeps the plain `mediaUrl` helper:
-`containers/map/story-markers/marker.tsx` is `"use client"` with a bare `<img>`
+`containers/map/feature-markers/marker.tsx` is `"use client"` with a bare `<img>`
 the browser fetches directly, so none of the above applies.
 
 Staging never hit either problem: its media URLs are absolute GCS URLs matched
@@ -379,6 +379,16 @@ for the restore.
 | rangelands | 7 |
 | dataset-categories | 4 |
 | story-categories | 3 |
+
+> **These are the names that were in force when this was measured.** The
+> `story` and `story-category` content types became `feature` and
+> `feature-category` in `1a0e3b4` (2026-09-25), with the routes, copy and the
+> `rangelands-stories` category slug following in `9e5cfe6` (2026-09-28). Both
+> sat on `develop` without reaching a deployed environment until the staging
+> push on **2026-10-09**, so every measurement in this file taken before that
+> date records the old names correctly -- including the VM results below,
+> restored from the 2026-10-05 dump. The rename changed no counts. A probe run
+> after it reports `features` and `feature-categories` with the same numbers.
 
 > `curl` treats `[` and `]` as a glob range specifier, so every Strapi query
 > (`pagination[pageSize]`, `populate[0]`, `filters[slug][$eq]`) needs `-g`
@@ -730,13 +740,20 @@ throwaway volume, then compares the result against the running stack:
 | Check | Measured |
 |---|---|
 | `db.dump` restores into an empty Postgres | pg_restore exit status |
-| Row counts match the live database | `stories`, `datasets`, `files` |
+| Row counts match the live database | every table in `public`, by name and count |
 | Media matches the live volume | file count and total bytes |
 | Uploads keep uid 1001 | Strapi cannot write a root-owned volume |
 
-Measured on the rehearsal stack: **4 of 4 pass**, and negative-tested both
-ways: a truncated `db.dump` and an archive missing 20 files each produce two
-failures, in the half at fault.
+The row check counts **every** table rather than three named ones. A named list
+stops testing what it names the moment a content type is renamed, and does so
+silently; counting whatever is present also catches a table the restore dropped
+outright. On a mismatch it prints the differing tables, so a backup that merely
+predates some admin activity can be told from one that lost content.
+
+Measured on the VM, 2026-10-09: **4 of 4 pass** across 75 tables and 6,098
+rows. Negative-tested three ways -- a truncated `db.dump`, an archive missing
+20 files, and a backup predating the content restore (439 rows against 6,098),
+which fails and names every table that differs.
 
 It does not cover `restore-backup.sh` writing over the real stack, because
 proving that costs a working environment. Exercise it by hand once before the
