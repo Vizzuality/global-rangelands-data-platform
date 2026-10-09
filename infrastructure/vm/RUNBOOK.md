@@ -56,6 +56,11 @@ Everything below assumes these two lines, run once per login:
 `rdp` function only saves typing; the scripts build the same command
 internally and need no setup.
 
+`<public-name>` below means the DNS name the certificate is issued for, which
+is `SERVER_NAME` in `.env.prod`:
+
+    grep '^SERVER_NAME=' /opt/rdp/.env.prod
+
 **Run these on the box, over SSH.** A `docker context` pointed at the VM
 looks like it should work and does not: four services bind-mount a path from
 the repo (`nginx.conf`, the template directory, `healthcheck.js`), and compose
@@ -689,7 +694,7 @@ Open items that an operator cannot resolve alone:
   firewall rules. Edwin took the host out of Ansible rather than add them.
 
   The exemption is inventory policy, so treat it as reversible. The file to
-  watch is `/etc/letsencrypt/renewal/<name>.conf`: it carries the
+  watch is `/etc/letsencrypt/renewal/<public-name>.conf`: it carries the
   `renew_hook` line, and a playbook that rewrites it takes the hook with it,
   after which renewal keeps reporting success while the container serves an
   expiring certificate (§5.1). Confirmed present 2026-10-09. A Zabbix
