@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+# [checks] any time, and in CI. Read-only.
+#
 # Fails if a VM image carries configuration it should be given at runtime.
 #
-#   bash infrastructure/vm/scripts/verify-image-hygiene.sh
+#   bash infrastructure/vm/scripts/checks/verify-image-hygiene.sh
 #   IMAGE_PREFIX=127.0.0.1:5000/ IMAGE_TAG=20260101T000000Z-abc1234 ./verify-image-hygiene.sh
 #
 # The VM gets every secret from compose's `environment:` block, so nothing

@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 /**
+ * [migration] GRASS-384 one-shot, dead after cutover.
+ * Launched by migrate-media-from-gcs.sh.
+ *
  * Copies the staging media objects out of GCS into the Strapi upload volume.
  *
  * Runs inside a container with the volume mounted at /media, so it needs

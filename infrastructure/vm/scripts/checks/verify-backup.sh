@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+# [checks] any time. Throwaway containers and volumes only, never the stack.
+#
 # Proves a backup is restorable, by restoring it -- into throwaway containers
 # and volumes, never over the running stack.
 #
-#   bash infrastructure/vm/scripts/verify-backup.sh              # newest backup
+#   bash infrastructure/vm/scripts/checks/verify-backup.sh              # newest backup
 #   BACKUP=./backups/20260101T000000Z ./verify-backup.sh         # a specific one
 #
 # A backup nobody has restored is a guess, but a drill that damages the live
@@ -14,7 +16,11 @@
 # Exercise that once by hand before the handover.
 set -euo pipefail
 
-cd "$(dirname "$0")/../../.."
+# scripts/<group>/ is four levels down from the repo root. The guard is
+# here because a moved script would otherwise run against the wrong
+# directory and fail somewhere further on, or quietly do nothing.
+cd "$(dirname "$0")/../../../.."
+[ -f docker-compose.prod.yml ] || { echo "ERROR: $PWD is not the repo root" >&2; exit 1; }
 COMPOSE="${COMPOSE:-docker compose -f docker-compose.prod.yml --env-file .env.prod}"
 set -a
 # shellcheck source=/dev/null

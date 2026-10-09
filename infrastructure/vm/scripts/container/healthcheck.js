@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 /**
+ * [container] Docker runs this inside the containers; never run by hand.
+ *
  * Container healthcheck shared by every Node service in the stack.
  *
  *   node /healthcheck.js <url> [maxStatus]

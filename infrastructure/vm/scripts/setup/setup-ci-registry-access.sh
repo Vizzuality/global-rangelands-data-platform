@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
+# [setup] once per host, as root. Changes host accounts.
+#
 # Grants GitHub Actions exactly one capability on this host: forward a TCP
 # connection to the image registry on 127.0.0.1:5000. Nothing else.
 #
-#   sudo bash infrastructure/vm/scripts/setup-ci-registry-access.sh
+#   sudo bash infrastructure/vm/scripts/setup/setup-ci-registry-access.sh
 #
 # Reads the public key from /tmp/rdpci.pub by default (CI_PUBKEY_FILE=<path>).
 # CI_PUBKEY=<key> works too, but a long inline key gets mangled by terminal

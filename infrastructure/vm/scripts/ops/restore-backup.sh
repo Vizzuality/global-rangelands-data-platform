@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
+# [ops] recovery only. DESTRUCTIVE, over the running stack.
+#
 # Restores a backup produced by backup.sh, in place, over the running stack.
 # Destructive: drops the database and empties the upload volume first.
 #
-#   BACKUP=./backups/20260101T000000Z bash infrastructure/vm/scripts/restore-backup.sh
+#   BACKUP=./backups/20260101T000000Z bash infrastructure/vm/scripts/ops/restore-backup.sh
 #
 # Restoring only the database would leave the uploads out of step with the
 # files table -- rows pointing at files that are not there. Both halves come
 # from the same backup directory for that reason.
 set -euo pipefail
 
-cd "$(dirname "$0")/../../.."
+# scripts/<group>/ is four levels down from the repo root. The guard is
+# here because a moved script would otherwise run against the wrong
+# directory and fail somewhere further on, or quietly do nothing.
+cd "$(dirname "$0")/../../../.."
+[ -f docker-compose.prod.yml ] || { echo "ERROR: $PWD is not the repo root" >&2; exit 1; }
 COMPOSE="${COMPOSE:-docker compose -f docker-compose.prod.yml --env-file .env.prod}"
 set -a
 # shellcheck source=/dev/null

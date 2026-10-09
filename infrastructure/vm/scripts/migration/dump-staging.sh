@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [migration] GRASS-384 one-shot, dead after cutover. Reads staging only.
+#
 # Custom-format dump of staging Cloud SQL through the bastion tunnel (see
 # README); needs PGPASSWORD set.
 #
