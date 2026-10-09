@@ -590,9 +590,11 @@ network or publish a port: a deploy, or a `compose up`. Observed on
 `Before=network-pre.target`, so it finishes long before `docker.service`,
 which waits for `network-online.target`. Docker then installs its chains into
 a ruleset that has already settled. Measured on 2026-10-09, rebooting with
-the chains at zero: nftables at 12:05:54, docker at 12:06:00, chains back to
-26 filter and 6 nat, all six containers healthy, 84 seconds from `reboot` to
-HTTP 200.
+the chains at zero: nftables at 12:05:54, docker at 12:06:00, chains back,
+all six containers healthy, 84 seconds from `reboot` to HTTP 200. Count them
+per family or not at all: `nft list ruleset | grep -c DOCKER` spans `ip`
+and `ip6`, so it reads about double a single-table count and the two are easy
+to mistake for a regression.
 
 Check whether this is what bit you:
 
@@ -601,18 +603,24 @@ Check whether this is what bit you:
 
 If nftables started *after* docker, the chains are missing.
 
-The cause is `update-firehol-nftables.timer`, which fires daily between 00:00
-and 01:00 and ends its script with `systemctl restart nftables.service`. So
-this recurs every night, and `systemctl restart docker` is the only recovery
--- `reload` does not reinstall the chains. The durable fix is ILRI's to make
-and is the same drop-in they already apply to fail2ban
-(`PartOf=nftables.service`); see §9.
+**The nightly cause is fixed; the mechanism is not.** Until 2026-10-09 this
+recurred every night: `update-firehol-nftables.timer` fires daily between
+00:00 and 01:00, and its script ended with `systemctl restart
+nftables.service`. ILRI rewrote the script that afternoon. It now holds the
+blocklist in a named set and updates it with `flush set` plus `add element`
+in one transaction, so nothing is reparsed and no service is restarted.
+Verified the same day: the set carries 4624 elements, both drop rules
+reference it with live counters, and Docker's chains were untouched by a run
+at 14:38.
 
-One case where a reboot does *not* save you: that timer is `Persistent=true`
-and its service is `After=network-online.target` with no ordering against
-`docker.service`. A boot that follows a missed 00:00-01:00 window runs the
-blocklist update immediately, and the chains survive only if Docker happens
-to start second.
+What remains is the way back in. `/etc/nftables.conf` still opens with `flush
+ruleset`, and `nftables.service` still carries `ExecStop=/usr/sbin/nft flush
+ruleset`, so anything that restarts or reloads that service still takes
+Docker's chains with it: a package upgrade, a manual restart, or an Ansible
+run if the exemption in §9 lapses. `systemctl restart docker` is the only
+recovery; `reload` does not reinstall the chains. The drop-in ILRI already
+applies to fail2ban (`PartOf=nftables.service`) would close it for Docker
+too; see §9.
 
 ---
 
@@ -671,25 +679,22 @@ Open items that an operator cannot resolve alone:
   2026-10-08). Item keys and thresholds for all five are written up for the
   ILRI side under GRASS-384.
 
-- **The host is under Ansible management, and this stack is not in it.**
+- **The host was under Ansible management; ILRI exempted it on 2026-10-09.**
   `/etc/letsencrypt/renewal-hooks/{pre,post}/` carry files stamped *managed
   by Ansible*, pushed from `masita.server.com` in June. They stop and start
   `apache2`, which is not installed here, so they are inert: renewal
-  succeeds with them in place, which was checked. But it means host
-  configuration can be re-applied from outside, and nothing in that playbook
-  knows about Docker, `/opt/rdp`, the swapfile or the firewall rules. Either
-  those should go into the playbook, or ILRI should confirm this host is
-  exempt. (The nftables ruleset and `/etc/fstab` are *not* Ansible-managed
-  today, so the open ports and the swapfile do survive a run.)
+  succeeds with them in place, which was checked. But that role expects a
+  host apache and the stop-renew-start model, not our `--webroot` one, and
+  nothing in the playbook knows about Docker, `/opt/rdp`, the swapfile or the
+  firewall rules. Edwin took the host out of Ansible rather than add them.
 
-  The file to watch is `/etc/letsencrypt/renewal/<name>.conf`. It carries the
+  The exemption is inventory policy, so treat it as reversible. The file to
+  watch is `/etc/letsencrypt/renewal/<name>.conf`: it carries the
   `renew_hook` line, and a playbook that rewrites it takes the hook with it,
   after which renewal keeps reporting success while the container serves an
-  expiring certificate (§5.1). The hooks already in
-  `renewal-hooks/{pre,post}/` show that role expects a host apache and the
-  stop-renew-start model, not our `--webroot` one, so this is not a
-  hypothetical collision. Worth asking Edwin to exempt the path, and worth a
-  Zabbix certificate-expiry check either way.
+  expiring certificate (§5.1). Confirmed present 2026-10-09. A Zabbix
+  certificate-expiry check on the served port catches it either way, which is
+  why it is first in the list above.
 - **Backups are on the same disk as the data they protect.** That is not a
   backup against disk loss. Where off-box copies go, who can read them and
   how long they are kept is an ILRI decision, and it determines the retention
