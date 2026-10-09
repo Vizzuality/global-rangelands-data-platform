@@ -17,6 +17,12 @@ changes it. For **what to type** when something is wrong (deploy, roll back,
 restore, renew the certificate, triage an outage), see
 [`RUNBOOK.md`](./RUNBOOK.md).
 
+`<public-name>` throughout both files means one value: the DNS name the
+certificate is issued for, which is `SERVER_NAME` in `.env.prod` and the
+directory name under `/etc/letsencrypt/live/`. Today that is
+`139-162-197-186.ip.linodeusercontent.com`; see **Domain states** for what it
+becomes at cutover.
+
 ## Routing contract
 
 Reproduces the GCP load balancer's URL map, including prefix stripping
@@ -35,7 +41,7 @@ Without it every tile request reaches a metered Earth Engine dependency.
 Tile responses carry `X-Cache-Status` (`MISS`, `HIT`, `EXPIRED`, `STALE`,
 `UPDATING`), which is how the cache is diagnosed from outside the container:
 
-    curl -sk -o /dev/null -D - 'https://<host>/functions/eet/7/64/63?tileset=anthropogenic_biomes' \
+    curl -sk -o /dev/null -D - 'https://<public-name>/functions/eet/7/64/63?tileset=anthropogenic_biomes' \
       | grep -i x-cache-status
 
 `infrastructure/vm/scripts/checks/verify-tile-cache.sh` asserts the two
@@ -147,19 +153,19 @@ every decision here.
 1. **Copy** the issued pair into the `certs` volume; do not bind-mount
    certbot's live directory.
 
-   `live/<host>/` holds no certificates. It holds relative symlinks
-   (`fullchain.pem -> ../../archive/<host>/fullchain1.pem`) so that the name
+   `live/<public-name>/` holds no certificates. It holds relative symlinks
+   (`fullchain.pem -> ../../archive/<public-name>/fullchain1.pem`) so that the name
    stays stable while each renewal writes a new numbered file into
    `archive/`. A container only sees what is mounted, so mounting
-   `live/<host>` alone puts `../..` outside the mount: the links dangle and
+   `live/<public-name>` alone puts `../..` outside the mount: the links dangle and
    nothing can read them.
 
    Mount the **whole** tree and `cp -L` reads through the links to the real
    files, leaving the compose file unchanged:
 
        docker run --rm -v rdp-prod_certs:/certs -v /etc/letsencrypt:/le:ro \
-         alpine sh -c 'cp -L /le/live/<host>/fullchain.pem \
-                             /le/live/<host>/privkey.pem /certs/'
+         alpine sh -c 'cp -L /le/live/<public-name>/fullchain.pem \
+                             /le/live/<public-name>/privkey.pem /certs/'
 
    > The mount *point* is irrelevant: measured, that command works with the
    > tree at `/le`, because the links are relative and only need `../..` to
@@ -188,12 +194,12 @@ every decision here.
    container keeps serving the expired certificate.
 4. Verify renewal rather than assuming it. Run `certbot renew --dry-run`, then
    confirm the container is actually serving the new certificate
-   (`openssl s_client -connect <host>:443 | openssl x509 -noout -dates`).
+   (`openssl s_client -connect <public-name>:443 | openssl x509 -noout -dates`).
 
 Assert the challenge path is reachable **before** requesting a certificate. A
 `301` here means HTTP-01 validation will fail:
 
-    curl -s -o /dev/null -w '%{http_code}\n' http://<host>/.well-known/acme-challenge/probe
+    curl -s -o /dev/null -w '%{http_code}\n' http://<public-name>/.well-known/acme-challenge/probe
 
 Expect `404` (or `200` with a token file present). Never `301`.
 
@@ -1507,8 +1513,8 @@ them.
    needs no reissue. Re-publish the real pair and skip to step 10:
 
        docker run --rm -v rdp-prod_certs:/certs -v /etc/letsencrypt:/le:ro \
-         alpine sh -c 'cp -L /le/live/<name>/fullchain.pem \
-                             /le/live/<name>/privkey.pem /certs/'
+         alpine sh -c 'cp -L /le/live/<public-name>/fullchain.pem \
+                             /le/live/<public-name>/privkey.pem /certs/'
 
 9. **Only a box with no certificate anywhere needs a throwaway pair.** It
    exists to get nginx up so that certbot can validate; the deploy hook in
@@ -1552,30 +1558,30 @@ them.
 
         sudo mkdir -p /var/www/certbot
         curl -s -o /dev/null -w '%{http_code}\n' \
-          http://<name>/.well-known/acme-challenge/probe
+          http://<public-name>/.well-known/acme-challenge/probe
 
     Expect `404`, never `301`. Then issue, with the deploy hook attached from
     the start:
 
-        sudo certbot certonly --webroot -w /var/www/certbot -d <name> \
+        sudo certbot certonly --webroot -w /var/www/certbot -d <public-name> \
           --key-type ecdsa \
           --deploy-hook /opt/rdp/infrastructure/vm/scripts/ops/cert-deploy-hook.sh
 
-    `<name>` must match `SERVER_NAME` in `.env.prod`. Not `--standalone`: it
+    `<public-name>` must match `SERVER_NAME` in `.env.prod`. Not `--standalone`: it
     binds port 80 itself and would contend with the nginx container. The hook
     is not optional: a new file on disk changes nothing until the running
     container rereads it, and without the hook certbot reloads a host nginx
     that does not exist, exits 0, and the container serves the old pair until
     something restarts it.
 
-12. **Check what certbot recorded.** `/etc/letsencrypt/renewal/<name>.conf`
+12. **Check what certbot recorded.** `/etc/letsencrypt/renewal/<public-name>.conf`
     is the file renewal actually reads, and `--deploy-hook` is stored in it
     as `renew_hook =`, the same thing under a different name, which matters
     when you are grepping for it. Confirm `authenticator = webroot`, the
     `webroot_path`, and the `renew_hook` line. Renewal runs from
     `certbot.timer` (certbot 2.9.0 from apt), twice daily. That conf file is
-    also the one to watch if the Ansible exemption ever lapses; see **Not
-    covered** in the RUNBOOK.
+    also the one to watch if the Ansible exemption ever lapses; see
+    RUNBOOK §9.
 
 ### Content
 
@@ -1589,9 +1595,9 @@ All four routes through nginx, and the certificate the server actually
 presents rather than the one on disk:
 
     curl -sk -o /dev/null -w '%{http_code} %{url_effective}\n' \
-      https://<name>/en https://<name>/en/map \
-      https://<name>/cms/admin https://<name>/cms/_health
-    openssl s_client -connect <name>:443 </dev/null 2>/dev/null \
+      https://<public-name>/en https://<public-name>/en/map \
+      https://<public-name>/cms/admin https://<public-name>/cms/_health
+    openssl s_client -connect <public-name>:443 </dev/null 2>/dev/null \
       | openssl x509 -noout -dates -subject -issuer
 
 Expect `200 200 200 204`, and an issuer that is Let's Encrypt rather than the
