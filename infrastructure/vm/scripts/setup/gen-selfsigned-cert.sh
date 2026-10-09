@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [setup] once per host, and for local dev. Safe.
+#
 # Write a throwaway certificate pair into OUT_DIR, under the two names nginx
 # expects. Used locally, and as the first step on a VM with no certificate
 # yet: nginx will not start without one, so nothing serves the ACME challenge

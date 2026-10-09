@@ -1,3 +1,5 @@
+-- [migration] GRASS-384 one-shot, dead after cutover. UPDATEs files.
+--
 -- Repoints the restored files rows from the GCS bucket at the local provider.
 --
 -- GCS stores one folder per file (<hash><ext>/<hash><ext>); the local provider

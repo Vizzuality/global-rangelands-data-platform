@@ -12,7 +12,7 @@ description: >
 # the workflow because it is the most security-sensitive part of the release.
 #
 # The key this uses can do exactly one thing, enforced on the VM by
-# infrastructure/vm/scripts/setup-ci-registry-access.sh:
+# infrastructure/vm/scripts/setup/setup-ci-registry-access.sh:
 #   command="/bin/false",restrict,port-forwarding,permitopen="127.0.0.1:5000"
 
 inputs:

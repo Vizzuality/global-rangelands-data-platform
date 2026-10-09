@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [migration] GRASS-384, one-shot. DESTRUCTIVE. Delete after cutover.
+#
 # Restores a custom-format dump into the running db container.
 # Destructive: drops and recreates the target database.
 set -euo pipefail

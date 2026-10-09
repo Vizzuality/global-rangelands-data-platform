@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [migration] GRASS-384 one-shot, dead after cutover. Writes the volume.
+#
 # Runs migrate-media-from-gcs.mjs inside a Node container with the upload
 # volume mounted. Needs only Docker on the host -- no Node, no gcloud.
 #

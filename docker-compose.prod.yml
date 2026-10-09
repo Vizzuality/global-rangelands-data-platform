@@ -1,6 +1,6 @@
 name: rdp-prod
 
-# Healthchecks call infrastructure/vm/scripts/healthcheck.js, bind-mounted
+# Healthchecks call infrastructure/vm/scripts/container/healthcheck.js, bind-mounted
 # read-only at /healthcheck.js. Keeping it in one file beats repeating an inline
 # `node -e` one-liner per service, and it can be corrected without rebuilding
 # the images.
@@ -66,7 +66,7 @@ services:
       # pre-creates the path owned by uid 1001, and an empty named volume
       # inherits that ownership.
       - cmsdata:/app/data
-      - ./infrastructure/vm/scripts/healthcheck.js:/healthcheck.js:ro
+      - ./infrastructure/vm/scripts/container/healthcheck.js:/healthcheck.js:ro
     logging: *default-logging
     networks: [platform]
     depends_on:
@@ -88,7 +88,7 @@ services:
       PORT: "8080"
       EE_CREDENTIALS_JSON: ${EE_CREDENTIALS_JSON}
     volumes:
-      - ./infrastructure/vm/scripts/healthcheck.js:/healthcheck.js:ro
+      - ./infrastructure/vm/scripts/container/healthcheck.js:/healthcheck.js:ro
     logging: *default-logging
     networks: [platform]
     healthcheck:
@@ -135,7 +135,7 @@ services:
       NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
       NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
     volumes:
-      - ./infrastructure/vm/scripts/healthcheck.js:/healthcheck.js:ro
+      - ./infrastructure/vm/scripts/container/healthcheck.js:/healthcheck.js:ro
       # The upload volume is deliberately NOT mounted here. nginx proxies
       # /cms/* to Strapi, so the client never reads media from disk, and
       # CMS images bypass the Next optimizer entirely (see lib/cms.ts

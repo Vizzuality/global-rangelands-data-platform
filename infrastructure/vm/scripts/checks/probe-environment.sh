@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [checks] any time. Read-only.
+#
 # Captures an observable fingerprint of a deployed environment.
 #
 # Two uses:

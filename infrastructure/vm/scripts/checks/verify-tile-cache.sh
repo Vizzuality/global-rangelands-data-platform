@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [checks] any time. Read-only.
+#
 # Verifies the nginx tile cache: MISS then HIT, and request collapsing.
 set -euo pipefail
 
