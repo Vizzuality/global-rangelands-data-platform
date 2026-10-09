@@ -42,17 +42,17 @@ v ""
 # Status plus the redirect target, which is where locale and canonical-host
 # behaviour shows up. Not following redirects: the hop itself is the assertion.
 s "## routes"
-STORY_SLUG="adapting-to-climate-change-in-the-italian-alps"
-DOC_STORY="rancho-el-ojo-mexico"
+FEATURE_SLUG="adapting-to-climate-change-in-the-italian-alps"
+DOC_FEATURE="rancho-el-ojo-mexico"
 for path in \
   "/" "/en" "/es" "/fr" \
-  "/en/map" "/en/map/stories" "/en/map/story/${STORY_SLUG}" \
-  "/en/stories/rangelands-stories" \
-  "/en/stories/restoration-champions" \
-  "/en/stories/restoration-investments" \
-  "/api/stories/${DOC_STORY}/document" \
-  "/api/stories/${STORY_SLUG}/document" \
-  "/api/stories/no-such-story-xyz/document" \
+  "/en/map" "/en/map/features" "/en/map/feature/${FEATURE_SLUG}" \
+  "/en/features/rangelands-features" \
+  "/en/features/restoration-champions" \
+  "/en/features/restoration-investments" \
+  "/api/features/${DOC_FEATURE}/document" \
+  "/api/features/${FEATURE_SLUG}/document" \
+  "/api/features/no-such-feature-xyz/document" \
   "/en/definitely-not-a-page" \
   "/cms/admin" "/cms/_health" "/robots.txt" "/sitemap.xml"
 do
@@ -76,7 +76,7 @@ for path in \
   "/images/home/home-center.png" \
   "/images/logo-footer.png" \
   "/images/header-pattern.png" \
-  "/images/stories-pattern-tile.svg" \
+  "/images/features-pattern-tile.svg" \
   "/data/rangeland-systems.json" \
   "/data/rangeland-biomes.json" \
   "/data/rangeland-ecoregions.json"
@@ -153,13 +153,13 @@ s ""
 # landing, not a fault.
 s "## CMS images"
 mapfile -t media_urls < <(curl "${CURL_OPTS[@]}" \
-  "${BASE}/cms/api/stories?populate=image&pagination[pageSize]=10" \
+  "${BASE}/cms/api/features?populate=image&pagination[pageSize]=10" \
   | python3 -c '
 import json,sys
 try: d=json.load(sys.stdin)
 except Exception: sys.exit()
 out=[]
-for i in d.get("data",[])[:5]:
+for i in (d.get("data") or [])[:5]:
     img=i.get("image") or {}
     if not img.get("url"): continue
     # The original plus every variant: cmsImageSrc may return any of them,
@@ -196,7 +196,7 @@ fi
 # Count of optimizer requests that carry CMS media rather than a bundled asset.
 # Expected to be 0 on the VM stack and non-zero on the pre-migration build.
 opt_media=0
-for path in "/en" "/en/stories/atlas-stories" "/en/stories/restoration-investments"; do
+for path in "/en" "/en/features/rangelands-features" "/en/features/restoration-investments"; do
   n="$(curl "${CURL_OPTS[@]}" "${BASE}${path}" \
     | grep -oE '_next/image\?url=[^"&\\]*' \
     | python3 -c '
@@ -213,7 +213,7 @@ s ""
 # 5 draft & publish (draft + published rows share a document_id), so the API is
 # the only number worth comparing.
 s "## cms published counts"
-for e in dataset-categories datasets ecoregions layers rangelands stories story-categories; do
+for e in dataset-categories datasets ecoregions layers feature-categories features rangelands; do
   total="$(curl "${CURL_OPTS[@]}" "${BASE}/cms/api/${e}?pagination[pageSize]=1" \
     | python3 -c 'import json,sys
 try:
@@ -228,13 +228,13 @@ s ""
 # Where the CMS believes its files live. On staging this is GCS; after the
 # migration it must be relative /uploads paths served by nginx.
 s "## media url hosts (files the CMS reports)"
-curl "${CURL_OPTS[@]}" "${BASE}/cms/api/stories?populate=document&pagination[pageSize]=100&fields[0]=slug" \
+curl "${CURL_OPTS[@]}" "${BASE}/cms/api/features?populate=document&pagination[pageSize]=100&fields[0]=slug" \
   | python3 -c '
 import json,sys,collections,urllib.parse as up
 try: d=json.load(sys.stdin)
 except Exception: print("media ERR-parse"); sys.exit()
 hosts=collections.Counter()
-for i in d.get("data",[]):
+for i in (d.get("data") or []):
     doc=i.get("document")
     if not doc: continue
     u=doc.get("url","")
@@ -249,9 +249,9 @@ s ""
 s "## rendered html structure"
 # Detail and per-category pages carry the media references, so they are where
 # a provider or URL-rewrite regression shows up -- the index pages alone miss it.
-for path in "/en" "/en/map" "/en/stories/rangelands-stories" \
-            "/en/stories/restoration-champions" "/en/stories/restoration-investments" \
-            "/en/map/story/${STORY_SLUG}"; do
+for path in "/en" "/en/map" "/en/features/rangelands-features" \
+            "/en/features/restoration-champions" "/en/features/restoration-investments" \
+            "/en/map/feature/${FEATURE_SLUG}"; do
   html="$(mktemp)"
   curl "${CURL_OPTS[@]}" -o "$html" "${BASE}${path}"
   python3 - "$path" "$html" <<'PY' >> "$STABLE"

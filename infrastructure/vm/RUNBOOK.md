@@ -20,8 +20,10 @@ the image registry, runs beside them in its own compose project (§8), so
 >
 > Staging content was restored on the same day: 21 datasets, 44 layers,
 > 21 stories, 370 ecoregions, 131 media files (130 real ones and the stray
-> `.gitkeep` row staging also carries). Pages render it, server-side
-> and in the browser.
+> `.gitkeep` row staging also carries). That content type is now `feature`
+> (renamed 2026-09-25, first deployed 2026-10-09); the VM's data still
+> predates the rename and will carry the new names after the next restore.
+> Pages render it, server-side and in the browser.
 >
 > Three things remain open, and none of them is a procedure in this file:
 >
