@@ -304,8 +304,9 @@ so `crontab -l` as anyone else prints nothing and reads exactly like "no
 backup is scheduled". The same property is the real problem with it: a
 personal crontab is deleted with the account, and nothing outside it refers
 to the job, so closing that Vizzuality account stops the backups silently.
-It belongs in `/etc/cron.d/rdp-backup` before handover; the line is in
-**What is actually scheduled** in the README.
+It belongs in `/etc/cron.d/rdp-backup` before handover; the line to install
+is in **The nightly job, and where it lives** in the README. §9 lists this
+job alongside the two ILRI runs on the same box.
 
 > **These backups are on the same disk as the stack.** They protect against a
 > bad deploy, a dropped table or a botched content edit. They do not protect
@@ -391,7 +392,7 @@ fired on first issuance, and `certbot renew --dry-run` succeeds. The
 > address on the Let's Encrypt account does not help: Let's Encrypt ended
 > expiration notification emails on 4 June 2025, so `certbot update_account
 > --email` buys nothing. Monitoring is the only option, and it is not in
-> place yet (§9).
+> place yet (§10).
 
 Measured on 2026-10-08, these are the ways renewal can fail and what would
 notice:
@@ -470,11 +471,9 @@ Reclaim in this order, safest and usually largest first:
     docker image prune -a -f           # images no containers use. Still in the registry.
     bash infrastructure/vm/scripts/ops/registry-gc.sh     # old release tags; keeps the newest 10
 
-**None of those three run on a schedule.** The backup in §4.1 is the only
-job this stack installs, so the build cache, the unused images and the old
-release tags all accumulate until someone runs the commands above. (The
-host's own timers, certbot and the firewall blocklist, are a separate thing
-and reclaim nothing.)
+**None of those three run on a schedule** (§9 lists what does), so the build
+cache, the unused images and the old release tags all accumulate until
+someone runs the commands above.
 
 `registry-gc.sh` accepts `KEEP=5 DRY_RUN=1` to show what it would remove
 without removing it. Run the dry run first. It only ever deletes tags
@@ -622,10 +621,10 @@ What remains is the way back in. `/etc/nftables.conf` still opens with `flush
 ruleset`, and `nftables.service` still carries `ExecStop=/usr/sbin/nft flush
 ruleset`, so anything that restarts or reloads that service still takes
 Docker's chains with it: a package upgrade, a manual restart, or an Ansible
-run if the exemption in §9 lapses. `systemctl restart docker` is the only
+run if the exemption in §10 lapses. `systemctl restart docker` is the only
 recovery; `reload` does not reinstall the chains. The drop-in ILRI already
 applies to fail2ban (`PartOf=nftables.service`) would close it for Docker
-too; see §9.
+too; see §10.
 
 ---
 
@@ -657,7 +656,43 @@ destroy every rollback target.
 
 ---
 
-## 9. Not covered, and who decides
+## 9. What runs on a schedule
+
+Three things happen on this box without anyone typing them. **Only the first
+is ours.** The other two came with the host and ILRI administers them, so
+this table can change without a commit here.
+
+| What | When | Installed by | Where it is configured |
+|---|---|---|---|
+| database and media backup | 03:15 daily | this project | `ksanchez`'s crontab (§4.1) |
+| certificate renewal | 00:00 and 12:00 daily, plus up to 12h of jitter | the `certbot` apt package | `certbot.timer` (§5) |
+| firewall blocklist refresh | between 00:00 and 01:00 daily | ILRI | `update-firehol-nftables.timer` (§7.7) |
+
+**Nothing else is scheduled.** The three reclaim commands in §6 in particular
+are not: the build cache, the unused images and the old release tags all
+accumulate until an operator runs them. That is deliberate rather than an
+oversight: measured 2026-10-09, the disk had 128 G free and the registry held
+two tags per repository against a retention of ten, so the collector would
+delete nothing and stop the registry to do it. Revisit when either changes.
+
+None of the three has anything watching it, which is what §10 is about.
+
+Confirm this table rather than trusting it. It describes a machine that other
+people also administer, so it can go out of date without a commit:
+
+    systemctl list-timers --all
+    sudo crontab -u ksanchez -l
+    ls /etc/cron.d
+
+Two things that mislead when you do. `/etc/cron.d/certbot` exists and looks
+like the renewal schedule; it is **inert**, because it tests
+`! -d /run/systemd/system` and this host runs systemd, so `certbot.timer` is
+what actually renews. And most of what `list-timers` prints is Ubuntu's own
+housekeeping, `apt-daily`, `man-db`, `fstrim`, `logrotate` and the rest; the
+only two rows that concern this stack are `certbot` and
+`update-firehol-nftables`.
+
+## 10. Not covered, and who decides
 
 Open items that an operator cannot resolve alone:
 

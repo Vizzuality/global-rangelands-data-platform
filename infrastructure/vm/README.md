@@ -742,9 +742,11 @@ It does not cover `restore-backup.sh` writing over the real stack, because
 proving that costs a working environment. Exercise it by hand once before the
 handover.
 
-### What is actually scheduled
+### The nightly job, and where it lives
 
-One job, and it is the only thing this project schedules on the VM:
+This project installs exactly one scheduled job. RUNBOOK §9 is the inventory
+of everything that runs unattended on the box, ours and ILRI's both; this is
+the detail behind its first row:
 
     15 3 * * * cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=14 \
       /bin/bash infrastructure/vm/scripts/ops/backup.sh >> /var/backups/rdp/backup.log 2>&1
@@ -768,7 +770,7 @@ the checkout there predates the grouping of the scripts into subdirectories.
 Both have to change together, and
 [`scripts/README.md`](./scripts/README.md) has that sequence.
 
-Of the five checks under §9 of the RUNBOOK, the one that covers this is the
+Of the five checks under §10 of the RUNBOOK, the one that covers this is the
 mtime of `backup.log`: it observes the backups stopping, whatever the cause,
 where a check on the crontab would only catch this one.
 
@@ -1312,11 +1314,11 @@ of disk is not the constraint. Retention is about rollback depth, not space.
 ### Garbage collection
 
 **Nothing runs this.** It is a command an operator types, usually from RUNBOOK
-§6 when the disk is filling. The nightly backup is the only thing this
-project schedules on the VM, so the registry grows by each release's changed
-layers and nothing ever shrinks it. That is affordable rather than ideal,
-for the reason under **Measured** above: retention here is about rollback
-depth, not space.
+§6 when the disk is filling, and RUNBOOK §9 is where that is recorded
+alongside everything that does run unattended. So the registry grows by each
+release's changed layers and nothing ever shrinks it. That is affordable
+rather than ideal, for the reason under **Measured** above: retention here is
+about rollback depth, not space.
 
     bash infrastructure/vm/scripts/ops/registry-gc.sh      # keep 10 per repo
     KEEP=5 DRY_RUN=1 ./registry-gc.sh                  # show what would go
@@ -1335,10 +1337,11 @@ Two things the script has to get right, both found by testing it:
   blob store deciding what is unreferenced; a push landing mid-walk can have
   its blob collected before the manifest referencing it exists.
 
-To put it on a schedule instead, this is the form. **It is not installed on
-the VM**; confirm with `ls /etc/cron.d/rdp-registry-gc` rather than assuming
-either way. Run it after the nightly backup rather than alongside it, since
-both briefly stop a container:
+To put it on a schedule instead, this is the form. Installing it adds a row
+to RUNBOOK §9, which is the one place that says what this box runs
+unattended; confirm against the box with `ls /etc/cron.d/rdp-registry-gc`
+rather than trusting either file. Run it after the nightly backup rather
+than alongside it, since both briefly stop a container:
 
     # /etc/cron.d/rdp-registry-gc
     30 3 * * 0 root cd /opt/rdp && KEEP=10 \
@@ -1385,7 +1388,7 @@ inherited default.
 Both the record of how `linode50` was provisioned on 2026-10-07
 (`139.162.197.186`, Ubuntu 24.04.5, 4 cores, 7.8 GiB, 157 G disk) and the
 order to repeat it. None of it is in a playbook, and the host was
-Ansible-managed until ILRI exempted it on 2026-10-09; see RUNBOOK §9.
+Ansible-managed until ILRI exempted it on 2026-10-09; see RUNBOOK §10.
 
 The order below is **the order that works**, not the order this box happened
 through. Two steps were never exercised here: `linode50` ran nginx on a
@@ -1581,7 +1584,7 @@ them.
     `webroot_path`, and the `renew_hook` line. Renewal runs from
     `certbot.timer` (certbot 2.9.0 from apt), twice daily. That conf file is
     also the one to watch if the Ansible exemption ever lapses; see
-    RUNBOOK §9.
+    RUNBOOK §10.
 
 ### Content
 

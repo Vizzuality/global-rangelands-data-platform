@@ -25,10 +25,10 @@ Operating a box that is already up.
 
 | Script | Notes |
 |---|---|
-| `backup.sh` | Database and uploads. Runs at 03:15 from `ksanchez`'s crontab on the VM, keeping 14, the only job this project schedules on the box. Prunes past `RETENTION_KEEP`. |
+| `backup.sh` | Database and uploads. Runs at 03:15 from `ksanchez`'s crontab on the VM, keeping 14. Prunes past `RETENTION_KEEP`. |
 | `restore-backup.sh` | **Destructive.** Drops the database and empties the upload volume, in place. Recovery only. |
 | `deploy-release.sh` | One release onto this box. Prints a rollback command if it fails; it does not roll back by itself. |
-| `registry-gc.sh` | Reclaims registry disk. Nothing schedules it, so it only runs when you run it. `DRY_RUN=1` first. |
+| `registry-gc.sh` | Reclaims registry disk. Nothing schedules it (RUNBOOK §9), so it only runs when you run it. `DRY_RUN=1` first. |
 | `cert-deploy-hook.sh` | **certbot calls this, not you.** The path is written into `/etc/letsencrypt/renewal/<public-name>.conf` as `renew_hook`, so moving or renaming this file breaks renewal silently: certbot keeps reporting success while nginx serves the old certificate. |
 
 ## setup
