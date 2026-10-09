@@ -24,33 +24,26 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 WORKDIR /app
 
-# NEXT_PUBLIC_* are inlined into the bundle by next build, so they must reach
-# the build, not just the runtime. compose passes them as build args from
-# .env.prod; CI passes none and supplies them via the generated .env.local,
-# which COPY . . picks up.
-#
-# Declare them as ARG only. A build arg is already in the environment of RUN
-# when it is passed, and genuinely absent when it is not. Restating them as
-# ENV would define them as empty strings on the CI path, and @next/env only
-# fills in variables that are absent -- an empty string wins over .env.local,
-# so every NEXT_PUBLIC_* would be inlined as "".
+# NEXT_PUBLIC_* are inlined by `next build`, so they must reach the build.
+# compose passes them as build args from .env.prod; CI passes none and
+# supplies them via the generated .env.local that COPY . . picks up.
+# ARG only, never ENV: an unpassed ARG is genuinely absent, where an ENV
+# would be an empty string, and @next/env only fills variables that are
+# absent -- so "" would beat .env.local and every value would inline empty.
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_URL
 ARG NEXT_PUBLIC_MAPBOX_TOKEN
 ARG CMS_INTERNAL_API_URL
 
-# src/env.mjs declares TRANSIFEX_TOKEN as a required server variable and
-# validates it when the module loads, which happens during the build's route
-# analysis. The real token is only ever used per request (src/i18n/request.ts
-# calls tx.init inside getRequestConfig), so a placeholder satisfies the build
-# and no real secret enters it. Verified: a build with a bogus token succeeds.
+# src/env.mjs requires TRANSIFEX_TOKEN and validates it at module load, which
+# happens during route analysis. The real one is only used per request
+# (src/i18n/request.ts), so a placeholder builds and ships no secret.
 ENV TRANSIFEX_TOKEN=build-only-placeholder
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# CI writes .env.local before the build; a clean checkout has none, and the
-# runner stage copies it unconditionally. touch is a no-op when it exists.
+# The runner copies .env.local unconditionally; a clean checkout has none.
 RUN touch .env.local
 
 RUN pnpm build
@@ -81,11 +74,10 @@ COPY --from=build --chown=nextjs:nodejs /app/next.config.mjs ./next.config.mjs
 # only source. CI generates it from GH secrets (generate-env-file-from-json).
 COPY --from=build --chown=nextjs:nodejs /app/.env.local ./.env.local
 
-# The VM supplies every runtime value through compose's environment block, so
-# it builds with STRIP_ENV_FILES=1 and ships no env file at all. Without this
-# the image would carry whatever .env.local happened to sit in the build
-# context -- on a developer's machine, their own. Defaults to 0 so the Cloud
-# Run path above is unchanged; see GRASS-392.
+# The VM passes every runtime value through compose, so it builds with
+# STRIP_ENV_FILES=1 and ships no env file -- otherwise the image carries
+# whatever .env.local sat in the build context, on a laptop their own.
+# Defaults to 0, leaving the Cloud Run path above unchanged. GRASS-392.
 ARG STRIP_ENV_FILES=0
 RUN if [ "$STRIP_ENV_FILES" = "1" ]; then rm -f ./.env.local; fi
 
