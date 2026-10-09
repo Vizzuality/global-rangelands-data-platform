@@ -182,7 +182,7 @@ jobs:
         # Before the push: deleting a tag does not recall what was pulled.
         env:
           IMAGE_TAG: ${{ steps.plan.outputs.tag }}
-        run: bash infrastructure/vm/scripts/verify-image-hygiene.sh
+        run: bash infrastructure/vm/scripts/checks/verify-image-hygiene.sh
 
       - name: Open the tunnel to the VM registry
         uses: ./.github/actions/vm-registry-tunnel

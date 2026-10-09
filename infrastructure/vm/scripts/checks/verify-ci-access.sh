@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+# [checks] any time. Read-only.
+#
 # Prove that CI's path to the image registry still works, using the same
 # restricted account, the same pinned host key and the same forward that
 # .github/workflows/generate-release.yml uses.
 #
-#   bash infrastructure/vm/scripts/verify-ci-access.sh
+#   bash infrastructure/vm/scripts/checks/verify-ci-access.sh
 #
 # Run it from a workstation, not the VM. Reads the non-secret settings back
 # from the repository with `gh`; override any of them in the environment.

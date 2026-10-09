@@ -38,7 +38,8 @@ Tile responses carry `X-Cache-Status` (`MISS`, `HIT`, `EXPIRED`, `STALE`,
     curl -sk -o /dev/null -D - 'https://<host>/functions/eet/7/64/63?tileset=anthropogenic_biomes' \
       | grep -i x-cache-status
 
-`infrastructure/vm/scripts/verify-tile-cache.sh` asserts the two properties that
+`infrastructure/vm/scripts/checks/verify-tile-cache.sh` asserts the two
+properties that
 inspection cannot confirm: that a second request for the same URL is a `HIT`,
 and that ten concurrent cold requests produce at most two upstream fetches.
 Measured: **1**. `proxy_cache_lock` is doing that. Cloud CDN collapsed
@@ -97,7 +98,8 @@ after a week of uptime.
 
 ## Health endpoints
 
-All three Node services share `infrastructure/vm/scripts/healthcheck.js`,
+All three Node services share
+`infrastructure/vm/scripts/container/healthcheck.js`,
 bind-mounted read-only at `/healthcheck.js`:
 
     node /healthcheck.js <url> [maxStatus]     # healthy when status < maxStatus, default 400
@@ -126,7 +128,7 @@ Locally, generate a self-signed pair into the `certs` volume:
     docker run --rm -v rdp-prod_certs:/certs \
       -v "$PWD/infrastructure/vm/scripts:/s:ro" \
       -e SERVER_NAME=localhost -e OUT_DIR=/certs \
-      --entrypoint sh alpine/openssl:latest /s/gen-selfsigned-cert.sh
+      --entrypoint sh alpine/openssl:latest /s/setup/gen-selfsigned-cert.sh
 
 The SAN covers `localhost`, `alias.localhost` and `127.0.0.1`, so the canonical
 redirect can be exercised over TLS without a certificate warning confusing the
@@ -265,7 +267,7 @@ by `images.remotePatterns`, so the optimizer could always fetch them. It loses
 optimizer re-encoding for CMS images under this change and serves Strapi's
 variants instead.
 
-`infrastructure/vm/scripts/probe-environment.sh` asserts this end to end.
+`infrastructure/vm/scripts/checks/probe-environment.sh` asserts this end to end.
 
 ### Migrating staging's media off GCS
 
@@ -273,11 +275,11 @@ Staging runs the GCS provider, so its `files` rows point at
 `gs://rdp-staging-media` absolutely. Two halves, and only the second is blocked
 on the database dump:
 
-    bash infrastructure/vm/scripts/migrate-media-from-gcs.sh     # files  (unblocked)
+    bash infrastructure/vm/scripts/migration/migrate-media-from-gcs.sh     # files  (unblocked)
     ... restore the dump first ...
     docker compose -f docker-compose.prod.yml --env-file .env.prod \
       exec -T db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 \
-      < infrastructure/vm/scripts/rewrite-media-urls.sql          # db rows
+      < infrastructure/vm/scripts/migration/rewrite-media-urls.sql          # db rows
 
 The bucket is public (`publicFiles: true`), so the copy needs **no gcloud
 credentials** and runs the same from the VM. The script is idempotent,
@@ -293,7 +295,7 @@ It writes straight into the named volume and receives its own source on stdin,
 so it has no bind mount and therefore works unchanged against a remote daemon:
 
     docker context create rdp --docker host=ssh://user@139.162.197.186
-    DOCKER_CONTEXT=rdp bash infrastructure/vm/scripts/migrate-media-from-gcs.sh
+    DOCKER_CONTEXT=rdp bash infrastructure/vm/scripts/migration/migrate-media-from-gcs.sh
 
 That is the general rule for driving the VM from a laptop: bind mounts resolve
 on the **daemon's** filesystem, not the client's, so a script that mounts a
@@ -471,7 +473,7 @@ gcloud compute ssh ubuntu@rdp-staging-bastion --zone us-central1-a --project gmv
 # Terminal 2
 export PGPASSWORD=$(gcloud secrets versions access latest \
   --secret=rdp-staging_postgres_user_password_secret --project=gmvad-grass)
-PGUSER=strapi PGDATABASE=strapi bash infrastructure/vm/scripts/dump-staging.sh
+PGUSER=strapi PGDATABASE=strapi bash infrastructure/vm/scripts/migration/dump-staging.sh
 ```
 
 `dump-staging.sh` runs `pg_dump` inside `postgres:16-alpine` rather than using a
@@ -494,7 +496,7 @@ any machine, including the VM, which has no PostgreSQL client installed.
 
     export $(grep -E '^(POSTGRES_USER|POSTGRES_DB)=' .env.prod | xargs)
     DUMP=$(ls -t dumps/staging-*.dump | head -1) \
-      bash infrastructure/vm/scripts/restore-dump.sh
+      bash infrastructure/vm/scripts/migration/restore-dump.sh
 
 Destructive: it drops and recreates the database. `cms` is stopped first because
 `config-sync` holds a connection pool open, and `DROP DATABASE ... WITH (FORCE)`
@@ -505,9 +507,9 @@ import:
 
     C="docker compose -f docker-compose.prod.yml --env-file .env.prod"
     $C exec -T db psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
-      < infrastructure/vm/scripts/rewrite-tile-urls.sql
+      < infrastructure/vm/scripts/migration/rewrite-tile-urls.sql
     $C exec -T db psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
-      < infrastructure/vm/scripts/rewrite-media-urls.sql
+      < infrastructure/vm/scripts/migration/rewrite-media-urls.sql
 
 The rewrites run **last**. Loading content by any route re-introduces absolute
 URLs, so they are a post-import step, not a one-off migration.
@@ -686,7 +688,7 @@ database and the Strapi upload volume. Everything else is derived:
 `tilecache` refetches on a miss, `certs` belongs to certbot on the host, and
 `cmsdata` holds the import-export plugin's own dumps.
 
-    bash infrastructure/vm/scripts/backup.sh
+    bash infrastructure/vm/scripts/ops/backup.sh
     BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=30 ./backup.sh   # cron form
 
 Each run writes `<BACKUP_DIR>/<stamp>/` containing `db.dump` (custom format),
@@ -709,7 +711,7 @@ writes to whichever machine invoked it.
 ### Restoring
 
     BACKUP=/var/backups/rdp/20260101T000000Z \
-      bash infrastructure/vm/scripts/restore-backup.sh
+      bash infrastructure/vm/scripts/ops/restore-backup.sh
 
 Destructive, and restores **both** halves. Restoring only the database would
 leave `files` rows pointing at uploads that are no longer on disk.
@@ -739,7 +741,7 @@ handover.
 One job, and it is the only thing this project schedules on the VM:
 
     15 3 * * * cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=14 \
-      /bin/bash infrastructure/vm/scripts/backup.sh >> /var/backups/rdp/backup.log 2>&1
+      /bin/bash infrastructure/vm/scripts/ops/backup.sh >> /var/backups/rdp/backup.log 2>&1
 
 Nightly at 03:15 UTC, keeping 14, logging beside the backups themselves. It
 is read with `sudo crontab -u ksanchez -l` and appears in no file under
@@ -753,7 +755,12 @@ field:
 
     # /etc/cron.d/rdp-backup
     15 3 * * * root cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=14 \
-      /bin/bash infrastructure/vm/scripts/backup.sh >> /var/backups/rdp/backup.log 2>&1
+      /bin/bash infrastructure/vm/scripts/ops/backup.sh >> /var/backups/rdp/backup.log 2>&1
+
+The line installed on the box today still names `scripts/backup.sh`, because
+the checkout there predates the grouping of the scripts into subdirectories.
+Both have to change together, and
+[`scripts/README.md`](./scripts/README.md) has that sequence.
 
 Of the five checks under §9 of the RUNBOOK, the one that covers this is the
 mtime of `backup.log`: it observes the backups stopping, whatever the cause,
@@ -804,7 +811,7 @@ Deploying is then one name in two places:
 
     cd /opt/rdp
     git fetch origin --tags && git checkout v1.2.0
-    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 That is the point of a named version. The checkout supplies the bind-mounted
 `nginx.conf`, templates and `healthcheck.js`; `RELEASE_TAG` selects the
@@ -876,7 +883,7 @@ credential.
 ### The access that grants
 
 A dedicated `rdpci` account, created by
-`infrastructure/vm/scripts/setup-ci-registry-access.sh`, whose single
+`infrastructure/vm/scripts/setup/setup-ci-registry-access.sh`, whose single
 capability is forwarding to `127.0.0.1:5000`:
 
     command="/bin/false",restrict,port-forwarding,permitopen="127.0.0.1:5000"
@@ -940,7 +947,7 @@ One command from a workstation that can already reach the VM as a sudoer and
 is logged in to `gh`:
 
     DEPLOY_USER=<you> VM_HOST=139.162.197.186 \
-      bash infrastructure/vm/scripts/setup-ci-access.sh
+      bash infrastructure/vm/scripts/setup/setup-ci-access.sh
 
 It generates the keypair, runs the host-side script over SSH, pins the host
 key, writes seven settings into the `vm` environment, writes a 0600
@@ -966,7 +973,7 @@ Drift is the real risk here. ILRI exempted this host from Ansible on
 2026-10-09, but that is an inventory entry on a machine we do not control, and
 nothing in the playbook ever knew this account exists:
 
-    bash infrastructure/vm/scripts/verify-ci-access.sh
+    bash infrastructure/vm/scripts/checks/verify-ci-access.sh
 
 It opens the same forward the workflow opens, with the same pinned host key,
 and makes a request through it. Opening the forward proves nothing on its
@@ -1050,7 +1057,7 @@ since moved. Pass `PUBLIC_URL` to give it a different one:
 
     PUBLIC_URL=https://www.rangelandsdata.org \
       DEPLOY_USER=<you> VM_HOST=139.162.197.186 \
-      bash infrastructure/vm/scripts/setup-ci-access.sh
+      bash infrastructure/vm/scripts/setup/setup-ci-access.sh
 
 To change one afterwards, or to set them against a different environment:
 
@@ -1181,7 +1188,7 @@ On the box, with the version from the run summary. The checkout moves with
 the images so the bind-mounted nginx config comes from the same tree:
 
     git fetch origin --tags && git checkout v1.2.0
-    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+    RELEASE_TAG=v1.2.0 SKIP_BUILD=1 bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 Six steps, in the order that works: pull, verify image hygiene, push (skipped
 here, since the images came from the registry), deploy, **reload nginx**,
@@ -1202,7 +1209,7 @@ refused, and nginx then comes up healthy with no configuration.
 With no `RELEASE_TAG` it builds here instead and pushes what it builds, which
 is the fallback for when GitHub is unreachable (RUNBOOK §2.0):
 
-    bash infrastructure/vm/scripts/deploy-release.sh
+    bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 That mode tags `<utc-stamp>-<short-sha>`, and appends `-dirty` when `client/`,
 `cms/`, `cloud_functions/` or the compose file have uncommitted changes:
@@ -1213,7 +1220,7 @@ Changes elsewhere, such as `terraform.tfvars`, do not count.
 
 Every release prints the command to undo it:
 
-    RELEASE_TAG=<previous> SKIP_BUILD=1 bash infrastructure/vm/scripts/deploy-release.sh
+    RELEASE_TAG=<previous> SKIP_BUILD=1 bash infrastructure/vm/scripts/ops/deploy-release.sh
 
 That pulls the named tag rather than building, skips the push, and runs the
 same deploy, reload and smoke test. Only a stamped tag is ever offered: a
@@ -1275,7 +1282,7 @@ that path **needs** the baked file: it has no runtime env channel at all
 variable is declared but never referenced). That is GRASS-392, and it expires
 with staging.
 
-    bash infrastructure/vm/scripts/verify-image-hygiene.sh
+    bash infrastructure/vm/scripts/checks/verify-image-hygiene.sh
 
 Checks each image for an env file with content, and for any secret-named
 variable baked into the image environment. Run it before pushing anywhere.
@@ -1305,7 +1312,7 @@ layers and nothing ever shrinks it. That is affordable rather than ideal,
 for the reason under **Measured** above: retention here is about rollback
 depth, not space.
 
-    bash infrastructure/vm/scripts/registry-gc.sh      # keep 10 per repo
+    bash infrastructure/vm/scripts/ops/registry-gc.sh      # keep 10 per repo
     KEEP=5 DRY_RUN=1 ./registry-gc.sh                  # show what would go
 
 Two steps, both required: deleting a manifest only unlinks the tag, and the
@@ -1329,7 +1336,7 @@ both briefly stop a container:
 
     # /etc/cron.d/rdp-registry-gc
     30 3 * * 0 root cd /opt/rdp && KEEP=10 \
-      /bin/bash infrastructure/vm/scripts/registry-gc.sh >> /var/log/rdp-registry-gc.log 2>&1
+      /bin/bash infrastructure/vm/scripts/ops/registry-gc.sh >> /var/log/rdp-registry-gc.log 2>&1
 
 ### Moving to GHCR later
 
@@ -1391,7 +1398,7 @@ Not a build tree. Four files, bind-mounted into containers at run time:
     docker-compose.prod.yml
     infrastructure/vm/nginx/nginx.conf
     infrastructure/vm/nginx/templates/platform.conf.template
-    infrastructure/vm/scripts/healthcheck.js
+    infrastructure/vm/scripts/container/healthcheck.js
 
 plus the scripts an operator runs (`deploy-release.sh`, `verify-image-hygiene.sh`,
 `cert-deploy-hook.sh`, the backup pair). `deploy-release.sh` touches git only to
@@ -1510,7 +1517,7 @@ them.
        docker run --rm -v rdp-prod_certs:/certs \
          -v "$PWD/infrastructure/vm/scripts:/s:ro" \
          -e SERVER_NAME="$(hostname -f)" -e OUT_DIR=/certs \
-         --entrypoint sh alpine/openssl:latest /s/gen-selfsigned-cert.sh
+         --entrypoint sh alpine/openssl:latest /s/setup/gen-selfsigned-cert.sh
 
    The next compose command warns `volume "rdp-prod_certs" already exists but
    was not created by Docker Compose`. Expected, and harmless. Measured:
@@ -1527,7 +1534,7 @@ them.
 
         cd /opt/rdp && git fetch --tags && git checkout v1.0.0
         RELEASE_TAG=v1.0.0 SKIP_BUILD=1 \
-          bash infrastructure/vm/scripts/deploy-release.sh
+          bash infrastructure/vm/scripts/ops/deploy-release.sh
 
     `SKIP_BUILD=1` pulls the tag instead of building it and skips the push,
     since the registry is where it came from; the rest of the script
@@ -1552,7 +1559,7 @@ them.
 
         sudo certbot certonly --webroot -w /var/www/certbot -d <name> \
           --key-type ecdsa \
-          --deploy-hook /opt/rdp/infrastructure/vm/scripts/cert-deploy-hook.sh
+          --deploy-hook /opt/rdp/infrastructure/vm/scripts/ops/cert-deploy-hook.sh
 
     `<name>` must match `SERVER_NAME` in `.env.prod`. Not `--standalone`: it
     binds port 80 itself and would contend with the nginx container. The hook

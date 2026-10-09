@@ -1,3 +1,5 @@
+-- [migration] GRASS-384 one-shot, dead after cutover. UPDATEs configs.
+--
 -- Rewrites absolute Earth Engine tiler URLs in layer configs to relative paths.
 -- Everything is same-origin behind one nginx, so the browser resolves these
 -- correctly and no artefact is tied to a hostname.

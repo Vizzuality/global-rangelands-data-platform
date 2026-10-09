@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# [ops] certbot invokes this, never a person. Safe.
+#
 # certbot --deploy-hook: publish a renewed certificate into the nginx
 # container. Runs as root, once per successful issuance or renewal, with
 # RENEWED_LINEAGE set by certbot to /etc/letsencrypt/live/<name>.
