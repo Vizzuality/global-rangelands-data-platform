@@ -765,10 +765,10 @@ field:
     15 3 * * * root cd /opt/rdp && BACKUP_DIR=/var/backups/rdp RETENTION_KEEP=14 \
       /bin/bash infrastructure/vm/scripts/ops/backup.sh >> /var/backups/rdp/backup.log 2>&1
 
-The line installed on the box today still names `scripts/backup.sh`, because
-the checkout there predates the grouping of the scripts into subdirectories.
-Both have to change together, and
-[`scripts/README.md`](./scripts/README.md) has that sequence.
+That path is the one the installed line names, as of 2026-10-09. It is not
+rewritten by a checkout, so moving the script again means editing the
+crontab in the same sitting; [`scripts/README.md`](./scripts/README.md) has
+that sequence and the two other things that move with it.
 
 Of the five checks under §10 of the RUNBOOK, the one that covers this is the
 mtime of `backup.log`: it observes the backups stopping, whatever the cause,
