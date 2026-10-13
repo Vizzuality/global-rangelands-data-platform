@@ -43,10 +43,10 @@ export function Livestock() {
                   {t("Keep reading")}
                 </Link>
                 <Link
-                  href="/features/rangelands-features"
+                  href="/features/rangelands-stories"
                   className="flex min-h-12 items-center justify-center bg-green-medium px-5 py-3 text-label-16 text-white transition-colors duration-300 hover:bg-green-light"
                 >
-                  {t("Explore Rangelands Features")}
+                  {t("Explore Rangelands Stories")}
                 </Link>
                 <Link
                   href="/features/restoration-champions"

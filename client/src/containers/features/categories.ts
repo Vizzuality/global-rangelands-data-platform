@@ -1,17 +1,17 @@
 export const CATEGORY_ORDER: string[] = [
-  "rangelands-features",
+  "rangelands-stories",
   "restoration-investments",
   "restoration-champions",
 ];
 
 export const FEATURE_CATEGORY_LABELS: Record<string, string> = {
-  "rangelands-features": "Rangelands Features",
+  "rangelands-stories": "Rangelands Stories",
   "restoration-investments": "Restoration Investments",
   "restoration-champions": "Restoration Champions",
 };
 
 export const FEATURE_CARD_VARIANTS: Record<string, string> = {
-  "rangelands-features": "bg-brown-dark text-white",
+  "rangelands-stories": "bg-brown-dark text-white",
   "restoration-investments": "bg-orange-bright text-brown-dark",
   "restoration-champions": "bg-green-light text-white",
 };
@@ -21,14 +21,14 @@ export const FEATURE_CARD_DEFAULT_VARIANT = "bg-brown-dark text-white";
 export const FEATURE_CARD_LANDING_VARIANT = "bg-white text-green-dark";
 
 export const CATEGORY_TITLE_COLOR: Record<string, string> = {
-  "rangelands-features": "text-brown-dark",
+  "rangelands-stories": "text-brown-dark",
   "restoration-investments": "text-brown-dark",
   "restoration-champions": "text-green-light",
 };
 export const CATEGORY_TITLE_DEFAULT_COLOR = "text-brown-dark";
 
 export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  "rangelands-features":
+  "rangelands-stories":
     "The impact of changes in rangelands on local communities, their livestock, and natural resources.",
   "restoration-investments":
     "The STELARR Rangeland Restoration Investment Hub is an investment matchmaking platform connecting locally-led investment cases with finance, accompanied by capacity building and technical support.",
@@ -37,8 +37,8 @@ export const CATEGORY_DESCRIPTIONS: Record<string, string> = {
 };
 
 export const CATEGORY_DETAILS: Record<string, string[]> = {
-  "rangelands-features": [
-    "These features trace how climate shifts, land-use change and management decisions are reshaping rangelands, and what that means for the communities and livestock that depend on them. Each one draws on local knowledge and open data to make long-term change visible.",
+  "rangelands-stories": [
+    "These stories trace how climate shifts, land-use change and management decisions are reshaping rangelands, and what that means for the communities and livestock that depend on them. Each one draws on local knowledge and open data to make long-term change visible.",
   ],
   "restoration-investments": [
     "Currently funded by Global Environment Facility, it is led by the International Livestock Research Institute (ILRI) and IUCN, with supporting partners UNCCD Rangelands Initiative and Business4Land, Global Landscapes Forum Rio Changemakers, the Rangelands Stewardship Council and other CGIAR centers.",

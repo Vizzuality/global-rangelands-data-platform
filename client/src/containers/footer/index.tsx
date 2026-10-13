@@ -59,7 +59,7 @@ const Footer = () => {
     },
     {
       title: t("Features"),
-      href: "/features/rangelands-features",
+      href: "/features/rangelands-stories",
     },
   ];
 

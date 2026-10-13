@@ -74,13 +74,8 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/:locale(en|es|fr)/stories/rangelands-stories/:path*",
-        destination: "/:locale/features/rangelands-features/:path*",
-        permanent: true,
-      },
-      {
-        source: "/:locale(en|es|fr)/stories/rangelands-stories",
-        destination: "/:locale/features/rangelands-features",
+        source: "/:locale(en|es|fr)/features/rangelands-features/:path*",
+        destination: "/:locale/features/rangelands-stories/:path*",
         permanent: true,
       },
       {
@@ -99,13 +94,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/stories/rangelands-stories/:path*",
-        destination: "/en/features/rangelands-features/:path*",
-        permanent: true,
-      },
-      {
-        source: "/stories/rangelands-stories",
-        destination: "/en/features/rangelands-features",
+        source: "/features/rangelands-features/:path*",
+        destination: "/en/features/rangelands-stories/:path*",
         permanent: true,
       },
       {
