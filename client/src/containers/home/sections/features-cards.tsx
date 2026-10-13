@@ -14,9 +14,9 @@ import type { CategorizedFeature } from "@/containers/features/use-feature-categ
 const FEATURED_CARDS = [
   {
     slug: "reversing-rangeland-degradation-through-collective-participatory-rangeland-management-in-mongolia",
-    label: "Rangelands Features",
-    ctaLabel: "See all Rangelands Features",
-    category: "rangelands-features",
+    label: "Rangelands Stories",
+    ctaLabel: "See all Rangelands Stories",
+    category: "rangelands-stories",
   },
   {
     slug: "contributing-to-land-degradation-neutrality-ldn-in-the-brazillian-cerrado",

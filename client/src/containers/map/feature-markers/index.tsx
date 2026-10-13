@@ -15,7 +15,7 @@ const FEATURES_MODE_PREFIXES = ["/map/features", "/map/feature"];
 const FEATURE_SLUG_RE = /^\/map\/feature\/([^/]+)/;
 
 const MARKER_GLOW_BY_CATEGORY: Record<string, FeatureMarkerVariant> = {
-  "rangelands-features": {
+  "rangelands-stories": {
     glow: "bg-brown-dark",
     halo: "bg-brown-dark/20",
     border: "border-brown-dark",
@@ -31,7 +31,7 @@ const MARKER_GLOW_BY_CATEGORY: Record<string, FeatureMarkerVariant> = {
     border: "border-green-light",
   },
 };
-const DEFAULT_MARKER_GLOW = MARKER_GLOW_BY_CATEGORY["rangelands-features"];
+const DEFAULT_MARKER_GLOW = MARKER_GLOW_BY_CATEGORY["rangelands-stories"];
 
 const resolveVisibleFeatures = ({
   features,
