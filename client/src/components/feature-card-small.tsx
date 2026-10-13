@@ -24,8 +24,8 @@ const FeatureCardSmall = ({
   className,
 }: FeatureCardSmallProps) => (
   <Link href={href} className={cn("flex h-40 flex-col overflow-hidden", className)}>
-    <div className={cn("p-4", variant)}>
-      <p className="line-clamp-3 text-xs font-medium leading-4">{title}</p>
+    <div className={cn("h-16 shrink-0 p-4", variant)}>
+      <p className="line-clamp-2 text-xs font-medium leading-4">{title}</p>
     </div>
     {imageUrl && (
       <div className="relative flex-1">
