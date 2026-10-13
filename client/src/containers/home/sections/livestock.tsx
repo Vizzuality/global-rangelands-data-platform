@@ -35,18 +35,24 @@ export function Livestock() {
                 </p>
               </div>
 
-              <div className="flex flex-col justify-center gap-4 sm:flex-row">
+              <div className="flex flex-col justify-center gap-4 lg:flex-row">
                 <Link
                   href="#home-to-millions"
-                  className="flex h-12 items-center justify-center border-[1.5px] border-green-medium px-6 text-label-16 text-green-medium transition-colors duration-300 hover:border-green-light hover:text-green-light"
+                  className="flex min-h-12 items-center justify-center border-[1.5px] border-green-medium px-6 py-2.5 text-label-16 text-green-medium transition-colors duration-300 hover:border-green-light hover:text-green-light"
                 >
                   {t("Keep reading")}
                 </Link>
                 <Link
                   href="/features/rangelands-features"
-                  className="flex h-12 items-center justify-center bg-green-medium px-5 text-label-16 text-white transition-colors duration-300 hover:bg-green-light"
+                  className="flex min-h-12 items-center justify-center bg-green-medium px-5 py-3 text-label-16 text-white transition-colors duration-300 hover:bg-green-light"
                 >
                   {t("Explore Rangelands Features")}
+                </Link>
+                <Link
+                  href="/features/restoration-champions"
+                  className="flex min-h-12 items-center justify-center bg-green-medium px-5 py-3 text-label-16 text-white transition-colors duration-300 hover:bg-green-light"
+                >
+                  {t("Explore Restoration Champions")}
                 </Link>
               </div>
             </div>
