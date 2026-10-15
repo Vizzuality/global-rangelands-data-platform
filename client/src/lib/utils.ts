@@ -1,4 +1,4 @@
-import { DefaultLayerComponentLayer } from "@/types/generated/strapi.schemas";
+import { Layer } from "@/types/generated/strapi.schemas";
 import { ParamsConfig } from "@/types/layers";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 export const getKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>;
 
 export const getLayerSettings = (
-  datasetLayer?: DefaultLayerComponentLayer,
+  datasetLayer?: Layer,
   layersSettings?: {
     [key: string]: Record<string, unknown>;
   } | null,
