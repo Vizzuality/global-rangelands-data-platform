@@ -146,7 +146,9 @@
       "brace-expansion@5": "5.0.12",
       "texture-compressor>image-size": "2.0.4",
       "typedoc>markdown-it": "14.3.2",
-      "moment-timezone>moment": "2.31.0"
+      "moment-timezone>moment": "2.31.0",
+      "tailwindcss>postcss-selector-parser": "7.1.6",
+      "postcss-nested>postcss-selector-parser": "7.1.6"
     }
   }
 }
