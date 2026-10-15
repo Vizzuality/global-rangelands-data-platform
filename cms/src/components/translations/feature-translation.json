@@ -11,6 +11,9 @@
       "required": true,
       "unique": true
     },
+    "subtitle": {
+      "type": "richtext"
+    },
     "description": {
       "type": "richtext"
     },

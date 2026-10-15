@@ -17,6 +17,12 @@
       "unique": true,
       "required": true
     },
+    "subtitle": {
+      "type": "richtext"
+    },
+    "location": {
+      "type": "string"
+    },
     "description": {
       "type": "richtext"
     },

@@ -661,6 +661,7 @@ export interface ApiFeatureFeature extends Struct.CollectionTypeSchema {
       'api::feature.feature'
     > &
       Schema.Attribute.Private;
+    location: Schema.Attribute.String;
     longitude: Schema.Attribute.Float &
       Schema.Attribute.SetMinMax<
         {
@@ -674,6 +675,7 @@ export interface ApiFeatureFeature extends Struct.CollectionTypeSchema {
     slug: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    subtitle: Schema.Attribute.RichText;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;

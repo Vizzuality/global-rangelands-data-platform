@@ -33,6 +33,20 @@
           "sortable": true
         }
       },
+      "subtitle": {
+        "edit": {
+          "label": "subtitle",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "subtitle",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "description": {
         "edit": {
           "label": "description",
@@ -87,6 +101,12 @@
           {
             "name": "title",
             "size": 6
+          }
+        ],
+        [
+          {
+            "name": "subtitle",
+            "size": 12
           }
         ],
         [
