@@ -156,6 +156,7 @@ export const TranslationsFeatureTranslationComponentLocale = {
 export interface TranslationsFeatureTranslationComponent {
   id?: string | number;
   title?: string;
+  subtitle?: string;
   description?: string;
   notes?: string;
   locale?: TranslationsFeatureTranslationComponentLocale;
@@ -303,6 +304,8 @@ export interface Feature {
   id?: string | number;
   documentId?: string;
   title: string;
+  subtitle?: string;
+  location?: string;
   description?: string;
   notes?: string;
   latitude?: number;
@@ -641,6 +644,8 @@ export interface FeatureResponse {
 
 export type FeatureRequestData = {
   title: string;
+  subtitle?: string;
+  location?: string;
   description?: string;
   notes?: string;
   latitude?: number;

@@ -153,6 +153,7 @@ export interface TranslationsFeatureTranslation extends Struct.ComponentSchema {
     description: Schema.Attribute.RichText;
     locale: Schema.Attribute.Enumeration<['es', 'fr']>;
     notes: Schema.Attribute.RichText;
+    subtitle: Schema.Attribute.RichText;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
