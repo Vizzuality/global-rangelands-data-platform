@@ -5,10 +5,10 @@ import { useTranslations } from "next-intl";
 import { useSyncDatasets, useSyncLayers } from "@/store/map";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import type { FeatureDatasetsItem } from "@/types/generated/strapi.schemas";
+import type { Dataset } from "@/types/generated/strapi.schemas";
 
 type RelatedDatasetsProps = {
-  datasets: FeatureDatasetsItem[];
+  datasets: Dataset[];
 };
 
 const RelatedDatasets = ({ datasets }: RelatedDatasetsProps) => {
@@ -16,9 +16,7 @@ const RelatedDatasets = ({ datasets }: RelatedDatasetsProps) => {
   const [syncedDatasets, setDatasets] = useSyncDatasets();
   const [, setLayers] = useSyncLayers();
 
-  const linkableDatasets = datasets.filter(
-    (d): d is FeatureDatasetsItem & { slug: string } => !!d.slug,
-  );
+  const linkableDatasets = datasets.filter((d): d is Dataset & { slug: string } => !!d.slug);
 
   if (linkableDatasets.length === 0) return null;
 
