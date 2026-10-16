@@ -161,6 +161,10 @@ produces a confusing failure rather than an obvious one.
 The version is the same string in both commands precisely so this cannot be
 got wrong.
 
+> A dispatched run does not start until somebody approves it in the
+> Actions UI, where it shows zero jobs and no error until they do. See
+> "Generating a release" in the README.
+
 > A run dispatched with an **empty** version is a build, not a release: it
 > moves no branch and creates no git tag, and its images carry a
 > `<utc-stamp>-<short-sha>` tag instead. To deploy one of those you must

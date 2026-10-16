@@ -812,7 +812,27 @@ exists.
 ### Generating a release
 
 **Actions → Generate release → Run workflow**, from `staging`, with a
-version like `v1.2.0`. The run, in order:
+version like `v1.2.0`.
+
+> **It will not start on its own. Somebody has to approve it.** Every
+> `workflow_dispatch` in this repository is created with conclusion
+> `action_required` and **no jobs**, and sits there until a person with write
+> access opens the run and approves it. Approving starts attempt 2, which is
+> the run that does the work. Measured 2026-10-16: three dispatches, three
+> gated, and no run of this workflow has ever completed on attempt 1.
+>
+> Pushes are gated the same way when the commit edits anything under
+> `.github/workflows/`, and not otherwise. Nothing at repository level
+> explains it: Actions is enabled, all actions are allowed, the `vm`
+> environment has no protection rules and no deployment branch policy, and
+> `pending_deployments` is empty, so it is not environment protection. That
+> leaves the organisation's Actions policy, and reading it needs `admin:org`,
+> which an admin of this repository does not have.
+>
+> Knowing this is the whole point of writing it down: an unapproved run shows
+> **zero jobs, no logs and no error message**. It looks broken. It is waiting.
+
+The run, in order:
 
 1. refuses anything that is not `staging`, a well-formed version, and a
    version that does not already exist;
@@ -1554,7 +1574,9 @@ them.
 ### Release in CI, deploy on the VM
 
 10. **Cut the release from `staging`**, with `workflow_dispatch` on
-    `.github/workflows/generate-release.yml`, with a version. It builds, tests, pushes
+    `.github/workflows/generate-release.yml`, with a version. The run waits
+    for a human to approve it before any job starts; see **Generating a
+    release** for why and what it looks like. It builds, tests, pushes
     `v1.0.0` into the registry through the tunnel, fast-forwards `main` and
     tags it. See **Generating a release**. Then, on the VM:
 
