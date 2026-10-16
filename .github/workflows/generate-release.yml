@@ -1,5 +1,5 @@
 # Cuts a release of the VM stack: test, build, push the images into the
-# registry ON THE VM, fast-forward `main`, tag it. It does not deploy.
+# registry ON THE VM, fast-forward `production`, tag it. It does not deploy.
 #
 # Dispatch from `staging` with a version like v1.2.0, or leave the version
 # empty to build from any ref without releasing.
@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  # To push `main` and the tag. A build-only run never uses it.
+  # To push `production` and the tag. A build-only run never uses it.
   contents: write
 
 env:
@@ -79,7 +79,7 @@ jobs:
             exit 0
           fi
 
-          # A feature branch would fast-forward main just as legitimately, so
+          # A feature branch would fast-forward production just as legitimately, so
           # nothing downstream would notice code that skipped staging.
           if [ "${GITHUB_REF_NAME}" != "staging" ]; then
             echo "::error::dispatched from '${GITHUB_REF_NAME}'; releases are cut from 'staging'"
@@ -98,12 +98,19 @@ jobs:
             exit 1
           fi
 
-          # Same question the real push asks, without the side effect. `main`
-          # may not exist yet; creating it is a fast-forward and passes.
-          if ! git push --dry-run origin "HEAD:refs/heads/main"; then
-            echo "::error::main cannot fast-forward to staging; it has commits staging does not"
+          # Does it fast-forward? git answers that from the remote's refs, so
+          # a dry run suffices. `production` may not exist yet; creating it is
+          # a fast-forward and passes.
+          if ! git push --dry-run origin "HEAD:refs/heads/production"; then
+            echo "::error::production cannot fast-forward to staging; it has commits staging does not"
             exit 1
           fi
+
+          # Whether the server will *accept* the push is not asked here. A dry
+          # run cannot answer it, and reading the protection API only sees
+          # classic rules the token has admin to read -- not rulesets. The
+          # real push instead runs before anything reaches the VM, so a
+          # refusal costs a build and leaves nothing behind.
 
           echo "mode=release" >> "$GITHUB_OUTPUT"
           echo "tag=${VERSION}" >> "$GITHUB_OUTPUT"
@@ -184,6 +191,25 @@ jobs:
           IMAGE_TAG: ${{ steps.plan.outputs.tag }}
         run: bash infrastructure/vm/scripts/checks/verify-image-hygiene.sh
 
+      # Branch, then images, then tag. The branch push is the only step the
+      # server can refuse on policy, so it goes before anything touches the
+      # VM: a refusal then leaves no images behind, and `production` moving
+      # is idempotent, so re-dispatching after fixing the rule just works.
+      # The tag goes last because it is the one thing that blocks a retry --
+      # step 1 refuses a version that already exists.
+      - name: Fast-forward production
+        if: steps.plan.outputs.mode == 'release'
+        # A merge commit is not the commit the images were built from, so the
+        # version would name two trees. The server enforces this: a plain push
+        # to refs/heads/production is rejected unless it fast-forwards.
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git push origin "HEAD:refs/heads/production"; then
+            echo "::error::the server refused the push to production. If the branch is protected, github-actions must be allowed to push it; see \"Protecting production\" in infrastructure/vm/README.md. Nothing was released and nothing reached the VM, so fix the rule and re-dispatch."
+            exit 1
+          fi
+
       - name: Open the tunnel to the VM registry
         uses: ./.github/actions/vm-registry-tunnel
         with:
@@ -192,9 +218,6 @@ jobs:
           user: ${{ vars.VM_REGISTRY_USER }}
           host_key: ${{ vars.VM_SSH_HOST_KEY }}
 
-      # Images before git: a failed push leaves images nobody references and
-      # re-dispatching works, where a failed tag-then-push would name a
-      # release with nothing to deploy and block the retry.
       - name: Push
         env:
           IMAGE_TAG: ${{ steps.plan.outputs.tag }}
@@ -210,17 +233,15 @@ jobs:
         if: always()
         run: pkill -f 'L 5000:127.0.0.1:5000' || true
 
-      - name: Fast-forward main and tag the release
+      - name: Tag the release
         if: steps.plan.outputs.mode == 'release'
         env:
           VERSION: ${{ steps.plan.outputs.tag }}
-        # A merge commit is not the commit the images were built from, so the
-        # version would name two trees. The server enforces this: a plain push
-        # to refs/heads/main is rejected unless it fast-forwards.
+        # Last, and only once the images it names are in the registry: the tag
+        # is the durable record, and step 1 refuses a version that already
+        # exists, so creating it early would block the retry. Protection does
+        # not cover tags, so nothing can refuse this.
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git push origin "HEAD:refs/heads/main"
           git tag -a "$VERSION" -m "Release ${VERSION}"
           git push origin "refs/tags/${VERSION}"
 
@@ -233,7 +254,7 @@ jobs:
             if [ "$MODE" = "release" ]; then
               echo "### Released \`${TAG}\`"
               echo
-              echo "\`main\` fast-forwarded to \`${GITHUB_SHA}\` and tagged \`${TAG}\`."
+              echo "\`production\` fast-forwarded to \`${GITHUB_SHA}\` and tagged \`${TAG}\`."
             else
               echo "### Built \`${TAG}\` — build only"
               echo

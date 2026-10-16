@@ -814,43 +814,106 @@ exists.
 **Actions → Generate release → Run workflow**, from `staging`, with a
 version like `v1.2.0`.
 
-> **It will not start on its own. Somebody has to approve it.** Every
-> `workflow_dispatch` in this repository is created with conclusion
-> `action_required` and **no jobs**, and sits there until a person with write
-> access opens the run and approves it. Approving starts attempt 2, which is
-> the run that does the work. Measured 2026-10-16: three dispatches, three
-> gated, and no run of this workflow has ever completed on attempt 1.
+> **A run sometimes stops before it starts and waits for a human.** When it
+> does, it is created with conclusion `action_required` and **no jobs**, and
+> sits there until someone with write access opens it and approves it;
+> approving starts attempt 2, which is the run that does the work.
 >
-> Pushes are gated the same way when the commit edits anything under
-> `.github/workflows/`, and not otherwise. Nothing at repository level
-> explains it: Actions is enabled, all actions are allowed, the `vm`
-> environment has no protection rules and no deployment branch policy, and
-> `pending_deployments` is empty, so it is not environment protection. That
-> leaves the organisation's Actions policy, and reading it needs `admin:org`,
-> which an admin of this repository does not have.
+> It is not every run, and the pattern is worth knowing because it decides
+> whether a release needs a second person. Measured:
 >
-> Knowing this is the whole point of writing it down: an unapproved run shows
-> **zero jobs, no logs and no error message**. It looks broken. It is waiting.
+> | When | Ref | Workflow files changed on that ref just before | Attempt 1 |
+> |---|---|---|---|
+> | 2026-10-08 | `feat/vm-phase2` | yes | gated |
+> | 2026-10-09 | `staging` | yes | gated |
+> | 2026-10-16 | `develop` | no | gated |
+> | 2026-10-16 | `staging` | no | **ran unattended** |
+>
+> So a dispatch from `staging` whose workflow files have not moved runs on its
+> own, which is the normal release case. What correlates with gating is a
+> recent change under `.github/workflows/` on that ref, and separately the
+> `develop` dispatch above was also the default branch, which step 1 refuses
+> outright. Four observations is not a rule, and the organisation's Actions
+> policy, which would settle it, needs `admin:org` to read.
+>
+> Worth writing down because an unapproved run shows **zero jobs, no logs and
+> no error message**. It looks broken. It is waiting. Check for the approval
+> button before debugging the workflow.
 
 The run, in order:
 
 1. refuses anything that is not `staging`, a well-formed version, and a
    version that does not already exist;
-2. asks the server, with `git push --dry-run`, whether `main` can
-   fast-forward to this commit, and stops if it cannot;
+2. asks whether `production` can fast-forward to this commit, and whether
+   the server would accept the push at all, and stops if either fails;
 3. installs the client, lints, and runs the tests;
 4. builds the three images tagged `v1.2.0` and runs the hygiene check;
-5. pushes them into the registry on the VM;
-6. fast-forwards `main` and creates the annotated tag.
+5. fast-forwards `production`;
+6. pushes the images into the registry on the VM;
+7. creates and pushes the annotated tag.
 
-> **No versioned release has been cut yet**, so steps 1, 2 and 6 have never
-> run. What has is the version-less build below, twice, including the push
-> through the tunnel: the registry holds `20261008T155617Z-273ca16` and
-> `20261009T103500Z-939f7c7` and no `v*` tag. **`main` does not exist on the
-> remote either**, and the first release is what creates it; step 2 passes
-> against a branch that is not there, because creating it is a fast-forward.
-> Expect the first versioned run to be the one that finds anything wrong
-> with steps 1, 2 and 6, and cut it at a time someone can look at it.
+> **Why that order.** Step 5 is the only step the server can refuse on
+> policy, so it runs before anything touches the VM: a refusal leaves no
+> images behind, and moving `production` is idempotent, so fixing the rule
+> and re-dispatching just works. The tag is last because it is the one thing
+> that blocks a retry -- step 1 refuses a version that already exists, so a
+> tag created before a failed image push would have to be deleted by hand.
+
+#### When a release fails part-way
+
+The order above is chosen so that the answer is almost always **re-dispatch
+the same version**. Work out which step failed and read across:
+
+| Failed at | State left behind | Do |
+| --- | --- | --- |
+| 1–4 (checks, build) | nothing anywhere | fix, re-dispatch |
+| 5 (branch push) | nothing anywhere | fix the rule, re-dispatch |
+| 6 (image push) | `production` moved, no tag, images partial | re-dispatch; the branch push is a no-op fast-forward and the images overwrite |
+| 7 (tag push) | images in place, `production` moved, no tag | re-dispatch, or tag by hand |
+
+Nothing in that table needs an undo, which is the point of the ordering. Two
+things are worth knowing before you need them.
+
+**`production` only moves forward.** With the recommended rules it cannot be
+rewound: `allow_force_pushes: false` refuses a reset and `allow_deletions:
+false` refuses a delete, and `enforce_admins: true` means that holds for you
+too. If a release stops at step 6, `production` sits on a commit whose images
+never reached the registry. That is harmless -- nothing deploys from the
+branch, the VM deploys a tag -- and the fix is to finish the release, not to
+put the branch back.
+
+**A version is spent once its images exist.** Re-dispatching the same version
+overwrites whatever is in the registry under it, which is fine while the
+release never completed and wrong once anyone could roll back to it.
+`registry-gc.sh` only collects tags shaped `<utc-stamp>-<short-sha>`, so a
+version tag's images stay until removed deliberately.
+
+To abandon a completed release rather than retry one, delete the git tag --
+protection does not cover tags, verified on 2026-10-16 with `v1.0.0-rc.1`:
+
+    git push origin ":refs/tags/v1.2.0"
+
+`production` stays where it is; the next release fast-forwards past it. If the
+images must go too, `registry-gc.sh` deletes by digest and unlinks every tag
+on it, so read it before pointing it at a release.
+
+A release that completed and then deployed badly is not a release problem.
+Roll back on the box with the command `deploy-release.sh` prints on the way
+out, which names the previous image tag and touches no git state.
+
+> **Steps 1, 2 and 6 were first exercised on 2026-10-16**, with
+> `v1.0.0-rc.1` cut from `staging` as a rehearsal and then deleted. All three
+> passed: the branch was created exactly equal to `staging` with no merge
+> commit, the tag was annotated, and all three images reached the registry.
+> The release was then deployed by name on the VM and rolled back with the
+> command the deploy script prints, which exercised that path too.
+>
+> It also found why this section now says `production` rather than `main`.
+> A protection rule on `main` required a pull request with no bypass actors,
+> so the release could *create* the branch (`block_creations` was false) but
+> **no later release could update it** -- the release pushes directly, and a
+> PR-protected branch refuses that. The rehearsal release worked and the
+> second one would not have. See "Why a `production` branch".
 
 Deploying is then one name in two places:
 
@@ -870,11 +933,61 @@ for a branch not ready to be promoted.
 
 > **Why fast-forward and not a merge.** A merge commit is not the commit the
 > images were built from, so the version would name two different trees,
-> exactly the drift this is meant to remove. A plain push to `refs/heads/main`
-> is rejected by the server unless it fast-forwards, so the guarantee is
-> enforced by GitHub rather than by this workflow being careful. If it is ever
-> refused, `main` has a commit `staging` does not, and that is worth going to
-> look at rather than forcing past.
+> exactly the drift this is meant to remove. A plain push to
+> `refs/heads/production` is rejected by the server unless it fast-forwards,
+> so the guarantee is enforced by GitHub rather than by this workflow being
+> careful. If it is ever refused, `production` has a commit `staging` does
+> not, and that is worth going to look at rather than forcing past.
+
+> **`git push --dry-run` does not evaluate branch protection**, so step 2
+> does not try to predict whether the push will be accepted. A dry run is
+> enough for "does this fast-forward", because git computes that from the
+> remote's refs. It is useless for "will the server accept this", because
+> protection is a pre-receive hook a dry run never reaches. Measured
+> 2026-10-16 against the protected `main`: `git push --dry-run --delete`
+> printed `- [deleted] main` while the real delete was refused with `GH006`.
+>
+> Reading the protection API instead was tried and removed. It answers for
+> classic rules the token has admin to read and nothing else: not
+> `restrictions`, `lock_branch` or `required_signatures` unless each is
+> coded for, not rulesets at all (measured: `main` is protected and
+> `/rules/branches/main` returns `[]`), and not a 403, where the honest
+> answer is "cannot tell". Every blind spot fails open, which is the wrong
+> direction for a check whose whole job is to catch a refusal.
+>
+> The step order replaces it. The real push runs before any image reaches
+> the VM, so the server answers for every cause at once and a refusal costs
+> a build and leaves nothing behind.
+
+### Protecting `production`
+
+Protect it, but not by restricting who may push. Step 5 pushes as
+`github-actions[bot]`, so a rule that gates pushes on an actor locks out the
+release itself, and adding your own username does not help.
+
+| Safe to enable | Refuses the release |
+| --- | --- |
+| `allow_force_pushes: false` | `required_pull_request_reviews` |
+| `allow_deletions: false` | `restrictions` ("restrict who can push") |
+| `required_linear_history: true` | `lock_branch: true` |
+| `enforce_admins: true` | `required_signatures: true` |
+
+The left column is the recommendation. It gives the only guarantees worth
+having on this branch -- release history cannot be rewritten, erased, or made
+non-linear -- and none of it impedes a fast-forward from the bot. Anything in
+the right column needs `github-actions` added as a bypass or allowed actor,
+or the release stops at step 5 with nothing built and nothing deployed.
+
+> **Hotfixes go through `staging`, not around it.** Step 1 refuses any ref but
+> `staging` and step 2 requires a fast-forward, which together guarantee that
+> everything on the VM was on staging first -- worth more here than usual,
+> because there is no second environment and staging is the only place
+> anything is exercised before it reaches ILRI's box. A commit made directly
+> on `production` gives it history `staging` lacks, and the next ordinary
+> release fails step 2 until someone merges it back. `staging` is unprotected,
+> so the fast path is a direct push to it and a dispatch, then backport to
+> `develop` afterwards. The branch is a record; the VM deploys by image tag,
+> so moving it sooner would not make a fix land sooner.
 
 > **Releases are not garbage-collected.** `registry-gc.sh` only collects tags
 > of the stamped shape, so `v1.2.0` stays until someone removes it. That is
@@ -889,14 +1002,38 @@ for a branch not ready to be promoted.
 > is the stronger gate: `next.config.mjs` does not set `ignoreBuildErrors`,
 > so `next build` type-checks the whole client.
 
-> **`main` and Cloud Run.** Creating `main` would have switched on
-> `main.yml`'s push trigger, which maps that branch to
-> `ENVIRONMENT=PRODUCTION` and deploys to GCP. GCP production was never
-> provisioned (`module "production"` is commented out in
-> `infrastructure/base/main.tf`), so all three jobs would fail on missing
-> `TF_PRODUCTION_*` secrets. `main` has been removed from that trigger;
-> `staging` is untouched. Production is this VM now, and the role left for
-> `main` is to record what was released to it.
+### Why a `production` branch
+
+The release branch was `main` until 2026-10-16. Three reasons it is not:
+
+- **A PR-protected `main` cannot be fast-forwarded by a workflow.** The rule
+  on it required one approving review with no bypass users, teams **or apps**,
+  so `github-actions` could not push it either. Creating the branch was
+  allowed (`block_creations` false) and updating it was not, so the first
+  release succeeded and every later one would have failed on that push. At
+  the time it ran after the image pushes, so it would also have left three
+  images in the registry naming a release that did not exist; that is why
+  the branch push now runs before them.
+- **It removes a special case.** `main.yml` read
+  `branch == 'main' && 'PRODUCTION' || branch_upper`, which existed only
+  because the branch was named `main` while the environment is `PRODUCTION`.
+  A branch named `production` uppercases correctly on its own.
+- **It says what is true.** Production is this VM. `develop` / `staging` /
+  `production` is a legible ladder; `main` beside them invites the assumption
+  that it is the default branch, which is `develop`.
+
+> **`production` and Cloud Run.** The name now maps to
+> `ENVIRONMENT=PRODUCTION` through `branch_upper`, and GCP production was
+> never provisioned (`module "production"` is commented out in
+> `infrastructure/base/main.tf`), so a `main.yml` run from this branch would
+> fail several steps later on missing `TF_PRODUCTION_*` secrets, reading like
+> a broken configuration. Push triggers there are limited to `staging`, so
+> only a dispatch could reach it, and `main.yml` now refuses that branch
+> outright with a message naming this workflow instead.
+
+> **`production` needs `github-actions` as a bypass actor** if it is protected
+> with a pull-request requirement, or step 5 cannot push it. See "Protecting
+> `production`" for which rules are safe to enable.
 
 ### Reaching a registry that is bound to loopback
 
@@ -1577,8 +1714,8 @@ them.
     `.github/workflows/generate-release.yml`, with a version. The run waits
     for a human to approve it before any job starts; see **Generating a
     release** for why and what it looks like. It builds, tests, pushes
-    `v1.0.0` into the registry through the tunnel, fast-forwards `main` and
-    tags it. See **Generating a release**. Then, on the VM:
+    `v1.0.0` into the registry through the tunnel, fast-forwards
+    `production` and tags it. See **Generating a release**. Then, on the VM:
 
         cd /opt/rdp && git fetch --tags && git checkout v1.0.0
         RELEASE_TAG=v1.0.0 SKIP_BUILD=1 \
@@ -1607,7 +1744,22 @@ them.
 
         sudo certbot certonly --webroot -w /var/www/certbot -d <public-name> \
           --key-type ecdsa \
-          --deploy-hook /opt/rdp/infrastructure/vm/scripts/ops/cert-deploy-hook.sh
+          --deploy-hook /opt/rdp/infrastructure/vm/scripts/ops/cert-deploy-hook.sh \
+          --non-interactive --agree-tos --email <address>
+
+    The last line matters only on a box with **no ACME account**, which is
+    every genuinely fresh one and any rebuild that removed `/etc/letsencrypt`.
+    Without it certbot prompts for an address and for agreement to the terms;
+    at a terminal that is a question, and over a non-interactive SSH it is a
+    hang with no output. `linode50` never hit this in October 2026 because its
+    first certificate was issued by hand, so the account already existed for
+    every run after.
+
+    **The address is a handover item.** It is where expiry warnings go, so a
+    certificate ILRI owns should not be registered to a Vizzuality one. The
+    rehearsal below used `kevin.sanchez@vizzuality.com` deliberately, because
+    the Linode name is temporary; the certificate issued for the real domain
+    at cutover needs an address ILRI reads.
 
     `<public-name>` must match `SERVER_NAME` in `.env.prod`. Not `--standalone`: it
     binds port 80 itself and would contend with the nginx container. The hook
@@ -1631,6 +1783,19 @@ them.
     and `/en` renders a shell. Restoring the content baseline is a separate
     procedure with its own rehearsal notes; see **Restoring content**.
 
+14. **Install the nightly backup**, which nothing above does and which no
+    failure announces. A box built by following steps 1 to 13 exactly has no
+    backups at all, and the first sign of it is needing one. Create the
+    directory and add the line to the **deploy account's own** crontab, never
+    root's; `crontab` always edits the invoking user's, so the same command
+    under `sudo` writes to an empty root crontab and reports nothing:
+
+        sudo mkdir -p /var/backups/rdp && sudo chown "$USER:$USER" /var/backups/rdp
+        crontab -e   # see RUNBOOK §9 for the line, and §4.1 for how to read it back
+
+    Then run `backup.sh` once by hand and `verify-backup.sh` against what it
+    produced, so the schedule is proven rather than assumed.
+
 ### Then verify
 
 All four routes through nginx, and the certificate the server actually
@@ -1649,6 +1814,42 @@ Not done on this box, deliberately: it has a kernel update pending from
 `unattended-upgrades` and has not been rebooted. Everything is
 `restart: unless-stopped` and `nftables` is enabled at boot, so it should
 come back, but that has not been proven and the reboot is ILRI's to schedule.
+
+### Results of the from-scratch rebuild, 2026-10-16
+
+The whole of the above, run against `linode50` after deleting everything
+GRASS-384 had put on it: all containers, all volumes, every image, `/opt/rdp`,
+`/etc/letsencrypt`, `/var/backups/rdp`, the `rdpci` account and the backup
+cron. 11.9 G reclaimed. ILRI's host baseline was left alone and verified
+intact afterwards, which is why **steps 1 to 4 were not exercised**: Docker,
+the `docker` group, the swapfile and the nftables rules are ILRI's, and
+removing them to prove a procedure would have destroyed their firewall fix and
+their monitoring.
+
+It worked, and the parts worth recording are the ones that did not.
+
+| | |
+|---|---|
+| `.env.prod` rebuilt from `.env.prod.example` and this file alone | every non-secret value came out **identical** to the file that was on the box |
+| Images built in CI from `299b454`, pushed through the tunnel | `feature`/`feature-category` content types, both migrations shipped |
+| Deploy, then `certbot certonly --webroot` | `200 200 200 204`, real Let's Encrypt certificate served |
+| Dump restored, media copied, both rewrites | 0 GCS URLs left, 0 wrong-provider rows |
+| `verify-backup.sh` on the rebuilt box | 4 of 4, **75 tables / 6,114 rows**, matching the dump exactly |
+| Probe against staging | identical slugs, counts, asset hashes, font hashes, optimizer bytes, 23/23 CMS images |
+
+The only probe differences were the migration working: `media host <relative>`
+instead of `storage.googleapis.com`, `gcs-refs=0` instead of 119/103/108, and
+pages 8-9 k smaller because relative upload paths are shorter than absolute
+GCS URLs. nginx also omits `Content-Type` on 307s and the 204 where Cloud Run
+sets it, which is infrastructure, not content.
+
+Three gaps it found, all now fixed above: step 11 prompted for an ACME account
+and would hang unattended; nothing installed the nightly backup, so a box built
+to the letter had none; and `.env.prod` holds the only copy of three
+credentials that cannot be regenerated and lives in the directory a rebuild
+deletes. **Copy it off the box before wiping anything** -- step 6 says to carry
+those three across machine-to-machine, which is only possible if they still
+exist somewhere when you need them.
 
 ## Deferred to phase 2
 

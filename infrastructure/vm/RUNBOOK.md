@@ -142,7 +142,8 @@ GitHub Actions builds the images; this box only deploys them. **Generate
 release** (Actions → Run workflow, from `staging`, with a version like
 `v1.2.0`) runs the tests, builds `cms`, `client` and `tiler`, refuses to push
 anything that fails the hygiene check, pushes into this machine's own
-registry through an SSH tunnel, then fast-forwards `main` and tags it. It
+registry through an SSH tunnel, then fast-forwards `production` and tags
+it. It
 deploys nothing; that is this section.
 
 On the box, with the version from the run summary:
@@ -161,9 +162,11 @@ produces a confusing failure rather than an obvious one.
 The version is the same string in both commands precisely so this cannot be
 got wrong.
 
-> A dispatched run does not start until somebody approves it in the
-> Actions UI, where it shows zero jobs and no error until they do. See
-> "Generating a release" in the README.
+> A dispatched run sometimes does not start until somebody approves it in
+> the Actions UI, where it shows zero jobs and no error until they do. A
+> dispatch from `staging` whose workflow files have not just changed runs
+> unattended, which is the normal case. See "Generating a release" in the
+> README for what correlates with it.
 
 > A run dispatched with an **empty** version is a build, not a release: it
 > moves no branch and creates no git tag, and its images carry a
