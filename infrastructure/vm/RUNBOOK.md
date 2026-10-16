@@ -142,7 +142,8 @@ GitHub Actions builds the images; this box only deploys them. **Generate
 release** (Actions → Run workflow, from `staging`, with a version like
 `v1.2.0`) runs the tests, builds `cms`, `client` and `tiler`, refuses to push
 anything that fails the hygiene check, pushes into this machine's own
-registry through an SSH tunnel, then fast-forwards `main` and tags it. It
+registry through an SSH tunnel, then fast-forwards `production_vm` and tags
+it. It
 deploys nothing; that is this section.
 
 On the box, with the version from the run summary:
