@@ -23,15 +23,16 @@ on:
 
   push:
     branches:
-      # `main` is deliberately NOT here. It maps to ENVIRONMENT=PRODUCTION
-      # below, and GCP production was never provisioned -- `module
-      # "production"` is commented out in infrastructure/base/main.tf, so the
-      # TF_PRODUCTION_* secrets this would read do not exist. Production is
-      # the ILRI VM now (GRASS-384); generate-release.yml publishes to it and `main`
-      # exists to record what was released. Pushes made with GITHUB_TOKEN do
-      # not trigger workflows, so generate-release.yml would not fire this anyway --
-      # but a human merging to main would, and failing three deploy jobs to
-      # an environment that does not exist is a bad way to find that out.
+      # `production_vm` is deliberately NOT here. It records what was
+      # released to the ILRI VM (GRASS-384), which generate-release.yml
+      # publishes to under ENVIRONMENT=VM -- nothing on GCP. It is named
+      # for the VM and not `production` because PRODUCTION is already a GCP
+      # namespace here: `module "production"` in infrastructure/base/main.tf
+      # is commented out, so the TF_PRODUCTION_* secrets a deploy would read
+      # do not exist. Pushes made with GITHUB_TOKEN do not trigger workflows,
+      # so generate-release.yml would not fire this anyway -- but a human
+      # pushing would, and failing three deploy jobs against an environment
+      # that was never provisioned is a bad way to find that out.
       - staging
 
     paths:
@@ -87,12 +88,20 @@ jobs:
           } >> $GITHUB_OUTPUT
         id: extract_branch
 
+      - name: Refuse to deploy production_vm to GCP
+        # Only a dispatch reaches this; push triggers are `staging` only.
+        # Why: "Why a `production_vm` branch" in infrastructure/vm/README.md.
+        if: steps.extract_branch.outputs.branch == 'production_vm'
+        run: |
+          echo "::error::production_vm is the ILRI VM, not GCP. Release it with generate-release.yml and deploy on the box."
+          exit 1
+
       - name: Set environment name
         if: ${{ steps.applicable_check.outputs.flag }}
         id: environment_name
         run: |
           {
-            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT_NAME_OVERRIDE || steps.extract_branch.outputs.branch == 'main' && 'PRODUCTION' || steps.extract_branch.outputs.branch_upper }}"
+            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT_NAME_OVERRIDE || steps.extract_branch.outputs.branch_upper }}"
           } >> $GITHUB_ENV
 
       - name: Output secrets and vars as JSON
@@ -198,12 +207,20 @@ jobs:
           } >> $GITHUB_OUTPUT
         id: extract_branch
 
+      - name: Refuse to deploy production_vm to GCP
+        # Only a dispatch reaches this; push triggers are `staging` only.
+        # Why: "Why a `production_vm` branch" in infrastructure/vm/README.md.
+        if: steps.extract_branch.outputs.branch == 'production_vm'
+        run: |
+          echo "::error::production_vm is the ILRI VM, not GCP. Release it with generate-release.yml and deploy on the box."
+          exit 1
+
       - name: Set environment name
         if: ${{ steps.applicable_check.outputs.flag }}
         id: environment_name
         run: |
           {
-            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT_NAME_OVERRIDE ||steps.extract_branch.outputs.branch == 'main' && 'PRODUCTION' || steps.extract_branch.outputs.branch_upper }}"
+            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT_NAME_OVERRIDE || steps.extract_branch.outputs.branch_upper }}"
           } >> $GITHUB_ENV
 
       - name: Output secrets and vars as JSON
@@ -292,12 +309,20 @@ jobs:
           } >> $GITHUB_OUTPUT
         id: extract_branch
 
+      - name: Refuse to deploy production_vm to GCP
+        # Only a dispatch reaches this; push triggers are `staging` only.
+        # Why: "Why a `production_vm` branch" in infrastructure/vm/README.md.
+        if: steps.extract_branch.outputs.branch == 'production_vm'
+        run: |
+          echo "::error::production_vm is the ILRI VM, not GCP. Release it with generate-release.yml and deploy on the box."
+          exit 1
+
       - name: Set environment name
         if: ${{ steps.applicable_check.outputs.flag }}
         id: environment_name
         run: |
           {
-            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT_NAME_OVERRIDE || steps.extract_branch.outputs.branch == 'main' && 'PRODUCTION' || steps.extract_branch.outputs.branch_upper }}"
+            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT_NAME_OVERRIDE || steps.extract_branch.outputs.branch_upper }}"
           } >> $GITHUB_ENV
 
       - name: Build and Deploy
