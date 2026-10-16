@@ -38,23 +38,66 @@ v "# environment probe -- volatile section (expected to differ between builds)"
 v "# base=${BASE}  label=${LABEL:-<unset>}  captured=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 v ""
 
+# --- 0. discover the content-dependent slugs -------------------------------
+# Slugs are CONTENT, not configuration. Hardcoding them has rotted twice: the
+# `story` collections became `feature` in 2026-09, and the `rangelands-*`
+# category slug changed and changed back inside one week. A stale slug answers
+# 308, the probe does not follow redirects, and the run still looks healthy --
+# so a hardcoded name degrades into a silent pass. Ask the API instead.
+#
+# Sorted, so two environments with the same content produce the same file and
+# the diff stays meaningful. Recorded in the output, so a discovery that comes
+# back empty is visible as a change rather than quietly probing nothing.
+slugs_sorted() {
+  python3 -c '
+import json,sys
+try: d = json.load(sys.stdin)
+except Exception: sys.exit(0)
+for i in sorted((d.get("data") or []), key=lambda x: x.get("slug") or ""):
+    if i.get("slug"): print(i["slug"])'
+}
+
+mapfile -t CATEGORY_SLUGS < <(curl "${CURL_OPTS[@]}" \
+  "${BASE}/cms/api/feature-categories?pagination[pageSize]=100&fields[0]=slug" \
+  | slugs_sorted)
+
+# One feature that has an attached document and one that does not: the pair
+# asserts the PDF route serves AND 404s correctly, which a single slug cannot.
+mapfile -t _doc_split < <(curl "${CURL_OPTS[@]}" \
+  "${BASE}/cms/api/features?populate=document&pagination[pageSize]=100&fields[0]=slug" \
+  | python3 -c '
+import json,sys
+try: d = json.load(sys.stdin)
+except Exception: sys.exit(0)
+withdoc, without = [], []
+for i in sorted((d.get("data") or []), key=lambda x: x.get("slug") or ""):
+    if not i.get("slug"): continue
+    doc = i.get("document") or {}
+    (withdoc if doc.get("url") else without).append(i["slug"])
+print((withdoc or [""])[0])
+print((without or [""])[0])')
+DOC_FEATURE="${_doc_split[0]:-}"
+FEATURE_SLUG="${_doc_split[1]:-}"
+
+s "## discovered slugs (content-derived -- a change here is a content change)"
+s "discovered categories ${#CATEGORY_SLUGS[@]} ${CATEGORY_SLUGS[*]:-<none>}"
+s "discovered feature-with-document ${DOC_FEATURE:-<none>}"
+s "discovered feature-without-document ${FEATURE_SLUG:-<none>}"
+s ""
+
 # --- 1. routes -------------------------------------------------------------
 # Status plus the redirect target, which is where locale and canonical-host
 # behaviour shows up. Not following redirects: the hop itself is the assertion.
 s "## routes"
-FEATURE_SLUG="adapting-to-climate-change-in-the-italian-alps"
-DOC_FEATURE="rancho-el-ojo-mexico"
-for path in \
-  "/" "/en" "/es" "/fr" \
-  "/en/map" "/en/map/features" "/en/map/feature/${FEATURE_SLUG}" \
-  "/en/features/rangelands-features" \
-  "/en/features/restoration-champions" \
-  "/en/features/restoration-investments" \
-  "/api/features/${DOC_FEATURE}/document" \
-  "/api/features/${FEATURE_SLUG}/document" \
-  "/api/features/no-such-feature-xyz/document" \
-  "/en/definitely-not-a-page" \
-  "/cms/admin" "/cms/_health" "/robots.txt" "/sitemap.xml"
+routes=( "/" "/en" "/es" "/fr" "/en/map" "/en/map/features" )
+[ -n "$FEATURE_SLUG" ] && routes+=( "/en/map/feature/${FEATURE_SLUG}" )
+for c in "${CATEGORY_SLUGS[@]}"; do routes+=( "/en/features/${c}" ); done
+[ -n "$DOC_FEATURE"  ] && routes+=( "/api/features/${DOC_FEATURE}/document" )
+[ -n "$FEATURE_SLUG" ] && routes+=( "/api/features/${FEATURE_SLUG}/document" )
+routes+=( "/api/features/no-such-feature-xyz/document" \
+          "/en/definitely-not-a-page" \
+          "/cms/admin" "/cms/_health" "/robots.txt" "/sitemap.xml" )
+for path in "${routes[@]}"
 do
   read -r code redir ctype < <(curl "${CURL_OPTS[@]}" -o /dev/null \
     -w '%{http_code} %{redirect_url} %{content_type}\n' "${BASE}${path}")
@@ -196,7 +239,9 @@ fi
 # Count of optimizer requests that carry CMS media rather than a bundled asset.
 # Expected to be 0 on the VM stack and non-zero on the pre-migration build.
 opt_media=0
-for path in "/en" "/en/features/rangelands-features" "/en/features/restoration-investments"; do
+opt_paths=( "/en" )
+for c in "${CATEGORY_SLUGS[@]}"; do opt_paths+=( "/en/features/${c}" ); done
+for path in "${opt_paths[@]}"; do
   n="$(curl "${CURL_OPTS[@]}" "${BASE}${path}" \
     | grep -oE '_next/image\?url=[^"&\\]*' \
     | python3 -c '
@@ -249,9 +294,10 @@ s ""
 s "## rendered html structure"
 # Detail and per-category pages carry the media references, so they are where
 # a provider or URL-rewrite regression shows up -- the index pages alone miss it.
-for path in "/en" "/en/map" "/en/features/rangelands-features" \
-            "/en/features/restoration-champions" "/en/features/restoration-investments" \
-            "/en/map/feature/${FEATURE_SLUG}"; do
+html_paths=( "/en" "/en/map" )
+for c in "${CATEGORY_SLUGS[@]}"; do html_paths+=( "/en/features/${c}" ); done
+[ -n "$FEATURE_SLUG" ] && html_paths+=( "/en/map/feature/${FEATURE_SLUG}" )
+for path in "${html_paths[@]}"; do
   html="$(mktemp)"
   curl "${CURL_OPTS[@]}" -o "$html" "${BASE}${path}"
   python3 - "$path" "$html" <<'PY' >> "$STABLE"
