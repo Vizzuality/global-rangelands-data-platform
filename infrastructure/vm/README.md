@@ -814,23 +814,31 @@ exists.
 **Actions → Generate release → Run workflow**, from `staging`, with a
 version like `v1.2.0`.
 
-> **It will not start on its own. Somebody has to approve it.** Every
-> `workflow_dispatch` in this repository is created with conclusion
-> `action_required` and **no jobs**, and sits there until a person with write
-> access opens the run and approves it. Approving starts attempt 2, which is
-> the run that does the work. Measured 2026-10-16: three dispatches, three
-> gated, and no run of this workflow has ever completed on attempt 1.
+> **A run sometimes stops before it starts and waits for a human.** When it
+> does, it is created with conclusion `action_required` and **no jobs**, and
+> sits there until someone with write access opens it and approves it;
+> approving starts attempt 2, which is the run that does the work.
 >
-> Pushes are gated the same way when the commit edits anything under
-> `.github/workflows/`, and not otherwise. Nothing at repository level
-> explains it: Actions is enabled, all actions are allowed, the `vm`
-> environment has no protection rules and no deployment branch policy, and
-> `pending_deployments` is empty, so it is not environment protection. That
-> leaves the organisation's Actions policy, and reading it needs `admin:org`,
-> which an admin of this repository does not have.
+> It is not every run, and the pattern is worth knowing because it decides
+> whether a release needs a second person. Measured:
 >
-> Knowing this is the whole point of writing it down: an unapproved run shows
-> **zero jobs, no logs and no error message**. It looks broken. It is waiting.
+> | When | Ref | Workflow files changed on that ref just before | Attempt 1 |
+> |---|---|---|---|
+> | 2026-10-08 | `feat/vm-phase2` | yes | gated |
+> | 2026-10-09 | `staging` | yes | gated |
+> | 2026-10-16 | `develop` | no | gated |
+> | 2026-10-16 | `staging` | no | **ran unattended** |
+>
+> So a dispatch from `staging` whose workflow files have not moved runs on its
+> own, which is the normal release case. What correlates with gating is a
+> recent change under `.github/workflows/` on that ref, and separately the
+> `develop` dispatch above was also the default branch, which step 1 refuses
+> outright. Four observations is not a rule, and the organisation's Actions
+> policy, which would settle it, needs `admin:org` to read.
+>
+> Worth writing down because an unapproved run shows **zero jobs, no logs and
+> no error message**. It looks broken. It is waiting. Check for the approval
+> button before debugging the workflow.
 
 The run, in order:
 
@@ -844,10 +852,10 @@ The run, in order:
 6. fast-forwards `main` and creates the annotated tag.
 
 > **No versioned release has been cut yet**, so steps 1, 2 and 6 have never
-> run. What has is the version-less build below, twice, including the push
-> through the tunnel: the registry holds `20261008T155617Z-273ca16` and
-> `20261009T103500Z-939f7c7` and no `v*` tag. **`main` does not exist on the
-> remote either**, and the first release is what creates it; step 2 passes
+> run. What has is the version-less build, three times, including the push
+> through the tunnel; after the rebuild of 2026-10-16 the registry holds one
+> tag, `20261016T105124Z-299b454`, and no `v*` tag. **`main` does not exist on
+> the remote either**, and the first release is what creates it; step 2 passes
 > against a branch that is not there, because creating it is a fast-forward.
 > Expect the first versioned run to be the one that finds anything wrong
 > with steps 1, 2 and 6, and cut it at a time someone can look at it.
@@ -1607,7 +1615,22 @@ them.
 
         sudo certbot certonly --webroot -w /var/www/certbot -d <public-name> \
           --key-type ecdsa \
-          --deploy-hook /opt/rdp/infrastructure/vm/scripts/ops/cert-deploy-hook.sh
+          --deploy-hook /opt/rdp/infrastructure/vm/scripts/ops/cert-deploy-hook.sh \
+          --non-interactive --agree-tos --email <address>
+
+    The last line matters only on a box with **no ACME account**, which is
+    every genuinely fresh one and any rebuild that removed `/etc/letsencrypt`.
+    Without it certbot prompts for an address and for agreement to the terms;
+    at a terminal that is a question, and over a non-interactive SSH it is a
+    hang with no output. `linode50` never hit this in October 2026 because its
+    first certificate was issued by hand, so the account already existed for
+    every run after.
+
+    **The address is a handover item.** It is where expiry warnings go, so a
+    certificate ILRI owns should not be registered to a Vizzuality one. The
+    rehearsal below used `kevin.sanchez@vizzuality.com` deliberately, because
+    the Linode name is temporary; the certificate issued for the real domain
+    at cutover needs an address ILRI reads.
 
     `<public-name>` must match `SERVER_NAME` in `.env.prod`. Not `--standalone`: it
     binds port 80 itself and would contend with the nginx container. The hook
@@ -1631,6 +1654,19 @@ them.
     and `/en` renders a shell. Restoring the content baseline is a separate
     procedure with its own rehearsal notes; see **Restoring content**.
 
+14. **Install the nightly backup**, which nothing above does and which no
+    failure announces. A box built by following steps 1 to 13 exactly has no
+    backups at all, and the first sign of it is needing one. Create the
+    directory and add the line to the **deploy account's own** crontab, never
+    root's; `crontab` always edits the invoking user's, so the same command
+    under `sudo` writes to an empty root crontab and reports nothing:
+
+        sudo mkdir -p /var/backups/rdp && sudo chown "$USER:$USER" /var/backups/rdp
+        crontab -e   # see RUNBOOK §9 for the line, and §4.1 for how to read it back
+
+    Then run `backup.sh` once by hand and `verify-backup.sh` against what it
+    produced, so the schedule is proven rather than assumed.
+
 ### Then verify
 
 All four routes through nginx, and the certificate the server actually
@@ -1649,6 +1685,42 @@ Not done on this box, deliberately: it has a kernel update pending from
 `unattended-upgrades` and has not been rebooted. Everything is
 `restart: unless-stopped` and `nftables` is enabled at boot, so it should
 come back, but that has not been proven and the reboot is ILRI's to schedule.
+
+### Results of the from-scratch rebuild, 2026-10-16
+
+The whole of the above, run against `linode50` after deleting everything
+GRASS-384 had put on it: all containers, all volumes, every image, `/opt/rdp`,
+`/etc/letsencrypt`, `/var/backups/rdp`, the `rdpci` account and the backup
+cron. 11.9 G reclaimed. ILRI's host baseline was left alone and verified
+intact afterwards, which is why **steps 1 to 4 were not exercised**: Docker,
+the `docker` group, the swapfile and the nftables rules are ILRI's, and
+removing them to prove a procedure would have destroyed their firewall fix and
+their monitoring.
+
+It worked, and the parts worth recording are the ones that did not.
+
+| | |
+|---|---|
+| `.env.prod` rebuilt from `.env.prod.example` and this file alone | every non-secret value came out **identical** to the file that was on the box |
+| Images built in CI from `299b454`, pushed through the tunnel | `feature`/`feature-category` content types, both migrations shipped |
+| Deploy, then `certbot certonly --webroot` | `200 200 200 204`, real Let's Encrypt certificate served |
+| Dump restored, media copied, both rewrites | 0 GCS URLs left, 0 wrong-provider rows |
+| `verify-backup.sh` on the rebuilt box | 4 of 4, **75 tables / 6,114 rows**, matching the dump exactly |
+| Probe against staging | identical slugs, counts, asset hashes, font hashes, optimizer bytes, 23/23 CMS images |
+
+The only probe differences were the migration working: `media host <relative>`
+instead of `storage.googleapis.com`, `gcs-refs=0` instead of 119/103/108, and
+pages 8-9 k smaller because relative upload paths are shorter than absolute
+GCS URLs. nginx also omits `Content-Type` on 307s and the 204 where Cloud Run
+sets it, which is infrastructure, not content.
+
+Three gaps it found, all now fixed above: step 11 prompted for an ACME account
+and would hang unattended; nothing installed the nightly backup, so a box built
+to the letter had none; and `.env.prod` holds the only copy of three
+credentials that cannot be regenerated and lives in the directory a rebuild
+deletes. **Copy it off the box before wiping anything** -- step 6 says to carry
+those three across machine-to-machine, which is only possible if they still
+exist somewhere when you need them.
 
 ## Deferred to phase 2
 
