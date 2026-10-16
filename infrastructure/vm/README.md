@@ -844,21 +844,76 @@ The run, in order:
 
 1. refuses anything that is not `staging`, a well-formed version, and a
    version that does not already exist;
-2. asks the server, with `git push --dry-run`, whether `main` can
-   fast-forward to this commit, and stops if it cannot;
+2. asks whether `production` can fast-forward to this commit, and whether
+   the server would accept the push at all, and stops if either fails;
 3. installs the client, lints, and runs the tests;
 4. builds the three images tagged `v1.2.0` and runs the hygiene check;
-5. pushes them into the registry on the VM;
-6. fast-forwards `main` and creates the annotated tag.
+5. fast-forwards `production`;
+6. pushes the images into the registry on the VM;
+7. creates and pushes the annotated tag.
 
-> **No versioned release has been cut yet**, so steps 1, 2 and 6 have never
-> run. What has is the version-less build, three times, including the push
-> through the tunnel; after the rebuild of 2026-10-16 the registry holds one
-> tag, `20261016T105124Z-299b454`, and no `v*` tag. **`main` does not exist on
-> the remote either**, and the first release is what creates it; step 2 passes
-> against a branch that is not there, because creating it is a fast-forward.
-> Expect the first versioned run to be the one that finds anything wrong
-> with steps 1, 2 and 6, and cut it at a time someone can look at it.
+> **Why that order.** Step 5 is the only step the server can refuse on
+> policy, so it runs before anything touches the VM: a refusal leaves no
+> images behind, and moving `production` is idempotent, so fixing the rule
+> and re-dispatching just works. The tag is last because it is the one thing
+> that blocks a retry -- step 1 refuses a version that already exists, so a
+> tag created before a failed image push would have to be deleted by hand.
+
+#### When a release fails part-way
+
+The order above is chosen so that the answer is almost always **re-dispatch
+the same version**. Work out which step failed and read across:
+
+| Failed at | State left behind | Do |
+| --- | --- | --- |
+| 1–4 (checks, build) | nothing anywhere | fix, re-dispatch |
+| 5 (branch push) | nothing anywhere | fix the rule, re-dispatch |
+| 6 (image push) | `production` moved, no tag, images partial | re-dispatch; the branch push is a no-op fast-forward and the images overwrite |
+| 7 (tag push) | images in place, `production` moved, no tag | re-dispatch, or tag by hand |
+
+Nothing in that table needs an undo, which is the point of the ordering. Two
+things are worth knowing before you need them.
+
+**`production` only moves forward.** With the recommended rules it cannot be
+rewound: `allow_force_pushes: false` refuses a reset and `allow_deletions:
+false` refuses a delete, and `enforce_admins: true` means that holds for you
+too. If a release stops at step 6, `production` sits on a commit whose images
+never reached the registry. That is harmless -- nothing deploys from the
+branch, the VM deploys a tag -- and the fix is to finish the release, not to
+put the branch back.
+
+**A version is spent once its images exist.** Re-dispatching the same version
+overwrites whatever is in the registry under it, which is fine while the
+release never completed and wrong once anyone could roll back to it.
+`registry-gc.sh` only collects tags shaped `<utc-stamp>-<short-sha>`, so a
+version tag's images stay until removed deliberately.
+
+To abandon a completed release rather than retry one, delete the git tag --
+protection does not cover tags, verified on 2026-10-16 with `v1.0.0-rc.1`:
+
+    git push origin ":refs/tags/v1.2.0"
+
+`production` stays where it is; the next release fast-forwards past it. If the
+images must go too, `registry-gc.sh` deletes by digest and unlinks every tag
+on it, so read it before pointing it at a release.
+
+A release that completed and then deployed badly is not a release problem.
+Roll back on the box with the command `deploy-release.sh` prints on the way
+out, which names the previous image tag and touches no git state.
+
+> **Steps 1, 2 and 6 were first exercised on 2026-10-16**, with
+> `v1.0.0-rc.1` cut from `staging` as a rehearsal and then deleted. All three
+> passed: the branch was created exactly equal to `staging` with no merge
+> commit, the tag was annotated, and all three images reached the registry.
+> The release was then deployed by name on the VM and rolled back with the
+> command the deploy script prints, which exercised that path too.
+>
+> It also found why this section now says `production` rather than `main`.
+> A protection rule on `main` required a pull request with no bypass actors,
+> so the release could *create* the branch (`block_creations` was false) but
+> **no later release could update it** -- the release pushes directly, and a
+> PR-protected branch refuses that. The rehearsal release worked and the
+> second one would not have. See "Why a `production` branch".
 
 Deploying is then one name in two places:
 
@@ -878,11 +933,61 @@ for a branch not ready to be promoted.
 
 > **Why fast-forward and not a merge.** A merge commit is not the commit the
 > images were built from, so the version would name two different trees,
-> exactly the drift this is meant to remove. A plain push to `refs/heads/main`
-> is rejected by the server unless it fast-forwards, so the guarantee is
-> enforced by GitHub rather than by this workflow being careful. If it is ever
-> refused, `main` has a commit `staging` does not, and that is worth going to
-> look at rather than forcing past.
+> exactly the drift this is meant to remove. A plain push to
+> `refs/heads/production` is rejected by the server unless it fast-forwards,
+> so the guarantee is enforced by GitHub rather than by this workflow being
+> careful. If it is ever refused, `production` has a commit `staging` does
+> not, and that is worth going to look at rather than forcing past.
+
+> **`git push --dry-run` does not evaluate branch protection**, so step 2
+> does not try to predict whether the push will be accepted. A dry run is
+> enough for "does this fast-forward", because git computes that from the
+> remote's refs. It is useless for "will the server accept this", because
+> protection is a pre-receive hook a dry run never reaches. Measured
+> 2026-10-16 against the protected `main`: `git push --dry-run --delete`
+> printed `- [deleted] main` while the real delete was refused with `GH006`.
+>
+> Reading the protection API instead was tried and removed. It answers for
+> classic rules the token has admin to read and nothing else: not
+> `restrictions`, `lock_branch` or `required_signatures` unless each is
+> coded for, not rulesets at all (measured: `main` is protected and
+> `/rules/branches/main` returns `[]`), and not a 403, where the honest
+> answer is "cannot tell". Every blind spot fails open, which is the wrong
+> direction for a check whose whole job is to catch a refusal.
+>
+> The step order replaces it. The real push runs before any image reaches
+> the VM, so the server answers for every cause at once and a refusal costs
+> a build and leaves nothing behind.
+
+### Protecting `production`
+
+Protect it, but not by restricting who may push. Step 5 pushes as
+`github-actions[bot]`, so a rule that gates pushes on an actor locks out the
+release itself, and adding your own username does not help.
+
+| Safe to enable | Refuses the release |
+| --- | --- |
+| `allow_force_pushes: false` | `required_pull_request_reviews` |
+| `allow_deletions: false` | `restrictions` ("restrict who can push") |
+| `required_linear_history: true` | `lock_branch: true` |
+| `enforce_admins: true` | `required_signatures: true` |
+
+The left column is the recommendation. It gives the only guarantees worth
+having on this branch -- release history cannot be rewritten, erased, or made
+non-linear -- and none of it impedes a fast-forward from the bot. Anything in
+the right column needs `github-actions` added as a bypass or allowed actor,
+or the release stops at step 5 with nothing built and nothing deployed.
+
+> **Hotfixes go through `staging`, not around it.** Step 1 refuses any ref but
+> `staging` and step 2 requires a fast-forward, which together guarantee that
+> everything on the VM was on staging first -- worth more here than usual,
+> because there is no second environment and staging is the only place
+> anything is exercised before it reaches ILRI's box. A commit made directly
+> on `production` gives it history `staging` lacks, and the next ordinary
+> release fails step 2 until someone merges it back. `staging` is unprotected,
+> so the fast path is a direct push to it and a dispatch, then backport to
+> `develop` afterwards. The branch is a record; the VM deploys by image tag,
+> so moving it sooner would not make a fix land sooner.
 
 > **Releases are not garbage-collected.** `registry-gc.sh` only collects tags
 > of the stamped shape, so `v1.2.0` stays until someone removes it. That is
@@ -897,14 +1002,38 @@ for a branch not ready to be promoted.
 > is the stronger gate: `next.config.mjs` does not set `ignoreBuildErrors`,
 > so `next build` type-checks the whole client.
 
-> **`main` and Cloud Run.** Creating `main` would have switched on
-> `main.yml`'s push trigger, which maps that branch to
-> `ENVIRONMENT=PRODUCTION` and deploys to GCP. GCP production was never
-> provisioned (`module "production"` is commented out in
-> `infrastructure/base/main.tf`), so all three jobs would fail on missing
-> `TF_PRODUCTION_*` secrets. `main` has been removed from that trigger;
-> `staging` is untouched. Production is this VM now, and the role left for
-> `main` is to record what was released to it.
+### Why a `production` branch
+
+The release branch was `main` until 2026-10-16. Three reasons it is not:
+
+- **A PR-protected `main` cannot be fast-forwarded by a workflow.** The rule
+  on it required one approving review with no bypass users, teams **or apps**,
+  so `github-actions` could not push it either. Creating the branch was
+  allowed (`block_creations` false) and updating it was not, so the first
+  release succeeded and every later one would have failed on that push. At
+  the time it ran after the image pushes, so it would also have left three
+  images in the registry naming a release that did not exist; that is why
+  the branch push now runs before them.
+- **It removes a special case.** `main.yml` read
+  `branch == 'main' && 'PRODUCTION' || branch_upper`, which existed only
+  because the branch was named `main` while the environment is `PRODUCTION`.
+  A branch named `production` uppercases correctly on its own.
+- **It says what is true.** Production is this VM. `develop` / `staging` /
+  `production` is a legible ladder; `main` beside them invites the assumption
+  that it is the default branch, which is `develop`.
+
+> **`production` and Cloud Run.** The name now maps to
+> `ENVIRONMENT=PRODUCTION` through `branch_upper`, and GCP production was
+> never provisioned (`module "production"` is commented out in
+> `infrastructure/base/main.tf`), so a `main.yml` run from this branch would
+> fail several steps later on missing `TF_PRODUCTION_*` secrets, reading like
+> a broken configuration. Push triggers there are limited to `staging`, so
+> only a dispatch could reach it, and `main.yml` now refuses that branch
+> outright with a message naming this workflow instead.
+
+> **`production` needs `github-actions` as a bypass actor** if it is protected
+> with a pull-request requirement, or step 5 cannot push it. See "Protecting
+> `production`" for which rules are safe to enable.
 
 ### Reaching a registry that is bound to loopback
 
@@ -1585,8 +1714,8 @@ them.
     `.github/workflows/generate-release.yml`, with a version. The run waits
     for a human to approve it before any job starts; see **Generating a
     release** for why and what it looks like. It builds, tests, pushes
-    `v1.0.0` into the registry through the tunnel, fast-forwards `main` and
-    tags it. See **Generating a release**. Then, on the VM:
+    `v1.0.0` into the registry through the tunnel, fast-forwards
+    `production` and tags it. See **Generating a release**. Then, on the VM:
 
         cd /opt/rdp && git fetch --tags && git checkout v1.0.0
         RELEASE_TAG=v1.0.0 SKIP_BUILD=1 \
