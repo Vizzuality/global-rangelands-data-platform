@@ -8,6 +8,8 @@ import FeatureDetailPage from "@/containers/features/feature-detail";
 import { CATEGORY_ORDER } from "@/containers/features/categories";
 import { getTranslations } from "@/i18n";
 import { getFeatureCategories } from "@/types/generated/feature-category";
+import { getFeatures } from "@/types/generated/feature";
+import { getFeatureDetailParams } from "@/containers/features/feature-detail/get-feature-detail-params";
 
 /**
  * Populate shape must match `useFeatureCategory`'s client params exactly — the
@@ -32,6 +34,15 @@ async function getFeatureCategoriesListOrNotFound() {
   } catch (error) {
     console.error("Failed to load feature categories:", error);
     notFound();
+  }
+}
+
+async function getInitialFeature(slug: string) {
+  try {
+    return await getFeatures(getFeatureDetailParams(slug));
+  } catch (error) {
+    console.error("Failed to prefetch feature:", error);
+    return undefined;
   }
 }
 
@@ -76,10 +87,17 @@ export default async function FeatureDetailRoute(props: {
     notFound();
   }
 
+  const initialFeatureData = await getInitialFeature(slug);
+
   return (
     <div className="h-auto min-h-screen w-full overflow-x-hidden">
       <Header />
-      <FeatureDetailPage category={category} slug={slug} initialCategoryData={response} />
+      <FeatureDetailPage
+        category={category}
+        slug={slug}
+        initialCategoryData={response}
+        initialFeatureData={initialFeatureData}
+      />
       <Footer />
     </div>
   );

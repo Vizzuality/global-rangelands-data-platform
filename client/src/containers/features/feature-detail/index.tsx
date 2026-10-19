@@ -6,7 +6,10 @@ import { ArrowLeft } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { useGetFeatures } from "@/types/generated/feature";
-import type { FeatureCategoryListResponse } from "@/types/generated/strapi.schemas";
+import type {
+  FeatureCategoryListResponse,
+  FeatureListResponse,
+} from "@/types/generated/strapi.schemas";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
 import { cmsImageSrc } from "@/lib/cms";
 import ChampionHero from "@/components/champion-hero";
@@ -17,12 +20,14 @@ import FurtherInfo from "@/containers/features/detail/further-info";
 import { getCategoryTheme } from "@/containers/features/theme";
 import { useFeatureCategory } from "@/containers/features/use-feature-category";
 import FeatureBody from "./feature-body";
+import { getFeatureDetailParams } from "./get-feature-detail-params";
 import KeepExploringGrid from "./keep-exploring-grid";
 
 type FeatureDetailPageProps = {
   category: string;
   slug: string;
   initialCategoryData?: FeatureCategoryListResponse;
+  initialFeatureData?: FeatureListResponse;
 };
 
 function getSectionTopClassName(isChampion: boolean): string {
@@ -37,18 +42,18 @@ function getDescriptionColumnClassName(isChampion: boolean): string {
   return isChampion ? "max-w-[656px] space-y-6" : "max-w-2xl space-y-8";
 }
 
-const FeatureDetailPage = ({ category, slug, initialCategoryData }: FeatureDetailPageProps) => {
+const FeatureDetailPage = ({
+  category,
+  slug,
+  initialCategoryData,
+  initialFeatureData,
+}: FeatureDetailPageProps) => {
   const locale = useLocale();
   const theme = getCategoryTheme(category);
 
-  const { data: featureData } = useGetFeatures(
-    {
-      filters: { slug: { $eq: slug } },
-      populate: ["image", "document", "translations", "further_information"],
-      "pagination[limit]": 1,
-    },
-    { query: { enabled: !!slug } },
-  );
+  const { data: featureData } = useGetFeatures(getFeatureDetailParams(slug), {
+    query: { enabled: !!slug, initialData: initialFeatureData },
+  });
 
   const activeCategory = useFeatureCategory(category, initialCategoryData);
 
