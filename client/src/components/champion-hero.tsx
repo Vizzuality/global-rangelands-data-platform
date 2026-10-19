@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { cmsImageSrc } from "@/lib/cms";
+import { cn } from "@/lib/utils";
 
 type ChampionHeroProps = {
   title?: string;
@@ -17,8 +18,13 @@ const ChampionHero = ({ title, subtitle, location, imageUrl, imageCaption }: Cha
       {subtitle && <p className="font-sans text-base font-medium leading-6">{subtitle}</p>}
       {location && <p className="font-sans text-base font-normal leading-7">From {location}</p>}
     </div>
-    {imageUrl && (
-      <div className="relative h-[356px] w-full md:w-[328px] md:shrink-0">
+    <div
+      className={cn(
+        "relative h-[356px] w-full md:w-[328px] md:shrink-0",
+        !imageUrl && "hidden md:block",
+      )}
+    >
+      {imageUrl && (
         <Image
           src={cmsImageSrc(imageUrl)}
           alt={title ?? ""}
@@ -26,13 +32,13 @@ const ChampionHero = ({ title, subtitle, location, imageUrl, imageCaption }: Cha
           className="object-cover"
           unoptimized
         />
-        {imageCaption && (
-          <span className="absolute bottom-2 left-2 rounded bg-foreground/60 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
-            {imageCaption}
-          </span>
-        )}
-      </div>
-    )}
+      )}
+      {imageUrl && imageCaption && (
+        <span className="absolute bottom-2 left-2 rounded bg-foreground/60 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
+          {imageCaption}
+        </span>
+      )}
+    </div>
   </div>
 );
 
