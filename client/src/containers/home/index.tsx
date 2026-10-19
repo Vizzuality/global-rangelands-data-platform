@@ -1,6 +1,7 @@
 import { AboutVideo } from "./sections/about-video";
 import { Hero } from "./sections/hero";
 import { Livestock } from "./sections/livestock";
+import { Partners } from "./sections/partners";
 import { Resources } from "./sections/resources";
 import { Stelarr } from "./sections/stelarr";
 import { FeaturesCards } from "./sections/features-cards";
@@ -13,8 +14,9 @@ const Home = () => {
       <Stelarr />
       <Livestock />
       <FeaturesCards />
-      <AboutVideo />
       <Resources />
+      <AboutVideo />
+      <Partners />
       <Threat />
     </div>
   );

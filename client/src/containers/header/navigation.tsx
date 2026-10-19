@@ -27,12 +27,14 @@ const HeaderNavigation = () => {
 
   const isMap = pathname === "/map" || pathname.startsWith("/map/");
   const isFeatures = pathname.startsWith("/features");
-  const whiteChrome = isMap || isFeatures;
+  const isPartners = pathname.startsWith("/partners");
+  const isOverlayHeader = isFeatures || isPartners;
+  const whiteChrome = isMap || isOverlayHeader;
   const featureCategory = isFeatures ? pathname.split("/")[2] : undefined;
 
   const getChromeClassName = () => {
     if (featureCategory) return getCategoryTheme(featureCategory).chromeText;
-    if (isMap) return "text-white";
+    if (isMap || isPartners) return "text-white";
     return "text-foreground";
   };
   const chromeClassName = getChromeClassName();
@@ -51,7 +53,7 @@ const HeaderNavigation = () => {
       <div
         className={cn(
           "z-50",
-          isFeatures
+          isOverlayHeader
             ? "absolute inset-x-0 top-0 bg-transparent"
             : "relative bg-brown-light bg-[url(/images/header-pattern.png)] bg-contain bg-repeat-x",
         )}
