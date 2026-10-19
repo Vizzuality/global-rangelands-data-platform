@@ -3,13 +3,18 @@
 import { useCallback, useRef, useState } from "react";
 
 import { useTranslations } from "@/i18n";
-import RichText from "@/components/ui/rich-text";
+import RichText, { type RichTextVariant } from "@/components/ui/rich-text";
 
 type FeatureBodyProps = {
   description: string;
+  variant?: RichTextVariant;
 };
 
-const FeatureBody = ({ description }: FeatureBodyProps) => {
+function getRichTextClassName(variant: RichTextVariant): string | undefined {
+  return variant === "feature" ? "text-champion-ink [&>h2:nth-of-type(2)+*]:!mt-2" : undefined;
+}
+
+const FeatureBody = ({ description, variant = "default" }: FeatureBodyProps) => {
   const t = useTranslations();
   const [expanded, setExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
@@ -38,7 +43,9 @@ const FeatureBody = ({ description }: FeatureBodyProps) => {
           expanded ? "text-body-16-loose" : "max-h-[592px] overflow-hidden text-body-16-loose"
         }
       >
-        <RichText>{description}</RichText>
+        <RichText variant={variant} className={getRichTextClassName(variant)}>
+          {description}
+        </RichText>
       </div>
 
       {(isOverflowing || expanded) && (

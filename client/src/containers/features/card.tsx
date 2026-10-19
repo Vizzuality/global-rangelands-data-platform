@@ -13,9 +13,16 @@ type FeatureCardProps = {
   categoryTitle?: string;
   searchParams: string;
   variant: string;
+  showImage?: boolean;
 };
 
-const FeatureCard = ({ feature, categoryTitle, searchParams, variant }: FeatureCardProps) => {
+const FeatureCard = ({
+  feature,
+  categoryTitle,
+  searchParams,
+  variant,
+  showImage = true,
+}: FeatureCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
 
@@ -33,7 +40,7 @@ const FeatureCard = ({ feature, categoryTitle, searchParams, variant }: FeatureC
         href={`/map/feature/${featureSlug}${searchParams}`}
         categoryTitle={categoryTitle}
         title={localizedTitle ?? t("Untitled")}
-        imageUrl={imageAttrs?.url}
+        imageUrl={showImage ? imageAttrs?.url : undefined}
         imageFormats={imageAttrs?.formats}
         imageAlt={imageAttrs?.alternativeText ?? localizedTitle ?? ""}
         imageCaption={imageAttrs?.caption}

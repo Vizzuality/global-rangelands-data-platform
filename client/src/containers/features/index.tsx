@@ -16,6 +16,7 @@ import {
   CATEGORY_TITLE_DEFAULT_COLOR,
   FEATURE_CARD_DEFAULT_VARIANT,
   FEATURE_CARD_VARIANTS,
+  isChampionCategory,
 } from "./categories";
 
 type FeatureItem = NonNullable<FeatureCategory["features"]>[number];
@@ -152,6 +153,7 @@ const CategoryFeatures = ({
             categoryTitle={title}
             searchParams={searchParams}
             variant={variant}
+            showImage={!isChampionCategory(slug ?? "")}
           />
         ))}
       </div>

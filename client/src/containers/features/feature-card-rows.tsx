@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import type { FeatureCategory } from "@/types/generated/strapi.schemas";
 
+import { isChampionCategory } from "./categories";
 import { getCategoryTheme } from "./theme";
 import LandingFeatureCard from "./landing/feature-card";
 
@@ -50,7 +51,11 @@ const FeatureCardRows = ({ features, category }: FeatureCardRowsProps) => {
             className={cn("hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
           />
           {Array.from({ length: CARDS_PER_ROW - row.length }).map((_, spacerIndex) => (
-            <div key={`spacer-${spacerIndex}`} aria-hidden className="hidden flex-1 sm:block" />
+            <div
+              key={`spacer-${spacerIndex}`}
+              aria-hidden
+              className={cn("hidden flex-1 sm:block", isChampionCategory(category) && "sm:ml-2")}
+            />
           ))}
         </div>
       ))}

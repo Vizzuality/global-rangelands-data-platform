@@ -123,7 +123,7 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
           </div>
         </section>
 
-        <section className="container mx-auto px-6 pb-16 pt-20 xl:px-[100px]">
+        <section className={cn("container mx-auto px-6 pb-16 pt-20", theme.sectionPaddingX)}>
           <FeatureCardRows features={features} category={category} />
           {features.length === 0 && (
             <p className="mx-auto max-w-md rounded-lg bg-white px-6 py-8 text-center text-green-dark">
