@@ -507,6 +507,29 @@ someone runs the commands above.
 without removing it. Run the dry run first. It only ever deletes tags
 matching the release timestamp format, but seeing the list costs nothing.
 
+> **Rehearsed 2026-10-19.** Until then the collector had only ever reported
+> "keeping all" -- the retention path had never run. Exercised with a
+> fixture on `rdp-tiler`: two stamped tags on throwaway images with their
+> own digests, two more pointing at the live image's digest, and `KEEP=2`.
+> Both paths behaved: the two unique digests were deleted, the tag sharing
+> the live digest printed *"shares a digest with a kept tag, leaving it"*,
+> and the live image still returned 200 and pulled afterwards. The
+> collateral-damage case the code guards against is therefore guarded in
+> fact, not just in intent.
+>
+> **A tag that shares a digest cannot be unlinked on its own.** The registry
+> API deletes by digest and takes every tag on it, so removing one such tag
+> means deleting the digest -- which empties the lot, observed as
+> `"tags":null` -- and then re-pushing the one to keep from the local image
+> store. That is how the fixture above was cleaned up.
+>
+> Which puts §6's ordering slightly at odds with itself: `docker image
+> prune -a` is listed before `registry-gc.sh`, and it deletes exactly the
+> local copies that make a re-push possible. Nothing on the VM can rebuild
+> an image, so with both stores emptied the only way back is a CI run. If
+> you are going to delete manifests by hand, do it before the prune, or
+> check `docker images` first.
+
 Container logs do not need clearing; they are capped (§1.2).
 
 **Never delete** the `rdp-prod_pgdata` or `rdp-prod_media` volumes. See §8.
@@ -748,13 +771,18 @@ Open items that an operator cannot resolve alone:
   ILRI side under GRASS-384.
 
 - **The host was under Ansible management; ILRI exempted it on 2026-10-09.**
-  `/etc/letsencrypt/renewal-hooks/{pre,post}/` carry files stamped *managed
-  by Ansible*, pushed from `masita.server.com` in June. They stop and start
-  `apache2`, which is not installed here, so they are inert: renewal
-  succeeds with them in place, which was checked. But that role expects a
-  host apache and the stop-renew-start model, not our `--webroot` one, and
-  nothing in the playbook knows about Docker, `/opt/rdp`, the swapfile or the
-  firewall rules. Edwin took the host out of Ansible rather than add them.
+  `/etc/letsencrypt/renewal-hooks/{pre,post}/` used to carry files stamped
+  *managed by Ansible*, pushed from `masita.server.com` in June. They
+  stopped and started `apache2`, which is not installed here, so they were
+  inert. That role expects a host apache and the stop-renew-start model, not
+  our `--webroot` one, and nothing in the playbook knows about Docker,
+  `/opt/rdp`, the swapfile or the firewall rules. Edwin took the host out of
+  Ansible rather than add them.
+
+  **Both directories are now empty (checked 2026-10-19).** Someone removed
+  the files, presumably Edwin alongside the exemption, but that has not been
+  confirmed and it is worth asking: an unexplained change to this path is
+  indistinguishable from a playbook that still reaches the host.
 
   The exemption is inventory policy, so treat it as reversible. The file to
   watch is `/etc/letsencrypt/renewal/<public-name>.conf`: it carries the
@@ -763,6 +791,14 @@ Open items that an operator cannot resolve alone:
   expiring certificate (§5.1). Confirmed present 2026-10-09. A Zabbix
   certificate-expiry check on the served port catches it either way, which is
   why it is first in the list above.
+- **The ACME account has no contact address (checked 2026-10-19).**
+  `certbot show_account` reports `Email contact: none`, so Let's Encrypt has
+  nowhere to send expiry or problem notices. Combined with §5, where renewal
+  failures are already silent, there is currently no channel at all for a
+  certificate problem -- which is why the Zabbix expiry check leads the list
+  above. The certificate issued for the real domain at cutover needs an
+  address ILRI reads; `certbot update_account --email <address>` sets it.
+
 - **Backups are on the same disk as the data they protect.** That is not a
   backup against disk loss. Where off-box copies go, who can read them and
   how long they are kept is an ILRI decision, and it determines the retention
