@@ -69,11 +69,26 @@ export IMAGE_TAG="$RELEASE_TAG"
 # generate-release.yml, and a stamped tag from an ad-hoc run of this script.
 previous=$($COMPOSE ps --format '{{.Image}}' 2>/dev/null \
            | grep -oE 'rdp-client:[^ ]+' | cut -d: -f2 | head -1 || true)
+# A rollback also needs the checkout moved. nginx.conf, the templates and
+# healthcheck.js are bind-mounted from the working tree, not baked into the
+# images, so rolling the images back alone leaves the NEWER config mounted
+# against older images -- in a real rollback, the config you are rolling back
+# from. A release tag is checkoutable by name; a stamped tag is not, but it
+# carries the short sha after the last dash.
 case "$previous" in
-  [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]T[0-9][0-9][0-9][0-9][0-9][0-9]Z-*) ;;
-  v[0-9]*) ;;
-  *) previous="" ;;
+  [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]T[0-9][0-9][0-9][0-9][0-9][0-9]Z-*)
+    previous_ref="${previous##*-}" ;;
+  v[0-9]*)
+    previous_ref="$previous" ;;
+  *) previous=""; previous_ref="" ;;
 esac
+
+rollback_hint() {
+  [ -n "$previous" ] || return 0
+  echo "roll back with:"
+  echo "  git checkout ${previous_ref}"
+  echo "  RELEASE_TAG=${previous} SKIP_BUILD=1 $0"
+}
 
 echo "=============================================="
 echo " release ${IMAGE_TAG}"
@@ -187,11 +202,11 @@ check /cms/_health 204
 echo
 if [ "$fail" -ne 0 ]; then
   echo "RELEASE FAILED smoke test: ${fail} check(s)"
-  [ -n "$previous" ] && echo "roll back with: RELEASE_TAG=${previous} SKIP_BUILD=1 $0"
+  rollback_hint
   exit 1
 fi
 
 echo "released ${IMAGE_TAG}"
-if [ -n "$previous" ] && [ "$previous" != "$IMAGE_TAG" ]; then
-  echo "roll back with: RELEASE_TAG=${previous} SKIP_BUILD=1 $0"
+if [ "$previous" != "$IMAGE_TAG" ]; then
+  rollback_hint
 fi

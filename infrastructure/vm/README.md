@@ -915,6 +915,28 @@ out, which names the previous image tag and touches no git state.
 > PR-protected branch refuses that. The rehearsal release worked and the
 > second one would not have. See "Why a `production_vm` branch".
 
+> **Rehearsed end to end on 2026-10-19**, two releases rather than one,
+> because one proves nothing: `block_creations` being false means a release
+> can *create* a protected branch under rules that forbid updating it, so a
+> single green run exercises only the path that already worked.
+>
+> `v1.0.0-rc.2` from `staging` at `4476454` created `production_vm`.
+> `production_vm` was then protected with the rules in "Protecting
+> `production_vm`", `staging` advanced one commit, and `v1.0.0-rc.3` pushed
+> `de9c7f8` on top -- **a direct push from `github-actions[bot]` updating a
+> protected branch with `enforce_admins: true`**, which is the operation
+> that would have been refused on `main` and had never run. It succeeded,
+> history stayed linear, and in both runs the branch push completed before
+> the tunnel opened. rc2 was deployed on the VM, rc3 deployed over it, and a
+> rollback to rc2 returned the stack to healthy.
+>
+> That rollback found one thing: the hint the deploy script prints named
+> only `RELEASE_TAG`, so it rolled the images back and left the checkout on
+> the newer release -- and with it the bind-mounted `nginx.conf`, templates
+> and `healthcheck.js`. Harmless between rc2 and rc3, where only this file
+> differed, but a rollback is precisely when it would not be. The hint now
+> prints the `git checkout` as well.
+
 Deploying is then one name in two places:
 
     cd /opt/rdp
