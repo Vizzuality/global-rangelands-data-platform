@@ -17,6 +17,8 @@ export type CategoryTheme = {
   headerGradient: string;
   /** Text-stroke utility painting the page background color around section headings. */
   chromeStroke: string;
+  /** Desktop horizontal padding of the content sections, which sets the width of the accent bars + white card row. */
+  sectionPaddingX: string;
 };
 
 type CategoryPalette = Omit<CategoryTheme, "cardVariant">;
@@ -30,6 +32,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     patternColor: "bg-green-medium",
     headerGradient: "from-brown-dark",
     chromeStroke: "[-webkit-text-stroke:2px_theme(colors.brown-dark)] [paint-order:stroke_fill]",
+    sectionPaddingX: "xl:px-[100px]",
   },
   "restoration-investments": {
     pageBackground: "bg-orange-bright",
@@ -39,6 +42,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     patternColor: "bg-brown-dark",
     headerGradient: "from-orange-bright",
     chromeStroke: "[-webkit-text-stroke:2px_theme(colors.orange-bright)] [paint-order:stroke_fill]",
+    sectionPaddingX: "xl:px-[100px]",
   },
   "restoration-champions": {
     pageBackground: "bg-green-light",
@@ -48,6 +52,7 @@ const PALETTES: Record<string, CategoryPalette> = {
     patternColor: "bg-green-medium",
     headerGradient: "from-green-light",
     chromeStroke: "[-webkit-text-stroke:2px_theme(colors.green-light)] [paint-order:stroke_fill]",
+    sectionPaddingX: "xl:px-[88px]",
   },
 };
 

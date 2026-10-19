@@ -6,35 +6,54 @@ import { ArrowLeft } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { useGetFeatures } from "@/types/generated/feature";
-import type { FeatureCategoryListResponse } from "@/types/generated/strapi.schemas";
+import type {
+  FeatureCategoryListResponse,
+  FeatureListResponse,
+} from "@/types/generated/strapi.schemas";
 import { DEFAULT_LOCALE } from "@/i18n/routing";
 import { cmsImageSrc } from "@/lib/cms";
+import ChampionHero from "@/components/champion-hero";
 import FeatureDocumentLink from "@/components/feature-document-link";
 import { cn } from "@/lib/utils";
+import { isChampionCategory } from "@/containers/features/categories";
 import FurtherInfo from "@/containers/features/detail/further-info";
 import { getCategoryTheme } from "@/containers/features/theme";
 import { useFeatureCategory } from "@/containers/features/use-feature-category";
 import FeatureBody from "./feature-body";
+import { getFeatureDetailParams } from "./get-feature-detail-params";
 import KeepExploringGrid from "./keep-exploring-grid";
 
 type FeatureDetailPageProps = {
   category: string;
   slug: string;
   initialCategoryData?: FeatureCategoryListResponse;
+  initialFeatureData?: FeatureListResponse;
 };
 
-const FeatureDetailPage = ({ category, slug, initialCategoryData }: FeatureDetailPageProps) => {
+function getSectionTopClassName(isChampion: boolean): string {
+  return isChampion ? "pt-20" : "pt-16";
+}
+
+function getCardPaddingYClassName(isChampion: boolean): string {
+  return isChampion ? "pb-[120px] pt-20" : "py-16";
+}
+
+function getDescriptionColumnClassName(isChampion: boolean): string {
+  return isChampion ? "max-w-[656px] space-y-6" : "max-w-2xl space-y-8";
+}
+
+const FeatureDetailPage = ({
+  category,
+  slug,
+  initialCategoryData,
+  initialFeatureData,
+}: FeatureDetailPageProps) => {
   const locale = useLocale();
   const theme = getCategoryTheme(category);
 
-  const { data: featureData } = useGetFeatures(
-    {
-      filters: { slug: { $eq: slug } },
-      populate: ["image", "document", "translations", "further_information"],
-      "pagination[limit]": 1,
-    },
-    { query: { enabled: !!slug } },
-  );
+  const { data: featureData } = useGetFeatures(getFeatureDetailParams(slug), {
+    query: { enabled: !!slug, initialData: initialFeatureData },
+  });
 
   const activeCategory = useFeatureCategory(category, initialCategoryData);
 
@@ -51,6 +70,7 @@ const FeatureDetailPage = ({ category, slug, initialCategoryData }: FeatureDetai
 
   const imageUrl = feature?.image?.url;
   const imageCaption = feature?.image?.caption;
+  const isChampion = isChampionCategory(category);
 
   return (
     <main
@@ -72,11 +92,24 @@ const FeatureDetailPage = ({ category, slug, initialCategoryData }: FeatureDetai
         )}
       />
       <div className="relative">
-        <section className="container mx-auto px-6 pt-16 xl:px-[100px]">
+        <section
+          className={cn(
+            "container mx-auto px-6",
+            theme.sectionPaddingX,
+            getSectionTopClassName(isChampion),
+          )}
+        >
           <div className="flex items-stretch justify-center">
             <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
-            <div className="relative z-10 min-w-0 flex-1 space-y-8 bg-white px-6 py-16 xl:px-24">
-              <div className="flex flex-col items-center gap-6 text-center">
+            <div
+              className={cn(
+                "relative z-10 min-w-0 flex-1 space-y-8 bg-white px-6 xl:px-24",
+                getCardPaddingYClassName(isChampion),
+              )}
+            >
+              <div
+                className={cn("flex flex-col items-center gap-6 text-center", isChampion && "pb-4")}
+              >
                 <Link
                   href={`/features/${category}`}
                   className="inline-flex items-center gap-1 text-xs font-medium uppercase text-green-dark underline underline-offset-2 hover:text-green-light"
@@ -85,33 +118,52 @@ const FeatureDetailPage = ({ category, slug, initialCategoryData }: FeatureDetai
                   {categoryTitle}
                 </Link>
 
-                {title && (
+                {!isChampion && title && (
                   <h1 className="max-w-2xl font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl">
                     {title}
                   </h1>
                 )}
               </div>
 
-              {imageUrl && (
-                <div className="relative -mx-6 h-[420px] xl:-mx-24">
-                  <Image
-                    src={cmsImageSrc(imageUrl)}
-                    alt={title ?? ""}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                  {imageCaption && (
-                    <span className="absolute bottom-2 left-2 rounded bg-foreground/60 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
-                      {imageCaption}
-                    </span>
-                  )}
-                </div>
+              {isChampion ? (
+                <ChampionHero
+                  title={title}
+                  subtitle={feature?.subtitle}
+                  location={feature?.location}
+                  imageUrl={imageUrl}
+                  imageCaption={imageCaption}
+                />
+              ) : (
+                imageUrl && (
+                  <div className="relative -mx-6 h-[420px] xl:-mx-24">
+                    <Image
+                      src={cmsImageSrc(imageUrl)}
+                      alt={title ?? ""}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                    {imageCaption && (
+                      <span className="absolute bottom-2 left-2 rounded bg-foreground/60 px-2.5 text-[10px] leading-6 text-white backdrop-blur-sm">
+                        {imageCaption}
+                      </span>
+                    )}
+                  </div>
+                )
               )}
 
-              <div className="mx-auto max-w-2xl space-y-8">
+              <div className={cn("mx-auto", getDescriptionColumnClassName(isChampion))}>
                 <FeatureDocumentLink document={feature?.document} slug={slug} variant="page" />
-                {description && <FeatureBody key={slug} description={description} />}
+                {description && (
+                  <FeatureBody
+                    key={slug}
+                    description={description}
+                    variant={isChampion ? "feature" : "default"}
+                  />
+                )}
+                {isChampion && (
+                  <FeatureDocumentLink document={feature?.document} slug={slug} variant="page" />
+                )}
                 <FurtherInfo items={feature?.further_information ?? []} locale={locale} />
               </div>
             </div>
@@ -119,7 +171,7 @@ const FeatureDetailPage = ({ category, slug, initialCategoryData }: FeatureDetai
           </div>
         </section>
 
-        <section className="container mx-auto px-6 py-16 xl:px-[100px]">
+        <section className={cn("container mx-auto px-6 py-16", theme.sectionPaddingX)}>
           <KeepExploringGrid category={category} slug={slug} />
         </section>
       </div>

@@ -43,7 +43,7 @@ const FeatureDescription = ({ description }: FeatureDescriptionProps) => {
           expanded ? "text-sm leading-6" : "max-h-[560px] overflow-hidden text-sm leading-6"
         }
       >
-        <RichText>{description}</RichText>
+        <RichText variant="feature">{description}</RichText>
       </div>
 
       {(isOverflowing || expanded) && (

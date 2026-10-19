@@ -4,6 +4,10 @@ export const CATEGORY_ORDER: string[] = [
   "restoration-champions",
 ];
 
+export function isChampionCategory(slug: string): boolean {
+  return slug === "restoration-champions";
+}
+
 export const FEATURE_CATEGORY_LABELS: Record<string, string> = {
   "rangelands-stories": "Rangelands Stories",
   "restoration-investments": "Restoration Investments",
