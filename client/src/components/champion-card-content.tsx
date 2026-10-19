@@ -10,7 +10,7 @@ type ChampionCardContentProps = {
 const ChampionCardContent = ({ href, title, subtitle, location }: ChampionCardContentProps) => (
   <Link
     href={href}
-    className="flex h-full min-h-[210px] flex-col justify-between gap-6 bg-white p-8 text-champion-ink focus-visible:underline focus-visible:outline-none"
+    className="flex h-full min-h-[210px] w-full min-w-0 flex-col justify-between gap-6 break-words bg-white p-8 text-champion-ink focus-visible:underline focus-visible:outline-none"
   >
     <div className="text-base leading-6">
       <h3 className="font-medium">{title}</h3>

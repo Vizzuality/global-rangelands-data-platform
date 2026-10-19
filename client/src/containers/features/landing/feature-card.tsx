@@ -31,7 +31,7 @@ const LandingFeatureCard = ({ feature, category, variant, className }: LandingFe
 
   if (isChampionCategory(category)) {
     return (
-      <article className={cn("group relative flex", className)}>
+      <article className={cn("group relative flex min-w-0", className)}>
         <ChampionCardContent
           href={`/features/${category}/${featureSlug}`}
           title={localizedTitle ?? t("Untitled")}
