@@ -816,13 +816,20 @@ Open items that an operator cannot resolve alone:
   expiring certificate (§5.1). Confirmed present 2026-10-09. A Zabbix
   certificate-expiry check on the served port catches it either way, which is
   why it is first in the list above.
-- **The ACME account has no contact address (checked 2026-10-19).**
-  `certbot show_account` reports `Email contact: none`, so Let's Encrypt has
-  nowhere to send expiry or problem notices. Combined with §5, where renewal
-  failures are already silent, there is currently no channel at all for a
-  certificate problem -- which is why the Zabbix expiry check leads the list
-  above. The certificate issued for the real domain at cutover needs an
-  address ILRI reads; `certbot update_account --email <address>` sets it.
+- **No address can be registered for certificate notices, so the Zabbix
+  expiry check is the only mechanism.** `certbot show_account` reports
+  `Email contact: none` (checked 2026-10-19), and that is not an oversight
+  to correct: Let's Encrypt ended expiration notification emails on
+  2025-06-04 and no longer stores the address with the account at all --
+  an address given to the ACME API is forwarded to ISRG's mailing list
+  system, unassociated with the account. `certbot update_account --email`
+  therefore buys a mailing-list subscription, not monitoring.
+
+  Combined with §5, where renewal failures are already silent, that leaves
+  **no channel whatsoever** for a certificate problem, and no ILRI decision
+  that would create one. The certificate-expiry check at the top of this
+  section is not the best of several options; it is the only one. Treat it
+  as a prerequisite for cutover rather than a nice-to-have.
 
 - **Backups are on the same disk as the data they protect.** That is not a
   backup against disk loss. Where off-box copies go, who can read them and
