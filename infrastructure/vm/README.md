@@ -965,18 +965,36 @@ Protect it, but not by restricting who may push. Step 5 pushes as
 `github-actions[bot]`, so a rule that gates pushes on an actor locks out the
 release itself, and adding your own username does not help.
 
-| Safe to enable | Refuses the release |
-| --- | --- |
-| `allow_force_pushes: false` | `required_pull_request_reviews` |
-| `allow_deletions: false` | `restrictions` ("restrict who can push") |
-| `required_linear_history: true` | `lock_branch: true` |
-| `enforce_admins: true` | `required_signatures: true` |
+In Settings -> Branches -> Add branch protection rule, pattern
+`production_vm`, **tick two boxes and leave every other box alone**:
 
-The left column is the recommendation. It gives the only guarantees worth
-having on this branch -- release history cannot be rewritten, erased, or made
-non-linear -- and none of it impedes a fast-forward from the bot. Anything in
-the right column needs `github-actions` added as a bypass or allowed actor,
-or the release stops at step 5 with nothing built and nothing deployed.
+- [x] Require linear history
+- [x] Do not allow bypassing the above settings
+
+Everything else stays unticked, including the two at the foot of the form
+under *Rules applied to everyone including administrators*:
+
+- [ ] Allow force pushes -- leaving it unticked **is** the protection
+- [ ] Allow deletions -- likewise
+
+Note the polarity. The API calls these `allow_force_pushes: false` and
+`allow_deletions: false`, so they read as restrictions you switch on, while
+the form exposes them as permissions you switch off. There is no checkbox
+named "do not allow force pushes"; looking for one wastes a few minutes.
+
+These refuse the release if ticked, because step 5 pushes as
+`github-actions[bot]` and each of them gates pushes on who is pushing:
+
+| Checkbox | API field |
+| --- | --- |
+| Require a pull request before merging | `required_pull_request_reviews` |
+| Restrict who can push to matching branches | `restrictions` |
+| Lock branch | `lock_branch` |
+| Require signed commits | `required_signatures` |
+
+Adding your own username to a bypass or allow list does not help: the pusher
+is the app, so the entry has to be the `github-actions` **app**. Otherwise
+the release stops at step 5 with nothing built and nothing deployed.
 
 > **Hotfixes go through `staging`, not around it.** Step 1 refuses any ref but
 > `staging` and step 2 requires a fast-forward, which together guarantee that
