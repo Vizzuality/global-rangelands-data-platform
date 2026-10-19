@@ -699,9 +699,34 @@ this table can change without a commit here.
 **Nothing else is scheduled.** The three reclaim commands in §6 in particular
 are not: the build cache, the unused images and the old release tags all
 accumulate until an operator runs them. That is deliberate rather than an
-oversight: measured 2026-10-09, the disk had 128 G free and the registry held
-two tags per repository against a retention of ten, so the collector would
-delete nothing and stop the registry to do it. Revisit when either changes.
+oversight: re-measured 2026-10-19, the disk had 137 G free and the registry
+held one tag per repository against a retention of ten, so the collector
+would delete nothing and stop the registry to do it. Revisit when either
+changes.
+
+> **Retention does not cover version tags.** `registry-gc.sh` only matches
+> the stamped `<utc-stamp>-<short-sha>` shape, so `v1.2.0` and friends are
+> never collected at any `KEEP`. That is correct -- a release you might roll
+> back to should not vanish on a timer -- but it means the registry grows
+> monotonically once versioned releases start, and being far under the
+> retention limit says nothing about it. Deleting an old release is a
+> deliberate act: find the digest and `DELETE
+> /v2/<repo>/manifests/<digest>`, then run `registry-gc.sh` to reclaim the
+> blobs. Unlinking a manifest frees nothing on its own.
+>
+> Measured over the 2026-10-19 rehearsal, two releases came to roughly
+> 350 MB each in the registry and 1.5 G each in Docker's local image store,
+> so about 2 G per release across both. At 137 G free that is some seventy
+> releases of headroom.
+
+> **The two stores are cleaned by different commands and fail separately.**
+> `registry-gc.sh` touches only the registry; `docker image prune -a` touches
+> only Docker's local store. Cleaning one leaves the other untouched, and the
+> registry catalog is the misleading view -- after the October rehearsal
+> `/v2/_catalog` was clean while 1.5 G of `rdp-cms:v1.0.0-rc.1` sat in the
+> local store for three days. Use `docker system df` to see the truth, and
+> note that `docker image prune --filter until=<n>h` silently spares anything
+> pulled inside that window.
 
 None of the three has anything watching it, which is what §10 is about.
 
