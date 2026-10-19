@@ -10,7 +10,7 @@ type FeatureDocumentLinkProps = {
 };
 
 const getBorderClassName = (variant: FeatureDocumentLinkProps["variant"]) =>
-  variant === "panel" ? "border-[3px]" : "border";
+  variant === "panel" ? "border-[3px]" : "ring-1 ring-inset ring-foreground";
 
 const FeatureDocumentLink = ({ document, slug, variant }: FeatureDocumentLinkProps) => {
   const t = useTranslations();
