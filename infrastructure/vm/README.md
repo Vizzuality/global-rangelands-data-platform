@@ -1030,9 +1030,11 @@ the release stops at step 5 with nothing built and nothing deployed.
 > so moving it sooner would not make a fix land sooner.
 
 > **Releases are not garbage-collected.** `registry-gc.sh` only collects tags
-> of the stamped shape, so `v1.2.0` stays until someone removes it. That is
-> deliberate, since a rollback target should not expire, but it is unbounded, so
-> prune old releases by hand when the registry grows. Note the workflow pushes
+> of the stamped shape -- `<utc-stamp>-<short-sha>`, e.g.
+> `20261016T105124Z-299b454`, see "Release tags sort by time, not by hash"
+> below -- so `v1.2.0` stays until someone removes it. That is deliberate,
+> since a rollback target should not expire, but it is unbounded, so prune
+> old releases by hand when the registry grows. Note the workflow pushes
 > *only* the version tag: adding a stamped tag alongside it would buy nothing,
 > because GC deletes by digest and skips any digest a protected tag shares.
 
