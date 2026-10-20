@@ -6,15 +6,6 @@ import { PARTNERS } from "@/containers/partners/constants";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-const PARTNER_TEXTS: Record<string, string> = {
-  "global-pasture-watch":
-    "A suite of high-resolution products mapping African rangelands, their ecosystem types, productivity levels, and seasonal variations.",
-  ramona:
-    "Improving global monitoring of grasslands, grazing lands and livestock systems through open, regularly updated geospatial datasets.",
-};
-
-const LANDING_PARTNERS = PARTNERS.filter((partner) => partner.slug in PARTNER_TEXTS);
-
 export function Partners() {
   const t = useTranslations();
 
@@ -35,7 +26,7 @@ export function Partners() {
         </p>
       </div>
       <div className="mx-auto mt-10 grid max-w-[920px] gap-8 py-6 sm:grid-cols-2">
-        {LANDING_PARTNERS.map((partner) => (
+        {PARTNERS.map((partner) => (
           <div key={partner.slug} className="flex flex-col items-center gap-6">
             <div className={cn("relative h-[60px]", partner.logoWidthClassName)}>
               <Image
@@ -46,7 +37,7 @@ export function Partners() {
                 className="object-cover"
               />
             </div>
-            <p className="text-center text-base leading-7">{t(PARTNER_TEXTS[partner.slug])}</p>
+            <p className="text-center text-base leading-7">{partner.summary}</p>
             <PartnerButton className="px-5">
               <Link href={`/partners/${partner.slug}`}>{t("Learn more")}</Link>
             </PartnerButton>
