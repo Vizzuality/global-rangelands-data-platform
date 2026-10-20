@@ -44,7 +44,7 @@ const HeaderNavigation = () => {
       "flex h-[var(--header-height)] items-center border-t-4 border-t-transparent pb-1 text-sm outline-none transition-[color,opacity] duration-300 focus-visible:ring focus-visible:ring-white focus-visible:ring-offset-1",
       active && "border-t-current",
       chromeClassName,
-      whiteChrome && "hover:opacity-70",
+      whiteChrome && "hover:opacity-80",
     );
 
   return (

@@ -39,7 +39,7 @@ const FurtherInfoItem = ({ item, locale }: FurtherInfoItemProps) => {
         href={safeUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-start gap-2 text-sm underline underline-offset-2 hover:text-green-light"
+        className="flex items-start gap-2 text-sm underline underline-offset-2 transition-opacity hover:opacity-80"
       >
         {inner}
       </a>

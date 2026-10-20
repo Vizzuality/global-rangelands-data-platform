@@ -116,7 +116,7 @@ const FeatureDetail = ({ slug }: FeatureDetailProps) => {
         <div className="space-y-4">
           <Link
             href={`/map/features${searchParams}`}
-            className="inline-flex items-center gap-1 text-xs font-medium uppercase underline underline-offset-2 hover:text-green-light"
+            className="inline-flex items-center gap-1 text-xs font-medium uppercase underline underline-offset-2 transition-opacity hover:opacity-80"
           >
             <ArrowLeft className="h-5 w-5" />
             {t("Features")}

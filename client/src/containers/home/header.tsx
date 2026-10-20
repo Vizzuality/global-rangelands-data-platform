@@ -74,7 +74,7 @@ const Header = () => {
           <DropdownMenu open={featuresOpen} onOpenChange={setFeaturesOpen}>
             <DropdownMenuTrigger
               className={cn(
-                "flex items-center outline-none transition-colors duration-300 hover:text-brown-light focus-visible:ring focus-visible:ring-brown-light focus-visible:ring-offset-2",
+                "flex items-center outline-none transition-opacity hover:opacity-80 focus-visible:ring focus-visible:ring-brown-light focus-visible:ring-offset-2",
                 featureCategoriesTriggerClassName,
               )}
             >
@@ -96,7 +96,7 @@ const Header = () => {
           />
           <Link
             className={cn(
-              "transition-[color,opacity] duration-300 hover:text-brown-light",
+              "transition-opacity duration-300 hover:opacity-80",
               featuresOpen && "pointer-events-none opacity-0",
             )}
             href="/map"

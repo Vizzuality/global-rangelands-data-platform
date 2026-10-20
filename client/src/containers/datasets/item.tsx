@@ -188,7 +188,7 @@ const DatasetsItem = (props: DatasetsItemProps) => {
                   href={attributes?.sources?.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex gap-1 text-xs font-medium uppercase text-foreground underline underline-offset-2 hover:text-green-light"
+                  className="flex gap-1 text-xs font-medium uppercase text-foreground underline underline-offset-2 transition-opacity hover:opacity-80"
                 >
                   {t("data source")}
                   <CitationsIcon className="h-5 w-5" />

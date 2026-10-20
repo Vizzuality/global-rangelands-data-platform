@@ -27,7 +27,7 @@ const CategoryButton = ({ title, slug }: CategoryButtonProps) => {
       key={title}
       variant="ghost"
       size="icon"
-      className="h-auto w-20 rounded-md py-2 text-foreground hover:text-green-light"
+      className="h-auto w-20 rounded-md py-2 text-foreground transition-opacity hover:text-foreground hover:opacity-80"
     >
       <Link className="flex flex-col items-center gap-1 text-sm" href={`#${slug}`}>
         <Icon className="shrink-0" />

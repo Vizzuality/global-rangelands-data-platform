@@ -15,7 +15,7 @@ export default function FeatureNotFound() {
       <div className="border-b border-foreground px-6 py-4">
         <Link
           href={`/map/features${searchParams}`}
-          className="inline-flex items-center gap-1 text-sm font-medium hover:text-green-light"
+          className="inline-flex items-center gap-1 text-sm font-medium transition-opacity hover:opacity-80"
         >
           <ArrowLeft className="h-4 w-4" />
           {t("Features")}
