@@ -12,10 +12,6 @@ type PartnerRouteProps = {
   params: Promise<{ slug: string; locale: string }>;
 };
 
-export function generateStaticParams() {
-  return PARTNERS.map((partner) => ({ slug: partner.slug }));
-}
-
 export async function generateMetadata(props: PartnerRouteProps): Promise<Metadata> {
   const { slug, locale } = await props.params;
   const t = await getTranslations({ locale });
