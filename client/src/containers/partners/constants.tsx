@@ -17,7 +17,7 @@ export type Partner = {
   logoWidthClassName: string;
   heroImage: StaticImageData;
   websiteUrl: string | undefined;
-  keepExploringText: string;
+  summary: string;
   Body: ComponentType;
 };
 
@@ -31,8 +31,8 @@ export const PARTNERS: readonly Partner[] = [
     logoWidthClassName: "w-[130px]",
     heroImage: gpwHero,
     websiteUrl: "https://landcarbonlab.org/about-global-pasture-watch/",
-    keepExploringText:
-      "Improving global monitoring of grasslands, grazing lands and livestock systems by producing open, regularly updated geospatial datasets.",
+    summary:
+      "Improving global monitoring of grasslands, grazing lands and livestock systems through open, regularly updated geospatial datasets.",
     Body: GlobalPastureWatchBody,
   },
   {
@@ -44,8 +44,8 @@ export const PARTNERS: readonly Partner[] = [
     logoWidthClassName: "w-[146.5px]",
     heroImage: ramonaHero,
     websiteUrl: "https://www.ramona.earth/",
-    keepExploringText:
-      "A suite of high-resolution products describing where African rangelands are, what ecosystem type they are, how productive they are, and how their productivity varies through the growing season.",
+    summary:
+      "A suite of high-resolution products mapping African rangelands, their ecosystem types, productivity levels, and seasonal variations.",
     Body: RamonaBody,
   },
 ];

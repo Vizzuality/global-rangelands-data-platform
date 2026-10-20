@@ -25,7 +25,7 @@ const PartnerSummary = ({ partner, className }: PartnerSummaryProps) => {
           className="object-cover"
         />
       </div>
-      <p className="text-base leading-7 text-green-dark">{partner.keepExploringText}</p>
+      <p className="text-base leading-7 text-green-dark">{partner.summary}</p>
       <PartnerButton>
         <Link href={`/partners/${partner.slug}`}>{t("Learn more")}</Link>
       </PartnerButton>
