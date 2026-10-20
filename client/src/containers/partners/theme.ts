@@ -1,6 +1,7 @@
 export const PARTNER_THEME = {
   pageBackground: "bg-orange-light",
   accent: "bg-brown-dark",
+  diamondOutline: "border-orange-bright",
   patternColor: "bg-brown-dark",
   headerGradient: "from-orange-light",
   chromeText: "text-white",

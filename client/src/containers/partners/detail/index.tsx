@@ -50,7 +50,7 @@ const PartnerDetail = ({ partner }: PartnerDetailProps) => {
             <div className="relative z-10 min-w-0 flex-1 space-y-8 bg-white px-6 py-16 text-green-dark xl:px-24 xl:py-20">
               <div className="mx-auto flex max-w-[760px] flex-col items-center gap-6 pb-4 text-center">
                 <Link
-                  href="/#other-rangeland-activities"
+                  href="/partners"
                   className="inline-flex items-center gap-1 text-xs font-medium uppercase leading-5 text-green-dark underline underline-offset-2 hover:text-green-light"
                 >
                   <ArrowLeft className="h-5 w-5" />
