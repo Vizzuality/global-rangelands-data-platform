@@ -51,7 +51,7 @@ const PartnerDetail = ({ partner }: PartnerDetailProps) => {
               <div className="mx-auto flex max-w-[760px] flex-col items-center gap-6 pb-4 text-center">
                 <Link
                   href="/partners"
-                  className="inline-flex items-center gap-1 text-xs font-medium uppercase leading-5 text-green-dark underline underline-offset-2 hover:text-green-light"
+                  className="inline-flex items-center gap-1 text-xs font-medium uppercase leading-5 text-green-dark underline underline-offset-2 transition-opacity hover:opacity-80"
                 >
                   <ArrowLeft className="h-5 w-5" />
                   {t("Other rangeland activities")}

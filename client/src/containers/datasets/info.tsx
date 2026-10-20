@@ -19,7 +19,7 @@ const DatasetInfo = ({ citations, info, title, ...props }: DatsetInfoProps) => {
     <Dialog {...props}>
       <DialogTrigger
         disabled={!info}
-        className="flex h-min gap-1 text-xs font-medium uppercase text-foreground underline underline-offset-2 hover:text-green-light"
+        className="flex h-min gap-1 text-xs font-medium uppercase text-foreground underline underline-offset-2 transition-opacity hover:opacity-80"
       >
         {t("Learn more")} <ArrowRightIcon className="h-4 w-4 -rotate-45" />
       </DialogTrigger>

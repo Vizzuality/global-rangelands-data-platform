@@ -100,7 +100,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/map"
-                className="flex h-10 items-center justify-center rounded-none bg-white px-6 text-base text-brown-dark transition-colors duration-300 hover:text-brown-light sm:h-12"
+                className="flex h-10 items-center justify-center rounded-none bg-white px-6 text-base text-brown-dark transition-opacity hover:opacity-80 sm:h-12"
               >
                 {t("Explore Data Rangelands platform")}
               </Link>

@@ -112,7 +112,7 @@ const FeatureDetailPage = ({
               >
                 <Link
                   href={`/features/${category}`}
-                  className="inline-flex items-center gap-1 text-xs font-medium uppercase text-green-dark underline underline-offset-2 hover:text-green-light"
+                  className="inline-flex items-center gap-1 text-xs font-medium uppercase text-green-dark underline underline-offset-2 transition-opacity hover:opacity-80"
                 >
                   <ArrowLeft className="h-5 w-5" />
                   {categoryTitle}

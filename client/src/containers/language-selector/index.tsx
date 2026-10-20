@@ -19,7 +19,7 @@ import { useSearchParams } from "next/navigation";
 const variants = {
   trigger: {
     light: "bg-white text-brown-dark disabled:opacity-50",
-    dark: "bg-transparent text-white hover:text-white/70 disabled:opacity-60",
+    dark: "bg-transparent text-white hover:text-white/80 disabled:opacity-60",
   },
   menuItems: {
     light: "bg-white text-brown-dark",
@@ -54,7 +54,7 @@ const LanguageSelector = ({ className, variant = "light" }: LanguageSelectorProp
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "group flex h-fit w-fit gap-2 bg-white px-0 py-0 text-sm text-brown-dark transition-colors duration-300 hover:text-brown-light focus-visible:outline-none focus-visible:ring focus-visible:ring-brown-dark focus-visible:ring-offset-1 disabled:cursor-not-allowed ",
+          "group flex h-fit w-fit gap-2 bg-white px-0 py-0 text-sm text-brown-dark transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring focus-visible:ring-brown-dark focus-visible:ring-offset-1 disabled:cursor-not-allowed ",
           variants.trigger[variant],
           className,
         )}

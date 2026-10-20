@@ -13,7 +13,7 @@ const BodyLink = ({ href, children }: BodyLinkProps) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="underline [text-decoration-skip-ink:none] [text-underline-position:from-font] hover:text-green-light"
+      className="underline transition-opacity [text-decoration-skip-ink:none] [text-underline-position:from-font] hover:opacity-80"
     >
       {children}
     </a>

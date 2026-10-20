@@ -52,7 +52,7 @@ const FeatureBody = ({ description, variant = "default" }: FeatureBodyProps) => 
         <button
           type="button"
           onClick={() => setExpanded((prev) => !prev)}
-          className="text-sm font-medium underline underline-offset-2 hover:text-green-light"
+          className="text-sm font-medium underline underline-offset-2 transition-opacity hover:opacity-80"
         >
           {expanded ? t("Read less") : t("Read more")}
         </button>

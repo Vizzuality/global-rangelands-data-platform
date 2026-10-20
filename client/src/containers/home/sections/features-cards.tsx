@@ -62,7 +62,7 @@ function FeatureCard({ slug, label, ctaLabel, category, categorySlug, feature }:
 
       <Link
         href={`/features/${category}`}
-        className="group flex items-center gap-2 text-white transition-colors duration-300 hover:text-hunter-green-200"
+        className="group flex items-center gap-2 text-white transition-opacity hover:opacity-80"
       >
         <span className="text-[12px] font-medium leading-5">{t(ctaLabel)}</span>
         <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

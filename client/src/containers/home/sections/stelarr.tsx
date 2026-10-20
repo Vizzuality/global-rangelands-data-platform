@@ -148,7 +148,7 @@ export function Stelarr() {
           <div className="relative z-10 mt-8 flex justify-center sm:mt-12">
             <Link
               href="/features/restoration-investments"
-              className="group flex items-center gap-2 text-white transition-colors duration-300 hover:text-hunter-green-200"
+              className="group flex items-center gap-2 text-white transition-opacity hover:opacity-80"
             >
               <span className="text-[12px] font-medium leading-5">
                 {t("Explore the Investment Hub")}
