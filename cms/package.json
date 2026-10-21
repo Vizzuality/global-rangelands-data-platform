@@ -74,12 +74,13 @@
       "@strapi/admin>axios": "1.20.0",
       "@strapi/cloud-cli>axios": "1.20.0",
       "@strapi/core>undici": "6.29.0",
-      "typedoc>markdown-it": "14.3.2",
-      "@strapi/content-manager>markdown-it": "14.3.2",
+      "typedoc>markdown-it": "14.3.3",
+      "@strapi/content-manager>markdown-it": "14.3.3",
       "@strapi/content-manager>dompurify": "3.4.16",
       "postcss-modules-local-by-default>postcss-selector-parser": "7.1.6",
       "postcss-modules-scope>postcss-selector-parser": "7.1.6",
-      "@strapi/strapi>webpack-dev-middleware": "7.4.6"
+      "@strapi/strapi>webpack-dev-middleware": "7.4.6",
+      "@strapi/strapi>vite": "6.4.5"
     },
     "onlyBuiltDependencies": [
       "@strapi/strapi",
