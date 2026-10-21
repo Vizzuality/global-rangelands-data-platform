@@ -40,8 +40,8 @@ overrides:
   '@strapi/admin>axios': 1.20.0
   '@strapi/cloud-cli>axios': 1.20.0
   '@strapi/core>undici': 6.29.0
-  typedoc>markdown-it: 14.3.2
-  '@strapi/content-manager>markdown-it': 14.3.2
+  typedoc>markdown-it: 14.3.3
+  '@strapi/content-manager>markdown-it': 14.3.3
   '@strapi/content-manager>dompurify': 3.4.16
   postcss-modules-local-by-default>postcss-selector-parser: 7.1.6
   postcss-modules-scope>postcss-selector-parser: 7.1.6
@@ -5368,8 +5368,8 @@ packages:
   markdown-it-sup@1.0.0:
     resolution: {integrity: sha512-E32m0nV9iyhRR7CrhnzL5msqic7rL1juWre6TQNxsnApg7Uf+F97JOKxUijg5YwXz86lZ0mqfOnutoryyNdntQ==}
 
-  markdown-it@14.3.2:
-    resolution: {integrity: sha512-sHHjZ5fJKlgrG4qns2YwVcdNep35h5fERrfkD2YNsb9UFk0UIHarbiTaHKVMlPuWAoiilyK8Fv/jAm11slsY7Q==}
+  markdown-it@14.3.3:
+    resolution: {integrity: sha512-L//tDAkjTjJCU6pBUSBTgs3Kg4InVaZuUZog/b6V12UKhcDQ7S78877ibbCanRExwPuYP1CZD7Gd2dxSy1GXRg==}
     hasBin: true
 
   match-sorter@6.3.4:
@@ -9805,7 +9805,7 @@ snapshots:
       immer: 9.0.21
       koa: 2.16.4
       lodash: 4.18.1
-      markdown-it: 14.3.2
+      markdown-it: 14.3.3
       markdown-it-abbr: 1.0.4
       markdown-it-container: 3.0.0
       markdown-it-deflist: 2.1.0
@@ -13642,7 +13642,7 @@ snapshots:
 
   markdown-it-sup@1.0.0: {}
 
-  markdown-it@14.3.2:
+  markdown-it@14.3.3:
     dependencies:
       argparse: 2.0.1
       entities: 4.5.0
@@ -15524,7 +15524,7 @@ snapshots:
     dependencies:
       '@gerrit0/mini-shiki': 3.23.0
       lunr: 2.3.9
-      markdown-it: 14.3.2
+      markdown-it: 14.3.3
       minimatch: 10.2.5
       typescript: 5.9.3
       yaml: 2.9.0
