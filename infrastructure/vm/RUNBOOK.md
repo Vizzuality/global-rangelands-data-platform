@@ -38,9 +38,9 @@ the image registry, runs beside them in its own compose project (§8), so
 >   job runs and has been verified against real content, but losing the host
 >   loses both. The off-box destination is ILRI's decision and sets
 >   `RETENTION_KEEP`.
-> - **§4.3 (destructive restore) has never been run against a real stack.**
->   §4.2 has, against real content, and passes. Exercise §4.3 by hand once
->   before relying on it.
+> - **§4.3 (destructive restore) ran against the real stack on 2026-10-21**
+>   and passed. §4.2 passes too. Both are now exercised; see the drill record
+>   in §4.3.
 >
 > DNS still points the four production domains at a different host, so
 > nothing here is serving the public yet.
@@ -355,6 +355,35 @@ Both halves are restored together, always. Restoring only the database would
 leave content rows pointing at images that are no longer on disk.
 
 Afterwards, confirm with §1 and §1.1.
+
+**Drill record, 2026-10-21.** Run against the live stack for the first time,
+restoring a backup taken minutes earlier (and verified with §4.2 first, so a
+failure had a known-good archive to fall back on). It passed:
+
+| | Before | After |
+|---|---|---|
+| database | 75 tables, 6,114 rows | identical, table for table |
+| uploads | 131 files, 31,677,313 bytes | identical |
+| ownership | `1001:1001` | `1001:1001` |
+| `/en`, `/en/map`, `/cms/admin` | 200 | 200 |
+| `/cms/_health` | 204 | 204 |
+| CMS images via nginx | 21/21 at 200 | 21/21 at 200 |
+
+What to expect when you run it:
+
+- **Seven seconds, start to finish**, on 500 KB of dump and 30 MB of media.
+- **Only `cms` stops.** `db`, `client`, `tiler` and `nginx` stay up, so `/en`
+  and the tiler keep serving; `/cms/*` is the only thing down, and Strapi was
+  healthy again 3 seconds after being started.
+- The nginx reload at the end is not optional. Without it `/cms/*` returns
+  502 while every container reports healthy (§7.1).
+
+Two things that look like failures and are not. Image URLs in the `files`
+table are stored Strapi-relative (`/uploads/x.jpg`); the public path is
+`/cms/uploads/x.jpg`, and testing the stored path 404s. And `/en` references
+no `/cms/uploads/` in its SSR HTML, because the components carrying those
+images are `"use client"` and fetch after hydration -- check the API and the
+upload URLs directly instead, as the table above does.
 
 ---
 
@@ -840,9 +869,10 @@ Open items that an operator cannot resolve alone:
   to it), but DNS still points at the old host, repointing it is ILRI's to do,
   and nobody has decided whether the archived Rangelands Atlas keeps answering
   on `/atlas`. See **Domain states** in the README.
-- **`restore-backup.sh` has not been run against the real stack**, only
-  against throwaway containers (§4.2). Exercise it once, deliberately,
-  before you need it.
+- **`restore-backup.sh` ran against the real stack on 2026-10-21** and
+  passed: 75 tables / 6,114 rows and 131 media files came back byte-identical,
+  uploads owned by 1001, and the whole thing took 7 seconds. Only `cms`
+  stops, so `/en` and the tiler stay up throughout.
 
 For anything in this file that does not match what the machine is doing, the
 README is the reference, and it explains why each choice was made.
