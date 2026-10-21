@@ -79,7 +79,8 @@
       "@strapi/content-manager>dompurify": "3.4.16",
       "postcss-modules-local-by-default>postcss-selector-parser": "7.1.6",
       "postcss-modules-scope>postcss-selector-parser": "7.1.6",
-      "@strapi/strapi>webpack-dev-middleware": "7.4.6"
+      "@strapi/strapi>webpack-dev-middleware": "7.4.6",
+      "@strapi/strapi>vite": "6.4.5"
     },
     "onlyBuiltDependencies": [
       "@strapi/strapi",
