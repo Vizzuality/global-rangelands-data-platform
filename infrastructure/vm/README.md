@@ -755,9 +755,9 @@ rows. Negative-tested three ways -- a truncated `db.dump`, an archive missing
 20 files, and a backup predating the content restore (439 rows against 6,098),
 which fails and names every table that differs.
 
-It does not cover `restore-backup.sh` writing over the real stack, because
-proving that costs a working environment. Exercise it by hand once before the
-handover.
+It does not cover `restore-backup.sh` writing over the real stack. That was
+exercised by hand on 2026-10-21 and passed; see RUNBOOK §4.3 for what was
+measured.
 
 ### The nightly job, and where it lives
 
