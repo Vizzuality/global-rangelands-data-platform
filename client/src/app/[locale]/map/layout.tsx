@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 
 import Map from "@/containers/map";
+import DesktopOnly from "@/containers/map/desktop-only";
+import MobileNotice from "@/containers/map/mobile-notice";
 import Sidebar from "@/containers/sidebar";
 import Header from "@/containers/header";
 import getQueryClient from "@/lib/react-query/getQueryClient";
@@ -90,10 +92,13 @@ export default async function MapLayout(props: {
     <div>
       <HydrationBoundary state={dehydratedState}>
         <Header />
+        <MobileNotice />
         <Suspense fallback={null}>
-          <div className="flex h-[var(--content-height)] w-full overflow-y-hidden">
+          <div className="hidden h-[var(--content-height)] w-full overflow-y-hidden lg:flex">
             <Sidebar>{props.children}</Sidebar>
-            <Map />
+            <DesktopOnly>
+              <Map />
+            </DesktopOnly>
           </div>
         </Suspense>
       </HydrationBoundary>
