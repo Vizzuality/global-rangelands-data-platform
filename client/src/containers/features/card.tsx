@@ -13,7 +13,7 @@ type FeatureCardProps = {
   categoryTitle?: string;
   searchParams: string;
   variant: string;
-  showImage?: boolean;
+  isChampion?: boolean;
 };
 
 const FeatureCard = ({
@@ -21,7 +21,7 @@ const FeatureCard = ({
   categoryTitle,
   searchParams,
   variant,
-  showImage = true,
+  isChampion = false,
 }: FeatureCardProps) => {
   const t = useTranslations();
   const locale = useLocale();
@@ -29,8 +29,8 @@ const FeatureCard = ({
   const featureSlug = feature.slug;
   if (!featureSlug) return null;
 
-  const localizedTitle =
-    feature.translations?.find((tr) => tr.locale === locale)?.title ?? feature.title;
+  const translation = feature.translations?.find((tr) => tr.locale === locale);
+  const localizedTitle = translation?.title ?? feature.title;
   const imageAttrs = feature.image;
 
   return (
@@ -40,7 +40,9 @@ const FeatureCard = ({
         href={`/map/feature/${featureSlug}${searchParams}`}
         categoryTitle={categoryTitle}
         title={localizedTitle ?? t("Untitled")}
-        imageUrl={showImage ? imageAttrs?.url : undefined}
+        subtitle={isChampion ? translation?.subtitle ?? feature.subtitle : undefined}
+        location={isChampion ? feature.location : undefined}
+        imageUrl={isChampion ? undefined : imageAttrs?.url}
         imageFormats={imageAttrs?.formats}
         imageAlt={imageAttrs?.alternativeText ?? localizedTitle ?? ""}
         imageCaption={imageAttrs?.caption}
