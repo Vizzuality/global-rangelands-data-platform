@@ -153,7 +153,7 @@ const CategoryFeatures = ({
             categoryTitle={title}
             searchParams={searchParams}
             variant={variant}
-            showImage={!isChampionCategory(slug ?? "")}
+            isChampion={isChampionCategory(slug ?? "")}
           />
         ))}
       </div>

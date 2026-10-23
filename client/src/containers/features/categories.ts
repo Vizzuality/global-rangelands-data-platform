@@ -8,6 +8,12 @@ export function isChampionCategory(slug: string): boolean {
   return slug === "restoration-champions";
 }
 
+export function getCategoryListHref(searchParams: string, categorySlug: string): string {
+  const params = new URLSearchParams(searchParams);
+  params.set("category", categorySlug);
+  return `/map/features?${params}`;
+}
+
 export const FEATURE_CATEGORY_LABELS: Record<string, string> = {
   "rangelands-stories": "Rangelands Stories",
   "restoration-investments": "Restoration Investments",
@@ -17,7 +23,7 @@ export const FEATURE_CATEGORY_LABELS: Record<string, string> = {
 export const FEATURE_CARD_VARIANTS: Record<string, string> = {
   "rangelands-stories": "bg-brown-dark text-white",
   "restoration-investments": "bg-orange-bright text-brown-dark",
-  "restoration-champions": "bg-green-light text-white",
+  "restoration-champions": "bg-champion-green text-white",
 };
 export const FEATURE_CARD_DEFAULT_VARIANT = "bg-brown-dark text-white";
 
