@@ -41,13 +41,21 @@ const PartnerDetail = ({ partner }: PartnerDetailProps) => {
         )}
       />
       <div className="relative">
-        <section className={cn("container mx-auto px-6 py-10", PARTNER_THEME.sectionPaddingX)}>
-          <div className="flex items-stretch justify-center">
+        <section
+          className={cn(
+            "container mx-auto px-5 pb-10 pt-11 lg:px-6 lg:py-10",
+            PARTNER_THEME.sectionPaddingX,
+          )}
+        >
+          <div className="flex flex-col items-center lg:flex-row lg:items-stretch lg:justify-center">
             <div
               aria-hidden
-              className={cn("relative z-10 my-8 w-8 shrink-0", PARTNER_THEME.accent)}
+              className={cn(
+                "relative z-10 h-4 w-[86.67%] shrink-0 lg:my-8 lg:h-auto lg:w-8",
+                PARTNER_THEME.accent,
+              )}
             />
-            <div className="relative z-10 min-w-0 flex-1 space-y-8 bg-white px-6 py-16 text-green-dark xl:px-24 xl:py-20">
+            <div className="relative z-10 w-full min-w-0 flex-1 space-y-8 bg-white px-6 py-10 text-green-dark lg:py-16 xl:px-24 xl:py-20">
               <div className="mx-auto flex max-w-[760px] flex-col items-center gap-6 pb-4 text-center">
                 <Link
                   href="/partners"
@@ -100,7 +108,10 @@ const PartnerDetail = ({ partner }: PartnerDetailProps) => {
             </div>
             <div
               aria-hidden
-              className={cn("relative z-10 my-8 w-8 shrink-0", PARTNER_THEME.accent)}
+              className={cn(
+                "relative z-10 h-4 w-[86.67%] shrink-0 lg:my-8 lg:h-auto lg:w-8",
+                PARTNER_THEME.accent,
+              )}
             />
           </div>
         </section>
