@@ -74,7 +74,10 @@ const FeatureDetailPage = ({
 
   return (
     <main
-      className={cn("relative overflow-hidden pt-[var(--header-height)]", theme.pageBackground)}
+      className={cn(
+        "relative overflow-hidden pt-[var(--mobile-header-height)] lg:pt-[var(--header-height)]",
+        theme.pageBackground,
+      )}
     >
       <div
         aria-hidden

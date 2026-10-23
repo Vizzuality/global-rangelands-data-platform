@@ -21,7 +21,7 @@ const PartnerDetail = ({ partner }: PartnerDetailProps) => {
   return (
     <main
       className={cn(
-        "relative overflow-hidden pt-[var(--header-height)]",
+        "relative overflow-hidden pt-[var(--mobile-header-height)] lg:pt-[var(--header-height)]",
         PARTNER_THEME.pageBackground,
       )}
     >
