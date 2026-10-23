@@ -18,8 +18,8 @@ export function Livestock() {
             <div className="absolute inset-x-[3.4%] inset-y-[20.8%] z-[1] hidden bg-green-medium lg:block" />
 
             <div className="absolute -inset-y-[64px] inset-x-0 z-0 overflow-hidden lg:hidden">
-              <div className="absolute left-1/2 top-1/2 aspect-square h-[72%] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-green-medium" />
-              <div className="absolute left-1/2 top-1/2 aspect-square h-[67%] -translate-x-1/2 -translate-y-1/2 rotate-45 border-[5px] border-gold" />
+              <div className="absolute left-1/2 top-1/2 aspect-square h-[70%] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-green-medium" />
+              <div className="absolute left-1/2 top-1/2 aspect-square h-[65%] -translate-x-1/2 -translate-y-1/2 rotate-45 border-[5px] border-gold" />
             </div>
 
             <div className="relative z-10 mx-auto flex max-w-[940px] flex-col items-center gap-[60px] bg-white p-6 text-center sm:p-[100px]">
