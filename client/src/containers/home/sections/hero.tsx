@@ -36,9 +36,9 @@ export function Hero() {
             className="h-full"
           >
             <div className="mx-auto max-w-[828px] space-y-2 text-white">
-              <div className="mb-8 flex flex-col items-center justify-center gap-2.5 sm:flex-row">
+              <div className="mb-8 flex flex-col items-center justify-center gap-2.5 lg:flex-row">
                 <Image src="/images/home/title-icon.png" alt="title-icon" width={123} height={58} />
-                <h1 className="font-serif text-[40px] font-bold leading-tight sm:text-[78px] ">
+                <h1 className="font-serif text-[40px] font-bold leading-tight lg:text-[78px] ">
                   {t("Data Rangelands")}
                 </h1>
               </div>
@@ -113,10 +113,10 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="container mx-auto mt-[130px] flex flex-col gap-12 py-10 sm:flex-row sm:gap-[120px] sm:px-[100px] sm:pb-10 sm:pt-[100px]">
+      <div className="container mx-auto mt-[130px] flex flex-col gap-12 py-10 lg:flex-row lg:gap-[120px] lg:px-[100px] lg:pb-10 lg:pt-[100px]">
         <div className="flex-1 space-y-3">
           <Image src="/images/home/icon-color.png" alt={t("logo")} width={207} height={58} />
-          <h2 className="font-serif text-4xl font-light leading-tight sm:text-5xl">
+          <h2 className="font-serif text-4xl font-light leading-tight lg:text-5xl">
             {t("Unveiling rangelands landscapes")}
           </h2>
         </div>
