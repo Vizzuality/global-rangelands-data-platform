@@ -38,7 +38,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
         <p className="text-[10px] font-medium uppercase leading-5 text-green-dark">
           {t("Rangelands Stories")}
         </p>
-        <p className="line-clamp-2 text-label-16 text-green-dark group-hover:underline">
+        <p className="line-clamp-2 min-h-12 text-label-16 text-green-dark group-hover:underline">
           {feature.title}
         </p>
       </div>
