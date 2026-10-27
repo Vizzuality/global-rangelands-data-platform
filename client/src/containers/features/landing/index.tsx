@@ -71,7 +71,10 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
               accentClassName={theme.heroAccent}
               outlineClassName={theme.heroDiamondOutline}
             />
-            <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
+            <div
+              aria-hidden
+              className={cn("relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
+            />
             <div className="relative z-10 flex flex-1 flex-col items-center gap-6 bg-white px-6 py-16 text-center sm:py-[100px] xl:px-24">
               <h1 className="max-w-[606px] font-serif text-4xl font-light leading-tight text-green-dark sm:text-5xl sm:leading-[56px]">
                 {title}
@@ -122,7 +125,10 @@ const CategoryLanding = ({ category, initialData }: CategoryLandingProps) => {
                 className="h-auto w-[180px] sm:w-[207px]"
               />
             </div>
-            <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
+            <div
+              aria-hidden
+              className={cn("relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
+            />
           </div>
         </section>
 
