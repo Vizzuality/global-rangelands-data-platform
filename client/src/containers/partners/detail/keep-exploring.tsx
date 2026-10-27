@@ -28,14 +28,20 @@ const KeepExploring = ({ slug }: KeepExploringProps) => {
         <div key={partner.slug} className="flex items-stretch justify-center">
           <div
             aria-hidden
-            className={cn("relative z-10 my-8 w-8 shrink-0", PARTNER_THEME.accent)}
+            className={cn(
+              "relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block",
+              PARTNER_THEME.accent,
+            )}
           />
           <div className="relative z-10 min-w-0 flex-1 bg-white px-6 py-16 xl:px-[100px] xl:py-20">
             <PartnerSummary partner={partner} className="mx-auto max-w-[740px] py-6" />
           </div>
           <div
             aria-hidden
-            className={cn("relative z-10 my-8 w-8 shrink-0", PARTNER_THEME.accent)}
+            className={cn(
+              "relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block",
+              PARTNER_THEME.accent,
+            )}
           />
         </div>
       ))}

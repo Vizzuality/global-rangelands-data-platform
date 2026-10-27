@@ -46,7 +46,10 @@ const PartnersListing = () => {
             />
             <div
               aria-hidden
-              className={cn("relative z-10 my-8 w-8 shrink-0", PARTNER_THEME.accent)}
+              className={cn(
+                "relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block",
+                PARTNER_THEME.accent,
+              )}
             />
             <div
               className={cn(
@@ -74,7 +77,10 @@ const PartnersListing = () => {
             </div>
             <div
               aria-hidden
-              className={cn("relative z-10 my-8 w-8 shrink-0", PARTNER_THEME.accent)}
+              className={cn(
+                "relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block",
+                PARTNER_THEME.accent,
+              )}
             />
           </div>
         </section>

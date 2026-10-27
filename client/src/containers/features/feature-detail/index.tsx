@@ -104,7 +104,10 @@ const FeatureDetailPage = ({
           )}
         >
           <div className="flex items-stretch justify-center">
-            <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
+            <div
+              aria-hidden
+              className={cn("relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
+            />
             <div
               className={cn(
                 "relative z-10 min-w-0 flex-1 space-y-8 bg-white px-6 xl:px-24",
@@ -176,7 +179,10 @@ const FeatureDetailPage = ({
                 <FurtherInfo items={feature?.further_information ?? []} locale={locale} />
               </div>
             </div>
-            <div aria-hidden className={cn("relative z-10 my-8 w-8 shrink-0", theme.heroAccent)} />
+            <div
+              aria-hidden
+              className={cn("relative z-10 hidden w-8 shrink-0 sm:my-8 sm:block", theme.heroAccent)}
+            />
           </div>
         </section>
 
