@@ -35,13 +35,7 @@ export function Livestock() {
                 </p>
               </div>
 
-              <div className="flex flex-col justify-center gap-4 lg:flex-row">
-                <Link
-                  href="#home-to-millions"
-                  className="flex min-h-12 items-center justify-center border-[1.5px] border-green-medium px-6 py-2.5 text-label-16 text-green-medium transition-opacity hover:opacity-80"
-                >
-                  {t("Keep reading")}
-                </Link>
+              <div className="grid gap-4 lg:grid-cols-2">
                 <Link
                   href="/features/rangelands-stories"
                   className="flex min-h-12 items-center justify-center bg-green-medium px-5 py-3 text-label-16 text-white transition-colors duration-300 hover:bg-green-light"
