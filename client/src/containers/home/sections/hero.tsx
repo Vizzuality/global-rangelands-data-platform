@@ -65,7 +65,7 @@ export function Hero() {
                   <Image
                     src="/images/home/home-center.png"
                     width={795.269}
-                    height={515.85}
+                    height={491.44}
                     alt={t("Map screenshot")}
                     priority
                     className="relative object-cover"
@@ -82,7 +82,7 @@ export function Hero() {
                     priority
                     src="/images/home/home-left.png"
                     width={653.204}
-                    height={423.7}
+                    height={406.14}
                     alt={t("Features screenshot")}
                     className="relative object-cover"
                   />
@@ -98,7 +98,7 @@ export function Hero() {
                   <Image
                     src="/images/home/home-right.png"
                     width={653.204}
-                    height={423.7}
+                    height={404.67}
                     alt={t("Map screenshot 2")}
                     className="relative object-cover"
                     priority
