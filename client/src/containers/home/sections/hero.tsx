@@ -5,6 +5,8 @@ import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
+import { cn } from "@/lib/utils";
 import HomeGallery from "../gallery";
 
 export function Hero() {
@@ -54,36 +56,51 @@ export function Hero() {
 
             <div className="mx-auto mt-12 w-full overflow-x-hidden overflow-y-visible sm:mt-28">
               <div className="flex w-screen items-center justify-center">
-                <div className="z-40 w-[75%] overflow-hidden opacity-100 sm:w-[795px]">
+                <div
+                  className={cn(
+                    "relative z-40 w-[75%] overflow-hidden opacity-100 before:bg-foreground/10 sm:w-[795px]",
+                    IMAGE_PLACEHOLDER_CLASS_NAME,
+                  )}
+                >
                   <Image
                     src="/images/home/home-center.png"
                     width={795.269}
                     height={515.85}
                     alt={t("Map screenshot")}
                     priority
-                    className="object-cover"
+                    className="relative object-cover"
                   />
                 </div>
 
-                <div className="absolute left-[-40%] w-[60%] overflow-hidden sm:left-[-2%] sm:w-[653px]">
+                <div
+                  className={cn(
+                    "absolute left-[-40%] w-[60%] overflow-hidden before:bg-foreground/10 sm:left-[-2%] sm:w-[653px]",
+                    IMAGE_PLACEHOLDER_CLASS_NAME,
+                  )}
+                >
                   <Image
                     priority
                     src="/images/home/home-left.png"
                     width={653.204}
                     height={423.7}
                     alt={t("Features screenshot")}
-                    className="object-cover"
+                    className="relative object-cover"
                   />
                   <div className="absolute top-0 h-full w-full bg-orange-light/20"></div>
                 </div>
 
-                <div className="absolute right-[-40%] w-[60%] overflow-hidden bg-orange-light/25 sm:right-[-2%] sm:w-[653px]">
+                <div
+                  className={cn(
+                    "absolute right-[-40%] w-[60%] overflow-hidden bg-orange-light/25 before:bg-foreground/10 sm:right-[-2%] sm:w-[653px]",
+                    IMAGE_PLACEHOLDER_CLASS_NAME,
+                  )}
+                >
                   <Image
                     src="/images/home/home-right.png"
                     width={653.204}
                     height={423.7}
                     alt={t("Map screenshot 2")}
-                    className="object-cover"
+                    className="relative object-cover"
                     priority
                   />
                   <div className="absolute top-0 h-full w-full bg-orange-light/25"></div>

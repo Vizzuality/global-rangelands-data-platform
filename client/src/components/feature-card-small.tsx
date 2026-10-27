@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { cmsImageSrc } from "@/lib/cms";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
 
 type FeatureCardSmallProps = {
   variant: string;
@@ -28,7 +29,7 @@ const FeatureCardSmall = ({
       <p className="line-clamp-2 text-xs font-medium leading-4">{title}</p>
     </div>
     {imageUrl && (
-      <div className="relative flex-1">
+      <div className={cn("relative flex-1 before:bg-foreground/10", IMAGE_PLACEHOLDER_CLASS_NAME)}>
         <Image
           src={cmsImageSrc(imageUrl, imageFormats, 352)}
           alt={imageAlt}

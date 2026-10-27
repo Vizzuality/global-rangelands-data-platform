@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { mediaUrl } from "@/lib/cms";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
 
 export type FeatureMarkerVariant = { glow: string; halo: string; border: string };
 
@@ -77,6 +78,7 @@ const FeatureMarker = ({
           "relative flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-full border-4 transition-all duration-150",
           variant.border,
           isActive && "shadow-md",
+          !!imageUrl && [IMAGE_PLACEHOLDER_CLASS_NAME, "before:bg-hunter-green-200"],
         )}
       >
         {imageUrl ? (
@@ -84,7 +86,7 @@ const FeatureMarker = ({
           <img
             src={mediaUrl(imageUrl)}
             alt={title ?? ""}
-            className="h-full w-full object-cover"
+            className="relative h-full w-full object-cover"
             draggable={false}
           />
         ) : (

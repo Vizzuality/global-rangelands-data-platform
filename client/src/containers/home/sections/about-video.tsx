@@ -5,6 +5,9 @@ import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
+import { cn } from "@/lib/utils";
+
 export function AboutVideo() {
   const t = useTranslations();
 
@@ -18,7 +21,10 @@ export function AboutVideo() {
         initial={{ opacity: 0 }}
         ref={ref}
         transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="relative h-[300px] w-full overflow-hidden sm:h-[400px]"
+        className={cn(
+          "relative h-[300px] w-full overflow-hidden before:bg-white/20 sm:h-[400px]",
+          IMAGE_PLACEHOLDER_CLASS_NAME,
+        )}
       >
         <Image
           src="/images/home/home-of-many.png"
