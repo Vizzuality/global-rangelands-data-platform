@@ -25,7 +25,7 @@ const ChampionHero = ({ title, subtitle, location, imageUrl, imageCaption }: Cha
     </div>
     <div
       className={cn(
-        "relative h-[356px] w-full lg:w-[328px] lg:shrink-0",
+        "relative aspect-[4/3] w-full lg:aspect-auto lg:h-[356px] lg:w-[328px] lg:shrink-0",
         !imageUrl && "hidden lg:block",
         !!imageUrl && [IMAGE_PLACEHOLDER_CLASS_NAME, "before:bg-champion-ink/10"],
       )}
