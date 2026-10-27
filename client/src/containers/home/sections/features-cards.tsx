@@ -38,7 +38,9 @@ function FeatureCard({ feature }: { feature: Feature }) {
         <p className="text-[10px] font-medium uppercase leading-5 text-green-dark">
           {t("Rangelands Stories")}
         </p>
-        <p className="text-label-16 text-green-dark group-hover:underline">{feature.title}</p>
+        <p className="line-clamp-2 text-label-16 text-green-dark group-hover:underline">
+          {feature.title}
+        </p>
       </div>
       {image?.url && (
         <div className="relative h-[176px] w-full overflow-hidden">
