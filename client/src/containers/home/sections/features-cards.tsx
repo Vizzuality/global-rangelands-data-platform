@@ -30,41 +30,34 @@ function FeatureCard({ feature }: { feature: Feature }) {
   const image = feature.image;
 
   return (
-    <div className="flex w-full max-w-[514px] flex-col gap-6">
-      <Link href={`/features/${CATEGORY}/${feature.slug}`} className="group flex flex-col">
-        <div className="flex flex-col gap-[10px] bg-white p-8">
-          <p className="text-[10px] font-medium uppercase leading-5 text-green-dark">
-            {t("Rangelands Stories")}
-          </p>
-          <p className="text-label-16 text-green-dark group-hover:underline">{feature.title}</p>
+    <Link
+      href={`/features/${CATEGORY}/${feature.slug}`}
+      className="group flex w-full max-w-[514px] flex-col"
+    >
+      <div className="flex flex-col gap-[10px] bg-white p-8">
+        <p className="text-[10px] font-medium uppercase leading-5 text-green-dark">
+          {t("Rangelands Stories")}
+        </p>
+        <p className="text-label-16 text-green-dark group-hover:underline">{feature.title}</p>
+      </div>
+      {image?.url && (
+        <div className="relative h-[176px] w-full overflow-hidden">
+          <Image
+            src={cmsImageSrc(image.url, image.formats, 1000)}
+            alt={image.alternativeText ?? feature.title ?? ""}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1280px) 514px, 100vw"
+            unoptimized
+          />
+          {image.caption && (
+            <span className="absolute bottom-2 left-2 rounded bg-green-dark/10 px-[10px] py-1 text-[10px] text-white backdrop-blur-sm">
+              {image.caption}
+            </span>
+          )}
         </div>
-        {image?.url && (
-          <div className="relative h-[176px] w-full overflow-hidden">
-            <Image
-              src={cmsImageSrc(image.url, image.formats, 1000)}
-              alt={image.alternativeText ?? feature.title ?? ""}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1280px) 514px, 100vw"
-              unoptimized
-            />
-            {image.caption && (
-              <span className="absolute bottom-2 left-2 rounded bg-green-dark/10 px-[10px] py-1 text-[10px] text-white backdrop-blur-sm">
-                {image.caption}
-              </span>
-            )}
-          </div>
-        )}
-      </Link>
-
-      <Link
-        href={`/features/${CATEGORY}`}
-        className="group flex items-center gap-2 text-white transition-opacity hover:opacity-80"
-      >
-        <span className="text-[12px] font-medium leading-5">{t("See all Rangelands Stories")}</span>
-        <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-      </Link>
-    </div>
+      )}
+    </Link>
   );
 }
 
@@ -115,20 +108,32 @@ export function FeaturesCards() {
         initial={{ opacity: 0, y: 24 }}
         animate={cardsInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeInOut" }}
-        className="container mx-auto flex flex-col gap-6 py-14 sm:flex-row sm:items-stretch sm:justify-center sm:gap-0 sm:p-[100px] sm:pt-[76px]"
+        className="container mx-auto flex flex-col items-center gap-10 py-14 sm:p-[100px] sm:pt-[76px]"
       >
-        <div className="hidden w-[34px] shrink-0 self-stretch bg-green-medium sm:mb-[76px] sm:mt-8 sm:block" />
+        <div className="flex w-full flex-col gap-6 sm:flex-row sm:items-stretch sm:justify-center sm:gap-0">
+          <div className="hidden w-[34px] shrink-0 self-stretch bg-green-medium sm:my-8 sm:block" />
 
-        {cards.map((feature, index) => (
-          <Fragment key={feature.slug}>
-            {index > 0 && (
-              <div className="hidden w-2 shrink-0 self-stretch bg-green-medium sm:mb-[76px] sm:mt-8 sm:block" />
-            )}
-            <FeatureCard feature={feature} />
-          </Fragment>
-        ))}
+          {cards.map((feature, index) => (
+            <Fragment key={feature.slug}>
+              {index > 0 && (
+                <div className="hidden w-2 shrink-0 self-stretch bg-green-medium sm:my-8 sm:block" />
+              )}
+              <FeatureCard feature={feature} />
+            </Fragment>
+          ))}
 
-        <div className="hidden w-[34px] shrink-0 self-stretch bg-green-medium sm:mb-[76px] sm:mt-8 sm:block" />
+          <div className="hidden w-[34px] shrink-0 self-stretch bg-green-medium sm:my-8 sm:block" />
+        </div>
+
+        <Link
+          href={`/features/${CATEGORY}`}
+          className="group flex items-center gap-2 text-white transition-opacity hover:opacity-80"
+        >
+          <span className="text-[12px] font-medium leading-5">
+            {t("See all Rangelands Stories")}
+          </span>
+          <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </Link>
       </motion.div>
     </div>
   );
