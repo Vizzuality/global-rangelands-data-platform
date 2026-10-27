@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useTranslations } from "@/i18n";
 import HomeLink from "@/components/ui/home-link";
+import MobileMenu from "./mobile-menu";
+import { isNavItemActive } from "./utils";
 import { getCategoryTheme } from "@/containers/features/theme";
 import FeatureCategoriesMenu, {
   FeatureCategoriesMenuScrim,
@@ -38,6 +40,7 @@ const HeaderNavigation = () => {
     return "text-foreground";
   };
   const chromeClassName = getChromeClassName();
+  const homeLinkClassName = whiteChrome ? chromeClassName : "text-global";
 
   const itemClassName = (active: boolean) =>
     cn(
@@ -58,11 +61,12 @@ const HeaderNavigation = () => {
             : "relative bg-brown-light bg-[url(/images/header-pattern.png)] bg-contain bg-repeat-x",
         )}
       >
-        <div className="mx-6 flex items-center justify-between gap-7">
+        <div className="mx-5 flex h-[var(--mobile-header-height)] items-center justify-between gap-7 lg:mx-6 lg:h-auto">
           <div className="flex-1">
             <nav className="flex w-full items-center justify-between">
-              <HomeLink className={whiteChrome ? chromeClassName : "text-global"} />
-              <div className="flex gap-10">
+              <HomeLink responsive className={homeLinkClassName} />
+              <MobileMenu triggerClassName={homeLinkClassName} />
+              <div className="hidden gap-10 lg:flex">
                 <DropdownMenu open={featuresOpen} onOpenChange={setFeaturesOpen}>
                   <DropdownMenuTrigger
                     className={cn(itemClassName(isFeatures), featureCategoriesTriggerClassName)}
@@ -77,9 +81,7 @@ const HeaderNavigation = () => {
                   <FeatureCategoriesMenu align="center" sideOffset={0} />
                 </DropdownMenu>
                 {NAVIGATION_ITEMS.map((item) => {
-                  const isActive =
-                    item.href === pathname ||
-                    (item.href !== "/" && pathname.startsWith(`${item.href}/`));
+                  const isActive = isNavItemActive(pathname, item.href);
                   return (
                     <Link
                       key={item.href}
