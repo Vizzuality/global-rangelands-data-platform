@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
@@ -8,37 +8,34 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { cmsImageSrc } from "@/lib/cms";
-import { useCategorizedFeatures } from "@/containers/features/use-feature-category";
+import { useFeatureCategory } from "@/containers/features/use-feature-category";
 import type { CategorizedFeature } from "@/containers/features/use-feature-category";
 
-const FEATURED_CARDS = [
-  {
-    slug: "reversing-rangeland-degradation-through-collective-participatory-rangeland-management-in-mongolia",
-    label: "Rangelands Stories",
-    ctaLabel: "See all Rangelands Stories",
-    category: "rangelands-stories",
-  },
-  {
-    slug: "contributing-to-land-degradation-neutrality-ldn-in-the-brazillian-cerrado",
-    label: "Rangelands Restoration Champions",
-    ctaLabel: "See all Rangelands Restoration Champions",
-    category: "restoration-champions",
-  },
-];
+const CATEGORY = "rangelands-stories";
 
-const FEATURED_SLUGS = FEATURED_CARDS.map((card) => card.slug);
+type Feature = CategorizedFeature["feature"];
 
-type FeaturedCard = (typeof FEATURED_CARDS)[number] & CategorizedFeature;
+function getRandomFeatures(features: Feature[], [first, second]: [number, number]): Feature[] {
+  if (features.length <= 2) return features;
 
-function FeatureCard({ slug, label, ctaLabel, category, categorySlug, feature }: FeaturedCard) {
+  const firstIndex = Math.floor(first * features.length);
+  const secondIndex =
+    (firstIndex + 1 + Math.floor(second * (features.length - 1))) % features.length;
+
+  return [features[firstIndex], features[secondIndex]];
+}
+
+function FeatureCard({ feature }: { feature: Feature }) {
   const t = useTranslations();
   const image = feature.image;
 
   return (
     <div className="flex w-full max-w-[514px] flex-col gap-6">
-      <Link href={`/features/${categorySlug}/${slug}`} className="group flex flex-col">
+      <Link href={`/features/${CATEGORY}/${feature.slug}`} className="group flex flex-col">
         <div className="flex flex-col gap-[10px] bg-white p-8">
-          <p className="text-[10px] font-medium uppercase leading-5 text-green-dark">{t(label)}</p>
+          <p className="text-[10px] font-medium uppercase leading-5 text-green-dark">
+            {t("Rangelands Stories")}
+          </p>
           <p className="text-label-16 text-green-dark group-hover:underline">{feature.title}</p>
         </div>
         {image?.url && (
@@ -61,10 +58,10 @@ function FeatureCard({ slug, label, ctaLabel, category, categorySlug, feature }:
       </Link>
 
       <Link
-        href={`/features/${category}`}
+        href={`/features/${CATEGORY}`}
         className="group flex items-center gap-2 text-white transition-opacity hover:opacity-80"
       >
-        <span className="text-[12px] font-medium leading-5">{t(ctaLabel)}</span>
+        <span className="text-[12px] font-medium leading-5">{t("See all Rangelands Stories")}</span>
         <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </Link>
     </div>
@@ -80,12 +77,13 @@ export function FeaturesCards() {
     once: true,
   });
 
-  const categorizedFeatures = useCategorizedFeatures(FEATURED_SLUGS);
+  const category = useFeatureCategory(CATEGORY);
 
-  const cards = FEATURED_CARDS.map((card) => {
-    const match = categorizedFeatures.find(({ feature }) => feature.slug === card.slug);
-    return match ? { ...card, ...match } : null;
-  }).filter((card): card is FeaturedCard => Boolean(card));
+  // Rolled once per mount so refetches don't reshuffle; safe from hydration
+  // mismatch only because the home page doesn't server-prefetch feature categories.
+  const [picks] = useState<[number, number]>(() => [Math.random(), Math.random()]);
+
+  const cards = getRandomFeatures(category?.features ?? [], picks);
 
   return (
     <div className="mt-[-1px] bg-green-light pt-[100px]">
@@ -121,12 +119,12 @@ export function FeaturesCards() {
       >
         <div className="hidden w-[34px] shrink-0 self-stretch bg-green-medium sm:mb-[76px] sm:mt-8 sm:block" />
 
-        {cards.map((card, index) => (
-          <Fragment key={card.slug}>
+        {cards.map((feature, index) => (
+          <Fragment key={feature.slug}>
             {index > 0 && (
               <div className="hidden w-2 shrink-0 self-stretch bg-green-medium sm:mb-[76px] sm:mt-8 sm:block" />
             )}
-            <FeatureCard {...card} />
+            <FeatureCard feature={feature} />
           </Fragment>
         ))}
 
