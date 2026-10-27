@@ -43,7 +43,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
         </p>
       </div>
       {image?.url && (
-        <div className="relative h-[176px] w-full overflow-hidden">
+        <div className="relative h-[176px] w-full overflow-hidden before:absolute before:inset-0 before:animate-pulse before:bg-white/20 before:content-['']">
           <Image
             src={cmsImageSrc(image.url, image.formats, 1000)}
             alt={image.alternativeText ?? feature.title ?? ""}
