@@ -8,6 +8,8 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { cmsImageSrc } from "@/lib/cms";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
+import { cn } from "@/lib/utils";
 import { useFeatureCategory } from "@/containers/features/use-feature-category";
 import type { CategorizedFeature } from "@/containers/features/use-feature-category";
 
@@ -43,7 +45,12 @@ function FeatureCard({ feature }: { feature: Feature }) {
         </p>
       </div>
       {image?.url && (
-        <div className="relative h-[176px] w-full overflow-hidden before:absolute before:inset-0 before:animate-pulse before:bg-white/20 before:content-['']">
+        <div
+          className={cn(
+            "relative h-[176px] w-full overflow-hidden before:bg-white/20",
+            IMAGE_PLACEHOLDER_CLASS_NAME,
+          )}
+        >
           <Image
             src={cmsImageSrc(image.url, image.formats, 1000)}
             alt={image.alternativeText ?? feature.title ?? ""}

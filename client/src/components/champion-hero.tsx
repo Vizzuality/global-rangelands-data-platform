@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { cmsImageSrc } from "@/lib/cms";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
 import { cn } from "@/lib/utils";
 
 type ChampionHeroProps = {
@@ -26,8 +27,7 @@ const ChampionHero = ({ title, subtitle, location, imageUrl, imageCaption }: Cha
       className={cn(
         "relative h-[356px] w-full lg:w-[328px] lg:shrink-0",
         !imageUrl && "hidden lg:block",
-        !!imageUrl &&
-          "before:absolute before:inset-0 before:animate-pulse before:bg-champion-ink/10 before:content-['']",
+        !!imageUrl && [IMAGE_PLACEHOLDER_CLASS_NAME, "before:bg-champion-ink/10"],
       )}
     >
       {imageUrl && (

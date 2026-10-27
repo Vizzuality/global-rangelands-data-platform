@@ -15,6 +15,7 @@ import { cmsImageSrc } from "@/lib/cms";
 import ChampionHero from "@/components/champion-hero";
 import FeatureDocumentLink from "@/components/feature-document-link";
 import { cn } from "@/lib/utils";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
 import { isChampionCategory } from "@/containers/features/categories";
 import FurtherInfo from "@/containers/features/detail/further-info";
 import { getCategoryTheme } from "@/containers/features/theme";
@@ -138,7 +139,12 @@ const FeatureDetailPage = ({
                 />
               ) : (
                 imageUrl && (
-                  <div className="relative -mx-6 h-[420px] xl:-mx-24">
+                  <div
+                    className={cn(
+                      "relative -mx-6 h-[420px] before:bg-foreground/10 xl:-mx-24",
+                      IMAGE_PLACEHOLDER_CLASS_NAME,
+                    )}
+                  >
                     <Image
                       src={cmsImageSrc(imageUrl)}
                       alt={title ?? ""}

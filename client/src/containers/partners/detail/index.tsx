@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "@/i18n";
 import { cn } from "@/lib/utils";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
 import type { Partner } from "@/containers/partners/constants";
 import { PARTNER_THEME } from "@/containers/partners/theme";
 import KeepExploring from "./keep-exploring";
@@ -84,7 +85,12 @@ const PartnerDetail = ({ partner }: PartnerDetailProps) => {
                 </div>
               </div>
 
-              <div className="relative -mx-6 h-[420px] xl:-mx-24 xl:h-[475px]">
+              <div
+                className={cn(
+                  "relative -mx-6 h-[420px] before:bg-foreground/10 xl:-mx-24 xl:h-[475px]",
+                  IMAGE_PLACEHOLDER_CLASS_NAME,
+                )}
+              >
                 <Image
                   src={partner.heroImage}
                   alt=""

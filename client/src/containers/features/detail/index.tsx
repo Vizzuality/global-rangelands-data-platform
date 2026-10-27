@@ -16,6 +16,7 @@ import FeatureDocumentLink from "@/components/feature-document-link";
 import { sidebarOpenAtom, useSyncSearchParams } from "@/store/map";
 import { cmsImageSrc } from "@/lib/cms";
 import { cn } from "@/lib/utils";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
 import { getCategoryListHref, isChampionCategory } from "@/containers/features/categories";
 import { useFeatureCategories } from "@/containers/features/use-feature-category";
 import FurtherInfo from "./further-info";
@@ -149,7 +150,13 @@ const FeatureDetail = ({ slug }: FeatureDetailProps) => {
         </div>
 
         {imageUrl && (
-          <div className={cn("relative w-full shrink-0", getImageHeightClassName(isChampion))}>
+          <div
+            className={cn(
+              "relative w-full shrink-0 before:bg-foreground/10",
+              IMAGE_PLACEHOLDER_CLASS_NAME,
+              getImageHeightClassName(isChampion),
+            )}
+          >
             <Image
               src={cmsImageSrc(imageUrl, imageFormats, 1000)}
               alt={title ?? ""}

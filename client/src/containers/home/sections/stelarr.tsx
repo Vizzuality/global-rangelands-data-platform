@@ -8,6 +8,8 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { cmsImageSrc } from "@/lib/cms";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
+import { cn } from "@/lib/utils";
 import { useCategorizedFeatures } from "@/containers/features/use-feature-category";
 
 const INVESTMENT_CASE_SLUGS = [
@@ -127,7 +129,15 @@ export function Stelarr() {
                       {project.title}
                     </p>
                   </div>
-                  <div className="relative h-[176px] w-full overflow-hidden">
+                  <div
+                    className={cn(
+                      "relative h-[176px] w-full overflow-hidden",
+                      project.image?.url && [
+                        IMAGE_PLACEHOLDER_CLASS_NAME,
+                        "before:bg-foreground/10",
+                      ],
+                    )}
+                  >
                     {project.image?.url && (
                       <Image
                         src={cmsImageSrc(project.image.url, project.image.formats, 1000)}

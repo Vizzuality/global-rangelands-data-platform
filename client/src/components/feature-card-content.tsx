@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { cmsImageSrc } from "@/lib/cms";
+import { IMAGE_PLACEHOLDER_CLASS_NAME } from "@/lib/image-placeholder";
 
 type FeatureCardContentProps = {
   variant: string;
@@ -58,7 +59,7 @@ const FeatureCardContent = ({
       {location && <p className="mt-6 text-xs font-medium leading-5">{location}</p>}
     </div>
     {imageUrl && (
-      <div className="relative h-44">
+      <div className={cn("relative h-44 before:bg-hunter-green-200", IMAGE_PLACEHOLDER_CLASS_NAME)}>
         <Image
           src={cmsImageSrc(imageUrl, imageFormats, 704)}
           alt={imageAlt}
