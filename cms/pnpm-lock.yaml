@@ -16,7 +16,7 @@ overrides:
   react-diff-viewer-continued>diff: 5.2.2
   tar@7: 7.5.22
   lodash-es@4: 4.18.1
-  qs@6: 6.16.0
+  qs@6: 6.16.2
   bn.js@4: 4.12.5
   '@babel/runtime@7': 7.29.7
   minimatch@3: 3.1.5
@@ -6147,8 +6147,8 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  qs@6.16.0:
-    resolution: {integrity: sha512-h6fhOIaRrID2CbEY2fqs+7t+UXZo+MLAnU5gRIq85uFtdiUPCdsApMlHhXogKVM4HM2DVbIjGNTTYH2OcmP1vA==}
+  qs@6.16.2:
+    resolution: {integrity: sha512-VYdnB5S7/0IeXzBacUtwNAaM6d7Y/PgYnNC7bJCI6meqA/OgnsQbZMtVW8Dt2D1PHgbHGtYmhSoEIgvt7xZ2ZA==}
     engines: {node: '>=0.6'}
 
   querystringify@2.2.0:
@@ -9765,7 +9765,7 @@ snapshots:
       p-map: 4.0.0
       passport-local: 1.0.0
       pluralize: 8.0.0
-      qs: 6.16.0
+      qs: 6.16.2
       react: 18.3.1
       react-dnd: 16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@20.12.11)(@types/react@18.3.2)(react@18.3.1)
       react-dnd-html5-backend: 16.0.1
@@ -9879,7 +9879,7 @@ snapshots:
       markdown-it-sub: 1.0.0
       markdown-it-sup: 1.0.0
       prismjs: 1.30.0
-      qs: 6.16.0
+      qs: 6.16.2
       react: 18.3.1
       react-dnd: 16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@20.12.11)(@types/react@18.3.2)(react@18.3.1)
       react-dnd-html5-backend: 16.0.1
@@ -9937,7 +9937,7 @@ snapshots:
       date-fns-tz: 2.0.1(date-fns@2.30.0)
       formik: 2.4.9(react@18.3.1)
       lodash: 4.18.1
-      qs: 6.16.0
+      qs: 6.16.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-intl: 6.6.2(react@18.3.1)(typescript@5.9.3)
@@ -9992,7 +9992,7 @@ snapshots:
       lodash: 4.18.1
       micromatch: 4.0.8
       pluralize: 8.0.0
-      qs: 6.16.0
+      qs: 6.16.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-dropzone: 14.3.8(react@18.3.1)
@@ -10075,7 +10075,7 @@ snapshots:
       ora: 5.4.1
       package-json: 10.0.1
       pkg-up: 3.1.0
-      qs: 6.16.0
+      qs: 6.16.2
       resolve.exports: 2.0.2
       semver: 7.7.4
       typescript: 5.9.3
@@ -10286,7 +10286,7 @@ snapshots:
       '@strapi/icons': 2.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.4.3(css-to-react-native@3.2.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/utils': 5.60.0(ts-toolbelt@9.6.0)
       lodash: 4.18.1
-      qs: 6.16.0
+      qs: 6.16.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-intl: 6.6.2(react@18.3.1)(typescript@5.9.3)
@@ -10334,7 +10334,7 @@ snapshots:
       '@casl/ability': 6.7.5
       '@strapi/utils': 5.60.0(ts-toolbelt@9.6.0)
       lodash: 4.18.1
-      qs: 6.16.0
+      qs: 6.16.2
       sift: 16.0.1
     transitivePeerDependencies:
       - ts-toolbelt
@@ -10744,7 +10744,7 @@ snapshots:
       lodash: 4.18.1
       mime-types: 2.1.35
       prop-types: 15.8.1
-      qs: 6.16.0
+      qs: 6.16.2
       react: 18.3.1
       react-dnd: 16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@20.12.11)(@types/react@18.3.2)(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
@@ -11831,7 +11831,7 @@ snapshots:
   co-body@6.1.0:
     dependencies:
       inflation: 2.1.0
-      qs: 6.16.0
+      qs: 6.16.2
       raw-body: 2.5.2
       type-is: 1.6.18
 
@@ -12614,7 +12614,7 @@ snapshots:
       '@paralleldrive/cuid2': 2.2.2
       dezalgo: 1.0.4
       once: 1.4.0
-      qs: 6.16.0
+      qs: 6.16.2
 
   formik@2.4.9(react@18.3.1):
     dependencies:
@@ -14560,7 +14560,7 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  qs@6.16.0:
+  qs@6.16.2:
     dependencies:
       es-define-property: 1.0.1
       side-channel: 1.1.1
