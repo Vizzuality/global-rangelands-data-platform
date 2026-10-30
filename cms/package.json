@@ -70,6 +70,7 @@
       "css-loader>postcss": "8.5.26",
       "vite>postcss": "8.5.26",
       "cheerio>undici": "7.30.1",
+      "@ai-sdk/provider-utils>undici": "6.29.1",
       "@strapi/admin>axios": "1.20.0",
       "@strapi/cloud-cli>axios": "1.20.0",
       "typedoc>markdown-it": "14.3.3",
