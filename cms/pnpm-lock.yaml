@@ -28,7 +28,7 @@ overrides:
   ajv@6: 6.15.0
   ajv@8: 8.20.0
   ajv>fast-uri: 3.1.8
-  '@strapi/provider-email-sendmail>nodemailer': 10.0.14
+  '@strapi/provider-email-sendmail>nodemailer': 10.3.1
   load-yaml-file>js-yaml: 4.3.2
   gaxios>uuid: 11.1.1
   teeny-request>uuid: 11.1.1
@@ -5731,8 +5731,8 @@ packages:
     resolution: {integrity: sha512-mIrE/Cw9y+9Au6dS5vDKDhQza9YvG6w+ZrS6X+ZzA7yFW/soAeaups4Qzn1bL6g5FVy8WtP79+0j82oPIbqRjQ==}
     engines: {node: '>=18'}
 
-  nodemailer@10.0.14:
-    resolution: {integrity: sha512-eJoLFKg55fesSlzUekmfOv/SBXh4KUYT8oiQc2RLP0tfG0rbNMJBK7wgHJwXTJwqyKlSJMz9UzDZ4v+aHEvo8g==}
+  nodemailer@10.3.1:
+    resolution: {integrity: sha512-uF0AFsJC07Y1vdW7p580DKAnh7rAO+4UPSSB3mDCPNDufoiaOebV6JmrzpxB14OjEEEiBsNdYoM2Y+fN8M7BBA==}
     engines: {node: '>=20.0.0'}
 
   normalize-package-data@2.5.0:
@@ -10464,7 +10464,7 @@ snapshots:
 
   '@strapi/provider-email-sendmail@5.60.0':
     dependencies:
-      nodemailer: 10.0.14
+      nodemailer: 10.3.1
 
   '@strapi/provider-upload-local@5.60.0(ts-toolbelt@9.6.0)':
     dependencies:
@@ -14154,7 +14154,7 @@ snapshots:
 
   node-releases@2.0.55: {}
 
-  nodemailer@10.0.14: {}
+  nodemailer@10.3.1: {}
 
   normalize-package-data@2.5.0:
     dependencies:

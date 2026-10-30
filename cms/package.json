@@ -62,7 +62,7 @@
       "ajv@6": "6.15.0",
       "ajv@8": "8.20.0",
       "ajv>fast-uri": "3.1.8",
-      "@strapi/provider-email-sendmail>nodemailer": "10.0.14",
+      "@strapi/provider-email-sendmail>nodemailer": "10.3.1",
       "load-yaml-file>js-yaml": "4.3.2",
       "gaxios>uuid": "11.1.1",
       "teeny-request>uuid": "11.1.1",
