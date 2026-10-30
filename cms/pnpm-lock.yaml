@@ -36,6 +36,7 @@ overrides:
   css-loader>postcss: 8.5.26
   vite>postcss: 8.5.26
   cheerio>undici: 7.30.1
+  '@ai-sdk/provider-utils>undici': 6.29.1
   '@strapi/admin>axios': 1.20.0
   '@strapi/cloud-cli>axios': 1.20.0
   typedoc>markdown-it: 14.3.3
@@ -7121,8 +7122,8 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  undici@6.29.0:
-    resolution: {integrity: sha512-R+RODBqp6i2pPflGdq+xIOUkl+RNfGgHwoinecKu/JCuf2uO06cOKoDbI2P7Dn6KcswdKwrczbU6IYJ6K8X+wg==}
+  undici@6.29.1:
+    resolution: {integrity: sha512-EvRlUt/QqAEvXdQeRMYUfwOQsfzpDztykrG2owGEE/rBOBoYv9uF39ZzsNDh4lTFHhTr2XOZjKkYgueD12ZmGA==}
     engines: {node: '>=18.17'}
 
   undici@7.30.1:
@@ -7524,7 +7525,7 @@ snapshots:
       '@ai-sdk/provider': 3.0.15
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.1.0
-      undici: 6.29.0
+      undici: 6.29.1
       zod: 4.4.3
 
   '@ai-sdk/provider@3.0.15':
@@ -15626,7 +15627,7 @@ snapshots:
 
   undici-types@5.26.5: {}
 
-  undici@6.29.0: {}
+  undici@6.29.1: {}
 
   undici@7.30.1: {}
 
