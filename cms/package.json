@@ -76,7 +76,9 @@
       "typedoc>markdown-it": "14.3.3",
       "postcss-modules-local-by-default>postcss-selector-parser": "7.1.6",
       "postcss-modules-scope>postcss-selector-parser": "7.1.6",
-      "@strapi/strapi>webpack-dev-middleware": "7.4.6"
+      "@strapi/strapi>webpack-dev-middleware": "7.4.6",
+      "@strapi/core>@modelcontextprotocol/node": "2.1.2",
+      "@modelcontextprotocol/node>@hono/node-server": "2.1.5"
     },
     "onlyBuiltDependencies": [
       "@strapi/strapi",
