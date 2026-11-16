@@ -50,3 +50,4 @@ runs:
         --gen2 \
         --region=${{ inputs.REGION }} \
         --source=${{ inputs.CLOUD_FUNCTION_PATH}} \
+        --runtime=nodejs22
