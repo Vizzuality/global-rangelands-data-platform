@@ -86,7 +86,7 @@ module "eet_cloud_function" {
   function_name                    = "${var.project_name}-eet"
   description                      = "Earth Engine Tiler Cloud Function"
   source_dir                       = "${path.root}/../../cloud_functions/earth_engine_tiler"
-  runtime                          = "nodejs20"
+  runtime                          = "nodejs22"
   entry_point                      = "eetApp"
   runtime_environment_variables    = local.eet_cloud_function_env
   secrets                          = local.eet_cloud_function_secrets
