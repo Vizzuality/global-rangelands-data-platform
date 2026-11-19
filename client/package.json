@@ -84,7 +84,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "5.7.5",
+    "@eslint-react/eslint-plugin": "5.30.5",
     "@eslint/js": "10.0.1",
     "@next/eslint-plugin-next": "16.2.6",
     "@turf/helpers": "^5.1.5",
@@ -148,8 +148,7 @@
       "moment-timezone>moment": "2.31.0",
       "tailwindcss>postcss-selector-parser": "7.1.6",
       "postcss-nested>postcss-selector-parser": "7.1.6",
-      "eslint-plugin-react-hooks>zod": "4.6.7",
-      "@eslint-react/shared>zod": "4.6.7"
+      "eslint-plugin-react-hooks>zod": "4.6.7"
     }
   }
 }
