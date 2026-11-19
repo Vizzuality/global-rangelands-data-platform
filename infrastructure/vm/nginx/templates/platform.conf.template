@@ -15,7 +15,9 @@ server {
 
 server {
     listen 443 ssl default_server;
-    http2 on;
+    # HTTP/2 disabled until nginx ships the fix for CVE-2026-123007 and
+    # CVE-2026-123633 (F5 K000164058): both need only http2 on an exposed
+    # listener. Re-enable together with the patched image.
     server_name ${SERVER_NAME};
 
     ssl_certificate     /etc/nginx/certs/fullchain.pem;
@@ -93,7 +95,9 @@ server {
 # so the certificate must cover the non-canonical names too.
 server {
     listen 443 ssl;
-    http2 on;
+    # HTTP/2 disabled until nginx ships the fix for CVE-2026-123007 and
+    # CVE-2026-123633 (F5 K000164058): both need only http2 on an exposed
+    # listener. Re-enable together with the patched image.
     server_name ${REDIRECT_SERVER_NAME};
 
     ssl_certificate     /etc/nginx/certs/fullchain.pem;
