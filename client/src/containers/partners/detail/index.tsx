@@ -101,7 +101,7 @@ const PartnerDetail = ({ partner }: PartnerDetailProps) => {
                 />
               </div>
 
-              <div className="mx-auto flex max-w-[632px] flex-col gap-10">
+              <div className={cn("mx-auto flex flex-col gap-10", partner.bodyWidthClassName)}>
                 <Body />
                 {partner.websiteUrl && (
                   <PartnerButton className="w-[145px] self-start">

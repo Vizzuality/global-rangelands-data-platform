@@ -19,6 +19,7 @@ export type Partner = {
   websiteUrl: string | undefined;
   summary: string;
   Body: ComponentType;
+  bodyWidthClassName: string;
 };
 
 export const PARTNERS: readonly Partner[] = [
@@ -34,6 +35,7 @@ export const PARTNERS: readonly Partner[] = [
     summary:
       "Improving global monitoring of grasslands, grazing lands and livestock systems through open, regularly updated geospatial datasets.",
     Body: GlobalPastureWatchBody,
+    bodyWidthClassName: "max-w-[632px]",
   },
   {
     slug: "ramona",
@@ -47,5 +49,6 @@ export const PARTNERS: readonly Partner[] = [
     summary:
       "A suite of high-resolution products mapping African rangelands, their ecosystem types, productivity levels, and seasonal variations.",
     Body: RamonaBody,
+    bodyWidthClassName: "max-w-[816px]",
   },
 ];
