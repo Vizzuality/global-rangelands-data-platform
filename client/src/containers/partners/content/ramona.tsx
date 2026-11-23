@@ -19,12 +19,6 @@ import RamonaProductsTable from "./ramona-products-table";
 const STAC_COLLECTIONS_URL =
   "https://eoresults.esa.int/browser/#/external/eoresults.esa.int/stac/collections";
 
-const PROCESSING_FLOW_CAPTION =
-  "RAMONA processing flow and product interdependencies. Core, experimental and intermediate products are colour-coded; input data are shown in blue.";
-
-const SENTINEL_SYNERGY_CAPTION =
-  "Sentinel synergy: complementary temporal, spatial and radiometric resolution of the Sentinel-1, -2 and -3 missions used by RAMONA.";
-
 const STATS = [
   { value: "10 m", label: "Native product resolution" },
   { value: "2,258", label: "Sentinel-2 tiles processed" },
@@ -107,7 +101,7 @@ const Caption = ({ children, className }: { children: ReactNode; className?: str
 const RamonaBody = () => {
   const t = useTranslations();
   const expandLabel = t("Expand figure");
-  const closeLabel = t("Close");
+  const collapseLabel = t("Collapse figure");
 
   return (
     <div className="flex flex-col gap-10 pt-6 text-base leading-7">
@@ -193,31 +187,37 @@ const RamonaBody = () => {
             experimental products.
           </p>
           <figure className="flex flex-col-reverse gap-2 pt-5 lg:flex-row lg:justify-between lg:gap-8">
-            <Caption className="lg:w-[274px]">{PROCESSING_FLOW_CAPTION}</Caption>
+            <Caption className="lg:w-[274px]">
+              RAMONA processing flow and product interdependencies. Core, experimental and
+              intermediate products are colour-coded; input data are shown in blue.
+            </Caption>
             <ExpandableFigure
               src={processingFlow}
-              caption={PROCESSING_FLOW_CAPTION}
               alt={t(
                 "RAMONA processing flow and product interdependencies, from Sentinel inputs through data fusion and TIMESAT smoothing to core, experimental and intermediate products",
               )}
               expandLabel={expandLabel}
-              closeLabel={closeLabel}
+              collapseLabel={collapseLabel}
               sizes="(min-width: 1024px) 462px, 100vw"
               className="w-full overflow-hidden rounded-[22px] lg:w-[462px] lg:shrink-0"
+              expandedClassName="rounded-[30px]"
             />
           </figure>
           <figure className="flex flex-col-reverse gap-2 pt-5 lg:flex-row lg:justify-between lg:gap-8">
-            <Caption className="lg:w-[274px]">{SENTINEL_SYNERGY_CAPTION}</Caption>
+            <Caption className="lg:w-[274px]">
+              Sentinel synergy: complementary temporal, spatial and radiometric resolution of the
+              Sentinel-1, -2 and -3 missions used by RAMONA.
+            </Caption>
             <ExpandableFigure
               src={sentinelSynergy}
-              caption={SENTINEL_SYNERGY_CAPTION}
               alt={t(
                 "Sentinel-1, Sentinel-2 and Sentinel-3 mission timelines, sensor characteristics and spectral bands",
               )}
               expandLabel={expandLabel}
-              closeLabel={closeLabel}
+              collapseLabel={collapseLabel}
               sizes="(min-width: 1024px) 438px, 100vw"
               className="w-full rounded-[22px] border-2 border-teal-dark p-2.5 lg:w-[462px] lg:shrink-0"
+              expandedClassName="rounded-[30px] border-2 border-teal-dark bg-white p-2.5"
             />
           </figure>
         </section>
