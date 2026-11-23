@@ -1,45 +1,34 @@
-import TableLinkArrow from "@/svgs/partner-pages/table-link-arrow.svg";
-import BodyLink from "./body-link";
-
 type RamonaProduct = {
   name: string;
-  href?: string;
   resolution: string;
   frequency: string;
   coverage: string;
 };
 
-const STAC_COLLECTIONS_URL =
-  "https://eoresults.esa.int/browser/#/external/eoresults.esa.int/stac/collections";
-
 const RAMONA_PRODUCTS: RamonaProduct[] = [
   {
     name: "Rangeland Extent",
-    href: `${STAC_COLLECTIONS_URL}/ramona_re?.language=en`,
     resolution: "10 m",
     frequency: "Annual",
     coverage: "Continental Africa, 2022",
   },
   {
     name: "Rangeland Type",
-    href: `${STAC_COLLECTIONS_URL}/ramona_rt?.language=en`,
     resolution: "10 m",
     frequency: "Annual",
     coverage: "Continental Africa, 2022",
   },
   {
     name: "Herbaceous Rangeland Biomass (HRB)",
-    href: `${STAC_COLLECTIONS_URL}/ramona_hrb?.language=en`,
     resolution: "10 m",
     frequency: "Monthly",
     coverage: "Continental Africa, Aug 2021 – Jan 2023",
   },
   {
     name: "HRB country-level mosaics",
-    href: `${STAC_COLLECTIONS_URL}/ramona_hrb_mosaic?.language=en`,
     resolution: "10 m",
     frequency: "Monthly",
-    coverage: "Africa, on demand via APEx",
+    coverage: "Africa; pre-computed in the PRR and custom on demand via APEx",
   },
   {
     name: "Herbaceous Biomass Anomalies",
@@ -49,7 +38,6 @@ const RAMONA_PRODUCTS: RamonaProduct[] = [
   },
   {
     name: "Rangeland Phenology parameters",
-    href: `${STAC_COLLECTIONS_URL}/ramona_rpp?.language=en`,
     resolution: "10 m",
     frequency: "Annual",
     coverage: "Continental Africa, 2022",
@@ -57,43 +45,42 @@ const RAMONA_PRODUCTS: RamonaProduct[] = [
 ];
 
 const RamonaProductsTable = () => (
-  <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="RAMONA product overview">
-    <table className="w-full min-w-[632px] table-fixed border-collapse text-sm font-normal">
+  <div
+    className="overflow-x-auto pb-4"
+    tabIndex={0}
+    role="region"
+    aria-label="RAMONA product suite"
+  >
+    <table className="w-full min-w-[560px] table-fixed border-collapse text-xs leading-4">
       <colgroup>
-        <col className="w-[164px]" />
-        <col className="w-[54px]" />
-        <col className="w-[84px]" />
-        <col className="w-[84px]" />
+        <col className="w-[233px]" />
+        <col className="w-[99px]" />
+        <col className="w-[98.5px]" />
         <col />
       </colgroup>
       <thead>
-        <tr className="text-left font-medium leading-7">
-          <th colSpan={2} scope="col" className="pb-2.5 font-medium">
+        <tr className="text-left">
+          <th scope="col" className="pb-2 pr-8 font-medium">
             Product
           </th>
-          <th scope="col" className="pb-2.5 font-medium">
+          <th scope="col" className="pb-2 pr-8 font-medium">
             Resolution
           </th>
-          <th scope="col" className="pb-2.5 font-medium">
+          <th scope="col" className="pb-2 pr-8 font-medium">
             Frequency
           </th>
-          <th scope="col" className="pb-2.5 font-medium">
+          <th scope="col" className="pb-2 font-medium">
             Coverage
           </th>
         </tr>
       </thead>
-      <tbody className="align-top leading-[22px]">
+      <tbody className="align-top">
         {RAMONA_PRODUCTS.map((product) => (
-          <tr key={product.name}>
-            <td className="pb-2 pr-[14px]">
-              <BodyLink href={product.href}>{product.name}</BodyLink>
-            </td>
-            <td className="pb-2 pr-[14px]">
-              {product.href && <TableLinkArrow aria-hidden className="h-5 w-10" />}
-            </td>
-            <td className="pb-2 pr-[14px]">{product.resolution}</td>
-            <td className="pb-2 pr-[14px]">{product.frequency}</td>
-            <td className="pb-2">{product.coverage}</td>
+          <tr key={product.name} className="border-b border-orange-pale">
+            <td className="py-2 pr-8">{product.name}</td>
+            <td className="py-2 pr-8">{product.resolution}</td>
+            <td className="py-2 pr-8">{product.frequency}</td>
+            <td className="py-2">{product.coverage}</td>
           </tr>
         ))}
       </tbody>

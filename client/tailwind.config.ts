@@ -18,6 +18,7 @@ const config: Config = {
         "orange-dark": "rgba(208, 96, 16, 1)",
         "orange-light": "rgba(217, 100, 16, 1)",
         "orange-bright": "rgba(255, 147, 70, 1)",
+        "orange-pale": "rgba(251, 231, 214, 1)",
         "green-dark": "rgba(24, 34, 25, 1)",
         "green-medium": "rgba(5, 73, 38, 1)",
         "green-light": "rgba(64, 133, 64, 1)",
@@ -30,6 +31,7 @@ const config: Config = {
         "champion-mint": "rgba(209, 238, 209, 1)",
         "champion-ink": "rgba(6, 9, 7, 1)",
         navy: "rgba(26, 25, 62, 1)",
+        "teal-dark": "rgba(38, 70, 83, 1)",
         gold: "rgba(184, 183, 86, 1)",
       },
       lineHeight: {
