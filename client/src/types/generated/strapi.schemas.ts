@@ -78,16 +78,6 @@ export interface TranslationsLayerTranslationComponent {
   locale?: TranslationsLayerTranslationComponentLocale;
 }
 
-export type LayerCreatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
-export type LayerUpdatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
 export interface Layer {
   id?: string | number;
   documentId?: string;
@@ -102,10 +92,6 @@ export interface Layer {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: LayerCreatedBy;
-  updatedBy?: LayerUpdatedBy;
-  locale?: string;
-  localizations?: Layer[];
 }
 
 export interface DefaultLayerComponent {
@@ -290,16 +276,6 @@ export type FeatureDocument = {
   localizations?: FeatureDocumentLocalizationsItem[];
 };
 
-export type FeatureCreatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
-export type FeatureUpdatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
 export interface Feature {
   id?: string | number;
   documentId?: string;
@@ -319,21 +295,7 @@ export interface Feature {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: FeatureCreatedBy;
-  updatedBy?: FeatureUpdatedBy;
-  locale?: string;
-  localizations?: Feature[];
 }
-
-export type DatasetCreatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
-export type DatasetUpdatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
 
 export interface Dataset {
   id?: string | number;
@@ -351,10 +313,6 @@ export interface Dataset {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: DatasetCreatedBy;
-  updatedBy?: DatasetUpdatedBy;
-  locale?: string;
-  localizations?: Dataset[];
 }
 
 export interface DatasetListResponse {
@@ -406,8 +364,6 @@ export type DatasetRequestData = {
   translations?: TranslationsDatasetTranslationComponent[];
   feature?: number | string;
   short_description?: string;
-  locale?: string;
-  localizations?: (number | string)[];
 };
 
 export interface DatasetRequest {
@@ -442,16 +398,6 @@ export interface TranslationsDatasetCategoryTranslationComponent {
   locale?: TranslationsDatasetCategoryTranslationComponentLocale;
 }
 
-export type DatasetCategoryCreatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
-export type DatasetCategoryUpdatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
 export interface DatasetCategory {
   id?: string | number;
   documentId?: string;
@@ -462,10 +408,6 @@ export interface DatasetCategory {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: DatasetCategoryCreatedBy;
-  updatedBy?: DatasetCategoryUpdatedBy;
-  locale?: string;
-  localizations?: DatasetCategory[];
 }
 
 export interface DatasetCategoryListResponse {
@@ -485,8 +427,6 @@ export type DatasetCategoryRequestData = {
   datasets?: (number | string)[];
   translations?: TranslationsDatasetCategoryTranslationComponent[];
   slug: string;
-  locale?: string;
-  localizations?: (number | string)[];
 };
 
 export interface DatasetCategoryRequest {
@@ -520,16 +460,6 @@ export interface TranslationsRangelandTranslationComponent {
   locale?: TranslationsRangelandTranslationComponentLocale;
 }
 
-export type RangelandCreatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
-export type RangelandUpdatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
 export interface Rangeland {
   id?: string | number;
   documentId?: string;
@@ -542,10 +472,6 @@ export interface Rangeland {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: RangelandCreatedBy;
-  updatedBy?: RangelandUpdatedBy;
-  locale?: string;
-  localizations?: Rangeland[];
 }
 
 export type TranslationsEcoregionTranslationComponentLocale =
@@ -562,16 +488,6 @@ export interface TranslationsEcoregionTranslationComponent {
   locale?: TranslationsEcoregionTranslationComponentLocale;
 }
 
-export type EcoregionCreatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
-export type EcoregionUpdatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
 export interface Ecoregion {
   id?: string | number;
   documentId?: string;
@@ -584,10 +500,6 @@ export interface Ecoregion {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: EcoregionCreatedBy;
-  updatedBy?: EcoregionUpdatedBy;
-  locale?: string;
-  localizations?: Ecoregion[];
 }
 
 export interface EcoregionListResponse {
@@ -609,8 +521,6 @@ export type EcoregionRequestData = {
   rangeland?: number | string;
   color?: string;
   translations?: TranslationsEcoregionTranslationComponent[];
-  locale?: string;
-  localizations?: (number | string)[];
 };
 
 export interface EcoregionRequest {
@@ -656,8 +566,6 @@ export type FeatureRequestData = {
   translations?: TranslationsFeatureTranslationComponent[];
   further_information?: DefaultFurtherInfoComponent[];
   slug: string;
-  locale?: string;
-  localizations?: (number | string)[];
 };
 
 export interface FeatureRequest {
@@ -692,16 +600,6 @@ export interface TranslationsFeatureCategoryTranslationComponent {
   locale?: TranslationsFeatureCategoryTranslationComponentLocale;
 }
 
-export type FeatureCategoryCreatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
-export type FeatureCategoryUpdatedBy = {
-  id?: string | number;
-  documentId?: string;
-};
-
 export interface FeatureCategory {
   id?: string | number;
   documentId?: string;
@@ -712,10 +610,6 @@ export interface FeatureCategory {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string;
-  createdBy?: FeatureCategoryCreatedBy;
-  updatedBy?: FeatureCategoryUpdatedBy;
-  locale?: string;
-  localizations?: FeatureCategory[];
 }
 
 export interface FeatureCategoryListResponse {
@@ -735,8 +629,6 @@ export type FeatureCategoryRequestData = {
   features?: (number | string)[];
   translations?: TranslationsFeatureCategoryTranslationComponent[];
   slug: string;
-  locale?: string;
-  localizations?: (number | string)[];
 };
 
 export interface FeatureCategoryRequest {
@@ -777,8 +669,6 @@ export type LayerRequestData = {
   interaction_config?: unknown;
   slug?: string;
   translations?: TranslationsLayerTranslationComponent[];
-  locale?: string;
-  localizations?: (number | string)[];
 };
 
 export interface LayerRequest {
@@ -817,8 +707,6 @@ export type RangelandRequestData = {
   color?: string;
   ecoregions?: (number | string)[];
   translations?: TranslationsRangelandTranslationComponent[];
-  locale?: string;
-  localizations?: (number | string)[];
 };
 
 export interface RangelandRequest {
