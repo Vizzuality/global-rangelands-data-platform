@@ -118,8 +118,8 @@ importers:
         specifier: 8.1.0
         version: 8.1.0(typescript@5.4.5)
       '@t3-oss/env-core':
-        specifier: ^0.10.1
-        version: 0.10.1(typescript@5.4.5)(zod@3.23.8)
+        specifier: 0.13.11
+        version: 0.13.11(typescript@5.4.5)(zod@4.6.7)
       '@tailwindcss/line-clamp':
         specifier: ^0.4.4
         version: 0.4.4(tailwindcss@3.4.3)
@@ -232,8 +232,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.3)
       zod:
-        specifier: ^3.23.8
-        version: 3.23.8
+        specifier: 4.6.7
+        version: 4.6.7
     devDependencies:
       '@eslint-react/eslint-plugin':
         specifier: 5.30.5
@@ -303,7 +303,7 @@ importers:
         version: 9.0.11
       orval:
         specifier: 8.45.0
-        version: 8.45.0(@tanstack/react-query@5.40.1(react@19.2.6))(prettier@3.2.5)(typedoc-plugin-markdown@4.12.0(typedoc@0.28.20(typescript@5.4.5)))(typedoc@0.28.20(typescript@5.4.5))(typescript@5.4.5)(zod@3.23.8)
+        version: 8.45.0(@tanstack/react-query@5.40.1(react@19.2.6))(prettier@3.2.5)(typedoc-plugin-markdown@4.12.0(typedoc@0.28.20(typescript@5.4.5)))(typedoc@0.28.20(typescript@5.4.5))(typescript@5.4.5)(zod@4.6.7)
       postcss:
         specifier: 8.5.26
         version: 8.5.26
@@ -2971,13 +2971,21 @@ packages:
   '@swc/types@0.1.26':
     resolution: {integrity: sha512-lyMwd7WGgG79RS7EERZV3T8wMdmPq3xwyg+1nmAM64kIhx5yl+juO2PYIHb7vTiPgPCj8LYjsNV2T5wiQHUEaw==}
 
-  '@t3-oss/env-core@0.10.1':
-    resolution: {integrity: sha512-GcKZiCfWks5CTxhezn9k5zWX3sMDIYf6Kaxy2Gx9YEQftFcz8hDRN56hcbylyAO3t4jQnQ5ifLawINsNgCDpOg==}
+  '@t3-oss/env-core@0.13.11':
+    resolution: {integrity: sha512-sM7GYY+KL7H/Hl0BE0inWfk3nRHZOLhmVn7sHGxaZt9FAR6KqREXAE+6TqKfiavfXmpRxO/OZ2QgKRd+oiBYRQ==}
     peerDependencies:
+      arktype: ^2.1.0
       typescript: '>=5.0.0'
-      zod: ^3.0.0
+      valibot: ^1.0.0-beta.7 || ^1.0.0
+      zod: ^3.24.0 || ^4.0.0
     peerDependenciesMeta:
+      arktype:
+        optional: true
       typescript:
+        optional: true
+      valibot:
+        optional: true
+      zod:
         optional: true
 
   '@tailwindcss/line-clamp@0.4.4':
@@ -7252,9 +7260,6 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
-
   zod@4.6.7:
     resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
@@ -9292,10 +9297,10 @@ snapshots:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
 
-  '@orval/hono@8.45.0(typescript@5.4.5)(zod@3.23.8)':
+  '@orval/hono@8.45.0(typescript@5.4.5)(zod@4.6.7)':
     dependencies:
       '@orval/core': 8.45.0
-      '@orval/zod': 8.45.0(zod@3.23.8)
+      '@orval/zod': 8.45.0(zod@4.6.7)
     optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -9303,11 +9308,11 @@ snapshots:
       - '@modelcontextprotocol/server'
       - zod
 
-  '@orval/mcp@8.45.0(zod@3.23.8)':
+  '@orval/mcp@8.45.0(zod@4.6.7)':
     dependencies:
       '@orval/core': 8.45.0
       '@orval/fetch': 8.45.0
-      '@orval/zod': 8.45.0(zod@3.23.8)
+      '@orval/zod': 8.45.0(zod@4.6.7)
     transitivePeerDependencies:
       - '@faker-js/faker'
       - zod
@@ -9352,14 +9357,14 @@ snapshots:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
 
-  '@orval/zod@8.45.0(zod@3.23.8)':
+  '@orval/zod@8.45.0(zod@4.6.7)':
     dependencies:
       '@orval/core': 8.45.0
       globals: 17.13.0
       jsesc: 3.1.0
       typescript: 6.0.3
     optionalDependencies:
-      zod: 3.23.8
+      zod: 4.6.7
     transitivePeerDependencies:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
@@ -10217,11 +10222,10 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@t3-oss/env-core@0.10.1(typescript@5.4.5)(zod@3.23.8)':
-    dependencies:
-      zod: 3.23.8
+  '@t3-oss/env-core@0.13.11(typescript@5.4.5)(zod@4.6.7)':
     optionalDependencies:
       typescript: 5.4.5
+      zod: 4.6.7
 
   '@tailwindcss/line-clamp@0.4.4(tailwindcss@3.4.3)':
     dependencies:
@@ -13702,7 +13706,7 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
-  orval@8.45.0(@tanstack/react-query@5.40.1(react@19.2.6))(prettier@3.2.5)(typedoc-plugin-markdown@4.12.0(typedoc@0.28.20(typescript@5.4.5)))(typedoc@0.28.20(typescript@5.4.5))(typescript@5.4.5)(zod@3.23.8):
+  orval@8.45.0(@tanstack/react-query@5.40.1(react@19.2.6))(prettier@3.2.5)(typedoc-plugin-markdown@4.12.0(typedoc@0.28.20(typescript@5.4.5)))(typedoc@0.28.20(typescript@5.4.5))(typescript@5.4.5)(zod@4.6.7):
     dependencies:
       '@commander-js/extra-typings': 15.0.0(commander@15.0.0)
       '@orval/angular': 8.45.0
@@ -13710,14 +13714,14 @@ snapshots:
       '@orval/core': 8.45.0
       '@orval/effect': 8.45.0
       '@orval/fetch': 8.45.0
-      '@orval/hono': 8.45.0(typescript@5.4.5)(zod@3.23.8)
-      '@orval/mcp': 8.45.0(zod@3.23.8)
+      '@orval/hono': 8.45.0(typescript@5.4.5)(zod@4.6.7)
+      '@orval/mcp': 8.45.0(zod@4.6.7)
       '@orval/mock': 8.45.0
       '@orval/pinia-colada': 8.45.0
       '@orval/query': 8.45.0(@tanstack/react-query@5.40.1(react@19.2.6))
       '@orval/solid-start': 8.45.0
       '@orval/swr': 8.45.0
-      '@orval/zod': 8.45.0(zod@3.23.8)
+      '@orval/zod': 8.45.0(zod@4.6.7)
       '@scalar/json-magic': 0.16.1
       '@scalar/openapi-parser': 0.29.19
       '@scalar/openapi-types': 0.9.8
@@ -15067,8 +15071,6 @@ snapshots:
   zod-validation-error@4.0.2(zod@4.6.7):
     dependencies:
       zod: 4.6.7
-
-  zod@3.23.8: {}
 
   zod@4.6.7: {}
 
