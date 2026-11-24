@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="button-search">
+<circle id="Ellipse 32" cx="16" cy="16" r="16" fill="#F7CFAD"/>
+<g id="icon" clip-path="url(#clip0_0_4)">
+<path id="Vector" d="M7.97553 15.476C7.83488 15.6167 7.75586 15.8074 7.75586 16.0063C7.75586 16.2053 7.83488 16.396 7.97553 16.5367C8.11618 16.6773 8.30695 16.7563 8.50586 16.7563H23.5059C23.7048 16.7563 23.8955 16.6773 24.0362 16.5367C24.1768 16.396 24.2559 16.2053 24.2559 16.0063C24.2559 15.8074 24.1768 15.6167 24.0362 15.476C23.8955 15.3354 23.7048 15.2563 23.5059 15.2563H8.50586C8.30695 15.2563 8.11618 15.3354 7.97553 15.476Z" fill="#182219"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_4">
+<rect width="16" height="16" fill="white" transform="translate(8 8)"/>
+</clipPath>
+</defs>
+</svg>
