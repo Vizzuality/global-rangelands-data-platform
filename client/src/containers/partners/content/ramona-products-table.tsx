@@ -53,7 +53,7 @@ const RamonaProductsTable = () => (
   >
     <table className="w-full min-w-[560px] table-fixed border-collapse text-xs leading-4">
       <colgroup>
-        <col className="w-[233px]" />
+        <col className="w-[193px]" />
         <col className="w-[99px]" />
         <col className="w-[98.5px]" />
         <col />
