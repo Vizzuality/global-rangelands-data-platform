@@ -109,8 +109,8 @@ const RamonaBody = () => {
         <section className="flex flex-col gap-10">
           <div className="flex flex-col gap-4">
             <SectionHeading>What RAMONA offers</SectionHeading>
-            <div className="flex flex-col gap-8 lg:flex-row lg:justify-between">
-              <div className="flex flex-col gap-4 lg:w-[412px]">
+            <div className="flex flex-col gap-8 lg:flex-row lg:gap-[60px]">
+              <div className="flex flex-col gap-4 lg:w-[388px]">
                 <p>
                   RAMONA is a continental-scale rangeland monitoring system for Africa, developed
                   under the European Space Agency&apos;s EO AFRICA framework. It delivers a suite of
@@ -280,8 +280,8 @@ const RamonaBody = () => {
 
         <section className="flex flex-col gap-4">
           <SectionHeading>A note on the rangeland definition</SectionHeading>
-          <div className="flex flex-col gap-8 lg:flex-row lg:justify-between">
-            <div className="lg:w-[404px]">
+          <div className="flex flex-col gap-8 lg:flex-row lg:gap-[60px]">
+            <div className="lg:flex-1">
               <p>
                 RAMONA defines rangeland inclusively:{" "}
                 <span className="font-medium">
